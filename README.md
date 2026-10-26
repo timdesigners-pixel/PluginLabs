@@ -1,4 +1,4 @@
-# PluginLabs Hub 0.1.0
+# PluginLabs Hub 0.2.0
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
@@ -71,3 +71,25 @@ Sağlayıcılar loopback callback + oturum sırrı ile challenge/HMAC doğrular;
 ## Proje yapısı
 
 `src/hub.cjs`: paket, kaynak, API ve model yönetimi. `src/electron.cjs`: dar IPC köprüsü. `ui/`: uzak kod çalıştırmayan masaüstü arayüzü. `sdk/`: istemci ve işlev sağlayıcı sözleşmesi. `test/`: gerçek HTTP ve dosya sistemiyle entegrasyon testleri. Kullanıcı veri alanı Electron userData/hub klasörüdür. Geliştirmede `PLUGINLABS_DATA` değişkeniyle ayrı test alanı seçilebilir.
+
+## 0.2.0 — Eklenti yöneticisi ve Notion kataloğu
+
+Mevcut koyu arayüz korunur. Eklenti yöneticisinde üç alan vardır:
+
+1. **Chrome / Opera / Tarayıcılar:** Paket içindeki PluginLabs Browser Bridge Manifest V3 eklentisi; `management`, `storage`, `alarms` ve yalnız loopback HTTP erişim izni. Hub → Eklenti yöneticisi → Bağlantı eklentisini çıkar. Chrome’da `chrome://extensions`, Opera’da `opera://extensions` üzerinden geliştirici modu / paketlenmemiş eklenti yükle ile kurun. Eklenti panelindeki 32 harfli kimliği Hub’daki Tarayıcı bağla alanına girin; tek gösterilen anahtarı eklenti paneline yapıştırın. Her tarayıcı profili için ayrı bağlantı/anahtar oluşturun. Bağlantı eklentisi ZIP olarak da release’e eklenir.
+2. **PluginLabs eklentileri:** Var olan asset, şablon, kütüphane ve eklenti paketlerinin kurulumu, ayrı ayarları, etkinliği ve kaldırılması.
+3. **Diğer uygulamalar:** VS Code / VSCodium uygulama dosyası seçilerek kendi CLI’siyle envanter, eklenti kurma, güncelleme ve kaldırma. Windows için Code.exe/VSCodium.exe; Linux için code/codium. macOS uygulama paketi bu adaptörde doğrulanmadı. VS Code aç/kapat ve özel ayarları kendi arayüzünde yapılır. Diğer uygulamalar için otomatik destek iddia edilmez; sağlayıcı SDK’sı gerekir.
+
+### Tarayıcı işlem akışı
+
+Eklenti adları, sürümleri, etkinlik durumu, yönetilebilirlik ve ilan edilmiş izinler listelenir. Sayfa içeriği, tarama geçmişi ve başka eklentilerin iç verisi okunmaz. Hub’dan etkinleştir/devre dışı bırak/kaldır/ayarları aç isteği gönderilir; tarayıcıdaki PluginLabs panelinde kullanıcı düğmesine basarak onaylar. Kaldırmada ayrıca tarayıcının kendi onay penceresi açılır. Kurum politikasıyla yönetilen eklentiler değiştirilemez. Köprü kendi kendini devre dışı bırakamaz veya kaldıramaz. İstekler beş dakikada sona erer; onay gelene kadar envanter değiştirilmiş gibi gösterilmez.
+
+MV3 arka plan uyandığında yaklaşık 30 saniyede eşitler; panel açıkken üç saniyede bir yeniler. Tarayıcı tarafından askıya alınma, arka plan izni ve alarm davranışı süreyi uzatabilir. Panelde Şimdi eşitle kullanılabilir. Chrome ve Opera ayrı profillerdir; liste yalnız bağladığınız profili kapsar. Firefox/Safari bu Chromium bağlantı paketiyle desteklenmez. Tarayıcı eklenti güncellemelerini tarayıcının mağaza mekanizması yönetir; Hub profil dosyalarını değiştirmez veya mağaza doğrulamasını aşmaz. Bağlantı anahtarı eklentinin kendi Chrome storage.local alanında tutulur; iptal Hub → API ve izinler ekranından yapılır.
+
+`POST /v1/browser/sync`, yalnız `browser.manage` izinli ve bağlantı eklentisi kimliğine bağlanmış anahtarla kullanılabilir. Diğer API yollarındaki Origin engeli korunur. Browser Bridge Origin’i kayıtlı chrome-extension kimliğiyle eşleşmelidir.
+
+### Notion’daki 50 fikir
+
+Notion kataloğu ekranı PL-001–PL-050 özgün adlarını, platformlarını, durumunu, ilk sürüm akışını, AI rolünü, bağımlılıklarını, gelir hipotezini, doğrulama ölçütünü ve öncelik/eforunu gösterir. Detayda tam kapsam ve Notion kaynak bağlantısı bulunur. Kaynaklar `resources/notion-catalog.json` içinde 26.10.2026 tarihli bir anlık görüntüdür; canlı senkronizasyon değildir. `GET /v1/ideas`, `catalog.read` izniyle kartları döndürür. Henüz fikir aşamasındaki ürünler kurulu veya indirilebilir gibi etiketlenmez. Leo Helper ve Mind Palace kartları ilgili mevcut ürünü işaretler; farklı ürün adları birleştirilmez.
+
+Testler: `npm test`; masaüstü UI için Playwright kurulu ortamda `PLAYWRIGHT_MODULE=/path/to/playwright DISPLAY=:99 node test/extension-ui.cjs`. Tarayıcı izinleri ve gerçek mağaza eklentileri Windows Chrome/Opera cihazlarında ayrıca doğrulanmalıdır.

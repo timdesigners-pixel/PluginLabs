@@ -1,12 +1,9 @@
-PluginLabs uygulamaları, kaynakları ve yerel AI için ilk masaüstü merkez sürümü.
+PluginLabs Hub 0.2.0 — mevcut tasarım korunarak eklenti yönetimi ve Notion ürün kataloğu eklendi.
 
-- Uygulama indirme, güncelleme denetimi, açma, kaldırma ve sürüm geri alma.
-- Asset, şablon, kütüphane ve eklenti kataloğu; ayrı paket ayarları ve kaynak paketi içe aktarma.
-- My Mind Lite: Qwen3 0.6B + llama.cpp kurulumu ve yerel sunucu yönetimi.
-- Uygulama bazlı API anahtarları, izinler, işlem onayları ve sağlayıcı SDK’sı.
+- Chrome, Opera ve Chromium profilleri için Browser Bridge: izin envanteri, etkinleştirme/devre dışı bırakma, kaldırma ve ayar açma istekleri; tarayıcı panelinde kullanıcı onayı.
+- VS Code / VSCodium eklentilerini uygulamanın kendi CLI’siyle listeleme, kurma, güncelleme ve kaldırma.
+- PluginLabs kaynak ve eklenti paketleri aynı yönetim ekranında.
+- Notion’daki PL-001–PL-050 ürünlerinin özgün adları, alanları, tam kapsamları ve kaynak bağlantılarıyla 50 kartlık katalog.
+- Chrome/Opera bağlantı eklentisi masaüstü paketine gömülü ve ayrıca ZIP olarak sunulur.
 
-Windows kurulum EXE’si veya taşınabilir EXE kullanılabilir. Dosyalar GitHub dışında Linux Docker/Wine64 ortamında derlenmiştir. Bu GitHub işlemi yalnızca mevcut dosyaları doğrular ve yayımlar.
-
-8 entegrasyon testi, paketlenmiş Electron arayüz testleri ve gerçek Linux CPU model yanıtı doğrulandı. Windows paketleri imzasız önizlemedir; gerçek Windows cihazında açılış testi henüz yapılmadı. My Mind ağırlıkları uygulamadan ayrıca indirilir. Mevcut ürünlerin ortak API’ye bağlanması için SDK adaptörleri gerekir.
-
-SHA256SUMS.txt ve BUILD-INFO.json dosyaları indirmelere eklenmiştir.
+Windows EXE’leri GitHub dışında Docker/Wine64 ile derlenir. GitHub Actions yalnızca hazır paketleri doğrulayıp release’e yükler. İmzasız önizleme sürümüdür; Windows Chrome/Opera cihaz testleri henüz yapılmadı. Tarayıcıya bağlantı eklentisini yükleyip Hub ile eşleştirmek gerekir. Henüz geliştirilmemiş Notion fikirleri yüklenebilir ürün olarak sunulmaz. Firefox/Safari desteği yoktur; diğer uygulamalar için yeni adaptör gerekir. My Mind modeli ayrıca indirilir.

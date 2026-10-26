@@ -1,1 +1,81 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>PluginLabs Hub</title><link rel="stylesheet" href="styles.css"></head><body><aside><a class="brand" href="#home"><span class="logo">p<span>l</span></span><span>PluginLabs<small>CREATIVE ECOSYSTEM</small></span></a><div class="workspace"><i class="status-dot"></i>Kişisel çalışma alanı<span>⌄</span></div><nav aria-label="Ana gezinme"><button data-page="home" class="active"><span>◈</span>Genel bakış</button><button data-page="apps"><span>▦</span>Uygulamalarım</button><button data-page="discover"><span>⌘</span>Keşfet</button><button data-page="resources"><span>▧</span>Kaynak kütüphanesi</button><button data-page="mymind"><span>✳</span>My Mind <b>LOCAL AI</b></button><div class="nav-label">YÖNETİM</div><button data-page="updates"><span>↻</span>Güncellemeler <em id="update-count"></em></button><button data-page="activity"><span>◷</span>İşlem geçmişi</button><button data-page="api"><span>⌁</span>API ve izinler</button><button data-page="settings"><span>⚙</span>Ayarlar</button></nav><div class="aside-bottom"><div class="local-note"><span class="status-dot"></span>Yerel çalışma alanı<small>Verileriniz bu cihazda saklanır.</small></div><div class="profile"><span class="avatar">PL</span><div>PluginLabs Hub<small>Sürüm 0.1.0 · Önizleme</small></div></div></div></aside><main><header><div class="breadcrumbs">Çalışma alanı <span>/</span> <strong id="breadcrumb">Genel bakış</strong></div><div class="header-right"><label class="search"><span>⌕</span><input id="search" placeholder="Uygulama veya kaynak ara…" aria-label="Uygulama veya kaynak ara"><kbd>/</kbd></label><button class="icon-button" data-go="activity" title="İşlem geçmişi">◷</button><span class="avatar small">PL</span></div></header><div id="content" tabindex="-1"></div><footer><span id="footer-status">Yerel merkez hazırlanıyor…</span><span>PluginLabs · Create your own workflow</span></footer></main><div id="toast" role="status" aria-live="polite"></div><dialog id="modal"><div id="modal-content"></div></dialog><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>PluginLabs Hub</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="#home"
+        ><span class="logo">p<span>l</span></span
+        ><span>PluginLabs<small>CREATIVE ECOSYSTEM</small></span></a
+      >
+      <div class="workspace">
+        <i class="status-dot"></i>Kişisel çalışma alanı<span>⌄</span>
+      </div>
+      <nav aria-label="Ana gezinme">
+        <button data-page="home" class="active">
+          <span>◈</span>Genel bakış</button
+        ><button data-page="apps"><span>▦</span>Uygulamalarım</button
+        ><button data-page="extensions"><span>◇</span>Eklenti yöneticisi</button
+        ><button data-page="ideas"><span>▱</span>Notion kataloğu</button
+        ><button data-page="discover"><span>⌘</span>Keşfet</button
+        ><button data-page="resources"><span>▧</span>Kaynak kütüphanesi</button
+        ><button data-page="mymind">
+          <span>✳</span>My Mind <b>LOCAL AI</b>
+        </button>
+        <div class="nav-label">YÖNETİM</div>
+        <button data-page="updates">
+          <span>↻</span>Güncellemeler <em id="update-count"></em></button
+        ><button data-page="activity"><span>◷</span>İşlem geçmişi</button
+        ><button data-page="api"><span>⌁</span>API ve izinler</button
+        ><button data-page="settings"><span>⚙</span>Ayarlar</button>
+      </nav>
+      <div class="aside-bottom">
+        <div class="local-note">
+          <span class="status-dot"></span>Yerel çalışma alanı<small
+            >Verileriniz bu cihazda saklanır.</small
+          >
+        </div>
+        <div class="profile">
+          <span class="avatar">PL</span>
+          <div>PluginLabs Hub<small>Sürüm 0.2.0 · Önizleme</small></div>
+        </div>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div class="breadcrumbs">
+          Çalışma alanı <span>/</span>
+          <strong id="breadcrumb">Genel bakış</strong>
+        </div>
+        <div class="header-right">
+          <label class="search"
+            ><span>⌕</span
+            ><input
+              id="search"
+              placeholder="Uygulama veya kaynak ara…"
+              aria-label="Uygulama veya kaynak ara"
+            /><kbd>/</kbd></label
+          ><button class="icon-button" data-go="activity" title="İşlem geçmişi">
+            ◷</button
+          ><span class="avatar small">PL</span>
+        </div>
+      </header>
+      <div id="content" tabindex="-1"></div>
+      <footer>
+        <span id="footer-status">Yerel merkez hazırlanıyor…</span
+        ><span>PluginLabs · Create your own workflow</span>
+      </footer>
+    </main>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <dialog id="modal"><div id="modal-content"></div></dialog>
+    <script src="app.js"></script>
+  </body>
+</html>

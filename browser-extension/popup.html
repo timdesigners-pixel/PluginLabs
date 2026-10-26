@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>PluginLabs Browser Bridge</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>PluginLabs <span>Browser Bridge</span></h1>
+    <p>Chrome, Opera ve Chromium eklenti yönetimi</p>
+    <div class="box">
+      <strong>Bağlantı eklentisi kimliği</strong><code id="extension-id"></code>
+      <p>
+        Bu kimliği Hub → Eklenti yöneticisi → Tarayıcı bağla alanına yapıştırın.
+      </p>
+    </div>
+    <form id="connect">
+      <label
+        >Hub uygulama anahtarı<input
+          name="token"
+          type="password"
+          required
+          placeholder="plh_…"
+          autocomplete="off" /></label
+      ><label
+        >Yerel API portu<input
+          name="port"
+          type="number"
+          min="1"
+          max="65535"
+          value="47632"
+          required /></label
+      ><button>Bağlan ve envanteri paylaş</button>
+    </form>
+    <div class="row">
+      <button id="refresh" class="secondary">Şimdi eşitle</button
+      ><button id="disconnect" class="secondary">Bağlantıyı kes</button>
+    </div>
+    <p id="status" role="status"></p>
+    <h2>Hub’dan gelen işlem istekleri</h2>
+    <div id="commands"></div>
+    <p class="note">
+      Yalnızca eklenti adı, sürümü, durumu ve izin envanteri paylaşılır. Sayfa
+      içeriği ve diğer eklentilerin özel verileri okunmaz. İstekler beş dakika
+      geçerlidir; eklenti yönetim işlemini burada onaylayın. Eşitleme en geç
+      yaklaşık 30 saniyede yapılır.
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,4 +1,39 @@
 // Hub > API ve izinler: providers.register + actions.invoke izinli istemci oluşturun.
-const {PluginLabsClient,ProviderAgent}=require('./client.cjs');
-const client=new PluginLabsClient({token:process.env.PLUGINLABS_TOKEN});
-(async()=>{const provider=await new ProviderAgent(client,{id:'example-app',name:'Örnek PluginLabs uygulaması',actions:[{id:'status',label:'Uygulama durumu',write:false,run:async()=>({ready:true,app:'example-app'})},{id:'save-draft',label:'Taslak kaydet',write:true,run:async input=>{if(typeof input.text!=='string'||input.text.length>10000)throw Error('Geçersiz taslak');return {draft:input.text,saved:false,note:'Örnek adaptör; gerçek uygulamanızın kaydetme işlevini buraya bağlayın.'};}}]}).start();console.log('Örnek sağlayıcı kayıtlı. Çıkış: Ctrl+C');process.on('SIGINT',async()=>{await provider.close();process.exit();});})().catch(e=>{console.error(e.message);process.exitCode=1;});
+const { PluginLabsClient, ProviderAgent } = require("./client.cjs");
+const client = new PluginLabsClient({ token: process.env.PLUGINLABS_TOKEN });
+(async () => {
+  const provider = await new ProviderAgent(client, {
+    id: "example-app",
+    name: "Örnek PluginLabs uygulaması",
+    actions: [
+      {
+        id: "status",
+        label: "Uygulama durumu",
+        write: false,
+        run: async () => ({ ready: true, app: "example-app" }),
+      },
+      {
+        id: "save-draft",
+        label: "Taslak kaydet",
+        write: true,
+        run: async (input) => {
+          if (typeof input.text !== "string" || input.text.length > 10000)
+            throw Error("Geçersiz taslak");
+          return {
+            draft: input.text,
+            saved: false,
+            note: "Örnek adaptör; gerçek uygulamanızın kaydetme işlevini buraya bağlayın.",
+          };
+        },
+      },
+    ],
+  }).start();
+  console.log("Örnek sağlayıcı kayıtlı. Çıkış: Ctrl+C");
+  process.on("SIGINT", async () => {
+    await provider.close();
+    process.exit();
+  });
+})().catch((e) => {
+  console.error(e.message);
+  process.exitCode = 1;
+});

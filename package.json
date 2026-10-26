@@ -1,6 +1,6 @@
 {
   "name": "pluginlabs-hub",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "PluginLabs uygulama, kaynak ve yerel AI merkezi",
   "main": "src/electron.cjs",
   "author": "PluginLabs",
@@ -33,7 +33,8 @@
       "resources/**",
       "sdk/**",
       "README.md",
-      "package.json"
+      "package.json",
+      "browser-extension/**"
     ],
     "win": {
       "target": [

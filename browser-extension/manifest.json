@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "PluginLabs Browser Bridge",
+  "version": "0.2.0",
+  "description": "PluginLabs Hub üzerinden Chrome, Opera ve Chromium eklentilerini izinli olarak yönetin.",
+  "permissions": ["management", "storage", "alarms"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "PluginLabs eklenti yöneticisi",
+    "default_popup": "popup.html"
+  },
+  "options_page": "popup.html",
+  "icons": { "128": "icon.png" }
+}
