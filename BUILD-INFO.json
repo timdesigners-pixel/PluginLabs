@@ -1,0 +1,28 @@
+{
+  "product": "PluginLabs Hub",
+  "version": "0.2.0",
+  "commit": "cac2dfdafb4fe07c5875e5dc824c5d8a24cf3347",
+  "windows_build": "Independent Linux Docker + Wine64; GitHub Actions compilation not used",
+  "builder_image": "electronuserland/builder@sha256:f3a8d451994c881d0972e7b1846ee4d4fdc15eb41fc6b1f350b38cbf99ca90fe",
+  "electron": "33.2.1",
+  "signed": false,
+  "checks": [
+    "13 Node integration tests passed",
+    "All 50 original Notion product packs installed and opened in integration tests",
+    "Packaged Electron UI: 50 product cards, full specs, browser pairing and command queue",
+    "Packaged Electron UI: product install/open, persistent notes/checklist, reopen from Apps, export embedded Browser Bridge",
+    "21 packaged runtime/source/resource files matched current source"
+  ],
+  "packaged": {
+    "files": 21,
+    "version": "0.2.0",
+    "asar_sha256": "4a9c133eda29cd838703946b1bf0fb5f96fee96b70398efe1e6def7af6a859b9"
+  },
+  "limits": [
+    "No real Windows/Chrome/Opera device test",
+    "Cloud Chromium unpacked-extension runtime test unavailable: service worker did not start",
+    "Notion products are installable local preview workspaces; full planned product features remain in development",
+    "Direct external application extension adapter: VS Code/VSCodium only"
+  ],
+  "build_notes": "Temporary build cache adjustments used Wine64/rcedit x64 and JS NSIS uninstaller extraction; caches restored. No application-source modifications during packaging."
+}
