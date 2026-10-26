@@ -4,7 +4,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: release-v0.2.0
+  group: release-v0.2.1
   cancel-in-progress: false
 jobs:
   publish:
@@ -12,17 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: release-binaries/v0.2.0
+          ref: release-binaries/v0.2.1
           persist-credentials: false
       - name: Verify precompiled files without compiling or executing them
         run: |
           python3 - <<'PY'
           import hashlib, json, struct
           from pathlib import Path
-          assert hashlib.sha256(Path('SHA256SUMS.txt').read_bytes()).hexdigest() == 'a178371de0b4055dbe5bae1f95d84057f5bd875ca322adf41ddce2f091038c7b'
+          assert hashlib.sha256(Path('SHA256SUMS.txt').read_bytes()).hexdigest() == '19ebd83f45aa2e64a23aa58b4c3026787c43188a6323210c02d4877c6df34683'
           info = json.loads(Path('BUILD-INFO.json').read_text())
-          assert info['version'] == '0.2.0'
-          assert info['commit'] == 'cac2dfdafb4fe07c5875e5dc824c5d8a24cf3347'
+          assert info['version'] == '0.2.1'
+          assert info['commit'] == '38c1fc42a0e4de9af7ec961a60b74560dbe101f6'
           for file in Path('.').glob('*.exe'):
               data = file.read_bytes()
               offset = struct.unpack_from('<I', data, 0x3c)[0]
@@ -41,11 +41,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          actual_source=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.2.0" --jq .object.sha)
-          test "$actual_source" = "cac2dfdafb4fe07c5875e5dc824c5d8a24cf3347"
-          assets=("PluginLabs Hub Setup 0.2.0.exe" "PluginLabs Hub 0.2.0.exe" PluginLabs-Browser-Bridge-0.2.0.zip PluginLabs-Hub-Source-0.2.0.zip SHA256SUMS.txt BUILD-INFO.json)
-          if ! gh release view v0.2.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release create v0.2.0 --repo "$GITHUB_REPOSITORY" --verify-tag --draft --title "PluginLabs Hub v0.2.0" --notes-file RELEASE-NOTES.md
+          actual_source=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.2.1" --jq .object.sha)
+          test "$actual_source" = "38c1fc42a0e4de9af7ec961a60b74560dbe101f6"
+          assets=("PluginLabs Hub Setup 0.2.1.exe" "PluginLabs Hub 0.2.1.exe" PluginLabs-Browser-Bridge-0.2.0.zip PluginLabs-Hub-Source-0.2.1.zip SHA256SUMS.txt BUILD-INFO.json)
+          if ! gh release view v0.2.1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create v0.2.1 --repo "$GITHUB_REPOSITORY" --verify-tag --draft --title "PluginLabs Hub v0.2.1" --notes-file RELEASE-NOTES.md
           fi
-          gh release upload v0.2.0 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
-          gh release edit v0.2.0 --repo "$GITHUB_REPOSITORY" --draft=false --latest
+          gh release upload v0.2.1 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit v0.2.1 --repo "$GITHUB_REPOSITORY" --draft=false --latest
