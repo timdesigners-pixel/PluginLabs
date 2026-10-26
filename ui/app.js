@@ -12,7 +12,9 @@ let state,
   chatResult = "",
   timer,
   tokenOnce,
-  browserSelection = "";
+  browserSelection = "",
+  openProductId = "",
+  productData = null;
 const titles = {
   home: "Genel bakış",
   apps: "Uygulamalarım",
@@ -23,11 +25,13 @@ const titles = {
   activity: "İşlem geçmişi",
   api: "API ve izinler",
   settings: "Ayarlar",
+  product: "Ürün çalışma alanı",
   extensions: "Eklenti yöneticisi",
   ideas: "Notion kataloğu",
 };
 const kindLabels = {
   app: "Uygulama",
+  preview: "Ürün önizlemesi",
   asset: "Asset",
   template: "Şablon",
   library: "Kütüphane",
@@ -127,7 +131,7 @@ function card(item) {
     return false;
   };
   const different = installed && newer(item.version, installed.version);
-  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${job ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>` : ""}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${job ? button("İptal", "cancel", job.id) : !installed ? button("＋ Yükle", "install", item.id) : different ? button("Güncelle", "install", item.id, "primary") : item.kind === "app" ? button("Aç ↗", "launch", item.id) : button("Yönet", "manage", item.id)}</div>${installed ? `<div class="detail-actions"><button class="text-button" data-action="manage" data-id="${item.id}">Ayarlar ve paket bilgisi</button></div>` : ""}</article>`;
+  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${job ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>` : ""}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${job ? button("İptal", "cancel", job.id) : !installed ? button("＋ Yükle", "install", item.id) : different ? button("Güncelle", "install", item.id, "primary") : item.kind === "app" ? button("Aç ↗", "launch", item.id) : item.kind === "preview" ? button("Aç ↗", "openProduct", item.id) : button("Yönet", "manage", item.id)}</div>${installed ? `<div class="detail-actions"><button class="text-button" data-action="manage" data-id="${item.id}">Ayarlar ve paket bilgisi</button></div>` : ""}</article>`;
 }
 function grid(items) {
   return items.length
@@ -181,6 +185,7 @@ function render() {
       grid(list.filter((i) => filter === "all" || i.kind === filter));
   }
   if (page === "ideas") html = ideasPage();
+  if (page === "product") html = productPage();
   if (page === "extensions") html = extensionsPage();
   if (page === "mymind") {
     const ready =
@@ -311,6 +316,7 @@ document.addEventListener("click", async (e) => {
   if (!action) return;
   if (action === "closeModal") return closeModal();
   if (action === "manage") return manage(id);
+  if (action === "openProduct") return openProduct(id);
   if (action === "pairBrowser") return pairBrowser();
   if (action === "idea") return showIdea(id);
   if (action === "confirmBrowser")
@@ -494,6 +500,7 @@ if (api) {
           "api",
           "home",
           "extensions",
+          "ideas",
         ].includes(page) ||
           state?.model.starting),
     ).catch(() => {});
@@ -503,10 +510,14 @@ if (api) {
     '<div class="empty">PluginLabs Hub arayüzünü masaüstü uygulaması üzerinden açın.<br><code>npm start</code></div>';
 }
 function ideaCard(item) {
-  const map = { "PL-002": "leo-helper", "PL-003": "mind-palace" },
-    installed = state.installed[map[item.id]],
-    available = map[item.id];
-  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · ${esc(item.fields["Öncelik ve efor"]?.split(";")[0] || "Ürün fikri")}</small></div></div><p>${esc(item.fields["Kullanıcı ve problem"] || "")}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${available ? "online" : ""}">${installed ? "İlgili ürün yüklü" : available ? "İlgili ürün mevcut" : "Notion ürün taslağı"}</span>${button("Kapsamı gör", "idea", item.id)}</div></article>`;
+  const id = item.id.toLowerCase(),
+    installed = state.installed[id],
+    job = state.jobs.find(
+      (j) =>
+        j.item === id &&
+        ["queued", "downloading", "installing"].includes(j.status),
+    );
+  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.fields["Kullanıcı ve problem"])}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button("＋ Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
 }
 function ideasPage() {
   let items = state.ideas.filter(
@@ -542,7 +553,7 @@ function ideasPage() {
       )
       .join(
         "",
-      )}</div><div class="notice">Bu katalog Notion’daki ürün geliştirme fikirlerini gösterir. Kartın kapsamı henüz geliştirilmiş olduğu anlamına gelmez. Gerçek dağıtım paketi bulunan ürünler Keşfet ve Uygulamalarım bölümlerinden yüklenir.</div><div class="app-grid">${items.map(ideaCard).join("")}</div>`
+      )}</div><div class="notice">50 ürünün tamamını yerel önizleme paketi olarak yükleyebilirsiniz. Her paket ürün kapsamı, kalıcı notlar, geliştirme listesi ve kendi ayarlarını içerir. Planlanan ana işlevlerin geliştirme durumu ürün içinde gösterilir.</div><div class="app-grid">${items.map(ideaCard).join("")}</div>`
   );
 }
 async function showIdea(id) {
@@ -708,4 +719,73 @@ document.addEventListener("submit", async (e) => {
       toast("Uygulama eklentisi kuruldu");
     });
   }
+});
+async function openProduct(id) {
+  try {
+    productData = await call("readProduct", id);
+    openProductId = id;
+    page = "product";
+    render();
+    content.scrollIntoView({ block: "start" });
+  } catch (e) {
+    toast(e.message);
+  }
+}
+function productTasks() {
+  const pack = productData.package;
+  const source = pack.spec
+    .split("\n")
+    .filter((line) => line.startsWith("- [ ] "))
+    .map((line) => line.slice(6));
+  return source.length
+    ? source.slice(0, 100)
+    : [
+        pack.fields["MVP ve temel akış"],
+        pack.fields["Teknik bağımlılık ve sınır"],
+        pack.fields["Doğrulama ölçütü"],
+      ].filter(Boolean);
+}
+function productPage() {
+  if (!productData)
+    return '<div class="empty">Uygulamalarım bölümünden bir ürün paketi açın.</div>';
+  const pack = productData.package,
+    workspace = productData.workspace,
+    settings = state.installed[openProductId]?.settings || {};
+  return (
+    heading(
+      esc(pack.name),
+      `${esc(pack.productId)} · Yerel ürün önizlemesi · Yüklü paket v0.2.0`,
+      button("Paket ayarları", "manage", openProductId),
+    ) +
+    `<div class="notice">Bu kurulabilir sürüm; ürün kapsamı, not defteri ve geliştirme listesini içerir. Notion’da planlanan ana özellikler geliştirme aşamasındadır.</div><div class="two-col"><section class="card"><h2>Ürün kapsamı</h2><div class="spec-fields">${Object.entries(
+      pack.fields,
+    )
+      .map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`)
+      .join(
+        "",
+      )}</div></section><section class="card"><form id="product-workspace-form"><h2>Çalışma alanım</h2><label class="field" style="margin-top:20px"><span>Ürüne özel notlar</span><textarea name="notes" maxlength="20000" placeholder="Bu ürünle ilgili kullanım notlarınız…">${esc(workspace.notes)}</textarea></label>${
+      settings.showDevelopmentTasks
+        ? `<h3>Geliştirme / inceleme listem</h3><p>İşaretler kişisel takip listenizdir; ürün özelliğinin kodlandığını ifade etmez.</p>${productTasks()
+            .map(
+              (task, index) =>
+                `<label class="check"><input type="checkbox" name="completed" value="${index}" ${workspace.completed.includes(index) ? "checked" : ""}><span>${esc(task.replace(/<[^>]+>/g, ""))}</span></label>`,
+            )
+            .join("")}`
+        : ""
+    }<button class="btn primary">Notları ve listeyi kaydet</button><p class="subtle" style="margin-top:12px">${workspace.updatedAt ? "Son kayıt: " + date(workspace.updatedAt) : "Notlarınız bu cihazda saklanır."}</p></form></section></div>`
+  );
+}
+document.addEventListener("submit", async (e) => {
+  if (e.target.id !== "product-workspace-form") return;
+  e.preventDefault();
+  const data = new FormData(e.target);
+  await run("saveProduct", openProductId, async () => {
+    productData.workspace = await call("saveProduct", openProductId, {
+      notes: data.get("notes"),
+      completed: state.installed[openProductId].settings.showDevelopmentTasks
+        ? data.getAll("completed").map(Number)
+        : productData.workspace.completed,
+    });
+    toast("Ürün çalışma alanı kaydedildi");
+  });
 });

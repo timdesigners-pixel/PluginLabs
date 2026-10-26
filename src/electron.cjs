@@ -57,6 +57,8 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
     throw new Error("Geçersiz istek");
   const operations = {
     snapshot: () => hub.snapshot(),
+    readProduct: (id) => hub.readProduct(id),
+    saveProduct: (id, data) => hub.saveProduct(id, data),
     idea: (id) => {
       const item = require("../resources/notion-catalog.json").items.find(
         (i) => i.id === id,

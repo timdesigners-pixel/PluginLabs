@@ -183,3 +183,41 @@ test("VS Code adapter parses inventory and passes arguments without shell; faile
   await h.appExtensions.disconnect();
   assert.equal(h.appExtensions.snapshot().connected, false);
 });
+
+test("all 50 product packs install and open; product notes and checklists persist independently of package files", async (t) => {
+  const h = await setup(t);
+  for (const item of require("../resources/notion-catalog.json").items) {
+    const id = item.id.toLowerCase(),
+      job = await h.install(id);
+    while (["queued", "downloading", "installing"].includes(job.status))
+      await new Promise((r) => setTimeout(r, 3));
+    assert.equal(job.status, "complete");
+    const product = await h.readProduct(id);
+    assert.equal(product.package.name, item.name);
+    assert.equal(product.package.productId, item.id);
+  }
+  await h.saveProduct("pl-047", {
+    notes: "İzin inceleme notu",
+    completed: [0, 1],
+  });
+  await h.toggle("pl-047", false);
+  await assert.rejects(h.readProduct("pl-047"), /etkin/);
+  await h.toggle("pl-047", true);
+  assert.equal(
+    (await h.readProduct("pl-047")).workspace.notes,
+    "İzin inceleme notu",
+  );
+  const saved = JSON.parse(
+    await fs.readFile(path.join(h.root, "state.json"), "utf8"),
+  );
+  assert.deepEqual(saved.productWorkspaces["pl-047"].completed, [0, 1]);
+  await h.resourceSettings("pl-047", { showDevelopmentTasks: false });
+  assert.equal(
+    h.state.installed["pl-047"].settings.showDevelopmentTasks,
+    false,
+  );
+  await assert.rejects(
+    h.saveProduct("pl-047", { notes: "x".repeat(20001), completed: [] }),
+    /sınır/,
+  );
+});

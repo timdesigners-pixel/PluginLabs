@@ -442,7 +442,9 @@ class Hub extends EventEmitter {
   }
   async resourceSettings(id, settings) {
     const item = this.installed(id);
-    if (!["asset", "template", "plugin", "library"].includes(item.kind))
+    if (
+      !["asset", "template", "plugin", "library", "preview"].includes(item.kind)
+    )
       fail("Bu paketin kaynak ayarları yok");
     if (
       !settings ||
@@ -693,11 +695,42 @@ class Hub extends EventEmitter {
     await this.save();
     return this.install(id);
   }
+  async readProduct(id) {
+    const item = this.installed(id);
+    if (item.kind !== "preview" || !item.enabled)
+      fail("Ürün paketi etkin değil");
+    return {
+      package: await this.readResource(id),
+      workspace: this.state.productWorkspaces?.[id] || {
+        notes: "",
+        completed: [],
+        updatedAt: null,
+      },
+    };
+  }
+  async saveProduct(id, workspace) {
+    await this.readProduct(id);
+    const notes = boundedText(workspace?.notes, 20000);
+    if (
+      !Array.isArray(workspace.completed) ||
+      workspace.completed.length > 100 ||
+      workspace.completed.some((n) => !Number.isInteger(n) || n < 0 || n > 99)
+    )
+      fail("Geçersiz geliştirme listesi");
+    this.state.productWorkspaces ??= {};
+    this.state.productWorkspaces[id] = {
+      notes,
+      completed: [...new Set(workspace.completed)],
+      updatedAt: new Date().toISOString(),
+    };
+    await this.save();
+    return this.state.productWorkspaces[id];
+  }
   async readResource(id) {
     const i = this.installed(id);
     if (
       !i.enabled ||
-      !["asset", "template", "library", "plugin"].includes(i.kind)
+      !["asset", "template", "library", "plugin", "preview"].includes(i.kind)
     )
       fail("Kaynak etkin değil");
     return JSON.parse(
@@ -1060,7 +1093,9 @@ class Hub extends EventEmitter {
         .filter(
           ([, v]) =>
             v.enabled &&
-            ["asset", "template", "library", "plugin"].includes(v.kind),
+            ["asset", "template", "library", "plugin", "preview"].includes(
+              v.kind,
+            ),
         )
         .map(([id, v]) => ({ id, ...v }));
     } else if (

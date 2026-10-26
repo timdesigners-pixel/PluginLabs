@@ -144,6 +144,26 @@ const catalog = [
     settings: { countWhitespace: true },
   },
 ];
+for (const product of require("../resources/notion-catalog.json").items) {
+  catalog.push({
+    id: product.id.toLowerCase(),
+    name: product.name,
+    kind: "preview",
+    version: "0.2.0",
+    description: product.fields["Kullanıcı ve problem"],
+    bundled: true,
+    source: product.source,
+    settings: { language: "tr", showDevelopmentTasks: true },
+    payload: {
+      type: "product-preview",
+      productId: product.id,
+      name: product.name,
+      fields: product.fields,
+      spec: product.spec,
+      source: product.source,
+    },
+  });
+}
 module.exports = {
   catalog: catalog.map((item) => {
     const v = item.variants?.[process.platform];
