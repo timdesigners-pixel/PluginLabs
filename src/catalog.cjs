@@ -6,7 +6,8 @@ const catalog = [
     name: "Mind Palace",
     kind: "app",
     version: "1.10.0",
-    description: "Kişisel bilgi, finans ve çalışma alanı.",
+    description:
+      "Notları, görevleri ve finans kayıtlarını tek bir kişisel çalışma alanında düzenler.",
     platform: "win32",
     format: "exe",
     file: "MindPalace.exe",
@@ -24,7 +25,8 @@ const catalog = [
     name: "Leo Helper",
     kind: "app",
     version: "0.8.0",
-    description: "Kod, site ve AFF çalışma yardımcısı.",
+    description:
+      "Kodları, siteleri ve AFF kayıtlarını sınıflandırır; bağlantı ve işlem takibi sağlar.",
     platform: "win32",
     format: "exe",
     file: "LeoHelper.exe",
@@ -39,7 +41,7 @@ const catalog = [
     kind: "engine",
     version: "11669",
     description:
-      "llama.cpp CPU motoru. Yalnızca bu merkezin başlattığı süreç yönetilir.",
+      "My Mind modellerini cihazın işlemcisinde çalıştıran yerel llama.cpp sunucusunu kurar.",
     variants: {
       linux: {
         format: "tar",
@@ -73,7 +75,7 @@ const catalog = [
     kind: "model",
     version: "1.0.0",
     description:
-      "Qwen3 0.6B Q8 · 640 MB · Apache 2.0. Yerel özetleme, sınıflandırma ve metin işlemleri; yeni eğitilmiş bir model değildir.",
+      "Metinleri cihazınızda özetler, yeniden yazar ve sınıflandırır. Qwen3 0.6B Q8 · 640 MB · Apache 2.0.",
     format: "gguf",
     file: "Qwen3-0.6B-Q8_0.gguf",
     size: 639446688,
@@ -87,7 +89,8 @@ const catalog = [
     name: "Graphite",
     kind: "asset",
     version: "1.0.0",
-    description: "PluginLabs için koyu renk paleti ve tasarım değişkenleri.",
+    description:
+      "Arayüzlerde kullanılmak üzere koyu renk paleti ve tasarım değişkenleri sağlar.",
     bundled: true,
     payload: {
       type: "theme",
@@ -105,7 +108,8 @@ const catalog = [
     name: "Toplantı çalışma alanı",
     kind: "template",
     version: "1.0.0",
-    description: "Gündem, kararlar ve takip görevleri için taşınabilir şablon.",
+    description:
+      "Toplantı gündemini, kararları ve takip görevlerini düzenleyen bir çalışma şablonu sunar.",
     bundled: true,
     payload: {
       type: "template",
@@ -119,7 +123,7 @@ const catalog = [
     kind: "library",
     version: "1.0.0",
     description:
-      "Özetleme, yeniden yazma ve sınıflandırma için komut şablonları.",
+      "Özetleme, yeniden yazma ve sınıflandırma komutlarını yeniden kullanılabilir bir kütüphanede toplar.",
     bundled: true,
     payload: {
       type: "prompts",
@@ -138,7 +142,8 @@ const catalog = [
     name: "Metin araçları",
     kind: "plugin",
     version: "1.0.0",
-    description: "API üzerinden kelime ve karakter sayımı. AI gerektirmez.",
+    description:
+      "Metinlerdeki kelime ve karakterleri yapay zekâ gerektirmeden sayar.",
     bundled: true,
     payload: { type: "builtin", capability: "text.count" },
     settings: { countWhitespace: true },
