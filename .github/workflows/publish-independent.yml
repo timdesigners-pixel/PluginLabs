@@ -30,6 +30,13 @@ jobs:
           print('Independently compiled Windows packages verified; no compilation on GitHub.')
           PY
           sha256sum -c SHA256SUMS.txt
+          # GitHub normalizes spaces in asset filenames to periods.
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          file = Path('SHA256SUMS.txt')
+          rows = [line.split('  ', 1) for line in file.read_text().splitlines()]
+          file.write_text(''.join(checksum + '  ' + name.replace(' ', '.') + '\n' for checksum, name in rows))
+          PYTHON
       - name: Publish verified existing artifacts
         env:
           GH_TOKEN: ${{ github.token }}
