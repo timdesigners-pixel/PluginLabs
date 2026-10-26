@@ -4,7 +4,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: release-v0.1.0
+  group: release-v0.2.0
   cancel-in-progress: false
 jobs:
   publish:
@@ -12,41 +12,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: release-binaries/v0.1.0
+          ref: release-binaries/v0.2.0
           persist-credentials: false
-      - name: Verify precompiled artifacts (no build)
+      - name: Verify precompiled files without compiling or executing them
         run: |
           python3 - <<'PY'
           import hashlib, json, struct
           from pathlib import Path
-          expected = {
-            'PluginLabs Hub 0.1.0.exe': 'a470c44916ea5aaa830ad502422d1d326a8fb2b55f34c621512fdbd54f6391c5',
-            'PluginLabs Hub Setup 0.1.0.exe': 'aaefc19ab6c974cd72227c24ebd08e7938b52dc2dead9ab18dd8416fad978a66',
-            'PluginLabs-Hub-Source-0.1.0.zip': '5638377f3d500ddcdddb23f08fc896e299f0fb2c4813933f6783a3244cb7e05a',
-          }
+          assert hashlib.sha256(Path('SHA256SUMS.txt').read_bytes()).hexdigest() == 'a178371de0b4055dbe5bae1f95d84057f5bd875ca322adf41ddce2f091038c7b'
           info = json.loads(Path('BUILD-INFO.json').read_text())
-          assert info['version'] == '0.1.0'
-          assert info['commit'] == 'aa9cb77f782045dc72b8f0df3eaa30107bcdbad5'
-          for name, checksum in expected.items():
-              data = Path(name).read_bytes()
-              assert hashlib.sha256(data).hexdigest() == checksum, name
-              if name.endswith('.exe'):
-                  offset = struct.unpack_from('<I', data, 0x3c)[0]
-                  assert data[:2] == b'MZ' and data[offset:offset+4] == b'PE\0\0'
-          print('Previously compiled Windows files verified; no compilation on GitHub.')
+          assert info['version'] == '0.2.0'
+          assert info['commit'] == 'cac2dfdafb4fe07c5875e5dc824c5d8a24cf3347'
+          for file in Path('.').glob('*.exe'):
+              data = file.read_bytes()
+              offset = struct.unpack_from('<I', data, 0x3c)[0]
+              assert data[:2] == b'MZ' and data[offset:offset+4] == b'PE\0\0'
+          print('Independently compiled Windows packages verified; no compilation on GitHub.')
           PY
           sha256sum -c SHA256SUMS.txt
-      - name: Publish existing binaries
+      - name: Publish verified existing artifacts
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          source_commit=$(python3 -c "import json; print(json.load(open('BUILD-INFO.json'))['commit'])")
-          actual_source=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.1.0" --jq .object.sha)
-          test "$actual_source" = "$source_commit"
-          assets=("PluginLabs Hub Setup 0.1.0.exe" "PluginLabs Hub 0.1.0.exe" "PluginLabs-Hub-Source-0.1.0.zip" SHA256SUMS.txt BUILD-INFO.json)
-          if gh release view v0.1.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload v0.1.0 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
-            gh release edit v0.1.0 --repo "$GITHUB_REPOSITORY" --draft=false --latest
-          else
-            gh release create v0.1.0 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --verify-tag --title "PluginLabs Hub v0.1.0" --notes-file RELEASE-NOTES.md
+          actual_source=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.2.0" --jq .object.sha)
+          test "$actual_source" = "cac2dfdafb4fe07c5875e5dc824c5d8a24cf3347"
+          assets=("PluginLabs Hub Setup 0.2.0.exe" "PluginLabs Hub 0.2.0.exe" PluginLabs-Browser-Bridge-0.2.0.zip PluginLabs-Hub-Source-0.2.0.zip SHA256SUMS.txt BUILD-INFO.json)
+          if ! gh release view v0.2.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create v0.2.0 --repo "$GITHUB_REPOSITORY" --verify-tag --draft --title "PluginLabs Hub v0.2.0" --notes-file RELEASE-NOTES.md
           fi
+          gh release upload v0.2.0 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit v0.2.0 --repo "$GITHUB_REPOSITORY" --draft=false --latest
