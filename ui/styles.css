@@ -1,3 +1,27 @@
+/* inter-latin-ext-wght-normal */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(./fonts/inter-latin-ext-wght-normal.woff2) format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* inter-latin-wght-normal */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(./fonts/inter-latin-wght-normal.woff2) format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
 :root {
   color-scheme: dark;
   --bg: #101214;
@@ -17,7 +41,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font:
-    14px "Segoe UI",
+    16px/1.6 "Inter Variable",
+    "Segoe UI",
     Arial,
     sans-serif;
   display: flex;
@@ -85,7 +110,7 @@ aside {
 .brand small {
   display: block;
   color: var(--muted);
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 2px;
   margin-top: 5px;
 }
@@ -93,7 +118,7 @@ aside {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
   margin: 30px 2px 20px;
@@ -121,7 +146,7 @@ nav button {
   gap: 13px;
   padding: 13px 12px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 15px;
   margin: 3px 0;
 }
 nav button > span {
@@ -139,7 +164,7 @@ nav button.active {
   color: var(--accent);
 }
 nav b {
-  font-size: 7px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.6px;
   background: #2e3037;
@@ -149,12 +174,12 @@ nav b {
   margin-left: auto;
 }
 nav em {
-  font-size: 10px;
+  font-size: 13px;
   font-style: normal;
   margin-left: auto;
 }
 .nav-label {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: #626b70;
   padding: 30px 12px 9px;
@@ -166,7 +191,7 @@ nav em {
   border-top: 1px solid var(--line);
   padding: 18px 8px;
   color: #adb5b3;
-  font-size: 11px;
+  font-size: 14px;
 }
 .local-note .status-dot {
   margin-right: 8px;
@@ -174,7 +199,7 @@ nav em {
 .local-note small {
   display: block;
   color: #6e777c;
-  font-size: 10px;
+  font-size: 13px;
   margin: 8px 0 0 14px;
 }
 .profile {
@@ -183,11 +208,11 @@ nav em {
   display: flex;
   gap: 10px;
   align-items: center;
-  font-size: 11px;
+  font-size: 14px;
 }
 .profile small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 5px;
 }
@@ -200,12 +225,12 @@ nav em {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 14px;
 }
 .avatar.small {
   width: 29px;
   height: 29px;
-  font-size: 9px;
+  font-size: 12px;
 }
 main {
   margin-left: 248px;
@@ -225,7 +250,7 @@ header {
 }
 .breadcrumbs {
   color: #747e82;
-  font-size: 11px;
+  font-size: 14px;
 }
 .breadcrumbs span {
   padding: 0 13px;
@@ -261,13 +286,13 @@ header {
   color: var(--text);
   min-width: 0;
   width: 100%;
-  font-size: 10px;
+  font-size: 13px;
 }
 .search kbd {
   border: 1px solid #343a3e;
   padding: 0 4px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 13px;
 }
 .icon-button {
   border: 0;
@@ -283,7 +308,7 @@ header {
   flex: 1;
 }
 .eyebrow {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.8px;
   color: var(--accent);
   font-weight: 600;
@@ -304,12 +329,12 @@ h2 {
 }
 h3 {
   font-weight: 550;
-  font-size: 14px;
+  font-size: 16px;
   margin: 0 0 8px;
 }
 p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.8;
   margin: 0;
 }
@@ -349,7 +374,7 @@ p {
 .hero p {
   color: #a7b7a5;
   max-width: 420px;
-  font-size: 11px;
+  font-size: 14px;
 }
 .hero .btn {
   margin-top: 23px;
@@ -389,7 +414,7 @@ p {
   background: #2d392c;
   border: 1px solid #4c5e43;
   border-radius: 8px;
-  font-size: 9px;
+  font-size: 12px;
   color: #c6d8b9;
   padding: 9px 12px;
   right: -5px;
@@ -412,7 +437,7 @@ p {
   background: none;
   border: 0;
   color: #aeb8ae;
-  font-size: 10px;
+  font-size: 13px;
   padding: 7px;
 }
 .text-button:hover {
@@ -424,7 +449,7 @@ p {
   background: #292e30;
   border-radius: 7px;
   padding: 9px 13px;
-  font-size: 11px;
+  font-size: 14px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -509,15 +534,15 @@ p {
   color: #a0c8dd;
 }
 .card-top h3 {
-  font-size: 13px;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 .card-top small {
-  font-size: 9px;
+  font-size: 12px;
   color: #7e898e;
 }
 .card p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
   min-height: 38px;
 }
@@ -534,7 +559,7 @@ p {
   display: inline-flex;
   gap: 5px;
   align-items: center;
-  font-size: 9px;
+  font-size: 12px;
   color: #89968a;
 }
 .badge.online {
@@ -570,11 +595,11 @@ p {
   flex: 1;
 }
 .resource-mini h3 {
-  font-size: 11px;
+  font-size: 14px;
   margin-bottom: 5px;
 }
 .resource-mini p {
-  font-size: 9px;
+  font-size: 12px;
   min-height: 0;
 }
 .api-card {
@@ -598,7 +623,7 @@ p {
   display: flex;
   gap: 22px;
   margin: 20px 0;
-  font-size: 10px;
+  font-size: 13px;
   color: #8d9990;
 }
 .api-stat strong {
@@ -618,7 +643,7 @@ p {
   background: transparent;
   border: 1px solid var(--line);
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 14px;
   color: #929c9f;
   padding: 8px 15px;
 }
@@ -633,7 +658,7 @@ p {
   border: 1px dashed #363d3f;
   border-radius: 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.8;
 }
 .empty span {
@@ -648,7 +673,7 @@ p {
   border: 1px solid #35482e;
   padding: 13px 16px;
   border-radius: 9px;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.8;
   margin: 15px 0;
 }
@@ -672,14 +697,14 @@ p {
   min-width: 0;
 }
 .list-row p {
-  font-size: 10px;
+  font-size: 13px;
 }
 .list-row h3 {
-  font-size: 12px;
+  font-size: 15px;
   margin-bottom: 5px;
 }
 .time {
-  font-size: 10px;
+  font-size: 13px;
   color: #707c81;
 }
 .progress {
@@ -705,7 +730,7 @@ p {
 }
 .chat-output {
   white-space: pre-wrap;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.9;
   background: #111618;
   padding: 17px;
@@ -721,7 +746,7 @@ p {
 }
 .field > span {
   display: block;
-  font-size: 11px;
+  font-size: 14px;
   color: #b5bdbb;
   margin-bottom: 8px;
 }
@@ -734,7 +759,7 @@ select {
   border-radius: 7px;
   padding: 11px 12px;
   width: 100%;
-  font-size: 12px;
+  font-size: 15px;
 }
 textarea {
   min-height: 100px;
@@ -744,7 +769,7 @@ textarea {
 .check {
   display: flex;
   gap: 9px;
-  font-size: 11px;
+  font-size: 14px;
   color: #aab7ac;
   align-items: center;
   margin: 12px 0;
@@ -819,14 +844,14 @@ dialog::backdrop {
   color: #1b2917;
   border-radius: 9px;
   padding: 12px 20px;
-  font-size: 12px;
+  font-size: 15px;
   box-shadow: 0 5px 40px #0008;
   max-width: 620px;
   display: none;
   z-index: 5;
 }
 footer {
-  font-size: 9px;
+  font-size: 12px;
   color: #657175;
   border-top: 1px solid #242b2d;
   padding: 15px 38px;
@@ -834,7 +859,7 @@ footer {
   justify-content: space-between;
 }
 .pill {
-  font-size: 9px;
+  font-size: 12px;
   border: 1px solid #35412f;
   color: #a2bd90;
   padding: 4px 7px;
@@ -847,7 +872,7 @@ footer {
   color: #a8c396;
 }
 .subtle {
-  font-size: 10px;
+  font-size: 13px;
   color: #788488;
 }
 .detail-actions {
@@ -865,7 +890,7 @@ footer {
 .search-result {
   margin-bottom: 15px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 14px;
 }
 @media (min-width: 1600px) {
   .app-grid {
@@ -931,7 +956,7 @@ footer {
   }
 }
 .idea-platform {
-  font-size: 10px;
+  font-size: 13px;
   color: #8eaa7b;
   line-height: 1.7;
   margin-top: 15px;
@@ -941,7 +966,7 @@ footer {
 }
 .spec-fields h3 {
   margin: 20px 0 6px;
-  font-size: 12px;
+  font-size: 15px;
   color: #c1d5b4;
 }
 .spec-text {
@@ -961,7 +986,7 @@ footer {
 }
 details {
   margin: 15px 0;
-  font-size: 11px;
+  font-size: 14px;
   color: #aab7ab;
 }
 summary {
@@ -987,7 +1012,7 @@ summary {
   overflow: auto;
 }
 .extension-permissions {
-  font-size: 10px;
+  font-size: 13px;
 }
 .card .button-row {
   margin-top: 12px;
@@ -1004,4 +1029,89 @@ nav button {
 }
 .aside-bottom {
   padding-top: 10px;
+}
+
+body {
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+p {
+  line-height: 1.75;
+}
+.card p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.card-top h3 {
+  font-size: 16px;
+  line-height: 1.4;
+}
+nav button {
+  font-size: 14px;
+  gap: 10px;
+}
+.brand,
+.brand small,
+.logo {
+  line-height: normal;
+}
+aside {
+  width: 268px;
+  overflow-y: auto;
+}
+main {
+  margin-left: 268px;
+  width: calc(100% - 268px);
+}
+.search {
+  width: 310px;
+}
+.search input {
+  font-size: 13px;
+}
+.card {
+  padding: 22px;
+}
+.idea-card p {
+  min-height: 100px;
+}
+.spec-fields p,
+.spec-text {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.hero p {
+  font-size: 14px;
+}
+dialog {
+  width: 650px;
+}
+@media (max-width: 1150px) {
+  aside {
+    width: 230px;
+  }
+  main {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+  }
+  .search {
+    width: 230px;
+  }
+}
+.idea-card {
+  display: flex;
+  flex-direction: column;
+}
+.idea-card .card-bottom {
+  margin-top: auto;
+}
+.idea-card .idea-platform {
+  margin-bottom: 18px;
+}
+.spec-text {
+  font-family: "Inter Variable", "Segoe UI", Arial, sans-serif;
+}
+.code {
+  font-size: 13px;
 }

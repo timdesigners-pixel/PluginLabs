@@ -1060,7 +1060,10 @@ class Hub extends EventEmitter {
       res.end(JSON.stringify(data));
     };
     if (req.method === "GET" && url.pathname === "/health")
-      return send({ service: "PluginLabs Hub", version: "0.2.0" });
+      return send({
+        service: "PluginLabs Hub",
+        version: require("../package.json").version,
+      });
     const body = async () => {
       let total = 0,
         parts = [];

@@ -27,7 +27,7 @@ const titles = {
   settings: "Ayarlar",
   product: "Ürün çalışma alanı",
   extensions: "Eklenti yöneticisi",
-  ideas: "Notion kataloğu",
+  ideas: "Uygulama kataloğu",
 };
 const kindLabels = {
   app: "Uygulama",
@@ -167,7 +167,7 @@ function render() {
       heading(
         "Uygulamalarım",
         "Bu merkez üzerinden yüklediğiniz uygulamaları ve eklentileri yönetin.",
-        `<div class="button-row"><button class="btn" data-go="ideas">Notion kataloğu · 50 ürün</button><button class="btn primary" data-go="discover">＋ Uygulama ekle</button></div>`,
+        `<div class="button-row"><button class="btn" data-go="ideas">Uygulama kataloğu · 50 ürün</button><button class="btn primary" data-go="discover">＋ Uygulama ekle</button></div>`,
       ) + grid(catalog.filter((i) => state.installed[i.id]));
   if (page === "discover" || page === "resources") {
     const list = page === "resources" ? resources : catalog;
@@ -235,7 +235,7 @@ function render() {
   if (page === "settings")
     html =
       heading("Merkez ayarları", "Kurulum, veri alanı ve sürüm bilgileri.") +
-      `<div class="two-col"><section class="card"><h2>Yerel veri alanı</h2><p style="margin:15px 0">Paketler, kaynak ayarları ve erişim izinleri uygulamanın kullanıcı veri klasöründe saklanır.</p>${button("Klasörü aç ↗", "openData")}<div class="notice">API anahtarları bu merkezde özetlenerek saklanır. İstemci uygulamalar kendi anahtarlarını işletim sistemi kasalarında tutmalıdır.</div></section><section class="card"><h2>PluginLabs Hub 0.2.0</h2><p style="margin:15px 0">Electron masaüstü uygulaması · Yerel HTTP API<br>Windows ürün paketleri Windows üzerinde açılır.<br>Model motoru: Windows x64 / Linux x64 CPU.</p><div class="notice warn">Önizleme sürümü. Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. Üçüncü taraf çalıştırılabilir eklentiler doğrudan yüklenmez; işlevler izinli sağlayıcı SDK’sı üzerinden eklenir.</div></section></div>`;
+      `<div class="two-col"><section class="card"><h2>Yerel veri alanı</h2><p style="margin:15px 0">Paketler, kaynak ayarları ve erişim izinleri uygulamanın kullanıcı veri klasöründe saklanır.</p>${button("Klasörü aç ↗", "openData")}<div class="notice">API anahtarları bu merkezde özetlenerek saklanır. İstemci uygulamalar kendi anahtarlarını işletim sistemi kasalarında tutmalıdır.</div></section><section class="card"><h2>PluginLabs Hub 0.2.1</h2><p style="margin:15px 0">Electron masaüstü uygulaması · Yerel HTTP API<br>Windows ürün paketleri Windows üzerinde açılır.<br>Model motoru: Windows x64 / Linux x64 CPU.</p><div class="notice warn">Önizleme sürümü. Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. Üçüncü taraf çalıştırılabilir eklentiler doğrudan yüklenmez; işlevler izinli sağlayıcı SDK’sı üzerinden eklenir.</div></section></div>`;
   content.innerHTML = html;
 }
 function jobsHTML() {
@@ -517,13 +517,13 @@ function ideaCard(item) {
         j.item === id &&
         ["queued", "downloading", "installing"].includes(j.status),
     );
-  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.fields["Kullanıcı ve problem"])}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button("＋ Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
+  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button("＋ Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
 }
 function ideasPage() {
   let items = state.ideas.filter(
     (i) =>
       !query ||
-      `${i.id} ${i.name} ${Object.values(i.fields).join(" ")}`
+      `${i.id} ${i.name} ${i.description} ${Object.values(i.fields).join(" ")}`
         .toLocaleLowerCase("tr")
         .includes(query.toLocaleLowerCase("tr")),
   );
@@ -537,8 +537,8 @@ function ideasPage() {
     );
   return (
     heading(
-      "Notion’daki fikirler. Birebir burada.",
-      "50 özgün ürün kartı; adları, kapsamları, platformları ve kaynak bağlantıları korunur.",
+      "Uygulama kataloğu",
+      "Uygulamaları keşfedin, ne işe yaradıklarını öğrenin ve çalışma alanınıza yükleyin.",
       `<span class="pill">${items.length} / 50 ÜRÜN</span>`,
     ) +
     `<div class="filters">${[
@@ -563,13 +563,14 @@ async function showIdea(id) {
         .replace(/<mention url="([^"]+)"[^>]*>(.*?)<\/mention>/gs, "$2 ($1)")
         .replace(/<[^>]+>/g, "");
     showModal(
-      `<div class="modal-title"><div><div class="eyebrow">${esc(i.id)} · NOTION ÜRÜN KARTI</div><h2>${esc(i.name)}</h2></div><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="spec-fields">${Object.entries(
+      `<div class="modal-title"><div><div class="eyebrow">${esc(i.id)} · UYGULAMA BİLGİLERİ</div><h2>${esc(i.name)}</h2><p>${esc(i.description)}</p></div><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="spec-fields">${Object.entries(
         i.fields,
       )
+        .filter(([key]) => key !== "Kullanıcı ve problem")
         .map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`)
         .join(
           "",
-        )}</div><details><summary>Notion’daki tam kapsam</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="btn" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal", "", "primary")}</div>`,
+        )}</div><details><summary>Ayrıntılı ürün kapsamı</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="btn" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal", "", "primary")}</div>`,
     );
   } catch (e) {
     toast(e.message);
@@ -757,9 +758,10 @@ function productPage() {
       `${esc(pack.productId)} · Yerel ürün önizlemesi · Yüklü paket v0.2.0`,
       button("Paket ayarları", "manage", openProductId),
     ) +
-    `<div class="notice">Bu kurulabilir sürüm; ürün kapsamı, not defteri ve geliştirme listesini içerir. Notion’da planlanan ana özellikler geliştirme aşamasındadır.</div><div class="two-col"><section class="card"><h2>Ürün kapsamı</h2><div class="spec-fields">${Object.entries(
+    `<div class="notice">Bu kurulabilir sürüm; ürün kapsamı, not defteri ve geliştirme listesini içerir. Planlanan ana özellikler geliştirme aşamasındadır.</div><div class="two-col"><section class="card"><h2>Ürün kapsamı</h2><div class="spec-fields">${Object.entries(
       pack.fields,
     )
+      .filter(([key]) => key !== "Kullanıcı ve problem")
       .map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`)
       .join(
         "",
