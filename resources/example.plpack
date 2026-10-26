@@ -1,0 +1,1 @@
+{"id":"custom-project-board","name":"Proje panosu","kind":"template","version":"1.0.0","description":"Örnek taşınabilir proje planlama şablonu.","settings":{"language":"tr","showCompleted":true},"payload":{"type":"board","columns":["Fikirler","Planlandı","Devam ediyor","Tamamlandı"],"fields":["Başlık","Sorumlu","Son tarih"]}}

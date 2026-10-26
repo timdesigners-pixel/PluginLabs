@@ -1,0 +1,55 @@
+{
+  "name": "pluginlabs-hub",
+  "version": "0.1.0",
+  "description": "PluginLabs uygulama, kaynak ve yerel AI merkezi",
+  "main": "src/electron.cjs",
+  "author": "PluginLabs",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "serve": "node src/standalone.cjs",
+    "test": "node --test test/*.test.cjs",
+    "build:linux": "electron-builder --linux AppImage --x64 --publish never",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never"
+  },
+  "dependencies": {
+    "tar": "7.5.22",
+    "undici": "6.29.1",
+    "yauzl": "3.4.0"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.hub",
+    "productName": "PluginLabs Hub",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**",
+      "ui/**",
+      "resources/**",
+      "sdk/**",
+      "README.md",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility",
+      "icon": "build/icon.png"
+    }
+  }
+}
