@@ -1,6 +1,51 @@
-# PluginLabs Hub 0.2.0
+# PluginLabs Hub 0.2.1
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
+
+## Ekran görüntüleri
+
+Aşağıdaki ekranlar v0.2.1 uygulamasından alınmıştır. Fontlar, uygulama açıklamaları ve katalog görünümü güncel sürümü gösterir.
+
+### Genel bakış
+
+Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan erişim.
+
+![PluginLabs Hub genel bakış ekranı](docs/screenshots/overview.png)
+
+### Uygulama kataloğu
+
+50 uygulama; ne işe yaradığını anlatan açıklamalar, platform bilgileri ve önizleme paketi yükleme seçenekleriyle listelenir.
+
+![Uygulama kataloğu ve ürün yükleme kartları](docs/screenshots/app-catalog.png)
+
+### Eklenti yöneticisi
+
+Tarayıcı bağlantıları, PluginLabs paketleri ve desteklenen diğer uygulamaların eklentileri ayrı sekmelerde yönetilir. Görsel, henüz tarayıcı eşleştirilmemiş ilk kullanım durumunu gösterir.
+
+![Chrome ve Opera bağlantısı için eklenti yöneticisi](docs/screenshots/extension-manager.png)
+
+<details>
+<summary>Kaynak kütüphanesi, My Mind ve API ekranlarını göster</summary>
+
+### Kaynak kütüphanesi
+
+Asset, şablon, kütüphane ve eklenti paketlerini keşfetme ve yükleme.
+
+![PluginLabs kaynak kütüphanesi](docs/screenshots/resource-library.png)
+
+### My Mind
+
+Yerel model ve motor kurulumu, sunucu durumu ve metin deneme alanı. Görselde model sunucusu henüz başlatılmamıştır.
+
+![My Mind yerel model ve sunucu yönetimi](docs/screenshots/my-mind.png)
+
+### API ve izinler
+
+Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağlayıcıları.
+
+![PluginLabs yerel API ve izin yönetimi](docs/screenshots/api-permissions.png)
+
+</details>
 
 ## Başlatma
 
