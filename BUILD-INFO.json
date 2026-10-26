@@ -1,0 +1,25 @@
+{
+  "product": "PluginLabs Hub",
+  "version": "0.2.1",
+  "commit": "38c1fc42a0e4de9af7ec961a60b74560dbe101f6",
+  "windows_build": "Independent Linux Docker + Wine64; no compilation on GitHub Actions",
+  "builder_image": "electronuserland/builder@sha256:f3a8d451994c881d0972e7b1846ee4d4fdc15eb41fc6b1f350b38cbf99ca90fe",
+  "signed": false,
+  "checks": [
+    "13 integration tests passed",
+    "Packaged Inter Latin and Latin Extended fonts loaded successfully",
+    "Application catalog label and function-focused descriptions verified in native Electron UI",
+    "No horizontal overflow at 1440 and 1000 pixels",
+    "24 packaged source/resource/font files matched source"
+  ],
+  "packaged": {
+    "files": 24,
+    "version": "0.2.1",
+    "asar_sha256": "ad5116e64c0fc3878a393bd4994687b1c0202f791efda704ff32096b2288551a"
+  },
+  "limits": [
+    "No real Windows or Opera runtime test",
+    "Installable product previews retain their existing feature scope"
+  ],
+  "build_notes": "Temporary Wine64/rcedit x64 and JS NSIS uninstaller build cache adjustments restored after packaging."
+}
