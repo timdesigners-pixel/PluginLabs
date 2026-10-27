@@ -2,7 +2,7 @@
 
 ## Doğrulanmış erişim ve sınırlar
 
-Bu çalışma yerel Windows Codex oturumunda yapılır. GitHub CLI ile depo okuma/yazma erişimi ve mevcut PR branch'i doğrulanmıştır. Bu durum Codex Cloud ortamının yayımlandığını veya GitHub Connector kurulumu yapıldığını kanıtlamaz. GitHub OAuth token'ıyla `/user/installations` çağrısı 403 döndürmüştür; bu hata Cloud bağlantısının çalışmadığına da kanıt değildir.
+Bu çalışma yerel Windows Codex oturumunda yapılır. GitHub CLI ile depo okuma/yazma erişimi ve mevcut PR branch'i doğrulanmıştır. GitHub Connector üzerinden `timdesigners-pixel` kurulumu (ID 174116132) ve bu kurulumun PluginLabs depo erişimi ayrıca doğrulanmıştır. Kurulumun mevcut seçimi tüm depolardır; erişim kapsamı bu çalışmada genişletilmemiştir. Bu durum Codex Cloud ortamının yayımlandığını kanıtlamaz. GitHub OAuth token'ıyla `/user/installations` çağrısı 403 döndürmüş; erişim daha sonra Connector API'siyle doğrulanmıştır.
 
 ## Hesap sahibinin tamamlayacağı adım
 
