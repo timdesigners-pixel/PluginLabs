@@ -49,7 +49,7 @@ Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağla
 
 ## Başlatma
 
-Node 20.18+ ve npm gerekir:
+Node 24 LTS ve npm gerekir:
 
 ```sh
 npm ci
@@ -59,6 +59,8 @@ npm start
 `npm test` API, kurulum, doğrulama, iptal, geri alma, sağlayıcı onayları, kaynak paketleri ve arşiv sınırlarını test eder. `npm run build:win` Windows NSIS + taşınabilir EXE, `npm run build:linux` AppImage üretir. Windows derlemesi için Windows veya uygun Wine kurulumu gerekir. Üretilen önizleme paketleri kod imzalı değildir.
 
 ## İşlevler
+
+Geliştirme: [katkı/PR politikası](CONTRIBUTING.md), [güvenlik](SECURITY.md), [ortak tasarım dili](docs/DESIGN-SYSTEM.md), [Codex Cloud kurulumu](docs/CODEX-CLOUD.md) ve [Notion–GitHub takip eşlemesi](docs/TRACKING.md). `npm run test:ui` gerçek Electron arayüz akışlarını ve ekran görüntülerini üretir. CI her PR'da Windows/Linux testleri ve yayın yapmayan önizleme paketleri üretir; paketlerle ekran görüntülerini aynı artifact içinde sunar. CI tanımı, henüz çalışmamış kontrolün geçtiği anlamına gelmez.
 
 - Katalog: Mind Palace ve Leo Helper’ın gerçek Windows sürümleri. Uygulamalar merkezin yönettiği sürüm klasörlerine indirilir; kullanıcı tarafından açılır. Diğer uygulamaların önceden yapılmış kurulumları otomatik taranmaz.
 - HTTPS indirme, sabitlenmiş SHA-256 ve dosya boyutu, ilerleme ve iptal. Başarısız güncelleme mevcut sürümü korur; önceki paket saklanmışsa geri alınabilir.

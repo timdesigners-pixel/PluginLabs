@@ -1,0 +1,68 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main, chore/codex-development-standards]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Production dependency security gate
+        run: npm run audit:production
+      - name: Full dependency report (release risk evidence)
+        shell: bash
+        run: npm audit --json > dependency-audit.json || test -s dependency-audit.json
+      - name: Unit and API regression tests
+        run: npm test
+      - name: Linux Electron runtime libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb libnss3 libatk-bridge2.0-0 libgtk-3-0 libgbm1 libasound2t64
+      - name: Windows native UI tests
+        if: runner.os == 'Windows'
+        run: npm run test:ui
+      - name: Linux native UI tests
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:ui
+      - name: Build Windows preview (never publish)
+        if: runner.os == 'Windows'
+        run: npm run build:win
+      - name: Build Linux preview (never publish)
+        if: runner.os == 'Linux'
+        run: npm run build:linux
+      - name: Hash preview packages
+        shell: bash
+        run: node scripts/hash-artifacts.cjs
+      - name: Upload previews and UI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-${{ runner.os }}-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            dist/*.exe
+            dist/*.AppImage
+            dist/SHA256SUMS.txt
+            preview-*.png
+            dependency-audit.json

@@ -9,8 +9,10 @@
 
 ## Existing stack
 - Electron desktop application, Node.js CommonJS, browser extension, local API and provider SDK.
-- Node 20.18+; install dependencies with `npm ci`.
+- Node 24 LTS; install locked dependencies with `npm ci`.
 - Run `npm test` after code changes.
+- Run `npm run test:ui` for renderer, IPC or UI changes; Linux needs Xvfb. UI tests use disposable data. Only CI/test harnesses may disable the Electron sandbox.
+- Follow CONTRIBUTING.md, SECURITY.md and docs/DESIGN-SYSTEM.md. Do not treat a policy file as evidence that GitHub settings are enabled.
 - Windows build: `npm run build:win`; Linux AppImage: `npm run build:linux`.
 - Do not assume an Android build exists. Propose separate architecture before adding Android support.
 
@@ -32,5 +34,5 @@
 2. Inspect implementation and identify affected tests.
 3. Implement minimal changes on a separate branch.
 4. Run tests and relevant build checks; state what was not executed.
-5. Open a pull request with summary, validation results, screenshots for UI changes, and rollback considerations.
+5. Open/update a pull request with summary, validation results, real application screenshots, and rollback considerations. Include screenshots alongside application build outputs; identify the tested commit/platform and any historical images. Link the source Notion task and GitHub issue in both directions.
 6. Require human review before merge or release.
