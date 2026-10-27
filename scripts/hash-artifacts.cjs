@@ -12,5 +12,13 @@ const crypto = require('node:crypto');
     rows.push(`${hash.digest('hex')}  ${name}`);
   }
   fs.writeFileSync(path.join(dir, 'SHA256SUMS.txt'), rows.join('\n') + '\n');
-  console.log(`Hashed ${files.length} preview packages`);
+  const { execFileSync } = require('node:child_process');
+  const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const dirty = !!execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
+  fs.writeFileSync(path.join(dir, 'BUILD-INFO.json'), JSON.stringify({
+    commit, dirty, platform: process.platform, arch: process.arch,
+    node: process.version, version: require('../package.json').version,
+    packages: files, releasePublished: false,
+  }, null, 2) + '\n');
+  console.log(`Hashed ${files.length} preview packages; wrote build provenance`);
 })().catch(error => { console.error(error.message); process.exitCode = 1; });

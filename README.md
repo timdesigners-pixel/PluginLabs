@@ -144,3 +144,7 @@ Testler: `npm test`; masaüstü UI için Playwright kurulu ortamda `PLAYWRIGHT_M
 ## 0.2.1 — Okunabilirlik
 
 Uygulama kataloğu, hedef kitle metinleri yerine uygulamanın işlevini anlatan 50 açıklama gösterir. Katalog başlığı ve gezinme adı Uygulama kataloğu olarak güncellenmiştir. Türkçe destekli Inter Variable fontu (Fontsource 5.2.8, SIL Open Font License) Latin/Latin Extended WOFF2 dosyalarıyla yerel pakete eklenir; lisansı `ui/fonts/OFL.txt` içindedir. Ana yazı 16 px, kart açıklamaları 14 px; küçük metinler büyütülmüştür. Kaynak ürün kapsamı, özgün uygulama adları ve kullanıcı notları korunur.
+
+## Kurulum ve görev takibi
+
+[Altı maddelik kurulum kontrol listesi](docs/SETUP-CHECKLIST.md), [Codex Cloud çalıştırma adımları](docs/CODEX-CLOUD.md) ve [Notion–GitHub görev akışı](docs/TRACKING.md), doğrulanan yetenekleri dış erişim ve gerçek cihaz kabulünden ayırır. Windows/Linux CI çıktıları önizlemedir; Web/Android hedefi veya otomatik release yayını yoktur.
