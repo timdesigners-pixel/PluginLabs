@@ -1,5 +1,5 @@
 # PluginLabs Design System v1 — Görünümü koruyan sözleşme
-Referans: GitHub main ui/styles.css blob 1bebbfa53c5a9573ae9298f0454b74c3876073c7; 28 Ekim 2026. Bu bir runtime değişikliği değildir.
+Referans: GitHub main ui/styles.css blob 1bebbfa53c5a9573ae9298f0454b74c3876073c7; 28 Ekim 2026. İlk sözleşmenin kaynak referansıdır; v1 devamında JSON'dan üretilen CSS runtime'a bağlanmıştır.
 
 ## Mevcut değerler
 Inter Variable yerel latin/latin-ext; Segoe UI, Arial, sans-serif. Body 16px/1.6. Son CSS override: paragraf line-height 1.75, kart açıklaması 14px, nav 14px/gap 10px. Sidebar normal 268px, <=1150px 230px. Eski 248/210px kuralları sonradan eziliyor.
@@ -9,7 +9,7 @@ Hero gradient: radial-gradient(ellipse at 85% 60%, #384d32 0%, #232e25 26%, #1d2
 Mevcut CSS'de no-preference içinde 5 saniyelik sürekli breathe animasyonu var. Yeni “sürekli dekoratif animasyon ekleme” politikasıyla farkı legacy istisna olarak kayıtlıdır; bu çalışmada kaldırılmaz.
 
 ## Rol / ürün / platform katmanları
-1. Kaynak token: mevcut Hub değerleri. tokens.json portable ve bağımsızdır, uygulamaya bağlı değildir.
+1. Kaynak token: mevcut Hub değerleri. tokens.json portable kaynaktır; `scripts/design-tokens.cjs` Hub için CSS üretir. Ürün override değerleri Hub'a uygulanmaz.
 2. Anlamsal rol: background, surface, text, muted, border, accent, focus, feedback. Kanıtı olmayan status rengi icat edilmez.
 3. Ürün override: Flow Dock'un belgelenmiş mavi vurgusu #8ab4f8 korunabilir; Hub yeşiline zorlanmaz. Flow Dock #25272b/#363940/#f3f4f6 değerleri kendi şartnamesidir, Hub'dan çıkarılmış değildir.
 4. Platform adaptörü: Electron/CSS, WPF ResourceDictionary, web veya eklenti. WPF'e CSS import edilmez; aynı anlamsal roller dönüştürülür. Mobil için ayrı doğrulama gerekir.
@@ -30,4 +30,4 @@ Koyu varsayılan korunur. Light/System gelecekteki özellik önerisidir; bu tur 
 
 ## Kabul kaydı
 Her ürün designSystemVersion, source SHA, platform, checkedAt, screenshot yolları, contrast, keyboard, focus, Turkish glyph, reducedMotion, DPI ve state sonuçlarını sunar. Sonuçlar passed/failed/not-run olabilir. Her zorunlu kontrol passed olmadıkça “uyumlu” etiketi verilmez.
-1000×700 ve Windows 100/150/200% ölçek; gerçek uygulama ekranları; aynı veriyle önce/sonra karşılaştırma. Hiç UI değişmemesi gereken bu aşamada ui/src kaynaklarının hash'leri aynı kalmalıdır.
+1000×700 ve Windows 100/150/200% ölçek; gerçek uygulama ekranları; aynı veriyle önce/sonra karşılaştırma. Runtime token entegrasyonunda kaynak hash'leri değişir; aynı platform/veri/pencere boyutunda hesaplanan stiller, geometri ve ekran görüntüleri karşılaştırılır. Görsel eşdeğerlik kaynak hash eşitliğiyle karıştırılmaz.
