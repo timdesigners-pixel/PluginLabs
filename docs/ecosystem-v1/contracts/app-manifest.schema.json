@@ -94,6 +94,7 @@
         "states",
         "install",
         "launch",
+        "update",
         "uninstall",
         "rollback",
         "security"
@@ -156,6 +157,13 @@
           ]
         },
         "launch": {
+          "enum": [
+            "passed",
+            "failed",
+            "not-run"
+          ]
+        },
+        "update": {
           "enum": [
             "passed",
             "failed",
@@ -256,6 +264,9 @@
               "launch": {
                 "const": "passed"
               },
+              "update": {
+                "const": "passed"
+              },
               "uninstall": {
                 "const": "passed"
               },
@@ -272,3 +283,4 @@
     }
   ]
 }
+
