@@ -5,6 +5,12 @@ Mevcut Hub görünümü korunarak tasarım referansı, portable token verisi ve 
 - [Tasarım sistemi](DESIGN-SYSTEM.md)
 - [Kaynak tokenlar](design-system/tokens.json)
 - [Uygulama kabul manifesti](contracts/app-manifest.schema.json)
+- [Günlük çalışma ve yerel/Cloud ayrımı](WORKING-MODEL.md)
+- [Doğrusal yol haritası](ROADMAP.md)
+- [Tek iş kaydı](WORK-REGISTER.json)
+- [My Mind ortak altyapısı](MY-MIND.md)
+- [Teslim şablonu](HANDOFF-TEMPLATE.md)
+- [Geçmiş kaynakları ve inceleme sınırı](SOURCE-MAP.md)
 
 İlk uygulama sırası: kaynak SHA ve screenshot referansını sabitle; Leo Helper ve Mind Palace için bağımsız manifest/adaptör çıkar; kurulum, açılış, güncelleme, kaldırma ve geri alma ile tasarım kontrollerini gerçek platformda doğrula. Katalog fikirlerini tamamlanmış ürün gibi sunma. Her ürünün kontrast, klavye, odak, Türkçe, reduced-motion, DPI ve durum kontrolleri passed olmadan uyumlu ilan etme. Şema henüz Hub tarafından çalıştırılan bir yayın kapısı değildir.
 

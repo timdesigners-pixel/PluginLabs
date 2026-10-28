@@ -36,3 +36,12 @@
 4. Run tests and relevant build checks; state what was not executed.
 5. Open/update a pull request with summary, validation results, real application screenshots, and rollback considerations. Include screenshots alongside application build outputs; identify the tested commit/platform and any historical images. Link the source Notion task and GitHub issue in both directions.
 6. Require human review before merge or release.
+
+## Ecosystem execution agreement
+- Before ecosystem work, read docs/ecosystem-v1/WORKING-MODEL.md, ROADMAP.md and WORK-REGISTER.json. Use the existing design-system reference and tokens; do not create a competing palette or redesign the Hub while documenting standards.
+- One work item has one owner chat, one branch/workspace and explicit acceptance criteria. Update its evidence and handoff before switching environments. Inspect actual HEAD and dirty state; never discard another chat's work.
+- Shared decisions belong in versioned repository documents. Sidebar sections, project membership and chat history do not synchronize files, credentials or instructions across hosts.
+- My Mind is the shared AI capability, distinct from the Mind Palace product. Coordinate provider/tool/vision contracts through Master; keep Hub installation, permissions and status in PluginLabs. Do not claim vision, computer use, training or Android/Web support from a text-model connection alone.
+- Separate observed facts, historical reports and proposals. Record per-platform passed/failed/not-run evidence with commit, environment and real screenshots. PR descriptions must include real app screenshots, labeling historical images; build delivery must include screenshots, SHA256 and BUILD-INFO.
+- Do not open parallel implementation work on the same files without an ownership handoff. Scope changes update the work item and decisions; a blocker records a concrete next step, not an invented success.
+- These instructions guide agents; mandatory enforcement must be implemented and verified in CI/branch protection. Never describe this documentation as a deployed gate.
