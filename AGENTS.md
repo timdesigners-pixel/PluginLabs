@@ -44,3 +44,11 @@
 - Flow Dock retains its documented blue accent and WPF/platform identity. Its values in JSON are specification references, not verified Hub runtime values or an implemented WPF adapter.
 - Default to dark. Light/System options remain future work; do not claim they exist. The legacy 5s hero breathe animation is preserved; do not add continuous decorative motion. Reduced-motion behavior must remain intact.
 - For token refactors compare computed styles and real Electron screenshots before/after using the same platform, viewport, data and motion setting. Check normal/compact layouts and dialogs. Windows DPI, keyboard and contrast acceptance must be reported separately from Linux automation.
+## Ecosystem execution agreement
+- Before ecosystem work, read docs/ecosystem-v1/WORKING-MODEL.md, ROADMAP.md and WORK-REGISTER.json. Use the existing design-system reference and tokens; do not create a competing palette or redesign the Hub while documenting standards.
+- One work item has one owner chat, one branch/workspace and explicit acceptance criteria. Update its evidence and handoff before switching environments. Inspect actual HEAD and dirty state; never discard another chat's work.
+- Shared decisions belong in versioned repository documents. Sidebar sections, project membership and chat history do not synchronize files, credentials or instructions across hosts.
+- My Mind is the shared AI capability, distinct from the Mind Palace product. Coordinate provider/tool/vision contracts through Master; keep Hub installation, permissions and status in PluginLabs. Do not claim vision, computer use, training or Android/Web support from a text-model connection alone.
+- Separate observed facts, historical reports and proposals. Record per-platform passed/failed/not-run evidence with commit, environment and real screenshots. PR descriptions must include real app screenshots, labeling historical images; build delivery must include screenshots, SHA256 and BUILD-INFO.
+- Do not open parallel implementation work on the same files without an ownership handoff. Scope changes update the work item and decisions; a blocker records a concrete next step, not an invented success.
+- These instructions guide agents; mandatory enforcement must be implemented and verified in CI/branch protection. Never describe this documentation as a deployed gate.
