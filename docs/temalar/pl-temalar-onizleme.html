@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PluginLabs 2 Tema Önizleme</title>
+<link rel="stylesheet" href="../PluginLabs%20Tasarım%20Skill%2030.10.2026/pluginlabs-design/assets/pl-tokens.css">
+<link rel="stylesheet" href="../PluginLabs%20Tasarım%20Skill%2030.10.2026/pluginlabs-design/assets/pl-components.css">
+<link rel="stylesheet" href="pl-temalar.css">
+<style>
+  /* Yalnız önizleme sayfasının kabuğu; komponent katmanının dışındadır. */
+  html,body{margin:0;background:#0b0d0e;color:#edf0eb;font-family:Inter,"Segoe UI",system-ui,sans-serif}
+  .shell{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:16px;padding:16px}
+  .pane{border-radius:16px;overflow:hidden;border:1px solid #2a2e31}
+  .pane [data-pl]{padding:24px;background:var(--pl-bg-0);color:var(--pl-fg-2);min-height:100%}
+  .cap{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:16px}
+</style></head>
+<body>
+<main class="shell">
+
+<section class="pane" aria-label="Tema A · Iris">
+<div data-pl data-pl-theme="dark" data-pl-palette="iris" data-pl-product="hub" lang="tr">
+  <div class="cap"><span class="pl-label">TEMA A · IRIS</span><span class="pl-badge pl-badge--accent">Skill varsayılanı</span></div>
+  <section class="pl-hero"><span class="pl-badge pl-badge--accent">PluginLabs Hub</span>
+    <h1 class="pl-hero__title">Tüm araçların,<br><em>tek atölyede.</em></h1>
+    <div class="pl-row" style="margin-top:16px"><button class="pl-btn pl-btn--primary">Eklentiyi kur</button><button class="pl-btn pl-btn--secondary">Kapsamı gör</button><button class="pl-btn pl-btn--gradient">MyMind'i keşfet</button></div>
+  </section>
+  <div class="pl-stack" style="margin-top:16px">
+    <article class="pl-appcard"><div class="pl-appcard__head"><span class="pl-applogo">LH</span><div style="min-width:0"><div class="pl-appcard__name">Leo Helper</div><span class="pl-label">Eklenti · v2.4.1</span></div><span class="pl-badge pl-badge--success" style="margin-left:auto">Kurulu</span></div>
+    <p class="pl-appcard__desc">Telegram kanallarındaki indirim kodlarını ve bağlantıları yakalar.</p>
+    <div class="pl-appcard__foot"><div class="pl-row"><span class="pl-badge">Chrome</span><span class="pl-badge">Edge</span></div><button class="pl-btn pl-btn--primary pl-btn--sm">Aç</button></div></article>
+    <div class="pl-field"><label class="pl-field__label" for="a1">API anahtarı <span class="pl-muted">Zorunlu</span></label><input id="a1" class="pl-input" placeholder="sk-…"><span class="pl-field__help">Anahtar yalnız bu cihazda şifreli saklanır.</span></div>
+    <div class="pl-row"><span class="pl-status pl-status--online">Bağlı</span><span class="pl-status pl-status--warning">Güncelleme var</span><span class="pl-status pl-status--error">Bağlantı koptu</span></div>
+  </div>
+</div>
+</section>
+
+<section class="pane" aria-label="Tema B · Hub Yeşil">
+<div data-pl data-pl-theme="dark" data-pl-palette="hub-yesil" data-pl-product="hub" lang="tr">
+  <div class="cap"><span class="pl-label">TEMA B · HUB YEŞİL</span><span class="pl-badge pl-badge--accent">Mevcut Windows Hub</span></div>
+  <section class="pl-hero"><span class="pl-badge pl-badge--accent">PluginLabs Hub</span>
+    <h1 class="pl-hero__title">Tüm araçların,<br><em>tek atölyede.</em></h1>
+    <div class="pl-row" style="margin-top:16px"><button class="pl-btn pl-btn--primary">Eklentiyi kur</button><button class="pl-btn pl-btn--secondary">Kapsamı gör</button><button class="pl-btn pl-btn--gradient">MyMind'i keşfet</button></div>
+  </section>
+  <div class="pl-stack" style="margin-top:16px">
+    <article class="pl-appcard"><div class="pl-appcard__head"><span class="pl-applogo">LH</span><div style="min-width:0"><div class="pl-appcard__name">Leo Helper</div><span class="pl-label">Eklenti · v2.4.1</span></div><span class="pl-badge pl-badge--success" style="margin-left:auto">Kurulu</span></div>
+    <p class="pl-appcard__desc">Telegram kanallarındaki indirim kodlarını ve bağlantıları yakalar.</p>
+    <div class="pl-appcard__foot"><div class="pl-row"><span class="pl-badge">Chrome</span><span class="pl-badge">Edge</span></div><button class="pl-btn pl-btn--primary pl-btn--sm">Aç</button></div></article>
+    <div class="pl-field"><label class="pl-field__label" for="b1">API anahtarı <span class="pl-muted">Zorunlu</span></label><input id="b1" class="pl-input" placeholder="sk-…"><span class="pl-field__help">Anahtar yalnız bu cihazda şifreli saklanır.</span></div>
+    <div class="pl-row"><span class="pl-status pl-status--online">Bağlı</span><span class="pl-status pl-status--warning">Güncelleme var</span><span class="pl-status pl-status--error">Bağlantı koptu</span></div>
+  </div>
+</div>
+</section>
+
+</main></body></html>
