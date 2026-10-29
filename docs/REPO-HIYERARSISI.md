@@ -1,61 +1,68 @@
 # GitHub repo hiyerarşisi planı
 
-Sürüm 1.0 · 29.10.2026 · Hesap: `timdesigners-pixel`
+Sürüm 1.1 · 30.10.2026 · Hesap: `timdesigners-pixel`
+Önceki sürüm (1.0, “mezuniyet” modeli): [`docs/arsiv/REPO-HIYERARSISI v1.0 29.10.2026.md`](arsiv/REPO-HIYERARSISI%20v1.0%2029.10.2026.md)
+
+## 0. Sürüm 1.1’deki karar değişikliği
+
+- **1.0:** Ürün, çalışan kod oluşunca kendi deposuna “mezun” olacaktı; o güne kadar yalnız PluginLabs içindeki `apps/…` klasöründe yaşayacaktı.
+- **1.1 (kullanıcı kararı, 29.10.2026, Codex oturumu):** Deposu olmayan her ürün için **şimdiden private depo** açılır. Codex bu işi başlattı; 30.10.2026 itibarıyla 10 yeni depo GitHub’da doğrulandı (aşağıda §2). Kalan ürünler için iş Codex’te sürüyor (`docs/ortak-calisma/AKTIF-ISLER.md`).
+- `apps/…/README.md` ve `registry/projects.json` yine tek doğruluk kaynağıdır; ürün deposu açılınca yalnız `repo` alanı doldurulur.
 
 ## 1. Yapı
 
 ```
 timdesigners-pixel/
-├── PluginLabs                      ← şemsiye depo (public): Hub + ortak çekirdek + 53 uygulamanın kayıt/ön geliştirme alanı
+├── PluginLabs                      ← şemsiye depo (public): Hub + ortak çekirdek + tüm uygulamaların kayıt/ön geliştirme alanı
 │   ├── AGENTS.md / CLAUDE.md       ← Codex + Claude Code ortak kuralları
-│   ├── registry/projects.json      ← PL-001–PL-053 makine okunur kayıt (tek doğruluk kaynağı)
-│   ├── apps/
-│   │   ├── 01-mevcut-urunler-ve-fikirler/PL-001-flow-dock/README.md   → bağımsız depo: flow-dock
-│   │   ├── 02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas/…     → henüz depo yok (ön geliştirme burada)
-│   │   ├── 03-… 04-… 05-…
-│   │   └── 06-hub-disi-urun-depolari/PL-053-mutfak-atolyesi/README.md → bağımsız depo: mutfak-atolyesi
-│   ├── src/ ui/ sdk/ browser-extension/   ← Hub uygulaması (mevcut, değişmedi)
+│   ├── registry/projects.json      ← PL-001–PL-054 makine okunur kayıt (tek doğruluk kaynağı)
+│   ├── apps/<NN-kategori>/<PL-ID>-<slug>/README.md
+│   ├── src/ ui/ sdk/ browser-extension/   ← Hub uygulaması
 │   └── docs/ortak-calisma/         ← protokol, aktif işler, devir, kararlar
 │
-├── flow-dock          (private)   PL-001
-├── leo-helper         (private)   PL-002
-├── mind-palace        (private)   PL-003
-├── 1001-designs       (public)    PL-010 (Codex’te doğrulandı)
-├── extension-manager  (private)   PL-051 (Codex’te doğrulandı)
-├── tweakster          (private)   PL-052 (Codex’te doğrulandı)
-├── mutfak-atolyesi    (private)   PL-053
-└── pl-<slug>          (yeni)      olgunlaşan her uygulama için ayrı depo
+└── <ürün deposu> (private, ürün başına bir tane)
 ```
 
-## 2. Neden şemsiye + bağımsız depo
+## 2. Doğrulanmış ürün depoları (30.10.2026)
 
-- 53 uygulamanın 46’sı henüz fikir/plan aşamasında. Her biri için şimdiden boş depo açmak bakım yükü yaratır ve “yayımlanmış ürün” izlenimi verir (Notion ilkesi: platform dürüstlüğü).
-- Fikir/plan aşamasındaki ürün `apps/…` klasöründe README, tasarım notu ve küçük prototiple başlar. Codex ve Claude Code aynı depoda aynı kayıtla çalışır.
-- Çalışan kodu olan ürün kendi deposuna geçer: bağımsız sürüm, ayrı CI, ayrı izinler, ayrı yayın.
+Kaynak: `gh repo list timdesigners-pixel` (kullanıcının bilgisayarından, 30.10.2026 02:40).
 
-## 3. Bağımsız depoya geçiş (mezuniyet) koşulları
+| PL | Depo | Görünürlük | Oluşturulma | Kod durumu |
+| --- | --- | --- | --- | --- |
+| PL-001 | flow-dock | private | 28.10.2026 | mevcut |
+| PL-002 | leo-helper | private | 22.10.2026 | mevcut |
+| PL-003 | mind-palace | private | 15.09.2026 | mevcut |
+| PL-004 | the-ultimate-scrapper | private | 29.10.2026 (Codex) | henüz yok |
+| PL-005 | finansal-asistan | private | 29.10.2026 (Codex) | henüz yok |
+| PL-006 | note-master | private | 29.10.2026 (Codex) | henüz yok |
+| PL-007 | musebook | private | 29.10.2026 (Codex) | henüz yok |
+| PL-008 | prompt-dunyasi | private | 29.10.2026 (Codex) | henüz yok |
+| PL-009 | what-the-app | private | 29.10.2026 (Codex) | henüz yok |
+| PL-010 | 1001-designs | public | 18.09.2026 | mevcut |
+| PL-011 | whatsapp-chat-viewer | private | 29.10.2026 (Codex) | henüz yok |
+| PL-012 | dilekce-olustur | private | 29.10.2026 (Codex) | henüz yok |
+| PL-013 | gadget-dunyasi-companion | private | 29.10.2026 (Codex) | henüz yok |
+| PL-014 | social-saves-organizer | private | 29.10.2026 (Codex) | henüz yok |
+| PL-051 | extension-manager | private | 28.10.2026 | mevcut |
+| PL-052 | tweakster | private | 28.10.2026 | mevcut |
+| PL-053 | mutfak-atolyesi | private | 25.10.2026 | mevcut |
 
-Aşağıdakilerin tamamı sağlandığında ürün `pl-<slug>` adlı yeni depoya taşınır:
+PL-015–050 ve PL-054 için GitHub’da henüz depo yok; ön geliştirme `apps/…` klasöründe sürer.
 
-1. Çalışan bir prototip veya `src/` klasörü oluşmuştur (yalnız doküman değil).
-2. Notion’daki “MVP ve temel akış” için kabul ölçütleri yazılmıştır.
-3. Ürünün kendi derleme/test komutu vardır.
-4. Kullanıcı onayı alınmıştır (depo açma geri alınması zor bir işlemdir).
+## 3. Yeni ürün deposu açılınca
 
-Geçişte:
-
-- Yeni depo: `timdesigners-pixel/pl-<slug>`, varsayılan **private**, açıklama = registry `summary`, konular: `pluginlabs`, `pl-0xx`, platform etiketleri (`windows`, `linux`, `macos`, `chrome-extension`, `web`).
-- Yeni depoya `AGENTS.md` + `CLAUDE.md` (`@AGENTS.md`) + `README.md` (apps klasöründeki dosyanın tam kopyası) eklenir.
-- `apps/…/README.md` silinmez; “Geliştirme deposu” satırı yeni depoyu gösterecek şekilde güncellenir, prototip kodu `docs/arsiv/` altına değil, git geçmişiyle birlikte yeni depoya taşınır.
-- `registry/projects.json` içinde `repo` alanı doldurulur, `verified: true` yapılır.
-- Codex’teki `PL-0XX` projesinin birincil klasörü yeni deponun yerel klonu olur, ikinci klasör PluginLabs olarak kalır; Claude Code tarafı `scripts/claude-code-baglanti.ps1` ile yenilenir.
+- Ad: `<slug>` (Codex’in kullandığı biçim; `pl-` öneki kullanılmıyor). Varsayılan **private**. Açıklama: `PL-0XX · <Ürün> — PluginLabs ürün planı; …`.
+- Depoya `AGENTS.md` + `CLAUDE.md` (`@AGENTS.md`) + `README.md` (apps klasöründeki dosyanın tam kopyası) eklenir.
+- `apps/…/README.md` silinmez; “Geliştirme deposu” satırı yeni depoyu gösterir.
+- `scripts/uret-uygulama-hiyerarsisi.py` içindeki `REPOLAR` sözlüğüne satır eklenir ve betik `--force` ile çalıştırılır; `registry/projects.json` ve README’ler birlikte güncellenir. `verified: true` yalnız depo GitHub’da görüldükten sonra yazılır.
+- Codex’teki `PL-0XX` projesinin birincil klasörü deponun yerel klonu olur, ikinci klasör PluginLabs kalır; Claude Code tarafı `scripts/claude-code-baglanti.ps1` ile yenilenir.
 
 ## 4. Adlandırma
 
 | Öğe | Biçim | Örnek |
 | --- | --- | --- |
 | Uygulama klasörü | `apps/<NN-kategori>/<PL-ID>-<slug>/` | `apps/02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas/` |
-| Yeni depo | `pl-<slug>` | `pl-tab-atlas` |
+| Yeni depo | `<slug>` | `note-master` |
 | Mevcut depolar | Adı korunur (yeniden adlandırma bağlantıları bozar) | `flow-dock` |
 | Codex projesi | `PL-0XX · <Ürün>` | `PL-016 · Tab Atlas` |
 | Dal | `codex/PL-0XX-…`, `claude/PL-0XX-…` | `claude/PL-016-oturum-kaydi` |
@@ -63,9 +70,9 @@ Geçişte:
 
 ## 5. Yayın aşamaları
 
-| Aşama | Kapsam | Durum (29.10.2026) |
+| Aşama | Kapsam | Durum (30.10.2026) |
 | --- | --- | --- |
-| 1 | Şemsiye depoda hiyerarşi, registry ve 53 README; ortak çalışma protokolü | Bu PR |
-| 2 | Mevcut 7 ürün deposuna `AGENTS.md` + `CLAUDE.md` + PluginLabs bağlantılı README | Bekliyor — depolara erişim onayı gerekiyor |
-| 3 | Codex’teki PL-001–053 projelerinde ikinci klasör doğrulaması ve Claude Code `additionalDirectories` kurulumu | İkinci klasör 53/53 doğrulandı (29.10.2026); Claude Code kurulumu bu PR ile |
-| 4 | P0 adaylarının (PL-001, PL-016, PL-008, PL-045 …) mezuniyet değerlendirmesi | Bekliyor — kullanıcı kararı |
+| 1 | Şemsiye depoda hiyerarşi, registry ve README’ler; ortak çalışma protokolü | Tamamlandı (PR #8) |
+| 2 | Deposu olmayan ürünler için private depo | Kısmen: 10 depo açıldı (PL-004–009, PL-011–014); kalanı Codex’te |
+| 3 | Ürün depolarına `AGENTS.md` + `CLAUDE.md` + PluginLabs bağlantılı README | Bekliyor — depolara erişim onayı gerekiyor |
+| 4 | Codex’teki PL-001–054 projelerinde ikinci klasör ve Claude Code `additionalDirectories` | 53/53 + PL-054 doğrulandı (30.10.2026) |
