@@ -1,0 +1,1946 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-10-29",
+  "source": {
+    "notionCatalog": "https://app.notion.com/p/4038aa13d8f9803dac8df65f5a9d11b3",
+    "notionSnapshot": "2026-10-26",
+    "file": "resources/notion-catalog.json"
+  },
+  "categories": [
+    {
+      "id": "01",
+      "slug": "mevcut-urunler-ve-fikirler",
+      "title": "01 · Mevcut ürünler ve fikirler — PL-001–010",
+      "path": "apps/01-mevcut-urunler-ve-fikirler"
+    },
+    {
+      "id": "02",
+      "slug": "kisisel-arsiv-ve-chrome-araclari",
+      "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020",
+      "path": "apps/02-kisisel-arsiv-ve-chrome-araclari"
+    },
+    {
+      "id": "03",
+      "slug": "masaustu-dosya-araclari-ve-widgetlar",
+      "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030",
+      "path": "apps/03-masaustu-dosya-araclari-ve-widgetlar"
+    },
+    {
+      "id": "04",
+      "slug": "arastirma-yazma-ve-bilgi-akislari",
+      "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040",
+      "path": "apps/04-arastirma-yazma-ve-bilgi-akislari"
+    },
+    {
+      "id": "05",
+      "slug": "gelistirici-ve-profesyonel-araclar",
+      "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050",
+      "path": "apps/05-gelistirici-ve-profesyonel-araclar"
+    },
+    {
+      "id": "06",
+      "slug": "hub-disi-urun-depolari",
+      "title": "06 · Bağımsız ürün depoları — PL-051–053",
+      "path": "apps/06-hub-disi-urun-depolari"
+    }
+  ],
+  "projects": [
+    {
+      "id": "PL-001",
+      "number": 1,
+      "slug": "flow-dock",
+      "name": "Flow Dock",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Çalışan Windows prototipi · bu görüşme",
+      "priority": "P0",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M masaüstü + balon; Chrome köprüsü sonraki faz",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "yüzen balon"
+      ],
+      "summary": "Uygulamaları, klasörleri ve bağlantıları arama, favoriler ve hızlı erişim halkası üzerinden açar.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "flow-dock",
+        "url": "https://github.com/timdesigners-pixel/flow-dock",
+        "verified": true,
+        "note": "Codex kenar çubuğu: PL · Masaüstü · Flow Dock"
+      },
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-001-flow-dock",
+      "codexProject": {
+        "name": "PL-001 · Flow Dock",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-002",
+      "number": 2,
+      "slug": "leo-helper",
+      "name": "Leo Helper",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut proje notu · çalışan sürüm bu taramada doğrulanmadı",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M yardımcı uygulama",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Kodları, bağlantıları ve AFF kayıtlarını toplar, sınıflandırır ve takip eder.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "leo-helper",
+        "url": "https://github.com/timdesigners-pixel/leo-helper",
+        "verified": true,
+        "note": "Codex kenar çubuğu: PL · Masaüstü · Leo Helper"
+      },
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-002-leo-helper",
+      "codexProject": {
+        "name": "PL-002 · Leo Helper",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-003",
+      "number": 3,
+      "slug": "mind-palace-plugin-hub",
+      "name": "Mind Palace Plugin Hub",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut proje notu · kapsam genişletme önerisi",
+      "priority": "P1",
+      "effort": "XL",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M; Chrome yakalama eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Notları, görevleri, finans kayıtlarını ve eklentileri tek bir kişisel çalışma alanında birleştirir.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mind-palace",
+        "url": "https://github.com/timdesigners-pixel/mind-palace",
+        "verified": true,
+        "note": "Codex kenar çubuğu: PL · Masaüstü · Mind Palace"
+      },
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-003-mind-palace-plugin-hub",
+      "codexProject": {
+        "name": "PL-003 · Mind Palace Plugin Hub",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-004",
+      "number": 4,
+      "slug": "the-ultimate-scrapper",
+      "name": "The Ultimate Scrapper",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut ayrıntılı proje planı · dağıtım durumu doğrulanmadı",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M arşivci",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen web sayfalarından ürün bilgilerini çıkarır ve kaynaklarıyla birlikte arşivler.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper",
+      "codexProject": {
+        "name": "PL-004 · The Ultimate Scrapper",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-005",
+      "number": 5,
+      "slug": "finansal-asistan",
+      "name": "Finansal Asistan",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut ayrıntılı proje planı",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M; ödeme takvimi widget’ı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "widget"
+      ],
+      "summary": "Gelirleri, giderleri, borçları ve ödeme tarihlerini kaydeder; finansal durumu raporlar.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-005-finansal-asistan",
+      "codexProject": {
+        "name": "PL-005 · Finansal Asistan",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-006",
+      "number": 6,
+      "slug": "note-master",
+      "name": "Note Master",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "priority": "P1",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M hızlı not widget’ı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "widget"
+      ],
+      "summary": "Hızlı notları ve görevleri kaynak bağlantılarıyla kaydeder, etiketler ve düzenler.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-006-note-master",
+      "codexProject": {
+        "name": "PL-006 · Note Master",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-007",
+      "number": 7,
+      "slug": "musebook",
+      "name": "Musebook",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M görsel kütüphane",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Görselleri ve ilham kaynaklarını koleksiyonlarda toplar; etiketleme ve görsel arama sunar.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-007-musebook",
+      "codexProject": {
+        "name": "PL-007 · Musebook",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-008",
+      "number": 8,
+      "slug": "prompt-dunyasi",
+      "name": "Prompt Dünyası",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M komut penceresi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "AI komutlarını şablonlar halinde saklar, değişkenlerle doldurur ve yeniden kullanır.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-008-prompt-dunyasi",
+      "codexProject": {
+        "name": "PL-008 · Prompt Dünyası",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-009",
+      "number": 9,
+      "slug": "what-the-app",
+      "name": "What the App!",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut fikir · uygulama keşif/paketleme yönü",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome keşif sayfası + W / L / M kurulum yardımcısı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Uygulamaları keşfetmeyi, karşılaştırmayı ve uygun kurulum kaynağına ulaşmayı sağlar.",
+      "repo": null,
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-009-what-the-app",
+      "codexProject": {
+        "name": "PL-009 · What the App!",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-010",
+      "number": 10,
+      "slug": "1001-designs-pin-to-component",
+      "name": "1001 Designs / Pin to Component",
+      "category": {
+        "id": "01",
+        "slug": "mevcut-urunler-ve-fikirler",
+        "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
+      },
+      "status": "Mevcut proje ve görev kayıtları · geçmiş ilerleme, canlı doğrulama yok",
+      "priority": "P2",
+      "effort": "XL",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome yakalama + W / L / M çalışma alanı + Figma bağlayıcısı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "Figma bağlayıcısı"
+      ],
+      "summary": "Pinterest referanslarını tasarım koleksiyonlarına ve düzenlenebilir arayüz bileşenlerine dönüştürür.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "1001-designs",
+        "url": "https://github.com/timdesigners-pixel/1001-designs",
+        "verified": false,
+        "note": "Codex’te “Design Replicator” projesinin kökü 1001-designs; PL-010 ile birebir aynı ürün olup olmadığı teyit edilecek"
+      },
+      "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-010-1001-designs-pin-to-component",
+      "codexProject": {
+        "name": "PL-010 · 1001 Designs / Pin to Component",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+    },
+    {
+      "id": "PL-011",
+      "number": 11,
+      "slug": "whatsapp-chat-viewer",
+      "name": "WhatsApp Chat Viewer",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Mevcut kişisel kullanım fikri · ürünleşme önerisi",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M yerel görüntüleyici; Chrome isteğe bağlı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Dışa aktarılan WhatsApp sohbetlerini cihazda açar; mesajlarda arama, filtreleme ve arşivleme sunar.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-011-whatsapp-chat-viewer",
+      "codexProject": {
+        "name": "PL-011 · WhatsApp Chat Viewer",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-012",
+      "number": 12,
+      "slug": "dilekce-olustur",
+      "name": "Dilekçe Oluştur",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Mevcut fikir · doğrulanmış çalışan ürün sayılmaz",
+      "priority": "P2",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M belge asistanı + Chrome bağlayıcısı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Belge bilgilerini ve seçilen şablonu kullanarak düzenlenebilir dilekçe taslakları oluşturur.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-012-dilekce-olustur",
+      "codexProject": {
+        "name": "PL-012 · Dilekçe Oluştur",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-013",
+      "number": 13,
+      "slug": "gadget-dunyasi-companion",
+      "name": "Gadget Dünyası Companion",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Mevcut isim/fikir · bu kapsam yeni öneri",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M ürün paneli",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Ürün bilgilerini, incelemeleri ve fiyatları bir araya getirerek teknoloji ürünlerini karşılaştırır.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-013-gadget-dunyasi-companion",
+      "codexProject": {
+        "name": "PL-013 · Gadget Dünyası Companion",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-014",
+      "number": 14,
+      "slug": "social-saves-organizer",
+      "name": "Social Saves Organizer",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Mevcut Instagram kaydedilenleri düzenleme görevi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M kişisel arşiv",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Kaydedilmiş sosyal medya içeriklerini kaynaklarıyla toplar, etiketler ve koleksiyonlara ayırır.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-014-social-saves-organizer",
+      "codexProject": {
+        "name": "PL-014 · Social Saves Organizer",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-015",
+      "number": 15,
+      "slug": "youtube-shelf",
+      "name": "YouTube Shelf",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Mevcut oynatma listesi düzenleme görevi · yeni ürün adı",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M izleme widget’ı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "widget"
+      ],
+      "summary": "YouTube videolarını izleme listelerine ayırır; notları ve ilgili kaynakları video bağlantısıyla saklar.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-015-youtube-shelf",
+      "codexProject": {
+        "name": "PL-015 · YouTube Shelf",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-016",
+      "number": 16,
+      "slug": "tab-atlas",
+      "name": "Tab Atlas",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome; aynı tarayıcıyla W / L / M",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Tarayıcı sekmelerini gruplar; çalışma oturumlarını kaydeder ve yeniden açar.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas",
+      "codexProject": {
+        "name": "PL-016 · Tab Atlas",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-017",
+      "number": 17,
+      "slug": "page-capsule",
+      "name": "Page Capsule",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M isteğe bağlı arşiv",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Web sayfalarını kaynak bağlantısı ve yakalama tarihiyle birlikte okunabilir arşivlere kaydeder.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-017-page-capsule",
+      "codexProject": {
+        "name": "PL-017 · Page Capsule",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-018",
+      "number": 18,
+      "slug": "form-flow",
+      "name": "Form Flow",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome; W / L / M tarayıcı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Tekrarlanan form bilgilerini şablonlarda saklar ve seçilen alanlara kontrollü biçimde yerleştirir.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-018-form-flow",
+      "codexProject": {
+        "name": "PL-018 · Form Flow",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-019",
+      "number": 19,
+      "slug": "compare-lens",
+      "name": "Compare Lens",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome; W / L / M tarayıcı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Açık sayfalardaki ürün ve hizmet bilgilerini ortak ölçütlerle yan yana karşılaştırır.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-019-compare-lens",
+      "codexProject": {
+        "name": "PL-019 · Compare Lens",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-020",
+      "number": 20,
+      "slug": "page-change-radar",
+      "name": "Page Change Radar",
+      "category": {
+        "id": "02",
+        "slug": "kisisel-arsiv-ve-chrome-araclari",
+        "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M bildirim ajanı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen web sayfalarındaki değişiklikleri izler, farkları gösterir ve bildirim oluşturur.",
+      "repo": null,
+      "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-020-page-change-radar",
+      "codexProject": {
+        "name": "PL-020 · Page Change Radar",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+    },
+    {
+      "id": "PL-021",
+      "number": 21,
+      "slug": "desk-tidy",
+      "name": "Desk Tidy",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir · bu görüşmedeki düzenleme deneyiminden",
+      "priority": "P0",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M masaüstü",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Seçilen klasörlerdeki dosyaları kurallara göre gruplar; taşıma planını uygulamadan önce gösterir.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-021-desk-tidy",
+      "codexProject": {
+        "name": "PL-021 · Desk Tidy",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-022",
+      "number": 22,
+      "slug": "twin-finder",
+      "name": "Twin Finder",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir · birebir kopya taraması deneyiminden",
+      "priority": "P0",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M masaüstü",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Dosya özetlerini karşılaştırarak yinelenen dosyaları bulur ve temizleme önizlemesi sunar.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-022-twin-finder",
+      "codexProject": {
+        "name": "PL-022 · Twin Finder",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-023",
+      "number": 23,
+      "slug": "clip-vault",
+      "name": "Clip Vault",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M tepsi + pano penceresi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "sistem tepsisi"
+      ],
+      "summary": "Pano geçmişini cihazda saklar; kopyalanan metinleri aramayı ve yeniden kullanmayı sağlar.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-023-clip-vault",
+      "codexProject": {
+        "name": "PL-023 · Clip Vault",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-024",
+      "number": 24,
+      "slug": "snap-ocr",
+      "name": "Snap OCR",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M ekran alanı aracı + küçük balon",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "yüzen balon"
+      ],
+      "summary": "Ekranın seçilen bölümündeki yazıları OCR ile metne dönüştürür.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-024-snap-ocr",
+      "codexProject": {
+        "name": "PL-024 · Snap OCR",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-025",
+      "number": 25,
+      "slug": "file-pilot",
+      "name": "File Pilot",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M dosya penceresi",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Dosyaları önizlemeli kurallarla yeniden adlandırır, sınıflandırır ve klasörlere yerleştirir.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot",
+      "codexProject": {
+        "name": "PL-025 · File Pilot",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-026",
+      "number": 26,
+      "slug": "workspace-scenes",
+      "name": "Workspace Scenes",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M; Chrome oturum eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Uygulamaları, klasörleri ve tarayıcı oturumlarını kayıtlı çalışma sahneleriyle birlikte açar.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-026-workspace-scenes",
+      "codexProject": {
+        "name": "PL-026 · Workspace Scenes",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-027",
+      "number": 27,
+      "slug": "focus-orbit",
+      "name": "Focus Orbit",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M odak balonu + Chrome dikkat filtresi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "yüzen balon"
+      ],
+      "summary": "Odak zamanlayıcısını, mola hatırlatmalarını ve isteğe bağlı dikkat filtrelerini birlikte yönetir.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-027-focus-orbit",
+      "codexProject": {
+        "name": "PL-027 · Focus Orbit",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-028",
+      "number": 28,
+      "slug": "quick-convert",
+      "name": "Quick Convert",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M dosya bırakma widget’ı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "widget"
+      ],
+      "summary": "Desteklenen dosyaları sürükle-bırak ile farklı biçimlere dönüştürür.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert",
+      "codexProject": {
+        "name": "PL-028 · Quick Convert",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-029",
+      "number": 29,
+      "slug": "screenshot-studio",
+      "name": "Screenshot Studio",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M ekran görüntüsü aracı",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Ekran görüntüsü alır; kırpma, işaretleme ve hassas alanları gizleme araçları sunar.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-029-screenshot-studio",
+      "codexProject": {
+        "name": "PL-029 · Screenshot Studio",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-030",
+      "number": 30,
+      "slug": "daily-brief-widget",
+      "name": "Daily Brief Widget",
+      "category": {
+        "id": "03",
+        "slug": "masaustu-dosya-araclari-ve-widgetlar",
+        "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
+      },
+      "status": "Yeni fikir · Xtreme dashboard notlarından türetildi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M widget; bağlı takvim/görev sağlayıcıları",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "widget"
+      ],
+      "summary": "Takvim, görev ve seçilen kaynaklardan günlük bir özet hazırlayıp widget üzerinde gösterir.",
+      "repo": null,
+      "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-030-daily-brief-widget",
+      "codexProject": {
+        "name": "PL-030 · Daily Brief Widget",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+    },
+    {
+      "id": "PL-031",
+      "number": 31,
+      "slug": "source-trail",
+      "name": "Source Trail",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M kaynak arşivi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Araştırma kaynaklarını, alıntıları ve notları bağlantılarıyla ilişkilendirerek izlenebilir bir arşiv oluşturur.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-031-source-trail",
+      "codexProject": {
+        "name": "PL-031 · Source Trail",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-032",
+      "number": 32,
+      "slug": "read-partner",
+      "name": "Read Partner",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome yan paneli; W / L / M",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "tarayıcı yan paneli"
+      ],
+      "summary": "Açık metni veya belgeyi özetler; seçili bölümleri kaynaklarıyla birlikte açıklar.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner",
+      "codexProject": {
+        "name": "PL-032 · Read Partner",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-033",
+      "number": 33,
+      "slug": "text-forge",
+      "name": "Text Forge",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "S",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome seçili metin menüsü + W / L / M hızlı pencere",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Metinleri seçilen tona göre yeniden yazar; kısaltma, düzeltme ve biçimlendirme önerileri sunar.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-033-text-forge",
+      "codexProject": {
+        "name": "PL-033 · Text Forge",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-034",
+      "number": 34,
+      "slug": "parallel-translate",
+      "name": "Parallel Translate",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M seçim paneli",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen metni özgün içerikle yan yana çevirir ve kişisel terim sözlüğünü uygular.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-034-parallel-translate",
+      "codexProject": {
+        "name": "PL-034 · Parallel Translate",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-035",
+      "number": 35,
+      "slug": "meeting-trace",
+      "name": "Meeting Trace",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P2",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M; tarayıcı toplantı yakalama isteğe bağlı",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "İzinli kayıt veya yüklenen transkriptten zaman damgalı toplantı notları, kararlar ve görev taslakları çıkarır.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-035-meeting-trace",
+      "codexProject": {
+        "name": "PL-035 · Meeting Trace",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-036",
+      "number": 36,
+      "slug": "voice-note-orbit",
+      "name": "Voice Note Orbit",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M kayıt balonu",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "yüzen balon"
+      ],
+      "summary": "Kısa ses notlarını kaydeder, metne dönüştürür ve not veya görev olarak düzenler.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit",
+      "codexProject": {
+        "name": "PL-036 · Voice Note Orbit",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-037",
+      "number": 37,
+      "slug": "mail-triage",
+      "name": "Mail Triage",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Mevcut e-posta kategorizasyon görevinden yeni ürün önerisi",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome; izinli e-posta API’siyle W / L / M panel",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen e-postalar için etiket, öncelik ve yanıt taslakları önerir.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage",
+      "codexProject": {
+        "name": "PL-037 · Mail Triage",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-038",
+      "number": 38,
+      "slug": "action-inbox",
+      "name": "Action Inbox",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M görev kutusu/widget",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "widget"
+      ],
+      "summary": "Sayfa, mesaj ve e-postalardan seçilen yapılacakları kaynaklı bir görev kuyruğunda toplar.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox",
+      "codexProject": {
+        "name": "PL-038 · Action Inbox",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-039",
+      "number": 39,
+      "slug": "notion-bridge",
+      "name": "Notion Bridge",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M bağlantı penceresi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen içeriği Notion veritabanı alanlarına eşler ve kayıt öncesi taslak önizlemesi gösterir.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge",
+      "codexProject": {
+        "name": "PL-039 · Notion Bridge",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-040",
+      "number": 40,
+      "slug": "insight-table",
+      "name": "Insight Table",
+      "category": {
+        "id": "04",
+        "slug": "arastirma-yazma-ve-bilgi-akislari",
+        "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome tablo çıkarıcı + W / L / M çalışma alanı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Web sayfalarındaki tablo ve listeleri sütun önizlemesiyle CSV veya JSON verisine dönüştürür.",
+      "repo": null,
+      "appPath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table",
+      "codexProject": {
+        "name": "PL-040 · Insight Table",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+    },
+    {
+      "id": "PL-041",
+      "number": 41,
+      "slug": "dev-patch-notes",
+      "name": "Dev Patch Notes",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome yan paneli + W / L / M geliştirici aracı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)",
+        "tarayıcı yan paneli"
+      ],
+      "summary": "Git değişikliklerinden kaynak commit bağlantıları içeren düzenlenebilir sürüm notları hazırlar.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes",
+      "codexProject": {
+        "name": "PL-041 · Dev Patch Notes",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-042",
+      "number": 42,
+      "slug": "api-pocket",
+      "name": "API Pocket",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome paneli + W / L / M yerel istemci",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "API isteklerini şablonlarla gönderir, ortam değişkenlerini kullanır ve yanıtları biçimlendirir.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket",
+      "codexProject": {
+        "name": "PL-042 · API Pocket",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-043",
+      "number": 43,
+      "slug": "access-lens",
+      "name": "Access Lens",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome denetim paneli; rapor W / L / M",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Web sayfalarındaki kontrast, etiket, odak sırası ve semantik erişilebilirlik sorunlarını raporlar.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens",
+      "codexProject": {
+        "name": "PL-043 · Access Lens",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-044",
+      "number": 44,
+      "slug": "design-token-scout",
+      "name": "Design Token Scout",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M + isteğe bağlı tasarım bağlayıcısı",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen arayüzden renk, yazı ve boşluk değerlerini çıkararak tasarım tokenları oluşturur.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout",
+      "codexProject": {
+        "name": "PL-044 · Design Token Scout",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-045",
+      "number": 45,
+      "slug": "context-kit",
+      "name": "Context Kit",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P0",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M; Chrome kaynak seçici",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçilen dosya ve sayfalardan boyut sınırı olan, önizlenebilir AI bağlam paketleri hazırlar.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit",
+      "codexProject": {
+        "name": "PL-045 · Context Kit",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-046",
+      "number": 46,
+      "slug": "model-switchboard",
+      "name": "Model Switchboard",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P2",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M geliştirici/kullanıcı paneli",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Model sağlayıcılarını, istek maliyetlerini ve aynı görevde ürettikleri yanıtları karşılaştırır.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard",
+      "codexProject": {
+        "name": "PL-046 · Model Switchboard",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-047",
+      "number": 47,
+      "slug": "permission-radar",
+      "name": "Permission Radar",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome izin envanteri + W / L / M yardımcı panel",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Tarayıcı eklentilerinin izinlerini okunabilir bir envantere dönüştürür ve izin değişikliklerini gösterir.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar",
+      "codexProject": {
+        "name": "PL-047 · Permission Radar",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-048",
+      "number": 48,
+      "slug": "offline-aid",
+      "name": "Offline Aid",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P2",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "W / L / M yerel yardımcı + Chrome seçili içerik",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Uyumlu yerel modellerle metin özetleme ve düzenleme işlemlerini cihazda çalıştırır.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid",
+      "codexProject": {
+        "name": "PL-048 · Offline Aid",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-049",
+      "number": 49,
+      "slug": "invoice-inbox",
+      "name": "Invoice Inbox",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P2",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M belge kutusu",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Yüklenen fatura ve fişlerden tarih, satıcı ve tutar alanlarını çıkarıp onay sonrası CSV'ye aktarır.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox",
+      "codexProject": {
+        "name": "PL-049 · Invoice Inbox",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-050",
+      "number": 50,
+      "slug": "decision-board",
+      "name": "Decision Board",
+      "category": {
+        "id": "05",
+        "slug": "gelistirici-ve-profesyonel-araclar",
+        "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
+      },
+      "status": "Yeni fikir",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome + W / L / M proje panosu",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Seçenekleri, kriterleri ve ağırlıkları kaynaklı bir karar matrisinde karşılaştırır; karar gerekçelerini saklar.",
+      "repo": null,
+      "appPath": "apps/05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board",
+      "codexProject": {
+        "name": "PL-050 · Decision Board",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+    },
+    {
+      "id": "PL-051",
+      "number": 51,
+      "slug": "tweakster",
+      "name": "Tweakster",
+      "category": {
+        "id": "06",
+        "slug": "hub-disi-urun-depolari",
+        "title": "06 · Bağımsız ürün depoları — PL-051–053"
+      },
+      "status": "Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Codex: PL · Masaüstü · Tweakster)",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "PC hızlandırma uygulaması (masaüstü).",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tweakster",
+        "url": "https://github.com/timdesigners-pixel/tweakster",
+        "verified": false,
+        "note": "PL numarası Codex proje adından teyit edilecek"
+      },
+      "appPath": "apps/06-hub-disi-urun-depolari/PL-051-tweakster",
+      "codexProject": {
+        "name": "PL-051 · Tweakster",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
+    },
+    {
+      "id": "PL-052",
+      "number": 52,
+      "slug": "extension-manager",
+      "name": "Extension Manager / Eklenti Yöneticisi",
+      "category": {
+        "id": "06",
+        "slug": "hub-disi-urun-depolari",
+        "title": "06 · Bağımsız ürün depoları — PL-051–053"
+      },
+      "status": "Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": false,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome eklentisi (Codex: PL · Eklenti · Extension Manager)",
+      "formFactors": [
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Eklenti yöneticisi (Chrome eklentisi).",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "extension-manager",
+        "url": "https://github.com/timdesigners-pixel/extension-manager",
+        "verified": false,
+        "note": "PL numarası Codex proje adından teyit edilecek"
+      },
+      "appPath": "apps/06-hub-disi-urun-depolari/PL-052-extension-manager",
+      "codexProject": {
+        "name": "PL-052 · Extension Manager / Eklenti Yöneticisi",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
+    },
+    {
+      "id": "PL-053",
+      "number": 53,
+      "slug": "mutfak-atolyesi",
+      "name": "Mutfak Atölyesi",
+      "category": {
+        "id": "06",
+        "slug": "hub-disi-urun-depolari",
+        "title": "06 · Bağımsız ürün depoları — PL-051–053"
+      },
+      "status": "Bağımsız ürün deposu mevcut (private) · Notion’da “01 · PluginLabs & Yazılım” sayfasında adı geçiyor, ürün kartı yok · özellik listesi depodan doğrulanacak",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": false,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": true
+      },
+      "platformText": "Web (Codex: PL · Web · Mutfak Atölyesi)",
+      "formFactors": [
+        "web uygulaması"
+      ],
+      "summary": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mutfak-atolyesi",
+        "url": "https://github.com/timdesigners-pixel/mutfak-atolyesi",
+        "verified": true,
+        "note": "Codex proje adı: “PL -053· Mutfak Atölyesi”"
+      },
+      "appPath": "apps/06-hub-disi-urun-depolari/PL-053-mutfak-atolyesi",
+      "codexProject": {
+        "name": "PL-053 · Mutfak Atölyesi",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4078aa13d8f981b193b9d30a0f596dd0"
+    }
+  ]
+}

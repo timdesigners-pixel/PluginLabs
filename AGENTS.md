@@ -34,3 +34,11 @@
 4. Run tests and relevant build checks; state what was not executed.
 5. Open a pull request with summary, validation results, screenshots for UI changes, and rollback considerations.
 6. Require human review before merge or release.
+
+## Multi-agent collaboration (Codex + Claude Code)
+- This file is the single source of rules for both Codex and Claude Code. Claude Code loads it through `CLAUDE.md` (`@AGENTS.md`); do not duplicate rules elsewhere.
+- Follow `docs/ortak-calisma/AI-ORTAK-CALISMA.md`. Before starting, read and update `docs/ortak-calisma/AKTIF-ISLER.md`; do not write to a branch another agent has claimed for the same `PL-0XX`.
+- Branch prefixes: Codex `codex/PL-0XX-<topic>`, Claude Code `claude/PL-0XX-<topic>`. Commit subject starts with `[PL-0XX]`, `[hub]` or `[docs]`.
+- Every PR includes a handoff note based on `docs/ortak-calisma/DEVIR-SABLONU.md`; the agent that did not open a PR reviews it.
+- Application hierarchy: `apps/<category>/<PL-ID-slug>/README.md` with machine-readable `registry/projects.json`. Update both when adding or renaming a product. Repository graduation rules: `docs/REPO-HIYERARSISI.md`.
+- Notion-sourced content (`resources/notion-catalog.json` and the "Notion kartının özgün metni" sections) must not be shortened, summarised or rewritten. Archive instead of deleting (`docs/arsiv/`).

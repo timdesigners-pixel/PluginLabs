@@ -2,3 +2,8 @@ node_modules/
 dist/
 .local-data/
 *.log
+
+# Makineye özel yollar ve loglar (Claude Code bağlantı betiği)
+registry/local-paths.json
+logs/
+.claude/settings.local.json
