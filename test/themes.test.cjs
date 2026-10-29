@@ -44,7 +44,9 @@ test("her sabit renk değişkene bağlı ve :root'ta tanımlı", () => {
 test("themes.css üreticiyle birebir aynı", () => {
   const out = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "plh-themes-")), "themes.css");
   execFileSync(process.execPath, [path.join(__dirname, "../scripts/generate-themes.cjs")], { env: { ...process.env, THEMES_OUT: out } });
-  assert.equal(fs.readFileSync(out, "utf8"), themes);
+  // Windows'ta git CRLF ile çıkarabilir; satır sonlarını normalize ederek karşılaştır.
+  const lf = (t) => t.replace(/\r\n/g, "\n");
+  assert.equal(lf(fs.readFileSync(out, "utf8")), lf(themes));
 });
 
 test("dört paletli tema kontrastı: metin, ikincil metin ve vurgu ≥ 4.5:1", () => {
