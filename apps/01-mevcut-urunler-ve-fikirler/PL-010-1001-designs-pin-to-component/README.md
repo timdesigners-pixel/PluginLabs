@@ -10,7 +10,7 @@
 | Öncelik / efor | P2 · XL |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3), Figma bağlayıcısı |
-| Geliştirme deposu | [timdesigners-pixel/1001-designs](https://github.com/timdesigners-pixel/1001-designs) — *eşleşme teyit edilecek* |
+| Geliştirme deposu | [timdesigners-pixel/1001-designs](https://github.com/timdesigners-pixel/1001-designs) |
 | Codex projesi | `PL-010 · 1001 Designs / Pin to Component` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114) |
 

@@ -83,8 +83,8 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-051 | [Tweakster](06-hub-disi-urun-depolari/PL-051-tweakster/README.md) | W | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) | — | [tweakster](https://github.com/timdesigners-pixel/tweakster) |
-| PL-052 | [Extension Manager / Eklenti Yöneticisi](06-hub-disi-urun-depolari/PL-052-extension-manager/README.md) | Chrome | Bağımsız ürün deposu mevcut (private) | — | [extension-manager](https://github.com/timdesigners-pixel/extension-manager) |
+| PL-051 | [Extension Manager / Eklenti Yöneticisi](06-hub-disi-urun-depolari/PL-051-extension-manager/README.md) | Chrome | Bağımsız ürün deposu mevcut (private) | — | [extension-manager](https://github.com/timdesigners-pixel/extension-manager) |
+| PL-052 | [Tweakster](06-hub-disi-urun-depolari/PL-052-tweakster/README.md) | W | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) | — | [tweakster](https://github.com/timdesigners-pixel/tweakster) |
 | PL-053 | [Mutfak Atölyesi](06-hub-disi-urun-depolari/PL-053-mutfak-atolyesi/README.md) | Web | Bağımsız ürün deposu mevcut (private) | — | [mutfak-atolyesi](https://github.com/timdesigners-pixel/mutfak-atolyesi) |
 
 ## 07 · Yeni ürünler — PL-054+

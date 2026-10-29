@@ -30,33 +30,33 @@ REPOLAR = {
     'PL-001': ('flow-dock', True, 'Codex kenar çubuğu: PL · Masaüstü · Flow Dock'),
     'PL-002': ('leo-helper', True, 'Codex kenar çubuğu: PL · Masaüstü · Leo Helper'),
     'PL-003': ('mind-palace', True, 'Codex kenar çubuğu: PL · Masaüstü · Mind Palace'),
-    'PL-010': ('1001-designs', False, 'Codex’te “Design Replicator” projesinin kökü 1001-designs; PL-010 ile birebir aynı ürün olup olmadığı teyit edilecek'),
-    'PL-051': ('tweakster', False, 'PL numarası Codex proje adından teyit edilecek'),
-    'PL-052': ('extension-manager', False, 'PL numarası Codex proje adından teyit edilecek'),
+    'PL-010': ('1001-designs', True, 'Codex projesi PL-010 · 1001 Designs / Pin to Component, birincil klasör projeler\\1001-designs (29.10.2026 doğrulandı)'),
+    'PL-051': ('extension-manager', True, 'Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici'),
+    'PL-052': ('tweakster', True, 'Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)'),
     'PL-053': ('mutfak-atolyesi', True, 'Codex proje adı: “PL -053· Mutfak Atölyesi”'),
 }
 
 EK = [
     {
-        'id': 'PL-051', 'name': 'Tweakster',
-        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
-        'description': 'PluginLabs ailesinin Windows PC hızlandırma uygulaması.',
-        'fields': {
-            'Durum': 'Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) · PL numarası Codex’ten teyit edilecek',
-            'Platform': 'Windows masaüstü (Codex: PL · Masaüstü · Tweakster)',
-            'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Tweakster (PC hızlandırma uygulaması)”. Ayrıntılı özellik listesi henüz tanımlanmadı; kod yazıldıkça tweakster deposundan tamamlanacak.',
-            'Teknik bağımlılık ve sınır': 'Depo kuralları (tweakster README): Her ayar değişikliği geri alınabilir olmalı; uygulamadan önce geri yükleme noktası alınır. Yönetici izni yalnız gerektiği adımda istenir. Kabul manifesti: PluginLabs docs/ecosystem-v1/contracts/app-manifest.schema.json (rollback kapısı zorunlu).',
-        },
-    },
-    {
-        'id': 'PL-052', 'name': 'Extension Manager / Eklenti Yöneticisi',
+        'id': 'PL-051', 'name': 'Extension Manager / Eklenti Yöneticisi',
         'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
         'description': 'Eklenti yöneticisi (Chrome eklentisi).',
         'fields': {
-            'Durum': 'Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek',
+            'Durum': 'Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak',
             'Platform': 'Chrome eklentisi (Codex: PL · Eklenti · Extension Manager)',
             'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Extension Manager / Eklenti Yöneticisi (Chrome eklentisi)”. Ayrıntılı özellik listesi extension-manager deposundan tamamlanacak.',
             'Teknik bağımlılık ve sınır': 'PluginLabs Hub içindeki “Eklenti yöneticisi” ekranı ve Hub Tarayıcı Uzantısı (Browser Bridge) ile aynı ürün değildir; ayrı tutulur.',
+        },
+    },
+    {
+        'id': 'PL-052', 'name': 'Tweakster',
+        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
+        'description': 'PluginLabs ailesinin Windows PC hızlandırma uygulaması.',
+        'fields': {
+            'Durum': 'Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README)',
+            'Platform': 'Windows masaüstü (Codex: PL · Masaüstü · Tweakster)',
+            'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Tweakster (PC hızlandırma uygulaması)”. Ayrıntılı özellik listesi henüz tanımlanmadı; kod yazıldıkça tweakster deposundan tamamlanacak.',
+            'Teknik bağımlılık ve sınır': 'Depo kuralları (tweakster README): Her ayar değişikliği geri alınabilir olmalı; uygulamadan önce geri yükleme noktası alınır. Yönetici izni yalnız gerektiği adımda istenir. Kabul manifesti: PluginLabs docs/ecosystem-v1/contracts/app-manifest.schema.json (rollback kapısı zorunlu).',
         },
     },
     {
@@ -103,7 +103,7 @@ EK = [
 
 TR = str.maketrans({'ı': 'i', 'İ': 'i', 'ş': 's', 'Ş': 's', 'ğ': 'g', 'Ğ': 'g', 'ü': 'u', 'Ü': 'u',
                     'ö': 'o', 'Ö': 'o', 'ç': 'c', 'Ç': 'c', '’': '', "'": ''})
-SLUG_OZEL = {'PL-054': 'pincart', 'PL-010': '1001-designs-pin-to-component', 'PL-052': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
+SLUG_OZEL = {'PL-054': 'pincart', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
 
 
 def slugify(id_, name):

@@ -20,9 +20,9 @@ timdesigners-pixel/
 ├── flow-dock          (private)   PL-001
 ├── leo-helper         (private)   PL-002
 ├── mind-palace        (private)   PL-003
-├── 1001-designs       (public)    PL-010 ile ilişkili (Design Replicator) — eşleşme teyit edilecek
-├── tweakster          (private)   PL-051 — numara teyit edilecek
-├── extension-manager  (private)   PL-052 — numara teyit edilecek
+├── 1001-designs       (public)    PL-010 (Codex’te doğrulandı)
+├── extension-manager  (private)   PL-051 (Codex’te doğrulandı)
+├── tweakster          (private)   PL-052 (Codex’te doğrulandı)
 ├── mutfak-atolyesi    (private)   PL-053
 └── pl-<slug>          (yeni)      olgunlaşan her uygulama için ayrı depo
 ```
@@ -67,5 +67,5 @@ Geçişte:
 | --- | --- | --- |
 | 1 | Şemsiye depoda hiyerarşi, registry ve 53 README; ortak çalışma protokolü | Bu PR |
 | 2 | Mevcut 7 ürün deposuna `AGENTS.md` + `CLAUDE.md` + PluginLabs bağlantılı README | Bekliyor — depolara erişim onayı gerekiyor |
-| 3 | Codex’teki PL-001–053 projelerinde ikinci klasör doğrulaması ve Claude Code `additionalDirectories` kurulumu | Bekliyor — bilgisayar bağlantısı gerekiyor |
+| 3 | Codex’teki PL-001–053 projelerinde ikinci klasör doğrulaması ve Claude Code `additionalDirectories` kurulumu | İkinci klasör 53/53 doğrulandı (29.10.2026); Claude Code kurulumu bu PR ile |
 | 4 | P0 adaylarının (PL-001, PL-016, PL-008, PL-045 …) mezuniyet değerlendirmesi | Bekliyor — kullanıcı kararı |

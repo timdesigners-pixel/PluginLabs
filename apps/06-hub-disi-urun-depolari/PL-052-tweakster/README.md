@@ -1,16 +1,16 @@
-# PL-051 · Tweakster
+# PL-052 · Tweakster
 
 > PluginLabs ailesinin Windows PC hızlandırma uygulaması.
 
 | Alan | Değer |
 | --- | --- |
-| Kimlik | `PL-051` · `tweakster` |
+| Kimlik | `PL-052` · `tweakster` |
 | Kategori | 06 · Bağımsız ürün depoları — PL-051–053 |
-| Durum | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) · PL numarası Codex’ten teyit edilecek |
+| Durum | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) |
 | Hedef platformlar | Windows |
 | Dağıtım biçimi | masaüstü uygulaması |
-| Geliştirme deposu | [timdesigners-pixel/tweakster](https://github.com/timdesigners-pixel/tweakster) — *eşleşme teyit edilecek* |
-| Codex projesi | `PL-051 · Tweakster` — ikinci klasör: PluginLabs |
+| Geliştirme deposu | [timdesigners-pixel/tweakster](https://github.com/timdesigners-pixel/tweakster) |
+| Codex projesi | `PL-052 · Tweakster` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3) |
 
 ## Ne işe yarar
@@ -37,7 +37,7 @@ Depo kuralları (tweakster README): Her ayar değişikliği geri alınabilir olm
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
-- Dal adı: `codex/PL-051-<konu>` veya `claude/PL-051-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
+- Dal adı: `codex/PL-052-<konu>` veya `claude/PL-052-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
 - İşe başlamadan önce [AKTIF-ISLER.md](../../../docs/ortak-calisma/AKTIF-ISLER.md) tablosuna satır eklenir; iş bitince devir notu yazılır.
 - Kurallar: [AGENTS.md](../../../AGENTS.md) (her iki ajan için ortak), protokol: [AI-ORTAK-CALISMA.md](../../../docs/ortak-calisma/AI-ORTAK-CALISMA.md).
 

@@ -1,16 +1,16 @@
-# PL-052 · Extension Manager / Eklenti Yöneticisi
+# PL-051 · Extension Manager / Eklenti Yöneticisi
 
 > Eklenti yöneticisi (Chrome eklentisi).
 
 | Alan | Değer |
 | --- | --- |
-| Kimlik | `PL-052` · `extension-manager` |
+| Kimlik | `PL-051` · `extension-manager` |
 | Kategori | 06 · Bağımsız ürün depoları — PL-051–053 |
-| Durum | Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek |
+| Durum | Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak |
 | Hedef platformlar | Chrome |
 | Dağıtım biçimi | Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | [timdesigners-pixel/extension-manager](https://github.com/timdesigners-pixel/extension-manager) — *eşleşme teyit edilecek* |
-| Codex projesi | `PL-052 · Extension Manager / Eklenti Yöneticisi` — ikinci klasör: PluginLabs |
+| Geliştirme deposu | [timdesigners-pixel/extension-manager](https://github.com/timdesigners-pixel/extension-manager) |
+| Codex projesi | `PL-051 · Extension Manager / Eklenti Yöneticisi` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3) |
 
 ## Ne işe yarar
@@ -37,7 +37,7 @@ PluginLabs Hub içindeki “Eklenti yöneticisi” ekranı ve Hub Tarayıcı Uza
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
-- Dal adı: `codex/PL-052-<konu>` veya `claude/PL-052-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
+- Dal adı: `codex/PL-051-<konu>` veya `claude/PL-051-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
 - İşe başlamadan önce [AKTIF-ISLER.md](../../../docs/ortak-calisma/AKTIF-ISLER.md) tablosuna satır eklenir; iş bitince devir notu yazılır.
 - Kurallar: [AGENTS.md](../../../AGENTS.md) (her iki ajan için ortak), protokol: [AI-ORTAK-CALISMA.md](../../../docs/ortak-calisma/AI-ORTAK-CALISMA.md).
 

@@ -417,8 +417,8 @@
         "owner": "timdesigners-pixel",
         "name": "1001-designs",
         "url": "https://github.com/timdesigners-pixel/1001-designs",
-        "verified": false,
-        "note": "Codex’te “Design Replicator” projesinin kökü 1001-designs; PL-010 ile birebir aynı ürün olup olmadığı teyit edilecek"
+        "verified": true,
+        "note": "Codex projesi PL-010 · 1001 Designs / Pin to Component, birincil klasör projeler\\1001-designs (29.10.2026 doğrulandı)"
       },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-010-1001-designs-pin-to-component",
       "codexProject": {
@@ -1831,46 +1831,6 @@
     {
       "id": "PL-051",
       "number": 51,
-      "slug": "tweakster",
-      "name": "Tweakster",
-      "category": {
-        "id": "06",
-        "slug": "hub-disi-urun-depolari",
-        "title": "06 · Bağımsız ürün depoları — PL-051–053"
-      },
-      "status": "Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) · PL numarası Codex’ten teyit edilecek",
-      "priority": null,
-      "effort": null,
-      "platforms": {
-        "windows": true,
-        "linux": false,
-        "macos": false,
-        "chrome": false,
-        "web": false
-      },
-      "platformText": "Windows masaüstü (Codex: PL · Masaüstü · Tweakster)",
-      "formFactors": [
-        "masaüstü uygulaması"
-      ],
-      "summary": "PluginLabs ailesinin Windows PC hızlandırma uygulaması.",
-      "repo": {
-        "owner": "timdesigners-pixel",
-        "name": "tweakster",
-        "url": "https://github.com/timdesigners-pixel/tweakster",
-        "verified": false,
-        "note": "PL numarası Codex proje adından teyit edilecek"
-      },
-      "appPath": "apps/06-hub-disi-urun-depolari/PL-051-tweakster",
-      "codexProject": {
-        "name": "PL-051 · Tweakster",
-        "primaryFolder": "ürün klasörü (yerel)",
-        "secondaryFolder": "PluginLabs"
-      },
-      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
-    },
-    {
-      "id": "PL-052",
-      "number": 52,
       "slug": "extension-manager",
       "name": "Extension Manager / Eklenti Yöneticisi",
       "category": {
@@ -1878,7 +1838,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek",
+      "status": "Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1897,12 +1857,52 @@
         "owner": "timdesigners-pixel",
         "name": "extension-manager",
         "url": "https://github.com/timdesigners-pixel/extension-manager",
-        "verified": false,
-        "note": "PL numarası Codex proje adından teyit edilecek"
+        "verified": true,
+        "note": "Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici"
       },
-      "appPath": "apps/06-hub-disi-urun-depolari/PL-052-extension-manager",
+      "appPath": "apps/06-hub-disi-urun-depolari/PL-051-extension-manager",
       "codexProject": {
-        "name": "PL-052 · Extension Manager / Eklenti Yöneticisi",
+        "name": "PL-051 · Extension Manager / Eklenti Yöneticisi",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
+    },
+    {
+      "id": "PL-052",
+      "number": 52,
+      "slug": "tweakster",
+      "name": "Tweakster",
+      "category": {
+        "id": "06",
+        "slug": "hub-disi-urun-depolari",
+        "title": "06 · Bağımsız ürün depoları — PL-051–053"
+      },
+      "status": "Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README)",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Codex: PL · Masaüstü · Tweakster)",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "PluginLabs ailesinin Windows PC hızlandırma uygulaması.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tweakster",
+        "url": "https://github.com/timdesigners-pixel/tweakster",
+        "verified": true,
+        "note": "Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)"
+      },
+      "appPath": "apps/06-hub-disi-urun-depolari/PL-052-tweakster",
+      "codexProject": {
+        "name": "PL-052 · Tweakster",
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
