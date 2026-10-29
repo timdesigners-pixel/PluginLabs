@@ -37,6 +37,13 @@
 5. Open/update a pull request with summary, validation results, real application screenshots, and rollback considerations. Include screenshots alongside application build outputs; identify the tested commit/platform and any historical images. Link the source Notion task and GitHub issue in both directions.
 6. Require human review before merge or release.
 
+## Design System v1 implementation
+- Read `docs/DESIGN-SYSTEM.md` and `docs/ecosystem-v1/DESIGN-SYSTEM.md` before UI changes. The portable source is `docs/ecosystem-v1/design-system/tokens.json`; regenerate `ui/design-tokens.css` with `npm run tokens:generate`. Never edit generated CSS directly. Run `npm run tokens:check`.
+- Preserve the effective cascade, not just the first CSS rule: Hub sidebar is 268px (230px at <=1150px), card radius 12px, dialog width 650px. Do not restore the overridden 248px sidebar or normalize every corner to 16px.
+- Keep existing gradient stops, local Inter fonts, navigation geometry, product icons and interaction behavior. Reuse the existing `.btn`, `.field`, `.card`, navigation, dialog and status patterns before adding variants.
+- Flow Dock retains its documented blue accent and WPF/platform identity. Its values in JSON are specification references, not verified Hub runtime values or an implemented WPF adapter.
+- Default to dark. Light/System options remain future work; do not claim they exist. The legacy 5s hero breathe animation is preserved; do not add continuous decorative motion. Reduced-motion behavior must remain intact.
+- For token refactors compare computed styles and real Electron screenshots before/after using the same platform, viewport, data and motion setting. Check normal/compact layouts and dialogs. Windows DPI, keyboard and contrast acceptance must be reported separately from Linux automation.
 ## Ecosystem execution agreement
 - Before ecosystem work, read docs/ecosystem-v1/WORKING-MODEL.md, ROADMAP.md and WORK-REGISTER.json. Use the existing design-system reference and tokens; do not create a competing palette or redesign the Hub while documenting standards.
 - One work item has one owner chat, one branch/workspace and explicit acceptance criteria. Update its evidence and handoff before switching environments. Inspect actual HEAD and dirty state; never discard another chat's work.

@@ -33,3 +33,15 @@ Yeni bir ürün bu rollerin aynı adlarını, form durumlarını, gezinme davran
 UI PR kabulü: koyu ilk açılış; Türkçe karakter/font kontrolü; yalnız klavyeyle temel akış; etiket/hata/odak; azaltılmış hareket; kontrast ölçümü; küçük pencere ve DPI; boş/yükleniyor/hata durumları. Gerçek uygulama ekran görüntüleri PR açıklamasına eklenir, üretilen derlemelerle birlikte gönderilir. Henüz yapılmayan elle kontroller açıkça işaretlenir.
 
 ![Mevcut Hub referansı](screenshots/overview.png)
+
+## v1.0 kaynak ve runtime entegrasyonu
+
+Tek kaynak [portable JSON](ecosystem-v1/design-system/tokens.json); Electron için üretilen adaptör `ui/design-tokens.css` dosyasıdır. `ui/index.html` bu dosyayı bileşen CSS'inden önce yükler. Değişiklikten sonra `npm run tokens:generate`, doğrulama için `npm run tokens:check` ve `npm test` çalıştırılır. Üretilen CSS depoda tutulur ve mevcut `ui/**` paketleme kuralıyla uygulamaya dahil edilir; başlangıçta dosya üretimi veya ağ isteği gerekmez. Eski `--bg`, `--surface`, `--accent` gibi kısa adlar uyumluluk alias'ları olarak kalır.
+
+Etkin Hub ölçüleri: sidebar **268px**, <=1150px pencerede **230px**, kart köşesi **12px**, hero köşesi **16px**, menü **8px**, buton/form **7px**, dialog köşesi **15px** ve genişliği **650px**. İlk CSS kurallarındaki 248/210px ve 560px sonradan ezilir. 4px boşluk ölçeği yeni işler için rehberdir; mevcut 7/13/15/22/38px gibi ölçüler bu entegrasyonda yuvarlanmaz. Başlıklar için yukarıdaki ölçek hedef rehberdir; mevcut h1 28px, h2 17px, h3 16px, hero başlığı 30px (dar pencerede 26px) korunur.
+
+Mevcut hero üç duraklı radyal gradyanı ve API kartı iki duraklı gradyanı aynen korunur; yukarıdaki “en fazla iki yakın renk” yeni iş rehberi mevcut hero'yu yeniden tasarlama gerekçesi değildir. CSS'in `no-preference` dalındaki 5 saniyelik `breathe` animasyonu mevcut davranış istisnasıdır. Yeni sürekli dekoratif hareket eklenmez. Mevcut azaltılmış hareket dalında animasyon ve buton geçişi yoktur. Light/System seçenekleri henüz uygulanmamıştır.
+
+Flow Dock'un mavi `#8ab4f8` vurgusu, `#25272b` yüzeyi, `#363940` hover ve `#f3f4f6` metni önceki ürün şartnamesinden gelir; Hub paletinin yerine konmaz. JSON içindeki `productOverrides` runtime Hub CSS'ine aktarılmaz. WPF ResourceDictionary adaptörü ve Flow Dock cihaz doğrulaması ayrı iştir.
+
+Bileşen sözleşmeleri, platform farkları ve kabul kayıtları için [ekosistem standardı](ecosystem-v1/DESIGN-SYSTEM.md); kaynak/cascade denetimi ve bu değişikliğin kanıtı için [v1 uygulama kaydı](DESIGN-SYSTEM-V1-IMPLEMENTATION.md).
