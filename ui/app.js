@@ -138,6 +138,26 @@ function grid(items) {
     ? `<div class="app-grid">${items.map(card).join("")}</div>`
     : '<div class="empty"><span>⌕</span>Bu görünümde henüz içerik yok.<br>Katalogdan paket yükleyebilir veya aramayı değiştirebilirsiniz.</div>';
 }
+const paletteChoices = [
+  ["hub-yesil", "Hub Yeşil", "Mevcut PluginLabs Hub görünümü"],
+  ["iris", "Iris", "Mor-mavi PluginLabs tasarım sistemi"],
+];
+const modeChoices = [
+  ["dark", "Koyu", "Varsayılan"],
+  ["light", "Açık", "Aydınlık ortamlar için"],
+];
+function choiceGroup(name, legend, choices, current) {
+  return `<fieldset class="choice-group"><legend>${legend}</legend>${choices
+    .map(
+      ([value, label, hint]) =>
+        `<label class="choice"><input type="radio" name="${name}" value="${value}" ${value === current ? "checked" : ""}><span class="choice-swatch" data-swatch="${name === "palette" ? value : "mode-" + value}" aria-hidden="true"></span><span><strong>${label}</strong><small>${hint}</small></span></label>`,
+    )
+    .join("")}</fieldset>`;
+}
+function appearanceHTML() {
+  const t = window.plTheme.get();
+  return `<section class="card appearance" style="margin-bottom:20px"><h2>Görünüm</h2><p style="margin:15px 0">Palet ve tema bu cihazda saklanır; uygulama yeniden açıldığında korunur.</p><div class="choice-grid">${choiceGroup("palette", "Palet", paletteChoices, t.palette)}${choiceGroup("mode", "Tema", modeChoices, t.mode)}</div></section>`;
+}
 function render() {
   if (!state) return;
   $("#breadcrumb").textContent = titles[page];
@@ -234,7 +254,8 @@ function render() {
       `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section><div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div><section class="card">${state.clients.length ? state.clients.map((c) => `<div class="list-row"><span class="avatar">${esc(c.name.slice(0, 2).toUpperCase())}</span><div class="grow"><h3>${esc(c.name)}</h3><p>${c.scopes.map(esc).join(" · ") || "İzin verilmedi"}</p></div>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</div>`).join("") : "<p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p>"}</section><div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
-      heading("Merkez ayarları", "Kurulum, veri alanı ve sürüm bilgileri.") +
+      heading("Merkez ayarları", "Görünüm, kurulum, veri alanı ve sürüm bilgileri.") +
+      appearanceHTML() +
       `<div class="two-col"><section class="card"><h2>Yerel veri alanı</h2><p style="margin:15px 0">Paketler, kaynak ayarları ve erişim izinleri uygulamanın kullanıcı veri klasöründe saklanır.</p>${button("Klasörü aç ↗", "openData")}<div class="notice">API anahtarları bu merkezde özetlenerek saklanır. İstemci uygulamalar kendi anahtarlarını işletim sistemi kasalarında tutmalıdır.</div></section><section class="card"><h2>PluginLabs Hub 0.2.1</h2><p style="margin:15px 0">Electron masaüstü uygulaması · Yerel HTTP API<br>Windows ürün paketleri Windows üzerinde açılır.<br>Model motoru: Windows x64 / Linux x64 CPU.</p><div class="notice warn">Önizleme sürümü. Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. Üçüncü taraf çalıştırılabilir eklentiler doğrudan yüklenmez; işlevler izinli sağlayıcı SDK’sı üzerinden eklenir.</div></section></div>`;
   content.innerHTML = html;
 }
@@ -681,6 +702,13 @@ function installAppExtension() {
   );
 }
 document.addEventListener("change", (e) => {
+  const choice = e.target.closest?.('.choice input[type="radio"]');
+  if (choice) {
+    window.plTheme.set({ [choice.name]: choice.value });
+    render();
+    document.querySelector(`.choice input[name="${choice.name}"]:checked`)?.focus();
+    return;
+  }
   if (e.target.id === "browser-selection") {
     browserSelection = e.target.value;
     render();
