@@ -2,6 +2,9 @@ node_modules/
 dist/
 .local-data/
 *.log
+.serena/
+preview-*.png
+dependency-audit.json
 
 # Makineye özel yollar ve loglar (Claude Code bağlantı betiği)
 registry/local-paths.json

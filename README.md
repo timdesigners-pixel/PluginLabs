@@ -49,7 +49,7 @@ Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağla
 
 ## Başlatma
 
-Node 20.18+ ve npm gerekir:
+Node 24 LTS ve npm gerekir:
 
 ```sh
 npm ci
@@ -59,6 +59,8 @@ npm start
 `npm test` API, kurulum, doğrulama, iptal, geri alma, sağlayıcı onayları, kaynak paketleri ve arşiv sınırlarını test eder. `npm run build:win` Windows NSIS + taşınabilir EXE, `npm run build:linux` AppImage üretir. Windows derlemesi için Windows veya uygun Wine kurulumu gerekir. Üretilen önizleme paketleri kod imzalı değildir.
 
 ## İşlevler
+
+Geliştirme: [katkı/PR politikası](CONTRIBUTING.md), [güvenlik](SECURITY.md), [ortak tasarım dili](docs/DESIGN-SYSTEM.md), [Codex Cloud kurulumu](docs/CODEX-CLOUD.md) ve [Notion–GitHub takip eşlemesi](docs/TRACKING.md). `npm run test:ui` gerçek Electron arayüz akışlarını ve ekran görüntülerini üretir. CI her PR'da Windows/Linux testleri ve yayın yapmayan önizleme paketleri üretir; paketlerle ekran görüntülerini aynı artifact içinde sunar. CI tanımı, henüz çalışmamış kontrolün geçtiği anlamına gelmez.
 
 - Katalog: Mind Palace ve Leo Helper’ın gerçek Windows sürümleri. Uygulamalar merkezin yönettiği sürüm klasörlerine indirilir; kullanıcı tarafından açılır. Diğer uygulamaların önceden yapılmış kurulumları otomatik taranmaz.
 - HTTPS indirme, sabitlenmiş SHA-256 ve dosya boyutu, ilerleme ve iptal. Başarısız güncelleme mevcut sürümü korur; önceki paket saklanmışsa geri alınabilir.
@@ -142,3 +144,7 @@ Testler: `npm test`; masaüstü UI için Playwright kurulu ortamda `PLAYWRIGHT_M
 ## 0.2.1 — Okunabilirlik
 
 Uygulama kataloğu, hedef kitle metinleri yerine uygulamanın işlevini anlatan 50 açıklama gösterir. Katalog başlığı ve gezinme adı Uygulama kataloğu olarak güncellenmiştir. Türkçe destekli Inter Variable fontu (Fontsource 5.2.8, SIL Open Font License) Latin/Latin Extended WOFF2 dosyalarıyla yerel pakete eklenir; lisansı `ui/fonts/OFL.txt` içindedir. Ana yazı 16 px, kart açıklamaları 14 px; küçük metinler büyütülmüştür. Kaynak ürün kapsamı, özgün uygulama adları ve kullanıcı notları korunur.
+
+## Kurulum ve görev takibi
+
+[Altı maddelik kurulum kontrol listesi](docs/SETUP-CHECKLIST.md), [Codex Cloud çalıştırma adımları](docs/CODEX-CLOUD.md) ve [Notion–GitHub görev akışı](docs/TRACKING.md), doğrulanan yetenekleri dış erişim ve gerçek cihaz kabulünden ayırır. Windows/Linux CI çıktıları önizlemedir; Web/Android hedefi veya otomatik release yayını yoktur.
