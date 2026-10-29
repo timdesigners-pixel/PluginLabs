@@ -1,0 +1,23 @@
+{
+  "product": "PluginLabs Hub",
+  "version": "0.3.0",
+  "commit": "faa597ecef6bea95de6ef3cede85a3fdc6d5030f",
+  "windows_build": "Independent Linux Docker + Wine64 (electron-builder 25.1.8); no compilation on GitHub Actions",
+  "builder_image": "electronuserland/builder@sha256:f3a8d451994c881d0972e7b1846ee4d4fdc15eb41fc6b1f350b38cbf99ca90fe",
+  "signed": false,
+  "checks": [
+    "22 unit/integration tests passed in the builder container (npm test)",
+    "Packaged app.asar ui/, src/ and browser-extension/ files identical to the tagged source commit",
+    "Both Windows executables are valid PE files (MZ/PE headers)"
+  ],
+  "packaged": {
+    "version": "0.3.0",
+    "asar_sha256": "602ae4f6e7384ce181f953e93dd9931e2c640614a305c778465018a5ec7e844b"
+  },
+  "limits": [
+    "Unsigned preview; open security issue #3 (Electron/packaging dependency findings)",
+    "No real Windows or Opera runtime test; native UI tests ran on GitHub CI (Ubuntu/Windows) for the source commit, not on these binaries",
+    "Windows 100/150/200% DPI and minimum-window checks not performed"
+  ],
+  "build_notes": "Built from the clean git archive of the commit above with npm ci and npm run build:win; Docker daemon started inside the session; no build-cache adjustments."
+}

@@ -1,0 +1,4 @@
+3ac6b1a4f8f78eccaf8f804aab10bad96e4b06fac38b4b20c8a0d0a2f1f13f26  PluginLabs Hub 0.3.0.exe
+7139a710054857f14e63d8e5df6d5a071557d250784d1a5a2e87bf15edfacbd4  PluginLabs Hub Setup 0.3.0.exe
+e7d6c6b48e9724e5c180551faa6fea928e874c17ce79dae6cdfc3b302b251e3b  PluginLabs-Browser-Bridge-0.2.0.zip
+d86e11cfe7fe79204068bebab709f383319a3b62528ea12bb2668a9e8ebf0daf  PluginLabs-Hub-Source-0.3.0.zip
