@@ -70,7 +70,7 @@ EK = [
         },
     },
     {
-        'id': 'PL-054', 'name': 'PinCart',
+        'id': 'PL-054', 'name': 'MyWishlist',
         'category': KATEGORILER[6][2], 'source': 'https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1',
         'description': 'Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).',
         'fields': {
@@ -83,7 +83,7 @@ EK = [
             'Gelir hipotezi': 'Ücretsiz sınırlı katalog; Pro fiyat alarmı, rakip fiyat karşılaştırma, bütçe planı ve cihazlar arası eşitleme. Ortaklık (affiliate) bağlantısı kullanılırsa açık etiketlenir.',
             'Doğrulama ölçütü': 'İşaretlenen üründe ad/fiyat/görsel/kaynak alanı ≥%95 eksiksiz; ilk haftada kullanıcı başına ≥5 kayıt; içe/dışa aktarmada veri kaybı sıfır.',
             'Öncelik ve efor': 'P1 · M (öneri); PL-004 The Ultimate Scrapper’ın takip/sepet motorunu kullanan hafif tüketici ön yüzü.',
-            'Ad önerisi': 'Çalışma adı PinCart (işaretle → kaydet → sepete dönüştür). Alternatifler: Wishkeeper, Göz Hapsi. Nihai ad kullanıcı kararıdır.',
+            'Ad önerisi': 'Nihai ad: MyWishlist (kullanıcı kararı, 30.10.2026). Önceki çalışma adı: PinCart; diğer adaylar: Wishkeeper, Göz Hapsi.',
             'İşaretleyerek kaydet': 'Sayfadaki ürün kartını veya ürün sayfasını tek tıkla (simge, sağ tık menüsü veya kısayol) kaydetme; yanlış algılanan alanı elle düzeltme.',
             'Katalog': 'Tüm kayıtların kart/liste görünümü; site, kategori, etiket, fiyat aralığı, alındı/bekliyor filtreleri; arama.',
             'Kaynak site ve rakip fiyatlar': 'Bulunduğu site, son görülen fiyat ve tarih; aynı ürünün diğer sitelerdeki teklifleri ve fiyat farkı.',
@@ -103,7 +103,7 @@ EK = [
 
 TR = str.maketrans({'ı': 'i', 'İ': 'i', 'ş': 's', 'Ş': 's', 'ğ': 'g', 'Ğ': 'g', 'ü': 'u', 'Ü': 'u',
                     'ö': 'o', 'Ö': 'o', 'ç': 'c', 'Ç': 'c', '’': '', "'": ''})
-SLUG_OZEL = {'PL-054': 'pincart', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
+SLUG_OZEL = {'PL-054': 'mywishlist', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
 
 
 def slugify(id_, name):

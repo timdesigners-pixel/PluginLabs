@@ -1,17 +1,17 @@
-# PL-054 · PinCart
+# PL-054 · MyWishlist
 
 > Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).
 
 | Alan | Değer |
 | --- | --- |
-| Kimlik | `PL-054` · `pincart` |
+| Kimlik | `PL-054` · `mywishlist` |
 | Kategori | 07 · Yeni ürünler — PL-054+ |
 | Durum | Yeni fikir · kullanıcı notundan ürünleştirme |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
 | Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
-| Codex projesi | `PL-054 · PinCart` — ikinci klasör: PluginLabs |
+| Codex projesi | `PL-054 · MyWishlist` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1) |
 
 ## Ne işe yarar
@@ -43,7 +43,7 @@ Aynı ürünü farklı sitelerde eşleştirir, benzer ürün önerir, özellikle
 
 ### Ayrıntılı özellik kapsamı
 
-- **Ad önerisi:** Çalışma adı PinCart (işaretle → kaydet → sepete dönüştür). Alternatifler: Wishkeeper, Göz Hapsi. Nihai ad kullanıcı kararıdır.
+- **Ad önerisi:** Nihai ad: MyWishlist (kullanıcı kararı, 30.10.2026). Önceki çalışma adı: PinCart; diğer adaylar: Wishkeeper, Göz Hapsi.
 - **İşaretleyerek kaydet:** Sayfadaki ürün kartını veya ürün sayfasını tek tıkla (simge, sağ tık menüsü veya kısayol) kaydetme; yanlış algılanan alanı elle düzeltme.
 - **Katalog:** Tüm kayıtların kart/liste görünümü; site, kategori, etiket, fiyat aralığı, alındı/bekliyor filtreleri; arama.
 - **Kaynak site ve rakip fiyatlar:** Bulunduğu site, son görülen fiyat ve tarih; aynı ürünün diğer sitelerdeki teklifleri ve fiyat farkı.

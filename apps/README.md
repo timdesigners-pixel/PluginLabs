@@ -91,7 +91,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-054 | [PinCart](07-yeni-urunler/PL-054-pincart/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 
 ---
 Oluşturma: 29.10.2026

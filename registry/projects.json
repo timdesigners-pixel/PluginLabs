@@ -1951,8 +1951,8 @@
     {
       "id": "PL-054",
       "number": 54,
-      "slug": "pincart",
-      "name": "PinCart",
+      "slug": "mywishlist",
+      "name": "MyWishlist",
       "category": {
         "id": "07",
         "slug": "yeni-urunler",
@@ -1975,9 +1975,9 @@
       ],
       "summary": "Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).",
       "repo": null,
-      "appPath": "apps/07-yeni-urunler/PL-054-pincart",
+      "appPath": "apps/07-yeni-urunler/PL-054-mywishlist",
       "codexProject": {
-        "name": "PL-054 · PinCart",
+        "name": "PL-054 · MyWishlist",
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
