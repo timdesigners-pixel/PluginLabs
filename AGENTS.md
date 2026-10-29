@@ -52,6 +52,14 @@
 - Separate observed facts, historical reports and proposals. Record per-platform passed/failed/not-run evidence with commit, environment and real screenshots. PR descriptions must include real app screenshots, labeling historical images; build delivery must include screenshots, SHA256 and BUILD-INFO.
 - Do not open parallel implementation work on the same files without an ownership handoff. Scope changes update the work item and decisions; a blocker records a concrete next step, not an invented success.
 - These instructions guide agents; mandatory enforcement must be implemented and verified in CI/branch protection. Never describe this documentation as a deployed gate.
+
+## Multi-agent collaboration (Codex + Claude Code)
+- This file is the single source of rules for both Codex and Claude Code. Claude Code loads it through `CLAUDE.md` (`@AGENTS.md`); do not duplicate rules elsewhere.
+- Follow `docs/ortak-calisma/AI-ORTAK-CALISMA.md`. Before starting, read and update `docs/ortak-calisma/AKTIF-ISLER.md`; do not write to a branch another agent has claimed for the same `PL-0XX`.
+- Branch prefixes: Codex `codex/PL-0XX-<topic>`, Claude Code `claude/PL-0XX-<topic>`. Commit subject starts with `[PL-0XX]`, `[hub]` or `[docs]`.
+- Every PR includes a handoff note based on `docs/ortak-calisma/DEVIR-SABLONU.md`; the agent that did not open a PR reviews it.
+- Application hierarchy: `apps/<category>/<PL-ID-slug>/README.md` with machine-readable `registry/projects.json`. Update both when adding or renaming a product. Repository graduation rules: `docs/REPO-HIYERARSISI.md`.
+- Notion-sourced content (`resources/notion-catalog.json` and the "Notion kartının özgün metni" sections) must not be shortened, summarised or rewritten. Archive instead of deleting (`docs/arsiv/`).
 ## PluginLabs Tasarım Sistemi (Codex)
 
 - Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-design/SKILL.md` dosyasını oku ve uygula.
