@@ -13,7 +13,9 @@
     "test": "node --test test/*.test.cjs",
     "build:linux": "electron-builder --linux AppImage --x64 --publish never",
     "build:win": "electron-builder --win nsis portable --x64 --publish never",
-    "audit:report": "node scripts/audit-report.cjs"
+    "audit:report": "node scripts/audit-report.cjs",
+    "tokens:generate": "node scripts/design-tokens.cjs",
+    "tokens:check": "node scripts/design-tokens.cjs --check"
   },
   "dependencies": {
     "tar": "7.5.22",
