@@ -1,0 +1,62 @@
+/* ==========================================================================
+   PluginLabs — 2 palet (tema) · 30.10.2026
+   --------------------------------------------------------------------------
+   pl-tokens.css'ten SONRA yüklenir. Yalnız --pl-* tokenlarını değiştirir;
+   komponent CSS'ine dokunmaz. Kapsül kuralı korunur: @layer pl, :where(),
+   yalnız [data-pl] içinde, element seçici yok.
+
+   Kullanım:
+     <div data-pl data-pl-theme="dark" data-pl-palette="iris" data-pl-product="hub" lang="tr">
+     <div data-pl data-pl-theme="dark" data-pl-palette="hub-yesil" data-pl-product="hub" lang="tr">
+
+   TEMA A · iris      = skill'in varsayılanı (pl-tokens.css); değişiklik gerekmez.
+   TEMA B · hub-yesil = mevcut Windows Hub (ui/styles.css: #101214 / #c1f78a).
+   Ürün aksanları (leo, flowdock …) iki temada da aynıdır; yalnız `hub` değişir.
+   ========================================================================== */
+
+@layer pl {
+
+/* ---------- TEMA A · IRIS (varsayılan değerlerin açık beyanı) ---------- */
+:where([data-pl][data-pl-palette="iris"]) {
+  --pl-accent: var(--pl-brand);
+}
+
+/* ---------- TEMA B · HUB YEŞİL (karanlık) ---------- */
+:where([data-pl][data-pl-palette="hub-yesil"]) {
+  --pl-bg-0: #101214;   /* ui/styles.css --bg       */
+  --pl-bg-1: #14171a;   /* panel (bg-0 ile bg-2 arası) */
+  --pl-bg-2: #191c1f;   /* ui/styles.css --surface  */
+  --pl-bg-3: #202427;   /* ui/styles.css --surface2 */
+  --pl-bg-4: #292d30;
+  --pl-overlay: rgb(8 10 11 / .72);
+
+  --pl-line: #2a2e31;   /* ui/styles.css --line     */
+  --pl-line-strong: #3b4044;
+
+  --pl-fg-1: #edf0eb;   /* ui/styles.css --text     */
+  --pl-fg-2: #c3c9c5;
+  --pl-fg-3: #929a9e;   /* ui/styles.css --muted    */
+  --pl-fg-4: #656c70;
+  --pl-fg-on-accent: #101214;
+
+  --pl-brand: #c1f78a;  /* ui/styles.css --accent   */
+  --pl-brand-2: #8ee0a8;
+  --pl-brand-gradient: linear-gradient(135deg, #c1f78a 0%, #8ee0a8 100%);
+
+  --pl-radius-md: 12px;
+  --pl-radius-lg: 16px; /* ui/styles.css --radius   */
+
+  --pl-accent: var(--pl-brand);
+}
+
+/* Hub ürün aksanı palete göre; diğer ürün aksanları değişmez */
+:where([data-pl][data-pl-palette="hub-yesil"][data-pl-product="hub"]) { --pl-accent: #c1f78a; }
+
+/* Gradyan buton açık yeşil zeminde koyu metin taşır (beyaz metin 4.5:1'i geçemez) */
+:where([data-pl][data-pl-palette="hub-yesil"]) .pl-btn--gradient { color: var(--pl-fg-on-accent); }
+
+@media (prefers-contrast: more) {
+  :where([data-pl][data-pl-palette="hub-yesil"]) { --pl-line: #4a5156; --pl-fg-2: #dde2de; --pl-fg-3: #b3bbbf; }
+}
+
+} /* @layer pl */

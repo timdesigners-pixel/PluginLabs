@@ -1,0 +1,6 @@
+## PluginLabs Tasarım Sistemi (Codex)
+
+- Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-design/SKILL.md` dosyasını oku ve uygula.
+- Ortak kaynak: Claude Code aynı skill'i `.claude/skills/pluginlabs-design/` altından okur. İki kopya **aynıdır**; değişiklik yalnız `design-system/pluginlabs-design/` (kanonik) klasöründe yapılır ve `kurulum/kur.sh` ile eşitlenir.
+- Mevcut tasarıma dokunma: yalnız `[data-pl]` kapsayıcısı, `--pl-` tokenları ve `pl-` sınıfları.
+- Görev sonunda 📌 GÖREV / ✅ DURUM / 📁 ÇIKTI / ⚠️ NOTLAR / 🔜 SONRAKİ ADIM formatında raporla.

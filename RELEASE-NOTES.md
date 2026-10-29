@@ -1,9 +1,8 @@
-PluginLabs Hub 0.2.1 — katalog metinleri ve okunabilirlik güncellemesi.
+PluginLabs Hub 0.3.0 — görünüm seçenekleri ve ortak tasarım sistemi.
 
-- “Notion kataloğu” adı uygulama genelinde “Uygulama kataloğu” olarak değiştirildi.
-- 50 uygulamanın açıklaması, hedef kitle yerine uygulamanın ne işe yaradığını anlatacak şekilde yeniden yazıldı.
-- Türkçe ve Latin karakterleri destekleyen Inter değişken fontu uygulamaya gömüldü; font internet bağlantısı gerektirmez.
-- Ana yazı boyutu 16 px, kart açıklamaları 14 px; menü, etiket, düğme ve bilgi metinleri büyütüldü.
-- Koyu tasarım korunarak satır aralıkları, menü genişliği ve kart hizalamaları iyileştirildi.
+- Ayarlar → Görünüm: iki palet (Hub Yeşil, Iris) ve iki tema (Koyu, Açık). Varsayılan, önceki Hub Yeşil + Koyu görünümdür; seçim bu cihazda saklanır.
+- Renkler tek değişken sistemine taşındı; varsayılan görünüm 0.2.1 ile piksel piksel aynıdır.
+- Dört palet/tema birleşiminde metin, ikincil metin ve vurgu renkleri en az 4.5:1 kontrast ölçüsünü karşılar (otomatik testle).
+- PluginLabs tasarım sistemi dokümanları ve Claude Code / Codex skill'i depoya eklendi.
 
-50 ürünün Yükle/Aç akışı, notları, takip listeleri ve eklenti yönetimi korunur. Windows paketleri GitHub dışında derlenmiştir; imzasız önizlemedir. Gerçek Windows/Opera cihaz testi henüz yapılmadı. Tarayıcı yönetimi için Browser Bridge eşleştirmesi gerekir.
+İmzasız önizleme sürümüdür. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır; üretim dağıtımı için onaylı değildir. Gerçek Windows/Opera cihaz testi, DPI ve minimum pencere kontrolü yapılmadı. Tarayıcı yönetimi için Browser Bridge eşleştirmesi gerekir.
