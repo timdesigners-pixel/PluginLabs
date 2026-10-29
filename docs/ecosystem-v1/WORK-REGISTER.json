@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-28",
+  "coordinationChat": "01a18271-0676-7a73-a8af-81434db99c2c",
+  "policy": "One owner chat and branch/workspace per work item; evidence is required before done. This register does not execute a scheduler or enforce CI.",
+  "items": [
+    {
+      "id": "PL-GOV-001",
+      "status": "review",
+      "repo": "timdesigners-pixel/PluginLabs",
+      "ownerChat": "01a18265-66fc-7560-8b2c-361e38927500",
+      "branch": "docs/ecosystem-design-contract-v1",
+      "baseSha": "3ad9f7d7a9c947e1d6270444190dce790791d016",
+      "acceptance": [
+        "Versioned execution instructions",
+        "Source map and coverage limits",
+        "Chat roles and handoff template"
+      ],
+      "pr": "https://github.com/timdesigners-pixel/PluginLabs/pull/5"
+    },
+    {
+      "id": "PL-BASE-001",
+      "status": "ready",
+      "repo": "timdesigners-pixel/PluginLabs",
+      "ownerChat": "01a18271-0676-7a73-a8af-81434db99c2c",
+      "branch": null,
+      "baseSha": null,
+      "dependsOn": [],
+      "acceptance": [
+        "Refresh PR heads and CI/security evidence",
+        "Record source reference without UI changes"
+      ]
+    },
+    {
+      "id": "PL-DS-001",
+      "status": "backlog",
+      "ownerChat": "01a181f0-0387-7360-bd4b-ee459066306a",
+      "branch": null,
+      "baseSha": null,
+      "dependsOn": [
+        "PL-BASE-001"
+      ],
+      "acceptance": [
+        "Verify existing tokens against final CSS cascade",
+        "Real screenshot and unchanged appearance evidence"
+      ]
+    },
+    {
+      "id": "PL-CONTRACT-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-DS-001"
+      ],
+      "acceptance": [
+        "Executable manifest and evidence gates",
+        "Negative contract fixtures fail correctly"
+      ]
+    },
+    {
+      "id": "PL-PILOT-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-CONTRACT-001"
+      ],
+      "acceptance": [
+        "Leo Helper then Mind Palace install and rollback acceptance"
+      ]
+    },
+    {
+      "id": "MM-CAP-001",
+      "status": "ready",
+      "ownerChat": null,
+      "dependsOn": [],
+      "acceptance": [
+        "Find actual My Mind code and runtime",
+        "Record separate text, vision, tools and training evidence"
+      ]
+    },
+    {
+      "id": "MM-PILOT-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-PILOT-001",
+        "MM-CAP-001"
+      ],
+      "acceptance": [
+        "One authenticated consumer and device acceptance"
+      ]
+    },
+    {
+      "id": "PL-PLATFORM-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-PILOT-001"
+      ],
+      "acceptance": [
+        "Web/Android architecture decision",
+        "One real platform pilot"
+      ]
+    },
+    {
+      "id": "PL-CATALOG-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-PILOT-001"
+      ],
+      "acceptance": [
+        "Activate existing PL cards one at a time with platform evidence"
+      ]
+    },
+    {
+      "id": "PL-RELEASE-001",
+      "status": "backlog",
+      "ownerChat": null,
+      "dependsOn": [
+        "PL-PILOT-001"
+      ],
+      "acceptance": [
+        "Current security and target-platform evidence",
+        "Screenshots, SHA256, BUILD-INFO",
+        "Separate human release approval"
+      ]
+    }
+  ]
+}
