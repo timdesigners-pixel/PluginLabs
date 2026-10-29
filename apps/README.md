@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları
 
-PL-001–PL-053 arası 53 uygulamanın hiyerarşik dizini. Her klasörde ürünün ne işe yaradığını, hangi platformlar için yayınlanacağını ve özelliklerini anlatan bir `README.md` bulunur.
+PL-001–PL-053 arası 54 uygulamanın hiyerarşik dizini. Her klasörde ürünün ne işe yaradığını, hangi platformlar için yayınlanacağını ve özelliklerini anlatan bir `README.md` bulunur.
 
 Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/projects.json).
 
@@ -83,9 +83,15 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-051 | [Tweakster](06-hub-disi-urun-depolari/PL-051-tweakster/README.md) | W | Bağımsız ürün deposu mevcut (private) | — | [tweakster](https://github.com/timdesigners-pixel/tweakster) |
+| PL-051 | [Tweakster](06-hub-disi-urun-depolari/PL-051-tweakster/README.md) | W | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) | — | [tweakster](https://github.com/timdesigners-pixel/tweakster) |
 | PL-052 | [Extension Manager / Eklenti Yöneticisi](06-hub-disi-urun-depolari/PL-052-extension-manager/README.md) | Chrome | Bağımsız ürün deposu mevcut (private) | — | [extension-manager](https://github.com/timdesigners-pixel/extension-manager) |
 | PL-053 | [Mutfak Atölyesi](06-hub-disi-urun-depolari/PL-053-mutfak-atolyesi/README.md) | Web | Bağımsız ürün deposu mevcut (private) | — | [mutfak-atolyesi](https://github.com/timdesigners-pixel/mutfak-atolyesi) |
+
+## 07 · Yeni ürünler — PL-054+
+
+| Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
+| --- | --- | --- | --- | --- | --- |
+| PL-054 | [PinCart](07-yeni-urunler/PL-054-pincart/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 
 ---
 Oluşturma: 29.10.2026

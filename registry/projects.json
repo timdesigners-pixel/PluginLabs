@@ -42,6 +42,12 @@
       "slug": "hub-disi-urun-depolari",
       "title": "06 · Bağımsız ürün depoları — PL-051–053",
       "path": "apps/06-hub-disi-urun-depolari"
+    },
+    {
+      "id": "07",
+      "slug": "yeni-urunler",
+      "title": "07 · Yeni ürünler — PL-054+",
+      "path": "apps/07-yeni-urunler"
     }
   ],
   "projects": [
@@ -194,7 +200,7 @@
         "masaüstü uygulaması",
         "Chrome eklentisi (Manifest V3)"
       ],
-      "summary": "Seçilen web sayfalarından ürün bilgilerini çıkarır ve kaynaklarıyla birlikte arşivler.",
+      "summary": "Web sayfalarından ürün, ilan ve tablo verisini toplayan; fiyat/stok takibi yapan ve alışveriş listesinden sepet planı hazırlayan veri madencisi ve alışveriş asistanı.",
       "repo": null,
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper",
       "codexProject": {
@@ -1832,7 +1838,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak",
+      "status": "Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) · PL numarası Codex’ten teyit edilecek",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1846,7 +1852,7 @@
       "formFactors": [
         "masaüstü uygulaması"
       ],
-      "summary": "PC hızlandırma uygulaması (masaüstü).",
+      "summary": "PluginLabs ailesinin Windows PC hızlandırma uygulaması.",
       "repo": {
         "owner": "timdesigners-pixel",
         "name": "tweakster",
@@ -1860,7 +1866,7 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": null
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
     },
     {
       "id": "PL-052",
@@ -1872,7 +1878,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak",
+      "status": "Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1900,7 +1906,7 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": null
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
     },
     {
       "id": "PL-053",
@@ -1912,7 +1918,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · Notion’da “01 · PluginLabs & Yazılım” sayfasında adı geçiyor, ürün kartı yok · özellik listesi depodan doğrulanacak",
+      "status": "Bağımsız ürün deposu mevcut (private) · “01 · PluginLabs & Yazılım” sayfasında adı geçiyor · özellik listesi depodan doğrulanacak",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1940,7 +1946,42 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4078aa13d8f981b193b9d30a0f596dd0"
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
+    },
+    {
+      "id": "PL-054",
+      "number": 54,
+      "slug": "pincart",
+      "name": "PinCart",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "Yeni fikir · kullanıcı notundan ürünleştirme",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Chrome (ve Chromium tarayıcılar) eklentisi; aynı tarayıcıyla W / L / M",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).",
+      "repo": null,
+      "appPath": "apps/07-yeni-urunler/PL-054-pincart",
+      "codexProject": {
+        "name": "PL-054 · PinCart",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1"
     }
   ]
 }

@@ -21,6 +21,7 @@ KATEGORILER = [
     ('04', 'arastirma-yazma-ve-bilgi-akislari', '04 · Araştırma, yazma ve bilgi akışları — PL-031–040'),
     ('05', 'gelistirici-ve-profesyonel-araclar', '05 · Geliştirici ve profesyonel araçlar — PL-041–050'),
     ('06', 'hub-disi-urun-depolari', '06 · Bağımsız ürün depoları — PL-051–053'),
+    ('07', 'yeni-urunler', '07 · Yeni ürünler — PL-054+'),
 ]
 KAT_BY_TITLE = {t: (n, s, t) for n, s, t in KATEGORILER}
 
@@ -38,20 +39,21 @@ REPOLAR = {
 EK = [
     {
         'id': 'PL-051', 'name': 'Tweakster',
-        'category': KATEGORILER[5][2], 'source': None,
-        'description': 'PC hızlandırma uygulaması (masaüstü).',
+        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
+        'description': 'PluginLabs ailesinin Windows PC hızlandırma uygulaması.',
         'fields': {
-            'Durum': 'Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak',
+            'Durum': 'Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) · PL numarası Codex’ten teyit edilecek',
             'Platform': 'Windows masaüstü (Codex: PL · Masaüstü · Tweakster)',
-            'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Tweakster (PC hızlandırma uygulaması)”. Ayrıntılı özellik listesi henüz bu klasöre aktarılmadı; tweakster deposunun README ve kaynak kodundan tamamlanacak.',
+            'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Tweakster (PC hızlandırma uygulaması)”. Ayrıntılı özellik listesi henüz tanımlanmadı; kod yazıldıkça tweakster deposundan tamamlanacak.',
+            'Teknik bağımlılık ve sınır': 'Depo kuralları (tweakster README): Her ayar değişikliği geri alınabilir olmalı; uygulamadan önce geri yükleme noktası alınır. Yönetici izni yalnız gerektiği adımda istenir. Kabul manifesti: PluginLabs docs/ecosystem-v1/contracts/app-manifest.schema.json (rollback kapısı zorunlu).',
         },
     },
     {
         'id': 'PL-052', 'name': 'Extension Manager / Eklenti Yöneticisi',
-        'category': KATEGORILER[5][2], 'source': None,
+        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
         'description': 'Eklenti yöneticisi (Chrome eklentisi).',
         'fields': {
-            'Durum': 'Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak',
+            'Durum': 'Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek',
             'Platform': 'Chrome eklentisi (Codex: PL · Eklenti · Extension Manager)',
             'MVP ve temel akış': 'Kaynak: kullanıcı beyanı (28.10.2026) — “Extension Manager / Eklenti Yöneticisi (Chrome eklentisi)”. Ayrıntılı özellik listesi extension-manager deposundan tamamlanacak.',
             'Teknik bağımlılık ve sınır': 'PluginLabs Hub içindeki “Eklenti yöneticisi” ekranı ve Hub Tarayıcı Uzantısı (Browser Bridge) ile aynı ürün değildir; ayrı tutulur.',
@@ -59,19 +61,49 @@ EK = [
     },
     {
         'id': 'PL-053', 'name': 'Mutfak Atölyesi',
-        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4078aa13d8f981b193b9d30a0f596dd0',
+        'category': KATEGORILER[5][2], 'source': 'https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3',
         'description': None,
         'fields': {
-            'Durum': 'Bağımsız ürün deposu mevcut (private) · Notion’da “01 · PluginLabs & Yazılım” sayfasında adı geçiyor, ürün kartı yok · özellik listesi depodan doğrulanacak',
+            'Durum': 'Bağımsız ürün deposu mevcut (private) · “01 · PluginLabs & Yazılım” sayfasında adı geçiyor · özellik listesi depodan doğrulanacak',
             'Platform': 'Web (Codex: PL · Web · Mutfak Atölyesi)',
             'MVP ve temel akış': 'Ayrıntılı özellik listesi mutfak-atolyesi deposundan tamamlanacak.',
+        },
+    },
+    {
+        'id': 'PL-054', 'name': 'PinCart',
+        'category': KATEGORILER[6][2], 'source': 'https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1',
+        'description': 'Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).',
+        'fields': {
+            'Durum': 'Yeni fikir · kullanıcı notundan ürünleştirme',
+            'Platform': 'Chrome (ve Chromium tarayıcılar) eklentisi; aynı tarayıcıyla W / L / M',
+            'Kullanıcı ve problem': 'Webde gezinirken beğendiği ürünleri farklı sitelerde sepet, favori ve sekme olarak dağınık bırakan; sonra fiyatı, satıcısı ve özelliklerini yeniden aramak zorunda kalan alışveriş kullanıcıları.',
+            'MVP ve temel akış': 'Ürün sayfasında tek tıkla işaretle → ürün adı, fiyat, görseller, açıklama, özellikler ve kaynak site otomatik kaydedilir → katalog ekranında listele, filtrele, etiketle → “alındı” işaretle → JSON/CSV içe/dışa aktar. İlk sürüm yerel depolama ve yapısal veri (JSON-LD/microdata) okuyan ürün sayfaları.',
+            'Yapay zekânın rolü': 'Aynı ürünü farklı sitelerde eşleştirir, benzer ürün önerir, özellikleri karşılaştırma tablosuna dönüştürür; fiyat ve stok değerleri her zaman kaynaktan okunur.',
+            'Teknik bağımlılık ve sınır': 'Kullanıcı işaretlemeden sayfa okunmaz; rakip fiyatlar yalnız izinli/erişilebilir kaynaklardan ve tarihli gösterilir. Captcha ve bot koruması aşılmaz. Hesap parolası ve ödeme bilgisi toplanmaz; satın alma otomatik yapılmaz. MV3 servis çalışanı nedeniyle sürekli arka plan fiyat taraması garanti edilmez.',
+            'Gelir hipotezi': 'Ücretsiz sınırlı katalog; Pro fiyat alarmı, rakip fiyat karşılaştırma, bütçe planı ve cihazlar arası eşitleme. Ortaklık (affiliate) bağlantısı kullanılırsa açık etiketlenir.',
+            'Doğrulama ölçütü': 'İşaretlenen üründe ad/fiyat/görsel/kaynak alanı ≥%95 eksiksiz; ilk haftada kullanıcı başına ≥5 kayıt; içe/dışa aktarmada veri kaybı sıfır.',
+            'Öncelik ve efor': 'P1 · M (öneri); PL-004 The Ultimate Scrapper’ın takip/sepet motorunu kullanan hafif tüketici ön yüzü.',
+            'Ad önerisi': 'Çalışma adı PinCart (işaretle → kaydet → sepete dönüştür). Alternatifler: Wishkeeper, Göz Hapsi. Nihai ad kullanıcı kararıdır.',
+            'İşaretleyerek kaydet': 'Sayfadaki ürün kartını veya ürün sayfasını tek tıkla (simge, sağ tık menüsü veya kısayol) kaydetme; yanlış algılanan alanı elle düzeltme.',
+            'Katalog': 'Tüm kayıtların kart/liste görünümü; site, kategori, etiket, fiyat aralığı, alındı/bekliyor filtreleri; arama.',
+            'Kaynak site ve rakip fiyatlar': 'Bulunduğu site, son görülen fiyat ve tarih; aynı ürünün diğer sitelerdeki teklifleri ve fiyat farkı.',
+            'Ürün ayrıntısı': 'Açıklama, teknik özellikler, varyantlar ve görsel galeri; en iyi görselin kapak olarak seçilmesi.',
+            'İçe / dışa aktarma': 'JSON ve CSV; başka cihaza taşıma ve yedek.',
+            'Alındı olarak işaretleme': 'Satın alınan ürün, alınan fiyat ve tarihle arşive taşınır; silinmez.',
+            'Bütçe planı': 'Liste/koleksiyon başına bütçe, öncelik sırası, planlanan ay; toplam ve kalan bütçe.',
+            'Benzer ürünler': 'Kaydedilen ürüne benzer alternatiflerin kaynaklı listesi.',
+            'Fiyat düşüşü uyarısı (Pro)': 'Hedef fiyat veya yüzde düşüşte bildirim.',
+            'Koleksiyonlar ve paylaşım': 'Doğum günü, ev, teknoloji gibi listeler; salt okunur paylaşım bağlantısı (sonraki faz).',
+            'Sepete dönüştür': 'Seçili ürünlerden PL-004 sepet planı oluşturma; ödeme otomatik değil.',
+            'Veri modeli (öneri)': 'WishItem (id, title, url, sourceSite, price, currency, seenAt, images, primaryImage, description, attributes, variant, tags, collectionId, status: bekliyor|alındı|arşiv, purchasedPrice, purchasedAt) · Collection (id, ad, bütçe, para birimi, planlanan dönem) · Offer ve WatchRule PL-004 ile ortak şema. Kimlikler UUID, tarihler ISO 8601.',
+            'Geliştirme işleri': 'PC-01 işaretleyerek kaydet + yapısal veri okuyucu (3 sitede ≥%95) · PC-02 katalog/filtre/arama (500 kayıtta ≤1 sn) · PC-03 alındı işaretleme ve arşiv · PC-04 JSON/CSV içe/dışa aktarma (kayıp sıfır) · PC-05 bütçe planı (deterministik toplam) · PC-06 rakip fiyat ve benzer ürün (PL-004 motoru; her teklif kaynak ve tarihli).',
         },
     },
 ]
 
 TR = str.maketrans({'ı': 'i', 'İ': 'i', 'ş': 's', 'Ş': 's', 'ğ': 'g', 'Ğ': 'g', 'ü': 'u', 'Ü': 'u',
                     'ö': 'o', 'Ö': 'o', 'ç': 'c', 'Ç': 'c', '’': '', "'": ''})
-SLUG_OZEL = {'PL-010': '1001-designs-pin-to-component', 'PL-052': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
+SLUG_OZEL = {'PL-054': 'pincart', 'PL-010': '1001-designs-pin-to-component', 'PL-052': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
 
 
 def slugify(id_, name):
@@ -118,6 +150,23 @@ def oncelik(text):
     return (m.group(1), m.group(2)) if m else (None, None)
 
 
+V2_004 = {
+    'v2 · Konumlandırma (29.10.2026)': 'Kullanıcı kararıyla ürün yalnız ürün ve fiyat kazıyan bir arşivci olmaktan çıkarılıp veri madencisi ve alışveriş asistanı (The Ultimate Scrapper — Data Miner & Shopping Assistant) olarak genişletildi. İlk kart korunur; bu alanlar geliştirme şartnamesidir. Yeni efor önerisi: P1 · XL.',
+    'v2 · Kazıma motoru': 'Sayfa ve liste kazıma; önce JSON-LD, microdata ve OpenGraph gibi yapısal veriyi, yoksa DOM seçicilerini okur. Görsel seçici kaydedici ile alan tıklanıp etiketlenir, tarif (recipe) olarak kaydedilir ve aynı sitedeki diğer sayfalara uygulanır. Sayfalama, “daha fazla yükle” ve sonsuz kaydırma.',
+    'v2 · Veri toplama (Data Miner)': 'Çok kaynaklı veri setleri; normalizasyon, tekilleştirme ve aynı ürün eşleştirme. Masaüstü botuyla zamanlanmış toplama ve değişiklik geçmişi. Dışa aktarma: CSV, JSON, XLSX, SQLite ve arşiv paketi (veri + görseller).',
+    'v2 · Fiyat ve stok takibi': 'İzleme listesi; hedef fiyat, yüzde düşüş, stok geldi/bitti ve varyant/satıcı değişikliği kuralları. Fiyat geçmişi grafiği, en düşük/ortalama fiyat ve geçmişe göre gerçek indirim göstergesi. Masaüstü/mobil bildirim, sessiz saatler, kaynak başına kontrol sıklığı sınırı.',
+    'v2 · Çok sayfalı tablo okuma': 'HTML tabloları ve sanal kaydırmalı veri tablolarını algılar; sonraki düğmesi, sayfa numaraları veya URL deseniyle tüm sayfaları dolaşıp tek veri setinde birleştirir. Başlık eşleştirme, birleşik hücreler, sütun tipi çıkarımı, tekrar satır ayıklama, kaldığı sayfadan devam; atlanan sayfa ve okunamayan satır raporu.',
+    'v2 · Otomatik sepet oluşturma': 'Alışveriş veya izleme listesinden her kalem için uygun teklifi (fiyat + kargo + teslim süresi + satıcı puanı) seçen sepet planı; tek veya çok siteli bölünmüş sepet, bütçe tavanı, toplam maliyet özeti. Kullanıcı onayıyla desteklenen sitelerde sepete ekleme. Ödeme ve sipariş onayı hiçbir zaman otomatik yapılmaz.',
+    'v2 · Alışveriş asistanı': 'Doğal dil isteğini arama ölçütlerine çevirir; adayları kaynaklı karşılaştırma tablosunda sunar, eksik bilgiyi bilinmiyor olarak gösterir. Model fiyat üretmez; fiyat, stok, toplam ve kargo kaynaktan okunur ve deterministik hesaplanır.',
+    'v2 · Sınırlar': 'Kullanıcı başlatmalı ve kullanıcının kendi oturumuyla; captcha, bot koruması veya ücret duvarı aşılmaz. ToS/robots farkındalığı ve oran sınırı. Parola ve ödeme bilgisi toplanmaz; çerezler OS kasasında şifreli. Sepete ekleme yalnız test edilmiş bağlayıcılarda, önizleme ve geri alma ile. Zamanlanmış takip masaüstü botu gerektirir (MV3 sınırı). Ortak çekirdek: PL-040, PL-019, PL-020, PL-054.',
+    'v2 · Platformlar': 'Chrome eklentisi (seçici kaydedici, sayfa/tablo okuma, sepete ekleme) · W / L / M masaüstü botu (zamanlayıcı, toplu toplama, yerel veritabanı, görsel arşivi) · mobil uygulama (bildirim ve çevrimdışı görüntüleme).',
+    'v2 · Veri modeli eklemeleri': 'Dataset, ScrapeRecipe, TableExtract, Offer, WatchRule, Alert, CartPlan, CartItem; UUID kimlik, ISO 8601 tarih, SQL uyumlu ve API-dostu şema.',
+    'v2 · Geliştirme işleri': 'TUS-01 yapısal veri + DOM okuyucu (iki kaynakta ≥%95) · TUS-02 görsel seçici kaydedici ve tarif (10 sayfada doğru alan) · TUS-03 çok sayfalı tablo (20 sayfada satır sayısı birebir, tekrar sıfır, devam) · TUS-04 izleme kuralları ve bildirim (çift bildirim sıfır) · TUS-05 sepet planı (bütçe tavanı, deterministik toplam) · TUS-06 onaylı sepete ekleme (onaysız ekleme ve ödeme adımı sıfır) · TUS-07 doğal dil alışveriş isteği (kaynaksız iddia sıfır) · TUS-08 dışa aktarma ve arşiv (kayıp sıfır).',
+}
+for _it in cat['items']:
+    if _it['id'] == 'PL-004':
+        _it['fields'].update(V2_004)
+        _it['description'] = 'Web sayfalarından ürün, ilan ve tablo verisini toplayan; fiyat/stok takibi yapan ve alışveriş listesinden sepet planı hazırlayan veri madencisi ve alışveriş asistanı.'
 items = list(cat['items']) + EK
 kayitlar = []
 for it in items:

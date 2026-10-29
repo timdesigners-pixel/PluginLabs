@@ -6,11 +6,12 @@
 | --- | --- |
 | Kimlik | `PL-052` · `extension-manager` |
 | Kategori | 06 · Bağımsız ürün depoları — PL-051–053 |
-| Durum | Bağımsız ürün deposu mevcut (private) · Notion kataloğunda kartı yok · özellik listesi depodan doğrulanacak |
+| Durum | Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak · PL numarası Codex’ten teyit edilecek |
 | Hedef platformlar | Chrome |
 | Dağıtım biçimi | Chrome eklentisi (Manifest V3) |
 | Geliştirme deposu | [timdesigners-pixel/extension-manager](https://github.com/timdesigners-pixel/extension-manager) — *eşleşme teyit edilecek* |
 | Codex projesi | `PL-052 · Extension Manager / Eklenti Yöneticisi` — ikinci klasör: PluginLabs |
+| Notion kaynağı | [Notion](https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3) |
 
 ## Ne işe yarar
 
