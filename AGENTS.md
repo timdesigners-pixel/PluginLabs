@@ -52,3 +52,10 @@
 - Separate observed facts, historical reports and proposals. Record per-platform passed/failed/not-run evidence with commit, environment and real screenshots. PR descriptions must include real app screenshots, labeling historical images; build delivery must include screenshots, SHA256 and BUILD-INFO.
 - Do not open parallel implementation work on the same files without an ownership handoff. Scope changes update the work item and decisions; a blocker records a concrete next step, not an invented success.
 - These instructions guide agents; mandatory enforcement must be implemented and verified in CI/branch protection. Never describe this documentation as a deployed gate.
+## PluginLabs Tasarım Sistemi (Codex)
+
+- Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-design/SKILL.md` dosyasını oku ve uygula.
+- Ortak kaynak: Claude Code aynı skill'i `.claude/skills/pluginlabs-design/` altından okur. İki kopya **aynıdır**; değişiklik yalnız `design-system/pluginlabs-design/` (kanonik) klasöründe yapılır ve `kurulum/kur.sh` ile eşitlenir.
+- Mevcut tasarıma dokunma: yalnız `[data-pl]` kapsayıcısı, `--pl-` tokenları ve `pl-` sınıfları.
+- Görev sonunda 📌 GÖREV / ✅ DURUM / 📁 ÇIKTI / ⚠️ NOTLAR / 🔜 SONRAKİ ADIM formatında raporla.
+- Uygulama paletleri: `hub-yesil` (varsayılan, mevcut Windows Hub) ve `iris`; modlar `koyu` (varsayılan) ve `acik`. Seçim Ayarlar → Görünüm'den yapılır; tokenlar `ui/styles.css` + `ui/themes.css` içindedir (`node scripts/generate-themes.cjs` ile yeniden üretilir). Palet çelişkisinde `AGENTS.md` üstteki "Design language" bölümü ve mevcut Hub varsayılanı geçerlidir.

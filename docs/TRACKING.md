@@ -18,3 +18,6 @@ Altı maddelik [kurulum kontrol listesi](SETUP-CHECKLIST.md) her maddeyi kanıt 
 Canlı kontrol için ağ erişiminden sonra `gh pr view 4 --repo timdesigners-pixel/PluginLabs`, `gh issue view 2 --repo timdesigners-pixel/PluginLabs` ve `gh pr checks 4 --repo timdesigners-pixel/PluginLabs` kullanılır. Notion PluginLabs sayfasında aynı #2/#4 bağlantıları ve özgün görev metni elle ya da yetkili Notion bağlantısıyla kontrol edilir. Notion bir planlama kaynağı, `resources/notion-catalog.json` ise tarihli katalog snapshot'ıdır; ikisi otomatik senkronizasyon olarak sunulmaz.
 
 GitHub API okuması daha sonra başarılı oldu: PR #4 açık ve doğru dalda; önceki commit `8ca463a` için iki platform CI sonucu SUCCESS. Main koruma endpoint'i entegrasyon yetkisi nedeniyle 403: güncel ayarlar doğrulanmış sayılmaz.
+| Codex Cloud ortamı | [kurulum adımları](CODEX-CLOUD.md) | GitHub erişimi var; ortam publish durumu doğrulanmadı |
+
+Notion kapsam/ürün kararı kaynağıdır; GitHub issue uygulanabilir kabul ölçütünü, PR değişikliği ve test kanıtını tutar. Yeni işte iki yönlü bağlantı kurulur. Issue kapanışı ancak kabul kanıtıyla Notion durumuna yansıtılır; PR açılması veya CI dosyası yazılması işi tamamlamaz. 50 ürün fikrinin her biri için gereksiz yeni issue açılmaz; bu çalışma aktif eklenti yöneticisi görevini bağlar.

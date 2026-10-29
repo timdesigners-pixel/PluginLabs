@@ -1,4 +1,4 @@
-# PluginLabs Hub 0.2.1
+# PluginLabs Hub 0.3.0
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
@@ -140,6 +140,10 @@ MV3 arka plan uyandığında yaklaşık 30 saniyede eşitler; panel açıkken ü
 Notion kataloğu ekranı PL-001–PL-050 özgün adlarını, platformlarını, durumunu, ilk sürüm akışını, AI rolünü, bağımlılıklarını, gelir hipotezini, doğrulama ölçütünü ve öncelik/eforunu gösterir. Detayda tam kapsam ve Notion kaynak bağlantısı bulunur. Kaynaklar `resources/notion-catalog.json` içinde 26.10.2026 tarihli bir anlık görüntüdür; canlı senkronizasyon değildir. `GET /v1/ideas`, `catalog.read` izniyle kartları döndürür. 50 kartın tamamı Yükle düğmesiyle gerçek bir yerel ürün önizleme paketi kurar. Paket; özgün ürün kapsamını, kalıcı özel notları, kişisel geliştirme/inceleme listesini ve ayrı ayarları içerir. Kurulan paket Uygulamalarım bölümünden açılır, devre dışı bırakılır veya kaldırılır. Notlar paket sürümünden ayrı saklanır. Önizleme paketi kurulması, Notion’da planlanan bütün ana özelliklerin geliştirilmiş olduğu anlamına gelmez; bu durum ürün içinde açıkça gösterilir. Leo Helper ve Mind Palace için gerçek bağımsız Windows uygulamaları ayrıca katalogda bulunur.
 
 Testler: `npm test`; masaüstü UI için Playwright kurulu ortamda `PLAYWRIGHT_MODULE=/path/to/playwright DISPLAY=:99 node test/extension-ui.cjs`. Tarayıcı izinleri ve gerçek mağaza eklentileri Windows Chrome/Opera cihazlarında ayrıca doğrulanmalıdır.
+
+## 0.3.0 — Görünüm seçenekleri
+
+Ayarlar → Görünüm'den Hub Yeşil veya Iris paleti ve Koyu veya Açık tema seçilir. Varsayılan Hub Yeşil + Koyu'dur. Palet tokenları `ui/styles.css` ve `node scripts/generate-themes.cjs` ile üretilen `ui/themes.css` içindedir.
 
 ## 0.2.1 — Okunabilirlik
 

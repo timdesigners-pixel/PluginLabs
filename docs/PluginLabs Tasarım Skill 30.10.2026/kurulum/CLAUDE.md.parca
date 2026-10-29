@@ -1,0 +1,5 @@
+## PluginLabs Tasarım Sistemi (Claude Code)
+
+- UI/stil işlerinde `pluginlabs-design` skill'ini kullan (`.claude/skills/pluginlabs-design/SKILL.md`).
+- Codex aynı skill'i `.agents/skills/pluginlabs-design/` altından okur; kanonik kaynak `design-system/pluginlabs-design/`. Değişiklikten sonra `bash kurulum/kur.sh` çalıştır.
+- Mevcut tasarıma dokunma: yalnız `[data-pl]`, `--pl-` tokenları, `pl-` sınıfları. Silme yok, `_arsiv/GG.AA.YYYY/`.
