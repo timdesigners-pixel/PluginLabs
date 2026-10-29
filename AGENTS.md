@@ -60,3 +60,10 @@
 - Every PR includes a handoff note based on `docs/ortak-calisma/DEVIR-SABLONU.md`; the agent that did not open a PR reviews it.
 - Application hierarchy: `apps/<category>/<PL-ID-slug>/README.md` with machine-readable `registry/projects.json`. Update both when adding or renaming a product. Repository graduation rules: `docs/REPO-HIYERARSISI.md`.
 - Notion-sourced content (`resources/notion-catalog.json` and the "Notion kartının özgün metni" sections) must not be shortened, summarised or rewritten. Archive instead of deleting (`docs/arsiv/`).
+## PluginLabs Tasarım Sistemi (Codex)
+
+- Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-design/SKILL.md` dosyasını oku ve uygula.
+- Ortak kaynak: Claude Code aynı skill'i `.claude/skills/pluginlabs-design/` altından okur. İki kopya **aynıdır**; değişiklik yalnız `design-system/pluginlabs-design/` (kanonik) klasöründe yapılır ve `kurulum/kur.sh` ile eşitlenir.
+- Mevcut tasarıma dokunma: yalnız `[data-pl]` kapsayıcısı, `--pl-` tokenları ve `pl-` sınıfları.
+- Görev sonunda 📌 GÖREV / ✅ DURUM / 📁 ÇIKTI / ⚠️ NOTLAR / 🔜 SONRAKİ ADIM formatında raporla.
+- Uygulama paletleri: `hub-yesil` (varsayılan, mevcut Windows Hub) ve `iris`; modlar `koyu` (varsayılan) ve `acik`. Seçim Ayarlar → Görünüm'den yapılır; tokenlar `ui/styles.css` + `ui/themes.css` içindedir (`node scripts/generate-themes.cjs` ile yeniden üretilir). Palet çelişkisinde `AGENTS.md` üstteki "Design language" bölümü ve mevcut Hub varsayılanı geçerlidir.
