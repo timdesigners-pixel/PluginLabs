@@ -24,14 +24,14 @@
 }
 :root {
   color-scheme: dark;
-  --bg: #101214;
-  --surface: #191c1f;
-  --surface2: #202427;
-  --line: #2a2e31;
-  --muted: #929a9e;
-  --text: #edf0eb;
-  --accent: #c1f78a;
-  --radius: 16px;
+  --bg: var(--pl-color-background);
+  --surface: var(--pl-color-surface);
+  --surface2: var(--pl-color-surface-raised);
+  --line: var(--pl-color-border);
+  --muted: var(--pl-color-muted);
+  --text: var(--pl-color-text);
+  --accent: var(--pl-color-accent);
+  --radius: var(--pl-radius-root);
 }
 * {
   box-sizing: border-box;
@@ -40,11 +40,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font:
-    16px/1.6 "Inter Variable",
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  font: var(--pl-type-body-size) / var(--pl-type-body-line-height)
+    var(--pl-font-family);
   display: flex;
   min-height: 100vh;
 }
@@ -76,7 +73,7 @@ aside {
   width: 248px;
   position: fixed;
   inset: 0 auto 0 0;
-  background: #151719;
+  background: var(--pl-color-sidebar);
   border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
@@ -136,7 +133,7 @@ aside {
   flex-shrink: 0;
 }
 nav button {
-  color: #aab0b2;
+  color: var(--pl-component-navigation-text);
   border: 0;
   background: transparent;
   width: 100%;
@@ -145,7 +142,7 @@ nav button {
   align-items: center;
   gap: 13px;
   padding: 13px 12px;
-  border-radius: 8px;
+  border-radius: var(--pl-radius-menu);
   font-size: 15px;
   margin: 3px 0;
 }
@@ -156,11 +153,11 @@ nav button > span {
   line-height: 20px;
 }
 nav button:hover {
-  background: #202426;
+  background: var(--pl-component-navigation-hover);
   color: white;
 }
 nav button.active {
-  background: #273124;
+  background: var(--pl-component-navigation-selected);
   color: var(--accent);
 }
 nav b {
@@ -349,12 +346,7 @@ p {
   display: flex;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(
-    ellipse at 85% 60%,
-    #384d32 0%,
-    #232e25 26%,
-    #1d2420 62%
-  );
+  background: var(--pl-gradient-hero);
   border: 1px solid #354132;
   border-radius: var(--radius);
   padding: 35px 34px;
@@ -444,10 +436,10 @@ p {
   color: var(--accent);
 }
 .btn {
-  border: 1px solid #3a4144;
-  color: #d9dfd9;
-  background: #292e30;
-  border-radius: 7px;
+  border: 1px solid var(--pl-component-button-border);
+  color: var(--pl-component-button-text);
+  background: var(--pl-component-button-background);
+  border-radius: var(--pl-radius-button);
   padding: 9px 13px;
   font-size: 14px;
   display: inline-flex;
@@ -475,7 +467,7 @@ p {
 }
 .button-row {
   display: flex;
-  gap: 8px;
+  gap: var(--pl-space8);
   flex-wrap: wrap;
 }
 .app-grid {
@@ -485,7 +477,7 @@ p {
 }
 .card {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--pl-radius-card);
   background: var(--surface);
   padding: 22px;
   min-width: 0;
@@ -603,7 +595,7 @@ p {
   min-height: 0;
 }
 .api-card {
-  background: radial-gradient(at 100% 0%, #29312a, #191d1e 70%);
+  background: var(--pl-gradient-api-card);
   display: flex;
   flex-direction: column;
 }
@@ -754,9 +746,9 @@ input.text,
 textarea,
 select {
   color: var(--text);
-  background: #121618;
-  border: 1px solid #353e41;
-  border-radius: 7px;
+  background: var(--pl-component-field-background);
+  border: 1px solid var(--pl-component-field-border);
+  border-radius: var(--pl-radius-field);
   padding: 11px 12px;
   width: 100%;
   font-size: 15px;
@@ -802,9 +794,9 @@ textarea {
   gap: 20px;
 }
 dialog {
-  background: #191e20;
-  border: 1px solid #3b4644;
-  border-radius: 15px;
+  background: var(--pl-component-dialog-background);
+  border: 1px solid var(--pl-component-dialog-border);
+  border-radius: var(--pl-radius-dialog);
   color: var(--text);
   width: 560px;
   max-width: 90vw;
@@ -845,7 +837,7 @@ dialog::backdrop {
   border-radius: 9px;
   padding: 12px 20px;
   font-size: 15px;
-  box-shadow: 0 5px 40px #0008;
+  box-shadow: var(--pl-shadow-toast);
   max-width: 620px;
   display: none;
   z-index: 5;
@@ -943,11 +935,11 @@ footer {
 @media (prefers-reduced-motion: no-preference) {
   button {
     transition:
-      background 0.15s,
-      border-color 0.15s;
+      background var(--pl-motion-button),
+      border-color var(--pl-motion-button);
   }
   .hero-art .ai-symbol {
-    animation: breathe 5s ease-in-out infinite;
+    animation: breathe var(--pl-motion-legacy-breathe) ease-in-out infinite;
   }
   @keyframes breathe {
     50% {
@@ -1037,19 +1029,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 p {
-  line-height: 1.75;
+  line-height: var(--pl-type-paragraph-line-height);
 }
 .card p {
-  font-size: 14px;
-  line-height: 1.75;
+  font-size: var(--pl-type-card-description-size);
+  line-height: var(--pl-type-card-description-line-height);
 }
 .card-top h3 {
   font-size: 16px;
   line-height: 1.4;
 }
 nav button {
-  font-size: 14px;
-  gap: 10px;
+  font-size: var(--pl-type-navigation-size);
+  gap: var(--pl-type-navigation-gap);
 }
 .brand,
 .brand small,
@@ -1057,12 +1049,12 @@ nav button {
   line-height: normal;
 }
 aside {
-  width: 268px;
+  width: var(--pl-layout-sidebar);
   overflow-y: auto;
 }
 main {
-  margin-left: 268px;
-  width: calc(100% - 268px);
+  margin-left: var(--pl-layout-sidebar);
+  width: calc(100% - var(--pl-layout-sidebar));
 }
 .search {
   width: 310px;
@@ -1085,15 +1077,15 @@ main {
   font-size: 14px;
 }
 dialog {
-  width: 650px;
+  width: var(--pl-layout-dialog-width);
 }
 @media (max-width: 1150px) {
   aside {
-    width: 230px;
+    width: var(--pl-layout-sidebar-compact);
   }
   main {
-    margin-left: 230px;
-    width: calc(100% - 230px);
+    margin-left: var(--pl-layout-sidebar-compact);
+    width: calc(100% - var(--pl-layout-sidebar-compact));
   }
   .search {
     width: 230px;
@@ -1110,7 +1102,7 @@ dialog {
   margin-bottom: 18px;
 }
 .spec-text {
-  font-family: "Inter Variable", "Segoe UI", Arial, sans-serif;
+  font-family: var(--pl-font-family);
 }
 .code {
   font-size: 13px;
