@@ -35,7 +35,12 @@ function fromHsl({ h, s, l, a }) {
   return rgb2hex(r + m, g + m, b + m, a);
 }
 const IRIS_HUE = 246;
+const keep = (hex) => {
+  const c = toHsl(hex);
+  return c.a !== undefined && c.s === 0 && (c.l === 0 || c.l === 1);
+};
 function iris(hex) {
+  if (keep(hex)) return hex;
   const c = toHsl(hex);
   const green = c.h >= 60 && c.h <= 150 && c.s > 0.12;
   const neutral = c.s <= 0.2 && c.h >= 90 && c.h <= 240;
@@ -47,14 +52,21 @@ function iris(hex) {
   return fromHsl(c);
 }
 const invert = (hex) => {
+  if (keep(hex)) return hex;
   const c = toHsl(hex);
   c.l = 1 - c.l;
   return fromHsl(c);
 };
 
 const css = fs.readFileSync(cssPath, "utf8");
-const root = css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {")));
-const vars = Object.fromEntries([...root.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]+)\s*;/g)].map((m) => [m[1], m[2].toLowerCase()]));
+const tokensPath = path.join(__dirname, "../ui/design-tokens.css");
+const tokens = fs.readFileSync(tokensPath, "utf8");
+const rootOf = (src) => src.slice(src.indexOf(":root {"), src.indexOf("\n}", src.indexOf(":root {")));
+const HEX = /#[0-9a-fA-F]{3,8}\b/g;
+// styles.css :root içindeki --c-* sabit renkleri + design-tokens.css içindeki renk içeren tüm tokenlar
+const vars = Object.fromEntries(
+  [...rootOf(css).matchAll(/--(c-[\w-]+):\s*(#[0-9a-fA-F]+)\s*;/g), ...rootOf(tokens).matchAll(/--([\w-]+):\s*([^;]*#[0-9a-fA-F]{3,8}\b[^;]*);/g)].map((m) => [m[1], m[2].trim().toLowerCase()]),
+);
 
 // Elle seçilen yapısal renkler (değerle eşleşen tüm --c-* değişkenlerine de uygulanır)
 const structural = {
@@ -77,8 +89,7 @@ let out = `/* Otomatik üretildi: node scripts/generate-themes.cjs — elle düz
 for (const [id, sel] of Object.entries(selectors)) {
   out += `${sel} {\n  color-scheme: ${id.endsWith("light") ? "light" : "dark"};\n`;
   for (const [k, v] of Object.entries(vars)) {
-    if (k === "radius") continue;
-    out += `  --${k}: ${derive[id](v)};\n`;
+    out += `  --${k}: ${v.replace(HEX, (h) => derive[id](h))};\n`;
   }
   if (id.endsWith("light")) out += `  --c-white: ${derive[id](names.text)};\n`;
   out += "}\n";
