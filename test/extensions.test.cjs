@@ -158,14 +158,20 @@ test("VS Code adapter parses inventory and passes arguments without shell; faile
   const h = await setup(t),
     folder = path.join(h.root, "fixture-code");
   await fs.mkdir(folder);
-  const file = path.join(folder, "code");
+  const windows = process.platform === "win32";
+  const file = path.join(folder, windows ? "code.exe" : "code");
+  const cli = path.join(folder, "resources", "app", "out", "cli.js");
+  if (windows) {
+    await fs.copyFile(process.execPath, file);
+    await fs.mkdir(path.dirname(cli), { recursive: true });
+  }
   await fs.writeFile(
-    file,
+    windows ? cli : file,
     '#!/usr/bin/env node\nconst fs=require("fs");const args=process.argv.slice(2);if(args[0]==="--list-extensions")console.log("publisher.example@1.2.3");else fs.writeFileSync(' +
       JSON.stringify(path.join(folder, "args.json")) +
       ",JSON.stringify(args));\n",
   );
-  await fs.chmod(file, 0o700);
+  if (!windows) await fs.chmod(file, 0o700);
   await h.appExtensions.connect(file);
   assert.equal(h.appExtensions.snapshot().items[0].id, "publisher.example");
   assert(!JSON.stringify(h.snapshot()).includes(file));

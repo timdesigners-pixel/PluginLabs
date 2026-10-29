@@ -24,6 +24,14 @@
 }
 :root {
   color-scheme: dark;
+  --bg: var(--pl-color-background);
+  --surface: var(--pl-color-surface);
+  --surface2: var(--pl-color-surface-raised);
+  --line: var(--pl-color-border);
+  --muted: var(--pl-color-muted);
+  --text: var(--pl-color-text);
+  --accent: var(--pl-color-accent);
+  --radius: var(--pl-radius-root);
   --bg: #101214;
   --surface: #191c1f;
   --surface2: #202427;
@@ -139,11 +147,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font:
-    16px/1.6 "Inter Variable",
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  font: var(--pl-type-body-size) / var(--pl-type-body-line-height)
+    var(--pl-font-family);
   display: flex;
   min-height: 100vh;
 }
@@ -175,6 +180,7 @@ aside {
   width: 248px;
   position: fixed;
   inset: 0 auto 0 0;
+  background: var(--pl-color-sidebar);
   background: var(--c-151719);
   border-right: 1px solid var(--line);
   display: flex;
@@ -235,6 +241,7 @@ aside {
   flex-shrink: 0;
 }
 nav button {
+  color: var(--pl-component-navigation-text);
   color: var(--c-aab0b2);
   border: 0;
   background: transparent;
@@ -244,7 +251,7 @@ nav button {
   align-items: center;
   gap: 13px;
   padding: 13px 12px;
-  border-radius: 8px;
+  border-radius: var(--pl-radius-menu);
   font-size: 15px;
   margin: 3px 0;
 }
@@ -255,6 +262,11 @@ nav button > span {
   line-height: 20px;
 }
 nav button:hover {
+  background: var(--pl-component-navigation-hover);
+  color: white;
+}
+nav button.active {
+  background: var(--pl-component-navigation-selected);
   background: var(--c-202426);
   color: var(--c-white);
 }
@@ -448,6 +460,8 @@ p {
   display: flex;
   position: relative;
   overflow: hidden;
+  background: var(--pl-gradient-hero);
+  border: 1px solid #354132;
   background: radial-gradient(
     ellipse at 85% 60%,
     var(--c-384d32) 0%,
@@ -543,6 +557,10 @@ p {
   color: var(--accent);
 }
 .btn {
+  border: 1px solid var(--pl-component-button-border);
+  color: var(--pl-component-button-text);
+  background: var(--pl-component-button-background);
+  border-radius: var(--pl-radius-button);
   border: 1px solid var(--c-3a4144);
   color: var(--c-d9dfd9);
   background: var(--c-292e30);
@@ -574,7 +592,7 @@ p {
 }
 .button-row {
   display: flex;
-  gap: 8px;
+  gap: var(--pl-space8);
   flex-wrap: wrap;
 }
 .app-grid {
@@ -584,7 +602,7 @@ p {
 }
 .card {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--pl-radius-card);
   background: var(--surface);
   padding: 22px;
   min-width: 0;
@@ -702,6 +720,7 @@ p {
   min-height: 0;
 }
 .api-card {
+  background: var(--pl-gradient-api-card);
   background: radial-gradient(at 100% 0%, var(--c-29312a), var(--c-191d1e) 70%);
   display: flex;
   flex-direction: column;
@@ -853,6 +872,9 @@ input.text,
 textarea,
 select {
   color: var(--text);
+  background: var(--pl-component-field-background);
+  border: 1px solid var(--pl-component-field-border);
+  border-radius: var(--pl-radius-field);
   background: var(--c-121618);
   border: 1px solid var(--c-353e41);
   border-radius: 7px;
@@ -901,6 +923,9 @@ textarea {
   gap: 20px;
 }
 dialog {
+  background: var(--pl-component-dialog-background);
+  border: 1px solid var(--pl-component-dialog-border);
+  border-radius: var(--pl-radius-dialog);
   background: var(--c-191e20);
   border: 1px solid var(--c-3b4644);
   border-radius: 15px;
@@ -944,6 +969,7 @@ dialog::backdrop {
   border-radius: 9px;
   padding: 12px 20px;
   font-size: 15px;
+  box-shadow: var(--pl-shadow-toast);
   box-shadow: 0 5px 40px var(--c-0008);
   max-width: 620px;
   display: none;
@@ -1042,11 +1068,11 @@ footer {
 @media (prefers-reduced-motion: no-preference) {
   button {
     transition:
-      background 0.15s,
-      border-color 0.15s;
+      background var(--pl-motion-button),
+      border-color var(--pl-motion-button);
   }
   .hero-art .ai-symbol {
-    animation: breathe 5s ease-in-out infinite;
+    animation: breathe var(--pl-motion-legacy-breathe) ease-in-out infinite;
   }
   @keyframes breathe {
     50% {
@@ -1136,19 +1162,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 p {
-  line-height: 1.75;
+  line-height: var(--pl-type-paragraph-line-height);
 }
 .card p {
-  font-size: 14px;
-  line-height: 1.75;
+  font-size: var(--pl-type-card-description-size);
+  line-height: var(--pl-type-card-description-line-height);
 }
 .card-top h3 {
   font-size: 16px;
   line-height: 1.4;
 }
 nav button {
-  font-size: 14px;
-  gap: 10px;
+  font-size: var(--pl-type-navigation-size);
+  gap: var(--pl-type-navigation-gap);
 }
 .brand,
 .brand small,
@@ -1156,12 +1182,12 @@ nav button {
   line-height: normal;
 }
 aside {
-  width: 268px;
+  width: var(--pl-layout-sidebar);
   overflow-y: auto;
 }
 main {
-  margin-left: 268px;
-  width: calc(100% - 268px);
+  margin-left: var(--pl-layout-sidebar);
+  width: calc(100% - var(--pl-layout-sidebar));
 }
 .search {
   width: 310px;
@@ -1184,15 +1210,15 @@ main {
   font-size: 14px;
 }
 dialog {
-  width: 650px;
+  width: var(--pl-layout-dialog-width);
 }
 @media (max-width: 1150px) {
   aside {
-    width: 230px;
+    width: var(--pl-layout-sidebar-compact);
   }
   main {
-    margin-left: 230px;
-    width: calc(100% - 230px);
+    margin-left: var(--pl-layout-sidebar-compact);
+    width: calc(100% - var(--pl-layout-sidebar-compact));
   }
   .search {
     width: 230px;
@@ -1209,7 +1235,7 @@ dialog {
   margin-bottom: 18px;
 }
 .spec-text {
-  font-family: "Inter Variable", "Segoe UI", Arial, sans-serif;
+  font-family: var(--pl-font-family);
 }
 .code {
   font-size: 13px;

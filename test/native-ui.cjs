@@ -3,26 +3,24 @@ const { _electron: electron } = require(
 );
 const fs = require("node:fs/promises");
 (async () => {
+  const data = require("node:fs").mkdtempSync(require("node:path").join(require("node:os").tmpdir(), "pluginlabs-ui-"));
   const app = await electron.launch({
-    executablePath: require("electron"),
+    executablePath: process.env.PLUGINLABS_TEST_ELECTRON || require("electron"),
     args: [
-      require("node:path").resolve(__dirname, ".."),
+      process.env.PLUGINLABS_TEST_APP || require("node:path").resolve(__dirname, ".."),
       "--no-sandbox",
       "--disable-gpu",
     ],
     env: {
       ...process.env,
       DISPLAY: process.env.DISPLAY || ":99",
-      PLUGINLABS_DATA: require("node:fs").mkdtempSync(
-        require("node:path").join(
-          require("node:os").tmpdir(),
-          "pluginlabs-ui-",
-        ),
-      ),
+      PLUGINLABS_DATA: data,
     },
   });
+  try {
+  const errors = [];
   const page = await app.firstWindow();
-  page.on("pageerror", (e) => console.error("PAGE ERROR", e.message));
+  page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
     if (m.type() === "error") console.error("CONSOLE", m.text());
   });
@@ -82,10 +80,14 @@ const fs = require("node:fs/promises");
     path: require("node:path").resolve(__dirname, "../preview-mymind.png"),
     fullPage: true,
   });
+  require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
   );
-  await app.close();
+  } finally {
+    await app.close();
+    await fs.rm(data, { recursive: true, force: true });
+  }
 })().catch((e) => {
   console.error(e);
   process.exitCode = 1;
