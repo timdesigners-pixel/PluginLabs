@@ -10,7 +10,7 @@
 | Öncelik / efor | P1 · L |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | [timdesigners-pixel/the-ultimate-scrapper](https://github.com/timdesigners-pixel/the-ultimate-scrapper) |
 | Codex projesi | `PL-004 · The Ultimate Scrapper` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114) |
 
