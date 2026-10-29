@@ -1,0 +1,76 @@
+name: Publish independently built Windows release v0.3.0
+on:
+  workflow_dispatch:
+    inputs:
+      source_commit:
+        description: "v0.3.0 etiketinin işaret ettiği ve paketlerin derlendiği 40 haneli commit SHA"
+        required: true
+        type: string
+      sums_digest:
+        description: "release-binaries/v0.3.0 içindeki SHA256SUMS.txt dosyasının SHA-256 özeti (derleme makinesinden, GitHub dışından alınır)"
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: release-v0.3.0
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_COMMIT: ${{ inputs.source_commit }}
+      SUMS_DIGEST: ${{ inputs.sums_digest }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release-binaries/v0.3.0
+          persist-credentials: false
+      - name: Verify precompiled files without compiling or executing them
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re, struct
+          from pathlib import Path
+          commit, digest = os.environ['SOURCE_COMMIT'], os.environ['SUMS_DIGEST']
+          assert re.fullmatch(r'[0-9a-f]{40}', commit), 'source_commit 40 haneli küçük harfli SHA olmalı'
+          assert re.fullmatch(r'[0-9a-f]{64}', digest), 'sums_digest 64 haneli küçük harfli SHA-256 olmalı'
+          assert hashlib.sha256(Path('SHA256SUMS.txt').read_bytes()).hexdigest() == digest, 'SHA256SUMS.txt özeti uyuşmuyor'
+          info = json.loads(Path('BUILD-INFO.json').read_text())
+          assert info['version'] == '0.3.0'
+          assert info['commit'] == commit
+          assert info.get('signed') is False
+          required = {
+              'setup': 'PluginLabs Hub Setup 0.3.0.exe',
+              'portable': 'PluginLabs Hub 0.3.0.exe',
+              'source': 'PluginLabs-Hub-Source-0.3.0.zip',
+          }
+          listed = {line.split('  ', 1)[1] for line in Path('SHA256SUMS.txt').read_text().splitlines() if line}
+          for name in required.values():
+              assert name in listed and Path(name).is_file(), f'eksik dosya: {name}'
+          assert any(re.fullmatch(r'PluginLabs-Browser-Bridge-\d+\.\d+\.\d+\.zip', n) for n in listed), 'Browser Bridge ZIP eksik'
+          for name in (required['setup'], required['portable']):
+              data = Path(name).read_bytes()
+              offset = struct.unpack_from('<I', data, 0x3c)[0]
+              assert data[:2] == b'MZ' and data[offset:offset+4] == b'PE\0\0', f'{name} geçerli PE değil'
+          print('Independently compiled Windows packages verified; no compilation on GitHub.')
+          PY
+          sha256sum -c SHA256SUMS.txt
+          # GitHub normalizes spaces in asset filenames to periods.
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          file = Path('SHA256SUMS.txt')
+          rows = [line.split('  ', 1) for line in file.read_text().splitlines()]
+          file.write_text(''.join(checksum + '  ' + name.replace(' ', '.') + '\n' for checksum, name in rows))
+          PYTHON
+      - name: Publish verified existing artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          actual_source=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.3.0" --jq .object.sha)
+          test "$actual_source" = "$SOURCE_COMMIT"
+          assets=("PluginLabs Hub Setup 0.3.0.exe" "PluginLabs Hub 0.3.0.exe" PluginLabs-Hub-Source-0.3.0.zip SHA256SUMS.txt BUILD-INFO.json PluginLabs-Browser-Bridge-*.zip)
+          if ! gh release view v0.3.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create v0.3.0 --repo "$GITHUB_REPOSITORY" --verify-tag --draft --title "PluginLabs Hub v0.3.0" --notes-file RELEASE-NOTES.md
+          fi
+          gh release upload v0.3.0 "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit v0.3.0 --repo "$GITHUB_REPOSITORY" --draft=false --latest
