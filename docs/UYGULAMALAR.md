@@ -6,10 +6,10 @@ Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı,
 
 | Uygulama | Sürüm | Nereden |
 | --- | --- | --- |
-| Mind Palace (PL-003) | v1.10.0 (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.10.0 |
+| Mind Palace (PL-003) | **v1.11.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | Leo Helper (PL-002) | v0.8.0 (ZIP; `start.cmd` ya da `LeoHelper.exe`) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
-| Mutfak Atölyesi (PL-053) | 0.3.0 — release yok; Windows EXE/Android APK depodaki derleme betiklerinden üretilir | https://github.com/timdesigners-pixel/mutfak-atolyesi |
+| Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | Flow Dock (PL-001) | kaynaktan; `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" | https://github.com/timdesigners-pixel/extension-manager |
 
@@ -17,7 +17,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Çalışan/indirilebilir: Mind Palace, Leo Helper, Mutfak Atölyesi, Hub.
+- Çalışan/indirilebilir (GitHub release): Mind Palace v1.11.0, Leo Helper v0.8.0, Mutfak Atölyesi v0.3.0, Hub v0.3.0.
 - Kaynak kodu var, release yok: Flow Dock, Extension Manager.
 - Yalnız plan (depoda 2 dosya: README + PRODUCT-PLAN): 21 ürün (Finansal Asistan, Scrapper, Note Master, Tweakster dahil).
 
@@ -27,7 +27,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | Windows kaynak kodu (C#, WinForms), release yok · `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
-| PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.10.0** (main 1.11.0) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.10.0 |
+| PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | PL-004 | The Ultimate Scrapper | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/the-ultimate-scrapper |
 | PL-005 | Finansal Asistan | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/finansal-asistan |
 | PL-006 | Note Master | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/note-master |
@@ -77,5 +77,5 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-050 | Decision Board | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-051 | Extension Manager / Eklenti Yöneticisi | Chrome eklentisi kaynak kodu (11 dosya, v1.0.0), release yok | https://github.com/timdesigners-pixel/extension-manager |
 | PL-052 | Tweakster | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tweakster |
-| PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows WPF EXE, **v0.3.0** · GitHub release yok (derleme depodan) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
+| PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.3.0** (GitHub release) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
 | PL-054 | MyWishlist | Fikir / Hub içi önizleme (ayrı depo yok) | — |
