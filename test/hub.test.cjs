@@ -299,3 +299,28 @@ test("tar rejects symbolic links without writing outside package", async (t) => 
     /bağlantı|arşiv yolu/,
   );
 });
+test("update check reads only own-prefixed releases from the public distribution repo", async (t) => {
+  const dist = "ornek/dagitim", dl = (tag, f) => `https://github.com/${dist}/releases/download/${tag}/${f}`;
+  const sha = "sha256:" + "b".repeat(64);
+  const releases = [
+    { tag_name: "app-a-v2.0.0", draft: false, prerelease: true, assets: [{ name: "A.exe", size: 1, digest: sha, browser_download_url: dl("app-a-v2.0.0", "A.exe") }] },
+    { tag_name: "app-a-v1.5.0", draft: false, prerelease: false, assets: [{ name: "A.exe", size: 5, digest: sha, browser_download_url: dl("app-a-v1.5.0", "A.exe") }] },
+    { tag_name: "app-a-v1.10.0", draft: false, prerelease: false, assets: [{ name: "A.exe", size: 10, digest: sha, browser_download_url: dl("app-a-v1.10.0", "A.exe") }] },
+    { tag_name: "app-ab-v9.0.0", draft: false, prerelease: false, assets: [] },
+    { tag_name: "app-b-v3.0.0", draft: false, prerelease: false, assets: [{ name: "B.exe", size: 1, digest: sha, browser_download_url: "https://github.com/baska/depo/releases/download/app-b-v3.0.0/B.exe" }] },
+    { tag_name: "app-c-vbeta", draft: false, prerelease: false, assets: [] },
+  ];
+  const original = global.fetch;
+  global.fetch = async (url) => { assert.equal(url, `https://api.github.com/repos/${dist}/releases?per_page=100`); return Response.json(releases); };
+  t.after(() => { global.fetch = original; });
+  const item = (id, asset) => ({ id, name: id, kind: "app", version: "1.0.0", platform: "win32", format: "exe", file: "x.exe", size: 1, sha256: "a".repeat(64), url: "https://example.test/x.exe", distAsset: asset });
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-upd-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const hub = await new Hub(root, { catalog: [item("app-a", "^A\.exe$"), item("app-b", "^B\.exe$"), item("app-c", "x")], dist }).init();
+  const r = Object.fromEntries((await hub.checkUpdates()).map((x) => [x.id, x]));
+  assert.deepEqual(r["app-a"], { id: "app-a", version: "1.10.0", available: true, ready: true }, "1.10.0 > 1.5.0; ön sürüm ve app-ab yok sayılır");
+  assert.equal(hub.catalog[0].url, dl("app-a-v1.10.0", "A.exe"));
+  assert.equal(hub.catalog[0].sha256, "b".repeat(64));
+  assert.deepEqual(r["app-b"], { id: "app-b", version: "3.0.0", available: true, ready: false }, "başka depoya işaret eden dosya reddedilir");
+  assert.match(r["app-c"].error, /sürüm yok/);
+});

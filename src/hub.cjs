@@ -7,7 +7,7 @@ const fs = require("node:fs/promises"),
   http = require("node:http"),
   { EventEmitter } = require("node:events"),
   { spawn } = require("node:child_process");
-const { catalog: defaults } = require("./catalog.cjs");
+const { catalog: defaults, DIST } = require("./catalog.cjs");
 const digest = (s) => crypto.createHash("sha256").update(s).digest("hex");
 const idPattern = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const scopes = [
@@ -193,6 +193,7 @@ class Hub extends EventEmitter {
     this.root = root;
     this.options = options;
     this.catalog = structuredClone(options.catalog || defaults);
+    this.dist = options.dist || DIST;
     this.jobs = new Map();
     this.pending = new Map();
     this.providers = new Map();
@@ -495,19 +496,30 @@ class Hub extends EventEmitter {
     this.log(`${item.name} açıldı`);
   }
   async checkUpdates() {
+    // Sürümler herkese açık dağıtım deposundan okunur; her uygulama yalnız kendi `<id>-v` önekli etiketlerini görür.
     const results = [];
-    for (const item of this.catalog.filter((i) => i.repo)) {
+    const items = this.catalog.filter((i) => i.distAsset);
+    let releases = [];
+    try {
+      releases = await limitedJSON(
+        await fetch(`https://api.github.com/repos/${this.dist}/releases?per_page=100`, {
+          headers: { Accept: "application/vnd.github+json" },
+          signal: AbortSignal.timeout(15000),
+        }),
+      );
+      if (!Array.isArray(releases)) throw new Error("Sürüm listesi okunamadı");
+    } catch (e) {
+      this.updateResults = items.map((i) => ({ id: i.id, error: e.message }));
+      return this.updateResults;
+    }
+    for (const item of items) {
       try {
-        const data = await limitedJSON(
-          await fetch(
-            `https://api.github.com/repos/${item.repo}/releases/latest`,
-            {
-              headers: { Accept: "application/vnd.github+json" },
-              signal: AbortSignal.timeout(15000),
-            },
-          ),
-        );
-        const version = data.tag_name.replace(/^v/, "");
+        const prefix = `${item.id}-v`;
+        const mine = releases
+          .filter((r) => !r.draft && !r.prerelease && typeof r.tag_name === "string" && r.tag_name.startsWith(prefix) && /^\d+(\.\d+)*$/.test(r.tag_name.slice(prefix.length)))
+          .sort((a, b) => versionCompare(b.tag_name.slice(prefix.length), a.tag_name.slice(prefix.length)));
+        if (!mine.length) throw new Error("Dağıtım deposunda sürüm yok");
+        const data = mine[0], version = data.tag_name.slice(prefix.length);
         const newer =
           versionCompare(
             version,
@@ -515,16 +527,13 @@ class Hub extends EventEmitter {
           ) > 0;
         let ready = false;
         if (newer) {
-          const asset = data.assets.find((a) =>
-            item.id === "mind-palace"
-              ? /Tasinabilir.*x64\.exe$/.test(a.name)
-              : a.name === "LeoHelper.exe",
-          );
+          const pattern = new RegExp(item.distAsset);
+          const asset = (data.assets || []).find((a) => pattern.test(a.name));
           if (
             asset &&
             /^sha256:[a-f0-9]{64}$/.test(asset.digest || "") &&
             asset.browser_download_url.startsWith(
-              `https://github.com/${item.repo}/releases/download/`,
+              `https://github.com/${this.dist}/releases/download/${data.tag_name}/`,
             )
           ) {
             Object.assign(item, {
