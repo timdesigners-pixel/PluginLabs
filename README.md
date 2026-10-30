@@ -16,7 +16,7 @@ Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan e
 
 50 uygulama; ne işe yaradığını anlatan açıklamalar, platform bilgileri ve önizleme paketi yükleme seçenekleriyle listelenir.
 
-![Uygulama kataloğu ve ürün yükleme kartları](docs/screenshots/app-catalog.png)
+![Keşfet: Hub üzerinden kurulabilen uygulamalar (0.4.0)](docs/screenshots/app-catalog.png)
 
 ### Eklenti yöneticisi
 
@@ -152,3 +152,6 @@ Uygulama kataloğu, hedef kitle metinleri yerine uygulamanın işlevini anlatan 
 ## Kurulum ve görev takibi
 
 [Altı maddelik kurulum kontrol listesi](docs/SETUP-CHECKLIST.md), [Codex Cloud çalıştırma adımları](docs/CODEX-CLOUD.md) ve [Notion–GitHub görev akışı](docs/TRACKING.md), doğrulanan yetenekleri dış erişim ve gerçek cihaz kabulünden ayırır. Windows/Linux CI çıktıları önizlemedir; Web/Android hedefi veya otomatik release yayını yoktur.
+
+## MUST HAVE — her proje için şartname
+Her PluginLabs projesi şu 8 şartı karşılar: güncel README ekran görüntüleri, her düzenlemede release, yayında tek dal, ortak logo/ad düzeni, PluginLabs Tasarım Sistemi, MyMind entegrasyonu, Hub'dan kurulum ve her uygulama sürümünden sonra Hub sürümü. Ayrıntı ve kanıt listesi: [docs/MUST-HAVE.md](docs/MUST-HAVE.md).
