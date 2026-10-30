@@ -1,5 +1,16 @@
 # PluginLabs — Agent development instructions
 
+## MUST HAVE — her proje için olmazsa olmaz şartlar
+Ayrıntı ve kanıt listesi: [docs/MUST-HAVE.md](docs/MUST-HAVE.md). Bu maddelerden biri karşılanmadan iş tamamlandı sayılmaz; çelişkide bu bölüm önceliklidir.
+1. README'de güncel, gerçek uygulama ekran görüntüleri.
+2. Her düzenlemeden sonra önizleme/kurulum için release (Windows kurulum + taşınabilir exe; eklentiyse zip).
+3. Yayın anında dallar birleştirilip tek dala (`main`) indirilir.
+4. Logo ve uygulama adı örnekteki gibi: PluginLabs logosu + `APPS`, altında ürün kartı (aksan renkli simge, ad, alt başlık, sıra no).
+5. PluginLabs Tasarım Sistemi referans alınır; Hub'ın tasarım çizgisi korunur.
+6. MyMind AI ile uyumlu ve entegre (Hub üzerinden, onaylı, veri azaltılmış).
+7. Her uygulama/eklenti PluginLabs Hub'dan kurulabilir (pluginlabs-dagitim + `src/catalog.cjs`).
+8. Her uygulama release'inden sonra Hub da yeni sürümle yayınlanır (şimdilik).
+
 ## Scope and priorities
 - Preserve existing behavior and security boundaries of PluginLabs Hub.
 - Read README.md, package.json and relevant code/tests before editing.
