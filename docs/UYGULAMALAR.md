@@ -27,14 +27,14 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | Windows kaynak kodu (C#, WinForms), release yok · `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
-| PL-003 | Mind Palace Plugin Hub | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.10.0** (main 1.11.0) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.10.0 |
 | PL-004 | The Ultimate Scrapper | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/the-ultimate-scrapper |
 | PL-005 | Finansal Asistan | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/finansal-asistan |
 | PL-006 | Note Master | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/note-master |
 | PL-007 | Musebook | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/musebook |
 | PL-008 | Prompt Dünyası | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/prompt-dunyasi |
 | PL-009 | What the App! | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/what-the-app |
-| PL-010 | 1001 Designs / Pin to Component | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-010 | 1001 Designs / Pin to Component | Genel depo: 109 HTML tasarım dosyası (kod uygulaması değil) | https://github.com/timdesigners-pixel/1001-designs |
 | PL-011 | WhatsApp Chat Viewer | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer |
 | PL-012 | Dilekçe Oluştur | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/dilekce-olustur |
 | PL-013 | Gadget Dünyası Companion | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion |
