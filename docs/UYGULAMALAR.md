@@ -28,7 +28,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-001 | Flow Dock | Windows kaynak kodu (C#, WinForms), release yok · `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
-| PL-004 | The Ultimate Scrapper | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/the-ultimate-scrapper |
+| PL-004 | The Ultimate Scrapper | Chrome eklentisi 0.1.0 (yapısal ürün okuyucu, fiyat geçmişi, CSV/JSON) · PR açık, release yok | https://github.com/timdesigners-pixel/the-ultimate-scrapper |
 | PL-005 | Finansal Asistan | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/finansal-asistan |
 | PL-006 | Note Master | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/note-master |
 | PL-007 | Musebook | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/musebook |
