@@ -1,2 +1,3 @@
 # Üretilen dosyalar her platformda LF kalmalı (design-tokens testi bayt bayt karşılaştırır)
 ui/design-tokens.css text eol=lf
+ui/themes.css text eol=lf
