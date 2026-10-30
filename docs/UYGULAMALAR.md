@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları — tek bakışta durum
 
-Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
+Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
 
 ## Bugün indirip denenebilenler
 
@@ -11,7 +11,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Flow Dock (PL-001) | v0.1.0 (tek exe) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
 | Leo Helper (PL-002) | v0.8.0 (ZIP; `start.cmd` ya da `LeoHelper.exe`) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | Mind Palace (PL-003) | **v1.11.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
-| The Ultimate Scrapper (PL-004) | v0.2.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.2.0 |
+| The Ultimate Scrapper (PL-004) | v0.3.0 (PluginLabs Scrapper) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.3.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
@@ -27,7 +27,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 ## Özet
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–010, PL-053 ve Hub. PL-004–010 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Sıradaki (Windows sürümü yok): PL-011–014 (yalnız plan), PL-015–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
+- PL-011 WhatsApp Chat Viewer: 0.1.0 Windows uygulaması kodu hazır (taslak PR whatsapp-chat-viewer#1); **release yayımlanmadı** — `v0.1.0` etiketi kullanıcı onayı bekliyor.
+- Sıradaki (Windows sürümü yok): PL-012–014 (yalnız plan), PL-015–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -36,14 +37,14 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-001 | Flow Dock | Çalışan Windows uygulaması · **v0.1.0** (tek exe, imzasız) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
-| PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.2.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.2.0 |
+| PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.3.0** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.3.0 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | PL-006 | Note Master | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | PL-007 | Musebook | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
 | PL-008 | Prompt Dünyası | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
 | PL-009 | What the App! | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | PL-010 | 1001 Designs / Pin to Component | Design Replicator Chrome eklentisi v1.4.0 + **Binbir Dizayn Stüdyo** Windows uygulaması **studyo-v0.1.0** (1001 bileşen kütüphanesi, çevrimdışı; imzasız önizleme) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
-| PL-011 | WhatsApp Chat Viewer | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer |
+| PL-011 | WhatsApp Chat Viewer | Windows uygulaması 0.1.0 kodu (ZIP/TXT içe aktarma, arama, şifreli yerel arşiv) · taslak PR #1 · **release yok** (onay bekliyor) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/pull/1 |
 | PL-012 | Dilekçe Oluştur | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/dilekce-olustur |
 | PL-013 | Gadget Dünyası Companion | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion |
 | PL-014 | Social Saves Organizer | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/social-saves-organizer |
