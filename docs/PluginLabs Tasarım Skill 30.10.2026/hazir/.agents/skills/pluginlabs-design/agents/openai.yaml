@@ -1,8 +1,0 @@
-# Codex uygulaması için arayüz meta verisi (isteğe bağlı)
-interface:
-  display_name: "PluginLabs Tasarım Sistemi"
-  short_description: "PluginLabs ürünleri için --pl- tokenları, 79 komponent ve tasarım prensipleri"
-  brand_color: "#7C6CFF"
-  default_prompt: "PluginLabs tasarım sistemini kullanarak bu ekranı oluştur; mevcut tasarıma dokunma."
-policy:
-  allow_implicit_invocation: true
