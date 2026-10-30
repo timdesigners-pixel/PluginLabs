@@ -36,6 +36,25 @@ const catalog = [
     repo: "timdesigners-pixel/leo-helper",
   },
   {
+    id: "pluginlabs-scrapper",
+    name: "PluginLabs Scrapper",
+    kind: "app",
+    version: "0.4.0",
+    description:
+      "Ürün ve ilanları arşivler; fiyat/stok takibi, sepet planı, tablo okuma ve MyMind alışveriş asistanı.",
+    platform: "win32",
+    format: "exe",
+    file: "PluginLabsScrapper.exe",
+    size: 81132605,
+    sha256: "cf038bc071473a71d5f72f37328dbd4ad48b1cb8be54c2a6db932d65ac813baf",
+    url: gh(
+      "timdesigners-pixel/the-ultimate-scrapper",
+      "v0.4.0",
+      "PluginLabs-Scrapper-0.4.0-Windows-Portable-x64.exe",
+    ),
+    repo: "timdesigners-pixel/the-ultimate-scrapper",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",
