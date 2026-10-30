@@ -57,6 +57,22 @@ const catalog = [
     repo: "timdesigners-pixel/the-ultimate-scrapper",
   },
   {
+    id: "flow-dock",
+    name: "Flow Dock",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Uygulamaları, klasörleri ve bağlantıları arama, favoriler ve hızlı erişim halkası üzerinden açar.",
+    platform: "win32",
+    format: "exe",
+    file: "FlowDock.exe",
+    size: 209920,
+    sha256: "7471d78e8bb84a4b7c8124740e3d14d10831c446a8aa7da6eff0a7dc4d39b579",
+    url: dist("flow-dock", "0.1.0", "FlowDock-0.1.0-x64.exe"),
+    distAsset: "^FlowDock-[0-9.]+-x64\\.exe$",
+    repo: "timdesigners-pixel/flow-dock",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",

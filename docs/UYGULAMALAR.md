@@ -10,22 +10,22 @@ Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı,
 | Leo Helper (PL-002) | v0.8.0 (ZIP; `start.cmd` ya da `LeoHelper.exe`) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
-| Flow Dock (PL-001) | kaynaktan; `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
+| Flow Dock (PL-001) | **v0.1.0** (tek dosya `FlowDock-0.1.0-x64.exe`, imzasız) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 (özel depo; Hub indirmesi `pluginlabs-dagitim` → `flow-dock-v0.1.0`) |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" | https://github.com/timdesigners-pixel/extension-manager |
 
 Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanımı) `main` dalındadır: `npm ci && npm run test:agent`. Eski `wip-agent-inapp` dalı bunun taslağıydı; `main` onu aşmıştır.
 
 ## Özet
 
-- Çalışan/indirilebilir (GitHub release): Mind Palace v1.11.0, Leo Helper v0.8.0, Mutfak Atölyesi v0.3.0, Hub v0.3.0.
-- Kaynak kodu var, release yok: Flow Dock, Extension Manager.
+- Çalışan/indirilebilir (GitHub release): Mind Palace v1.11.0, Leo Helper v0.8.0, Flow Dock v0.1.0, Scrapper v0.4.0, Mutfak Atölyesi v0.3.0, Hub v0.3.0.
+- Kaynak kodu var, release yok: Extension Manager.
 - Yalnız plan (depoda 2 dosya: README + PRODUCT-PLAN): 21 ürün (Finansal Asistan, Scrapper, Note Master, Tweakster dahil).
 
 ## Tüm liste (PL-001 … PL-054)
 
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
-| PL-001 | Flow Dock | Windows kaynak kodu (C#, WinForms), release yok · `Build.ps1` ile derlenir | https://github.com/timdesigners-pixel/flow-dock |
+| PL-001 | Flow Dock | Çalışan Windows uygulaması · **v0.1.0** (30.10.2026, Actions Windows runner'ında derlenip yerleşik testlerden geçti) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | PL-004 | The Ultimate Scrapper | Chrome eklentisi 0.1.0 (yapısal ürün okuyucu, fiyat geçmişi, CSV/JSON) · PR açık, release yok | https://github.com/timdesigners-pixel/the-ultimate-scrapper |
