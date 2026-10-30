@@ -16,6 +16,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
 | Prompt Dünyası (PL-008) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
+| What the App! (PL-009) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip, BUILD-INFO) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -24,8 +25,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–008, PL-053 ve Hub. PL-004–008 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Yayına hazırlanan: PL-009 What the App! (what-the-app#1).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–009, PL-053 ve Hub. PL-004–009 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Sıradaki (Windows sürümü yok): PL-010 1001 Designs (HTML tasarım deposu), PL-011–014 (yalnız plan), PL-015–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
@@ -40,7 +40,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-006 | Note Master | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | PL-007 | Musebook | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
 | PL-008 | Prompt Dünyası | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
-| PL-009 | What the App! | Chrome eklentisi + Windows uygulaması 0.1.0 · PR açık (what-the-app#1), release henüz yok | https://github.com/timdesigners-pixel/what-the-app |
+| PL-009 | What the App! | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | PL-010 | 1001 Designs / Pin to Component | Genel depo: 109 HTML tasarım dosyası (kod uygulaması değil) | https://github.com/timdesigners-pixel/1001-designs |
 | PL-011 | WhatsApp Chat Viewer | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer |
 | PL-012 | Dilekçe Oluştur | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/dilekce-olustur |
