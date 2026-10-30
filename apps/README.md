@@ -11,22 +11,22 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-001 | [Flow Dock](01-mevcut-urunler-ve-fikirler/PL-001-flow-dock/README.md) | W · L · M · Chrome | Çalışan Windows prototipi | P0 · M | [flow-dock](https://github.com/timdesigners-pixel/flow-dock) |
 | PL-002 | [Leo Helper](01-mevcut-urunler-ve-fikirler/PL-002-leo-helper/README.md) | W · L · M · Chrome | Mevcut proje notu | P1 · L | [leo-helper](https://github.com/timdesigners-pixel/leo-helper) |
 | PL-003 | [Mind Palace Plugin Hub](01-mevcut-urunler-ve-fikirler/PL-003-mind-palace-plugin-hub/README.md) | W · L · M · Chrome | Mevcut proje notu | P1 · XL | [mind-palace](https://github.com/timdesigners-pixel/mind-palace) |
-| PL-004 | [The Ultimate Scrapper](01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper/README.md) | W · L · M · Chrome | Mevcut ayrıntılı proje planı | P1 · L | — |
-| PL-005 | [Finansal Asistan](01-mevcut-urunler-ve-fikirler/PL-005-finansal-asistan/README.md) | W · L · M | Mevcut ayrıntılı proje planı | P1 · L | — |
-| PL-006 | [Note Master](01-mevcut-urunler-ve-fikirler/PL-006-note-master/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · S | — |
-| PL-007 | [Musebook](01-mevcut-urunler-ve-fikirler/PL-007-musebook/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · M | — |
-| PL-008 | [Prompt Dünyası](01-mevcut-urunler-ve-fikirler/PL-008-prompt-dunyasi/README.md) | W · L · M · Chrome | Mevcut fikir | P0 · S | — |
-| PL-009 | [What the App!](01-mevcut-urunler-ve-fikirler/PL-009-what-the-app/README.md) | W · L · M · Chrome | Mevcut fikir | P2 · M | — |
+| PL-004 | [The Ultimate Scrapper](01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper/README.md) | W · L · M · Chrome | Mevcut ayrıntılı proje planı | P1 · L | [the-ultimate-scrapper](https://github.com/timdesigners-pixel/the-ultimate-scrapper) |
+| PL-005 | [Finansal Asistan](01-mevcut-urunler-ve-fikirler/PL-005-finansal-asistan/README.md) | W · L · M | Mevcut ayrıntılı proje planı | P1 · L | [finansal-asistan](https://github.com/timdesigners-pixel/finansal-asistan) |
+| PL-006 | [Note Master](01-mevcut-urunler-ve-fikirler/PL-006-note-master/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · S | [note-master](https://github.com/timdesigners-pixel/note-master) |
+| PL-007 | [Musebook](01-mevcut-urunler-ve-fikirler/PL-007-musebook/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · M | [musebook](https://github.com/timdesigners-pixel/musebook) |
+| PL-008 | [Prompt Dünyası](01-mevcut-urunler-ve-fikirler/PL-008-prompt-dunyasi/README.md) | W · L · M · Chrome | Mevcut fikir | P0 · S | [prompt-dunyasi](https://github.com/timdesigners-pixel/prompt-dunyasi) |
+| PL-009 | [What the App!](01-mevcut-urunler-ve-fikirler/PL-009-what-the-app/README.md) | W · L · M · Chrome | Mevcut fikir | P2 · M | [what-the-app](https://github.com/timdesigners-pixel/what-the-app) |
 | PL-010 | [1001 Designs / Pin to Component](01-mevcut-urunler-ve-fikirler/PL-010-1001-designs-pin-to-component/README.md) | W · L · M · Chrome | Mevcut proje ve görev kayıtları | P2 · XL | [1001-designs](https://github.com/timdesigners-pixel/1001-designs) |
 
 ## 02 · Kişisel arşiv ve Chrome araçları — PL-011–020
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-011 | [WhatsApp Chat Viewer](02-kisisel-arsiv-ve-chrome-araclari/PL-011-whatsapp-chat-viewer/README.md) | W · L · M · Chrome | Mevcut kişisel kullanım fikri | P2 · M | — |
-| PL-012 | [Dilekçe Oluştur](02-kisisel-arsiv-ve-chrome-araclari/PL-012-dilekce-olustur/README.md) | W · L · M · Chrome | Mevcut fikir | P2 · L | — |
-| PL-013 | [Gadget Dünyası Companion](02-kisisel-arsiv-ve-chrome-araclari/PL-013-gadget-dunyasi-companion/README.md) | W · L · M · Chrome | Mevcut isim/fikir | P2 · M | — |
-| PL-014 | [Social Saves Organizer](02-kisisel-arsiv-ve-chrome-araclari/PL-014-social-saves-organizer/README.md) | W · L · M · Chrome | Mevcut Instagram kaydedilenleri düzenleme görevi | P1 · M | — |
+| PL-011 | [WhatsApp Chat Viewer](02-kisisel-arsiv-ve-chrome-araclari/PL-011-whatsapp-chat-viewer/README.md) | W · L · M · Chrome | Mevcut kişisel kullanım fikri | P2 · M | [whatsapp-chat-viewer](https://github.com/timdesigners-pixel/whatsapp-chat-viewer) |
+| PL-012 | [Dilekçe Oluştur](02-kisisel-arsiv-ve-chrome-araclari/PL-012-dilekce-olustur/README.md) | W · L · M · Chrome | Mevcut fikir | P2 · L | [dilekce-olustur](https://github.com/timdesigners-pixel/dilekce-olustur) |
+| PL-013 | [Gadget Dünyası Companion](02-kisisel-arsiv-ve-chrome-araclari/PL-013-gadget-dunyasi-companion/README.md) | W · L · M · Chrome | Mevcut isim/fikir | P2 · M | [gadget-dunyasi-companion](https://github.com/timdesigners-pixel/gadget-dunyasi-companion) |
+| PL-014 | [Social Saves Organizer](02-kisisel-arsiv-ve-chrome-araclari/PL-014-social-saves-organizer/README.md) | W · L · M · Chrome | Mevcut Instagram kaydedilenleri düzenleme görevi | P1 · M | [social-saves-organizer](https://github.com/timdesigners-pixel/social-saves-organizer) |
 | PL-015 | [YouTube Shelf](02-kisisel-arsiv-ve-chrome-araclari/PL-015-youtube-shelf/README.md) | W · L · M · Chrome | Mevcut oynatma listesi düzenleme görevi | P1 · M | — |
 | PL-016 | [Tab Atlas](02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas/README.md) | W · L · M · Chrome | Yeni fikir | P0 · S | — |
 | PL-017 | [Page Capsule](02-kisisel-arsiv-ve-chrome-araclari/PL-017-page-capsule/README.md) | W · L · M · Chrome | Yeni fikir | P0 · S | — |

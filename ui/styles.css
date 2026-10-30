@@ -32,14 +32,6 @@
   --text: var(--pl-color-text);
   --accent: var(--pl-color-accent);
   --radius: var(--pl-radius-root);
-  --bg: #101214;
-  --surface: #191c1f;
-  --surface2: #202427;
-  --line: #2a2e31;
-  --muted: #929a9e;
-  --text: #edf0eb;
-  --accent: #c1f78a;
-  --radius: 16px;
   --c-white: white;
   --c-0008: #0008;
   --c-0009: #0009;
@@ -263,15 +255,10 @@ nav button > span {
 }
 nav button:hover {
   background: var(--pl-component-navigation-hover);
-  color: white;
-}
-nav button.active {
-  background: var(--pl-component-navigation-selected);
-  background: var(--c-202426);
   color: var(--c-white);
 }
 nav button.active {
-  background: var(--c-273124);
+  background: var(--pl-component-navigation-selected);
   color: var(--accent);
 }
 nav b {
@@ -461,6 +448,7 @@ p {
   position: relative;
   overflow: hidden;
   background: var(--pl-gradient-hero);
+  border: 1px solid var(--c-354132);
   background: radial-gradient(
     ellipse at 85% 60%,
     var(--c-384d32) 0%,

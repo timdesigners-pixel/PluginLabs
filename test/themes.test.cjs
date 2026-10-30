@@ -7,6 +7,7 @@ const test = require("node:test"),
 const ui = path.join(__dirname, "../ui");
 const styles = fs.readFileSync(path.join(ui, "styles.css"), "utf8");
 const themes = fs.readFileSync(path.join(ui, "themes.css"), "utf8");
+const tokens = fs.readFileSync(path.join(ui, "design-tokens.css"), "utf8");
 const html = fs.readFileSync(path.join(ui, "index.html"), "utf8");
 
 const lum = (hex) => {
@@ -24,6 +25,13 @@ const block = (src, selector) => {
 };
 const vars = (b) => Object.fromEntries([...b.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
 
+const resolve = (all, name, seen = new Set()) => {
+  assert.ok(!seen.has(name) && name in all, `tanımsız veya döngüsel: ${name}`);
+  const v = all[name];
+  const m = v.match(/^var\(--([\w-]+)\)$/);
+  return m ? resolve(all, m[1], new Set([...seen, name])) : v;
+};
+
 test("her sabit renk değişkene bağlı ve :root'ta tanımlı", () => {
   const defined = new Set(Object.keys(vars(block(styles, ":root"))));
   const used = [...styles.matchAll(/var\(--(c-[\w]+)\)/g)].map((m) => m[1]);
@@ -36,11 +44,13 @@ test("her sabit renk değişkene bağlı ve :root'ta tanımlı", () => {
 test("themes.css üreticiyle birebir aynı", () => {
   const out = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "plh-themes-")), "themes.css");
   execFileSync(process.execPath, [path.join(__dirname, "../scripts/generate-themes.cjs")], { env: { ...process.env, THEMES_OUT: out } });
-  assert.equal(fs.readFileSync(out, "utf8"), themes);
+  // Windows'ta git CRLF ile çıkarabilir; satır sonlarını normalize ederek karşılaştır.
+  const lf = (t) => t.replace(/\r\n/g, "\n");
+  assert.equal(lf(fs.readFileSync(out, "utf8")), lf(themes));
 });
 
 test("dört paletli tema kontrastı: metin, ikincil metin ve vurgu ≥ 4.5:1", () => {
-  const base = vars(block(styles, ":root"));
+  const base = { ...vars(block(tokens, ":root")), ...vars(block(styles, ":root")) };
   const sets = {
     "hub-yesil/dark": base,
     "iris/dark": { ...base, ...vars(block(themes, 'html[data-palette="iris"][data-mode="dark"]')) },
@@ -49,8 +59,19 @@ test("dört paletli tema kontrastı: metin, ikincil metin ve vurgu ≥ 4.5:1", (
   };
   for (const [name, v] of Object.entries(sets))
     for (const bg of ["bg", "surface", "surface2"])
-      for (const fg of ["text", "muted", "accent"])
-        assert.ok(ratio(v[fg], v[bg]) >= 4.5, `${name} ${fg} / ${bg} = ${ratio(v[fg], v[bg]).toFixed(2)}`);
+      for (const fg of ["text", "muted", "accent"]) {
+        const r = ratio(resolve(v, fg), resolve(v, bg));
+        assert.ok(r >= 4.5, `${name} ${fg} / ${bg} = ${r.toFixed(2)}`);
+      }
+});
+
+test("design-tokens.css içindeki her renk tokenı üç temada da geçersiz kılınır", () => {
+  const colorTokens = Object.entries(vars(block(tokens, ":root"))).filter(([, v]) => /#[0-9a-f]{3,8}\b/i.test(v)).map(([k]) => k);
+  assert.ok(colorTokens.length >= 15);
+  for (const sel of ['html[data-palette="iris"][data-mode="dark"]', 'html[data-palette="hub-yesil"][data-mode="light"]', 'html[data-palette="iris"][data-mode="light"]']) {
+    const o = vars(block(themes, sel));
+    assert.deepEqual(colorTokens.filter((k) => !(k in o)), [], sel);
+  }
 });
 
 test("tema betiği ilk boyamadan önce yüklenir; CSP satır içi betiğe izin vermez", () => {

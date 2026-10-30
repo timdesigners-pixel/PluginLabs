@@ -201,7 +201,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Web sayfalarından ürün, ilan ve tablo verisini toplayan; fiyat/stok takibi yapan ve alışveriş listesinden sepet planı hazırlayan veri madencisi ve alışveriş asistanı.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "the-ultimate-scrapper",
+        "url": "https://github.com/timdesigners-pixel/the-ultimate-scrapper",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper",
       "codexProject": {
         "name": "PL-004 · The Ultimate Scrapper",
@@ -236,7 +242,13 @@
         "widget"
       ],
       "summary": "Gelirleri, giderleri, borçları ve ödeme tarihlerini kaydeder; finansal durumu raporlar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "finansal-asistan",
+        "url": "https://github.com/timdesigners-pixel/finansal-asistan",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-005-finansal-asistan",
       "codexProject": {
         "name": "PL-005 · Finansal Asistan",
@@ -272,7 +284,13 @@
         "widget"
       ],
       "summary": "Hızlı notları ve görevleri kaynak bağlantılarıyla kaydeder, etiketler ve düzenler.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "note-master",
+        "url": "https://github.com/timdesigners-pixel/note-master",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-006-note-master",
       "codexProject": {
         "name": "PL-006 · Note Master",
@@ -307,7 +325,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Görselleri ve ilham kaynaklarını koleksiyonlarda toplar; etiketleme ve görsel arama sunar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "musebook",
+        "url": "https://github.com/timdesigners-pixel/musebook",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-007-musebook",
       "codexProject": {
         "name": "PL-007 · Musebook",
@@ -342,7 +366,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "AI komutlarını şablonlar halinde saklar, değişkenlerle doldurur ve yeniden kullanır.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "prompt-dunyasi",
+        "url": "https://github.com/timdesigners-pixel/prompt-dunyasi",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-008-prompt-dunyasi",
       "codexProject": {
         "name": "PL-008 · Prompt Dünyası",
@@ -377,7 +407,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Uygulamaları keşfetmeyi, karşılaştırmayı ve uygun kurulum kaynağına ulaşmayı sağlar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "what-the-app",
+        "url": "https://github.com/timdesigners-pixel/what-the-app",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-009-what-the-app",
       "codexProject": {
         "name": "PL-009 · What the App!",
@@ -454,7 +490,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Dışa aktarılan WhatsApp sohbetlerini cihazda açar; mesajlarda arama, filtreleme ve arşivleme sunar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "whatsapp-chat-viewer",
+        "url": "https://github.com/timdesigners-pixel/whatsapp-chat-viewer",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-011-whatsapp-chat-viewer",
       "codexProject": {
         "name": "PL-011 · WhatsApp Chat Viewer",
@@ -489,7 +531,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Belge bilgilerini ve seçilen şablonu kullanarak düzenlenebilir dilekçe taslakları oluşturur.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "dilekce-olustur",
+        "url": "https://github.com/timdesigners-pixel/dilekce-olustur",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-012-dilekce-olustur",
       "codexProject": {
         "name": "PL-012 · Dilekçe Oluştur",
@@ -524,7 +572,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Ürün bilgilerini, incelemeleri ve fiyatları bir araya getirerek teknoloji ürünlerini karşılaştırır.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "gadget-dunyasi-companion",
+        "url": "https://github.com/timdesigners-pixel/gadget-dunyasi-companion",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-013-gadget-dunyasi-companion",
       "codexProject": {
         "name": "PL-013 · Gadget Dünyası Companion",
@@ -559,7 +613,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Kaydedilmiş sosyal medya içeriklerini kaynaklarıyla toplar, etiketler ve koleksiyonlara ayırır.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "social-saves-organizer",
+        "url": "https://github.com/timdesigners-pixel/social-saves-organizer",
+        "verified": true,
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-014-social-saves-organizer",
       "codexProject": {
         "name": "PL-014 · Social Saves Organizer",
