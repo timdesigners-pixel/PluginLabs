@@ -18,6 +18,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Prompt Dünyası (PL-008) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
 | What the App! (PL-009) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip, BUILD-INFO) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | Binbir Dizayn Stüdyo (PL-010) | studyo-v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
+| WhatsApp Chat Viewer (PL-011) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -26,8 +27,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–010, PL-053 ve Hub. PL-004–010 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- PL-011 WhatsApp Chat Viewer: 0.1.0 Windows uygulaması kodu hazır (taslak PR whatsapp-chat-viewer#1); **release yayımlanmadı** — `v0.1.0` etiketi kullanıcı onayı bekliyor.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–011, PL-053 ve Hub. PL-004–010 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Sıradaki (Windows sürümü yok): PL-012–014 (yalnız plan), PL-015–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
@@ -44,7 +44,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-008 | Prompt Dünyası | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
 | PL-009 | What the App! | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | PL-010 | 1001 Designs / Pin to Component | Design Replicator Chrome eklentisi v1.4.0 + **Binbir Dizayn Stüdyo** Windows uygulaması **studyo-v0.1.0** (1001 bileşen kütüphanesi, çevrimdışı; imzasız önizleme) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
-| PL-011 | WhatsApp Chat Viewer | Windows uygulaması 0.1.0 kodu (ZIP/TXT içe aktarma, arama, şifreli yerel arşiv) · taslak PR #1 · **release yok** (onay bekliyor) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/pull/1 |
+| PL-011 | WhatsApp Chat Viewer | Windows uygulaması · **v0.1.0** (ZIP/TXT içe aktarma, arama, DPAPI şifreli yerel arşiv; imzasız önizleme) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
 | PL-012 | Dilekçe Oluştur | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/dilekce-olustur |
 | PL-013 | Gadget Dünyası Companion | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion |
 | PL-014 | Social Saves Organizer | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/social-saves-organizer |
