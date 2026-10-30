@@ -315,8 +315,9 @@ test("update check reads only own-prefixed releases from the public distribution
   t.after(() => { global.fetch = original; });
   const item = (id, asset) => ({ id, name: id, kind: "app", version: "1.0.0", platform: "win32", format: "exe", file: "x.exe", size: 1, sha256: "a".repeat(64), url: "https://example.test/x.exe", distAsset: asset });
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-upd-"));
-  t.after(() => fs.rm(root, { recursive: true, force: true }));
   const hub = await new Hub(root, { catalog: [item("app-a", "^A\.exe$"), item("app-b", "^B\.exe$"), item("app-c", "x")], dist }).init();
+  // log() kaydı beklemeden başlatır; close() bekleyen yazmayı tamamlar, sonra klasör silinir (ENOTEMPTY yarışı).
+  t.after(async () => { await hub.close(); await fs.rm(root, { recursive: true, force: true }); });
   const r = Object.fromEntries((await hub.checkUpdates()).map((x) => [x.id, x]));
   assert.deepEqual(r["app-a"], { id: "app-a", version: "1.10.0", available: true, ready: true }, "1.10.0 > 1.5.0; ön sürüm ve app-ab yok sayılır");
   assert.equal(hub.catalog[0].url, dl("app-a-v1.10.0", "A.exe"));
