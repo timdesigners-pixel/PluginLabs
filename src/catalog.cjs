@@ -1,5 +1,8 @@
 const gh = (repo, tag, file) =>
   `https://github.com/${repo}/releases/download/${tag}/${file}`;
+// Uygulama depoları özeldir; Windows sürüm dosyaları herkese açık dağıtım deposundan `<id>-v<sürüm>` etiketiyle indirilir.
+const DIST = "timdesigners-pixel/pluginlabs-dagitim";
+const dist = (id, version, file) => gh(DIST, `${id}-v${version}`, file);
 const catalog = [
   {
     id: "mind-palace",
@@ -13,11 +16,8 @@ const catalog = [
     file: "MindPalace.exe",
     size: 81534054,
     sha256: "dde1b5eba5d65ff13d117393682f11db45dbafa2a53760cc27577a445c575a12",
-    url: gh(
-      "timdesigners-pixel/mind-palace",
-      "v1.10.0",
-      "Mind-Palace-Tasinabilir-1.10.0-x64.exe",
-    ),
+    url: dist("mind-palace", "1.10.0", "Mind-Palace-Tasinabilir-1.10.0-x64.exe"),
+    distAsset: "Tasinabilir.*x64\\.exe$",
     repo: "timdesigners-pixel/mind-palace",
   },
   {
@@ -32,7 +32,8 @@ const catalog = [
     file: "LeoHelper.exe",
     size: 26814787,
     sha256: "1b9645a5ff286ffb684aa4c8c155e739a51fb43e993a7c0f73f79df2ce132469",
-    url: gh("timdesigners-pixel/leo-helper", "v0.8.0", "LeoHelper.exe"),
+    url: dist("leo-helper", "0.8.0", "LeoHelper.exe"),
+    distAsset: "^LeoHelper\\.exe$",
     repo: "timdesigners-pixel/leo-helper",
   },
   {
@@ -47,11 +48,12 @@ const catalog = [
     file: "PluginLabsScrapper.exe",
     size: 81132605,
     sha256: "cf038bc071473a71d5f72f37328dbd4ad48b1cb8be54c2a6db932d65ac813baf",
-    url: gh(
-      "timdesigners-pixel/the-ultimate-scrapper",
-      "v0.4.0",
+    url: dist(
+      "pluginlabs-scrapper",
+      "0.4.0",
       "PluginLabs-Scrapper-0.4.0-Windows-Portable-x64.exe",
     ),
+    distAsset: "Windows-Portable-x64\\.exe$",
     repo: "timdesigners-pixel/the-ultimate-scrapper",
   },
   {
@@ -190,6 +192,7 @@ for (const product of require("../resources/notion-catalog.json").items) {
   });
 }
 module.exports = {
+  DIST,
   catalog: catalog.map((item) => {
     const v = item.variants?.[process.platform];
     return {
