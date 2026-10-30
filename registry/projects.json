@@ -454,7 +454,7 @@
         "name": "1001-designs",
         "url": "https://github.com/timdesigners-pixel/1001-designs",
         "verified": true,
-        "note": "Codex projesi PL-010 · 1001 Designs / Pin to Component, birincil klasör projeler\\1001-designs (29.10.2026 doğrulandı)"
+        "note": "Codex projesi PL-010 · 1001 Designs / Pin to Component, birincil klasör projeler\\1001-designs (29.10.2026 doğrulandı) · 30.10.2026: Binbir Dizayn Stüdyo 0.1.0 Windows uygulaması (1001-designs#2, release studyo-v0.1.0)"
       },
       "appPath": "apps/01-mevcut-urunler-ve-fikirler/PL-010-1001-designs-pin-to-component",
       "codexProject": {
@@ -495,7 +495,7 @@
         "name": "whatsapp-chat-viewer",
         "url": "https://github.com/timdesigners-pixel/whatsapp-chat-viewer",
         "verified": true,
-        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 (henüz kod yok)"
+        "note": "Codex tarafından private oluşturuldu 29.10.2026; GitHub’da doğrulandı 30.10.2026 · 30.10.2026: 0.1.0 Windows uygulaması kodu (whatsapp-chat-viewer#1, taslak); release v0.1.0 kullanıcı onayı bekliyor"
       },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-011-whatsapp-chat-viewer",
       "codexProject": {
