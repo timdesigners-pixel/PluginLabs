@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.1 — PluginLabs Scrapper 0.4.1 kataloğa eklendi.
+
+- Katalog: PluginLabs Scrapper 0.4.1 (sol menü genişledi, gezinme öğeleri tek satır, ince/düz scrollbar). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.0 — uygulamalar Hub'dan kurulabilir, MUST HAVE şartnamesi.
 
 - Uygulama dosyaları herkese açık dağıtım deposundan (timdesigners-pixel/pluginlabs-dagitim) indirilir; özel depolar yüzünden oluşan 404 hatası giderildi. Kurulumdan önce SHA-256 doğrulaması aynen sürüyor.
