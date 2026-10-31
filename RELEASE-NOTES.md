@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.5 — Leo Helper 0.9.0 kataloğa eklendi.
+
+- Katalog: Leo Helper 0.9.0 (Tauri/Rust; gömülü kod tarayıcısı, Telegram bağlantısı, makro ile öğretme, 5 hedefe aynı anda otomatik kod girişi, sonuç algılama). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.4 — PluginLabs Scrapper 0.6.0 kataloğa eklendi.
 
 - Katalog: PluginLabs Scrapper 0.6.0 (PluginLabs Tasarım Sistemi uyumu, Ctrl+K komut paleti, sade tarayıcı arayüzü). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
