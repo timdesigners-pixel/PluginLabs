@@ -1,6 +1,6 @@
 {
   "name": "pluginlabs-hub",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "PluginLabs uygulama, kaynak ve yerel AI merkezi",
   "main": "src/electron.cjs",
   "author": "PluginLabs",

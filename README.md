@@ -16,7 +16,7 @@ Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan e
 
 50 uygulama; ne işe yaradığını anlatan açıklamalar, platform bilgileri ve önizleme paketi yükleme seçenekleriyle listelenir.
 
-![Keşfet: Hub üzerinden kurulabilen uygulamalar (0.4.7)](docs/screenshots/app-catalog.png)
+![Keşfet: Hub üzerinden kurulabilen uygulamalar (0.4.8)](docs/screenshots/app-catalog.png)
 
 ### Eklenti yöneticisi
 
