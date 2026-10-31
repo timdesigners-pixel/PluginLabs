@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.8 — Leo Helper 0.9.1 kataloğa eklendi.
+
+- Katalog: Leo Helper 0.9.1 (kod takibi: uygunluk göstergesi, mesaj önizlemesi, sınıflandırma, kod şartları). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.7 — PluginLabs Scrapper 0.7.0 kataloğa eklendi.
 
 - Katalog: PluginLabs Scrapper 0.7.0 (ürün ekranları tek Alışveriş bölümünde; ham veriyi değiştirmeyen dönüşüm katmanıyla Veri Kazıma Stüdyosu, otomatik düzenleme, CSV/JSON/XLSX/SQLite çıktısı; parolaları şifreli tutan Site Rehberi). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
