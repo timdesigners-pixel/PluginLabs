@@ -93,6 +93,27 @@ const catalog = [
     repo: "timdesigners-pixel/flow-dock",
   },
   {
+    id: "mutfak-atolyesi",
+    name: "Mutfak Atölyesi",
+    kind: "app",
+    version: "0.4.1",
+    description:
+      "30 günlük menü, stok ve alışveriş listesi, tarifler, yaklaşık kalori, su ve sağlık günlüğü; çevrimdışı çalışır (WebView2 gerekir).",
+    platform: "win32",
+    format: "zip",
+    file: "MutfakAtolyesi-Windows-x64.zip",
+    launch: "content/MutfakAtolyesi.exe",
+    size: 84327609,
+    sha256: "0a3306b925c79b6d5eaabf96fa6035da24493346b4918bb1459b7496be71d78d",
+    url: dist(
+      "mutfak-atolyesi",
+      "0.4.1",
+      "MutfakAtolyesi-0.4.1-Windows-x64.zip",
+    ),
+    distAsset: "Windows-x64\\.zip$",
+    repo: "timdesigners-pixel/mutfak-atolyesi",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",
