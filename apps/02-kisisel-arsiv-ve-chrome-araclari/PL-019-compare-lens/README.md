@@ -10,7 +10,7 @@
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | [timdesigners-pixel/compare-lens](https://github.com/timdesigners-pixel/compare-lens) · Windows release [v0.1.0](https://github.com/timdesigners-pixel/compare-lens/releases/tag/v0.1.0) |
 | Codex projesi | `PL-019 · Compare Lens` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743) |
 
