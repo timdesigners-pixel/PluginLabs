@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.7 — PluginLabs Scrapper 0.7.0 kataloğa eklendi.
+
+- Katalog: PluginLabs Scrapper 0.7.0 (ürün ekranları tek Alışveriş bölümünde; ham veriyi değiştirmeyen dönüşüm katmanıyla Veri Kazıma Stüdyosu, otomatik düzenleme, CSV/JSON/XLSX/SQLite çıktısı; parolaları şifreli tutan Site Rehberi). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.6 — Mutfak Atölyesi 0.4.1 kataloğa eklendi.
 
 - Katalog: Mutfak Atölyesi 0.4.1 (Windows x64 taşınabilir zip; PluginLabs Tasarım Sistemi arayüzü, Ctrl+K komut paleti). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı; gerçek indirme + açma + başlatma yolu uçtan uca denendi.
