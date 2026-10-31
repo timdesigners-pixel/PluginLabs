@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları — tek bakışta durum
 
-Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
+Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC, PL-012–014 31.10.2026 ~08:00 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
 
 ## Bugün indirip denenebilenler
 
@@ -19,9 +19,9 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | What the App! (PL-009) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip, BUILD-INFO) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | Binbir Dizayn Stüdyo (PL-010) | studyo-v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
 | WhatsApp Chat Viewer (PL-011) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
-| Dilekçe Oluştur (PL-012) | v0.1.0 (Windows) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
-| Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
-| Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
+| Dilekçe Oluştur (PL-012) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
+| Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
+| Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
 | YouTube Shelf (PL-015) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
@@ -31,7 +31,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–015, PL-053 ve Hub. PL-012–015 31.10.2026 itibarıyla GitHub release listesinden doğrulandı. PL-004–010 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–015, PL-053 ve Hub. PL-004–015 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - Sıradaki (Windows sürümü yok): PL-016–024 (yalnız plan), PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
@@ -49,10 +50,10 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-009 | What the App! | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | PL-010 | 1001 Designs / Pin to Component | Design Replicator Chrome eklentisi v1.4.0 + **Binbir Dizayn Stüdyo** Windows uygulaması **studyo-v0.1.0** (1001 bileşen kütüphanesi, çevrimdışı; imzasız önizleme) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
 | PL-011 | WhatsApp Chat Viewer | Windows uygulaması · **v0.1.0** (ZIP/TXT içe aktarma, arama, DPAPI şifreli yerel arşiv; imzasız önizleme) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
-| PL-012 | Dilekçe Oluştur | Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
-| PL-013 | Gadget Dünyası Companion | Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
-| PL-014 | Social Saves Organizer | Windows uygulaması · **v0.1.0** (Instagram kaydedilenleri, etiket, bozuk bağlantı; imzasız önizleme) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.0** (izleme rafı: Takeout içe aktarma, konu/süre/sıra, kaynaklar, MyMind; imzasız önizleme) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.0 |
+| PL-012 | Dilekçe Oluştur | Windows uygulaması · **v0.1.0** (şablonlu dilekçe taslağı, eksik bilgi ve kaynaksız atıf denetimi, RTF/TXT; imzasız önizleme) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
+| PL-013 | Gadget Dünyası Companion | Windows uygulaması · **v0.1.0** (şarj cihazı/kulaklık × cihaz uyumluluğu, karşılaştırma; imzasız önizleme) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
+| PL-014 | Social Saves Organizer | Windows uygulaması · **v0.1.0** (Instagram dışa aktarımı/bağlantı listesi, etiket/not/koleksiyon, bozuk bağlantı denetimi, MyMind etiket önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
+| PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.0** (izleme rafı: Takeout içe aktarma, konu/süre/sıra, kaynaklar, MyMind konu önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.0 |
 | PL-016 | Tab Atlas | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tab-atlas |
 | PL-017 | Page Capsule | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-capsule |
 | PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
