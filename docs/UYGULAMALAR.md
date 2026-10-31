@@ -11,7 +11,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Flow Dock (PL-001) | v0.1.0 (tek exe) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
 | Leo Helper (PL-002) | v0.8.0 (ZIP; `start.cmd` ya da `LeoHelper.exe`) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | Mind Palace (PL-003) | **v1.11.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
-| The Ultimate Scrapper (PL-004) | v0.4.1 (PluginLabs Scrapper) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.4.1 |
+| The Ultimate Scrapper (PL-004) | v0.5.1 (PluginLabs Scrapper) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.5.1 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
@@ -22,7 +22,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Dilekçe Oluştur (PL-012) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
 | Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| YouTube Shelf (PL-015) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.0 |
+| YouTube Shelf (PL-015) | **v0.1.1** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -42,7 +42,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-001 | Flow Dock | Çalışan Windows uygulaması · **v0.1.0** (tek exe, imzasız) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
 | PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.8.0** | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.8.0 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
-| PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.4.1** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.4.1 |
+| PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.5.1** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.5.1 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | PL-006 | Note Master | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | PL-007 | Musebook | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
@@ -53,7 +53,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-012 | Dilekçe Oluştur | Windows uygulaması · **v0.1.0** (şablonlu dilekçe taslağı, eksik bilgi ve kaynaksız atıf denetimi, RTF/TXT; imzasız önizleme) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
 | PL-013 | Gadget Dünyası Companion | Windows uygulaması · **v0.1.0** (şarj cihazı/kulaklık × cihaz uyumluluğu, karşılaştırma; imzasız önizleme) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | PL-014 | Social Saves Organizer | Windows uygulaması · **v0.1.0** (Instagram dışa aktarımı/bağlantı listesi, etiket/not/koleksiyon, bozuk bağlantı denetimi, MyMind etiket önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.0** (izleme rafı: Takeout içe aktarma, konu/süre/sıra, kaynaklar, MyMind konu önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.0 |
+| PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.1** (izleme rafı; youtube-shelf#3 ile main'e giren uygulama; imzasız önizleme) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1 |
 | PL-016 | Tab Atlas | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tab-atlas |
 | PL-017 | Page Capsule | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-capsule |
 | PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
