@@ -23,6 +23,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
 | Desk Tidy (PL-021) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
+| Twin Finder (PL-022) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO + 10 GB ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -60,7 +61,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
 | PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
 | PL-021 | Desk Tidy | Windows uygulaması · **v0.1.0** (gerekçeli klasör düzenleme, taşıma planı önizlemesi, günlük ve geri al, MyMind kategori önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
-| PL-022 | Twin Finder | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/twin-finder |
+| PL-022 | Twin Finder | Windows uygulaması · **v0.1.0** (birebir kopya: boyut → SHA-256 → bayt bayt doğrulama, gerekçeli tutulacak kopya, bağımlılık koruması, karantina ve geri alma, MyMind önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
 | PL-023 | Clip Vault | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/clip-vault |
 | PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
 | PL-025 | File Pilot | Fikir / Hub içi önizleme (ayrı depo yok) | — |
