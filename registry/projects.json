@@ -864,7 +864,13 @@
         "masaüstü uygulaması"
       ],
       "summary": "Seçilen klasörlerdeki dosyaları kurallara göre gruplar; taşıma planını uygulamadan önce gösterir.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "desk-tidy",
+        "url": "https://github.com/timdesigners-pixel/desk-tidy",
+        "verified": true,
+        "note": "Depo planlama içeriğiyle mevcuttu (31.10.2026 doğrulandı) · 31.10.2026: 0.1.0 Windows uygulaması (desk-tidy#2, release v0.1.0)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-021-desk-tidy",
       "codexProject": {
         "name": "PL-021 · Desk Tidy",
