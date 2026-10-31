@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.4 — PluginLabs Scrapper 0.6.0 kataloğa eklendi.
+
+- Katalog: PluginLabs Scrapper 0.6.0 (PluginLabs Tasarım Sistemi uyumu, Ctrl+K komut paleti, sade tarayıcı arayüzü). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.3 — PluginLabs Scrapper 0.5.1 kataloğa eklendi.
 
 - Katalog: PluginLabs Scrapper 0.5.1 (gerçek siteler için düzeltmeler: akıllı seçim, RSS/WordPress API kaynakları, önizleme tanıları, kılavuz). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
