@@ -116,7 +116,9 @@ async function ocrFile(file) {
   await ov.mouse.move(70 * k.x, 90 * k.y); await ov.mouse.down(); await ov.mouse.move(600 * k.x, 400 * k.y, { steps: 5 }); await ov.mouse.move(1100 * k.x, 680 * k.y, { steps: 5 }); await ov.mouse.up();
   await until(page, () => !document.getElementById("canvasWrap").hidden);
   const size = await page.evaluate(() => ({ W: document.getElementById("canvas").width, H: document.getElementById("canvas").height }));
-  assert.ok(size.W > 500 && size.H > 280 && Math.abs(size.W / size.H - 1030 / 590) < 0.05, "bölge kırpılmadı: " + JSON.stringify(size));
+  // Test ekranı görüntüye 1440×900'den ekran ölçüsüne (ör. Windows runner'da 1024×768) esnetilerek gelir; beklenen oran buna göre.
+  const want = (1030 * k.x) / (590 * k.y);
+  assert.ok(size.W > 500 && size.H > 280 && Math.abs(size.W / size.H - want) / want < 0.04, "bölge kırpılmadı: " + JSON.stringify(size) + " beklenen oran " + want.toFixed(3));
   log("bölge yakalandı: " + size.W + "×" + size.H);
 
   // ---- 2) Hassas alan taraması (otomatik; gerçek OCR) ----
