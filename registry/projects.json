@@ -1898,11 +1898,11 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak",
+      "status": "01.11.2026: 1.1.0 Windows uygulaması + Chrome eklentisi yayımlandı (extension-manager#2; release v1.1.0)",
       "priority": null,
       "effort": null,
       "platforms": {
-        "windows": false,
+        "windows": true,
         "linux": false,
         "macos": false,
         "chrome": true,
@@ -1910,6 +1910,7 @@
       },
       "platformText": "Chrome eklentisi (Codex: PL · Eklenti · Extension Manager)",
       "formFactors": [
+        "masaüstü uygulaması (Windows)",
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Eklenti yöneticisi (Chrome eklentisi).",
@@ -1918,7 +1919,7 @@
         "name": "extension-manager",
         "url": "https://github.com/timdesigners-pixel/extension-manager",
         "verified": true,
-        "note": "Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici"
+        "note": "Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici · 01.11.2026: 1.1.0 Windows uygulaması (release v1.1.0); eklenti extension/ klasöründe"
       },
       "appPath": "apps/06-hub-disi-urun-depolari/PL-051-extension-manager",
       "codexProject": {
