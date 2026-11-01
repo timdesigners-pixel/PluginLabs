@@ -1,6 +1,8 @@
-PluginLabs Hub 0.4.9 — File Pilot 0.1.0 kataloğa eklendi.
+PluginLabs Hub 0.4.9 — File Pilot 0.1.0, Workspace Scenes 0.1.0 ve Focus Orbit 0.1.0 kataloğa eklendi.
 
 - Katalog: File Pilot 0.1.0 (PL-025; seçtiğiniz klasörlerde yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind ile onaylı anlamsal soru; dosyaları yalnız okur). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Katalog: Workspace Scenes 0.1.0 (PL-026; kayıtlı çalışma sahnelerini onayla sırayla açar, hiçbir şeyi kapatmaz).
+- Katalog: Focus Orbit 0.1.0 (PL-027; tek görevli odak zamanlayıcısı, her zaman üstte sürüklenebilir odak balonu, mola bildirimleri, dikkat listesi hatırlatması, kullanıcı bildirimli kesinti kaydı, MyMind ile onaylı görev parçalama ve seans özeti). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Hub'ın kendi davranışı değişmedi.
 
 İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.

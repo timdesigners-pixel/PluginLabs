@@ -127,6 +127,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-026-workspace-scenes/app",
   },
   {
+    id: "focus-orbit",
+    name: "Focus Orbit",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Tek görevli odak zamanlayıcısı: her zaman üstte, sürüklenebilir odak balonu, mola bildirimleri, dikkat listesi hatırlatması ve kesinti kaydı; haftalık ölçüler, MyMind ile onaylı görev parçalama ve seans özeti. Ekranı izlemez, hiçbir şeyi kapatmaz.",
+    platform: "win32",
+    format: "exe",
+    file: "FocusOrbit.exe",
+    size: 81528269,
+    sha256: "6bb9bac5222b51b7f851d0b0e250f90c149a190e6d2416bb007455fe7df2238b",
+    url: dist("focus-orbit", "0.1.0", "FocusOrbit-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-027-focus-orbit/app",
+  },
+  {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
     kind: "app",

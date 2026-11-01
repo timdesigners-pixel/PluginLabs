@@ -4,9 +4,19 @@
 
 Ürün kartı (Notion kaynağı, kısaltılmamış): [../README.md](../README.md) · Sürüm notları: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
-**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0 — kurulum `FocusOrbit-0.1.0-Windows-x64.exe` ya da taşınabilir `FocusOrbit-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın.
+**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0 — kurulum `FocusOrbit-0.1.0-Windows-x64.exe` ya da taşınabilir `FocusOrbit-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 07:51 UTC'de `pluginlabs-dagitim` iş akışıyla ([çalıştırma 41286344096](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41286344096)) Windows runner'ında derlendi: `npm test` + gerçek Electron penceresinde duman testi geçti (Windows kasası/DPAPI etkin); kaynak commit `56b5eba`. Hub kataloğunda (Hub 0.4.9).
 
 ## Ekran görüntüleri
+
+**Windows (release'i üreten Windows runner'ı, 01.11.2026, kaynak `56b5eba`, test verisi):**
+
+| Odak seansı, adımlar (MyMind) ve dikkat listesi | Odak balonu (her zaman üstte, sürüklenir) |
+| --- | --- |
+| ![Windows odak seansı](docs/screenshots/windows-masaustu-01-odak-seansi.png) | ![Windows odak balonu](docs/screenshots/windows-masaustu-02-odak-balonu.png) |
+| **Bu hafta: hedef, kesinti / seans** | **Seans kayıtları ve MyMind özeti** |
+| ![Windows bu hafta](docs/screenshots/windows-masaustu-03-hafta.png) | ![Windows kayıtlar](docs/screenshots/windows-masaustu-04-kayitlar.png) |
+
+**Linux xvfb (aynı kaynak):**
 
 Gerçek uygulama pencereleri; otomatik duman testinin test verisiyle (hızlandırılmış saat, taklit Hub) **Linux xvfb** üzerinde alınmıştır (01.11.2026, bu klasördeki kaynak). Release'i üreten Windows runner'ında alınan aynı ekranlar release'te `windows-masaustu-*.png` adıyla bulunur.
 
