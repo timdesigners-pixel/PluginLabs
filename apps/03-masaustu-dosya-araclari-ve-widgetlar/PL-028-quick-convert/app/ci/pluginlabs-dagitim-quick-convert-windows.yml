@@ -1,0 +1,113 @@
+name: Quick Convert Windows sürümü
+# PL-028 Quick Convert'in kaynağı PluginLabs deposundaki ürün ön geliştirme alanındadır (apps/03-…/PL-028-quick-convert/app; ürün deposu henüz yok).
+# Bu iş akışı kaynağı SABİT bir PluginLabs commit'inden alır, Windows runner'ında birim testleri + masaüstü duman testini (gerçek Electron penceresi)
+# koşar, kurulum (NSIS) ve taşınabilir exe'yi derler, PE başlığı ve boyutu doğrular, SHA256SUMS-windows.txt + BUILD-INFO-windows.txt üretir
+# ve bu depoda quick-convert-v<sürüm> etiketiyle yayımlar. Paketler imzasızdır.
+on:
+  push:
+    branches: ['claude/quick-convert-v*']
+    paths: ['.github/workflows/quick-convert-windows.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  SOURCE_REPO: timdesigners-pixel/PluginLabs
+  SOURCE_SHA: KAYNAK_COMMIT
+  APP_DIR: src/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          ref: ${{ env.SOURCE_SHA }}
+          path: src
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: ${{ env.APP_DIR }}/package-lock.json
+      - name: Bağımlılıklar
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+      - name: Birim testleri (çekirdek)
+        working-directory: ${{ env.APP_DIR }}
+        run: npm test
+      - name: Masaüstü duman testi (gerçek Electron penceresi + bırakma kutusu; gerçek görüntü/metin dönüşümleri, kaynak SHA-256 denetimi)
+        working-directory: ${{ env.APP_DIR }}
+        shell: pwsh
+        run: |
+          npm install --no-save playwright@1.49.1
+          $env:PLAYWRIGHT_MODULE = 'playwright'
+          node tests/desktop-smoke.cjs docs/screenshots | Tee-Object -FilePath smoke.txt
+          if ($LASTEXITCODE) { throw 'Duman testi başarısız' }
+      - name: Derle
+        working-directory: ${{ env.APP_DIR }}
+        run: npx electron-builder --win nsis portable --x64 --publish never
+      - name: Doğrula ve özetle
+        working-directory: ${{ env.APP_DIR }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ver = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          "VER=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $files = Get-ChildItem dist -File | Where-Object { $_.Extension -eq '.exe' -and $_.Name -notmatch 'uninstall' }
+          if ($files.Count -ne 2) { throw "2 exe bekleniyordu, bulunan: $($files.Name -join ', ')" }
+          New-Item -ItemType Directory -Force release | Out-Null
+          foreach ($f in $files) {
+            $b = [System.IO.File]::ReadAllBytes($f.FullName)
+            if ($b[0] -ne 0x4D -or $b[1] -ne 0x5A) { throw "$($f.Name) geçerli bir Windows yürütülebilir dosyası değil (MZ başlığı yok)" }
+            if ($f.Length -lt 50MB) { throw "$($f.Name) beklenenden küçük: $($f.Length) bayt" }
+            Copy-Item $f.FullName release/
+          }
+          # Duman testinin Windows runner'ında aldığı gerçek pencere görüntüleri (test verisiyle) release'e eklenir.
+          Get-ChildItem docs/screenshots -Filter *.png | ForEach-Object { Copy-Item $_.FullName "release/windows-$($_.Name)" }
+          $smoke = (Get-Content smoke.txt | Select-String 'DUMAN TESTİ GEÇTİ' | Select-Object -Last 1).Line
+          @(
+            "Quick Convert $ver — Windows derlemesi",
+            "kaynak: $env:SOURCE_REPO@$env:SOURCE_SHA (apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app)",
+            "iş akışı commit'i: $env:GITHUB_REPOSITORY@$env:GITHUB_SHA ($env:GITHUB_REF_NAME)",
+            "çalıştırma: $env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID",
+            "tarih (UTC): $((Get-Date).ToUniversalTime().ToString('yyyy-MM-dd HH:mm'))",
+            "runner: $env:ImageOS $env:ImageVersion · node $(node -v) · electron $((Get-Content node_modules/electron/package.json -Raw | ConvertFrom-Json).version)",
+            "testler: npm test + masaüstü duman testi (gerçek Electron penceresi, gerçek dönüşümler, taklit Hub) bu çalıştırmada geçti",
+            "duman testi: $smoke",
+            "imza: yok (Authenticode imzasız)"
+          ) | Set-Content -Encoding utf8 release/BUILD-INFO-windows.txt
+          Push-Location release
+          Get-ChildItem -File | Where-Object { $_.Name -ne 'SHA256SUMS-windows.txt' -and $_.Name -ne 'BUILD-INFO-windows.txt' } | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content -Encoding utf8 SHA256SUMS-windows.txt
+          Get-Content SHA256SUMS-windows.txt
+          Get-Content BUILD-INFO-windows.txt
+          Get-ChildItem | Format-Table Name, Length
+          Pop-Location
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quick-convert-windows
+          path: ${{ env.APP_DIR }}/release
+          if-no-files-found: error
+      - name: Yayımla (quick-convert-v<sürüm>)
+        working-directory: ${{ env.APP_DIR }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = "quick-convert-v$env:VER"
+          $assets = (Get-ChildItem release -File).FullName
+          gh release view $tag --repo $env:GITHUB_REPOSITORY 2>$null | Out-Null
+          if ($LASTEXITCODE -eq 0) {
+            $global:LASTEXITCODE = 0
+            gh release upload $tag @assets --clobber --repo $env:GITHUB_REPOSITORY
+            if ($LASTEXITCODE) { throw 'Yükleme başarısız' }
+            gh release edit $tag --notes-file RELEASE-NOTES.md --repo $env:GITHUB_REPOSITORY
+          } else {
+            $global:LASTEXITCODE = 0
+            gh release create $tag @assets --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "Quick Convert $env:VER (önizleme)" --notes-file RELEASE-NOTES.md
+            if ($LASTEXITCODE) { throw 'Release oluşturulamadı' }
+          }

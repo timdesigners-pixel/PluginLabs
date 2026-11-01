@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Quick Convert — bırakma kutusu</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="qd-body">
+<div class="qd" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <div class="qd-head">
+    <span class="qd-logo" aria-hidden="true">QC</span><b>Quick Convert</b>
+    <button class="qd-btn" type="button" id="openMain" title="Ana pencereyi aç" aria-label="Ana pencereyi aç"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></button>
+    <button class="qd-btn" type="button" id="hide" title="Bırakma kutusunu gizle" aria-label="Bırakma kutusunu gizle"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="qd-zone" id="zone" role="region" aria-label="Dosyaları buraya bırakın">
+    <svg class="pl-ico pl-ico--24" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+    <b>Buraya bırakın</b>
+    <span class="qd-preset" id="preset"></span>
+  </div>
+  <div class="qd-status" id="status" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="drop.js"></script>
+</body>
+</html>
