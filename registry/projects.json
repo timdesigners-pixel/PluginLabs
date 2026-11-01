@@ -2018,7 +2018,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "Yeni fikir · kullanıcı notundan ürünleştirme",
+      "status": "0.1.0 yerel derleme · Tauri 2/Rust Windows uygulaması + Chrome eklentisi (MV3); GitHub deposu ve yayın onay bekliyor",
       "priority": "P1",
       "effort": "M",
       "platforms": {
