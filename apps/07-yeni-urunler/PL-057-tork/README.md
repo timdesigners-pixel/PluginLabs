@@ -15,6 +15,12 @@
 | Codex projesi | `PL-057 · Tork` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [PL-057 · Tork](https://app.notion.com/p/40b8aa13d8f981d7b221f34a525ed045) |
 
+![Tork · Ölçüm](olcum.png)
+
+![Tork · Karşılaştır](karsilastir.png)
+
+<sub>Gerçek uygulama ekran görüntüleri: Tork 0.1.0 yerel release derlemesi, Windows 11 26H2 · i7-10750H, 01.11.2026. Değerler bu makinedeki iki gerçek hızlı ölçümdür.</sub>
+
 ## Ne işe yarar
 
 **Kullanıcı ve problem:** Yeni aldığı ya da ayarlarını değiştirdiği bilgisayarın gerçekten hızlanıp hızlanmadığını, darboğazın işlemci, bellek ya da disk olduğunu anlamak isteyen; reklamlı, hesap isteyen ya da veri toplayan benchmark araçlarına güvenmeyen kullanıcılar.
