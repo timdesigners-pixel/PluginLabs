@@ -1109,7 +1109,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim quick-convert-v0.1.0; kaynak PluginLabs apps/…/PL-028-quick-convert/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1121,8 +1121,7 @@
       },
       "platformText": "W / L / M dosya bırakma widget’ı",
       "formFactors": [
-        "masaüstü uygulaması",
-        "widget"
+        "masaüstü uygulaması (Windows) + bırakma kutusu (widget)"
       ],
       "summary": "Desteklenen dosyaları sürükle-bırak ile farklı biçimlere dönüştürür.",
       "repo": null,
@@ -1132,7 +1131,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app",
+      "release": {
+        "tag": "quick-convert-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-029",

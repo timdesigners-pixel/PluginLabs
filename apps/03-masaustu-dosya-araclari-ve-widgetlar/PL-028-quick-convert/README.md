@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-028` · `quick-convert` |
 | Kategori | 03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030 |
-| Durum | Yeni fikir |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [quick-convert-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.9 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS |
 | Dağıtım biçimi | masaüstü uygulaması, widget |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-quick-convert-windows.yml)) |
 | Codex projesi | `PL-028 · Quick Convert` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83) |
 
@@ -55,6 +55,12 @@ Desteklenen fixture’larda veri kaybı/çökme sıfır; çıktı boyutu ve kali
 ## Öncelik ve efor
 
 P1 · M; buluta yükleme gerektirmeyen temel araç.
+
+## 0.1.0 sürümü (Windows)
+
+Sürükle-bırak dosya dönüştürücü: görüntü biçimi/boyutu (PNG, JPEG, WebP, GIF, BMP → PNG, JPEG, WebP; kalite, hedef KB, kutuya sığdırma/yüzde, büyütmez) ve metin kodlaması (UTF-8, UTF-8 BOM'lu, UTF-16, Windows-1254; satır sonu). Kaynak korunur (SHA-256 denetimi), sonuç yeni dosyaya yazılır ve yeniden açılarak doğrulanır; boyut, ölçü ve kalite (PSNR) gösterilir; desteklenmeyen ve yürütülebilir içerik açıkça reddedilir. Her zaman üstte **bırakma kutusu** (widget). "Ne istiyorsunuz?" cümlesinden kurala dayalı öneri ve isteğe bağlı MyMind önerisi (Hub üzerinden, onaylı; dosya adı/içeriği gönderilmez). Ayrıntı, ekran görüntüleri ve kabul: [app/README.md](app/README.md).
+
+![Quick Convert — kuyruk ve sonuçlar (Windows)](app/docs/screenshots/windows-masaustu-01-kuyruk-ve-sonuclar.png)
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
