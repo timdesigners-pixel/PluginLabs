@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.9 — Leo Helper 0.9.2 kataloğa eklendi.
+
+- Katalog: Leo Helper 0.9.2 (Alınan kodlar sayfası ve şartların kaydı: başarılı her kod, alındığı andaki şartlarıyla saklanır; şart, durum ve not sonradan düzeltilir). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.8 — Leo Helper 0.9.1 kataloğa eklendi.
 
 - Katalog: Leo Helper 0.9.1 (kod takibi: uygunluk göstergesi, mesaj önizlemesi, sınıflandırma, kod şartları). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.

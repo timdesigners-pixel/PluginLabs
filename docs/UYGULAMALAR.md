@@ -9,7 +9,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Uygulama | Sürüm | Nereden |
 | --- | --- | --- |
 | Flow Dock (PL-001) | v0.1.0 (tek exe) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
-| Leo Helper (PL-002) | v0.9.1 (Tauri; kurulum + taşınabilir exe) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.1 |
+| Leo Helper (PL-002) | v0.9.2 (Tauri; kurulum + taşınabilir exe) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.2 |
 | Mind Palace (PL-003) | **v1.11.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | The Ultimate Scrapper (PL-004) | v0.7.0 (PluginLabs Scrapper) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.7.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
@@ -39,7 +39,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | Çalışan Windows uygulaması · **v0.1.0** (tek exe, imzasız) | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.1.0 |
-| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.1** (Tauri/Rust; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.1 |
+| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.2** (Tauri/Rust; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.2 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.7.0** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.7.0 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
