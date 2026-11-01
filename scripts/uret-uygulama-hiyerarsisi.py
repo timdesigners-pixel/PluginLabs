@@ -44,6 +44,7 @@ REPOLAR = {
     'PL-051': ('extension-manager', True, 'Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici'),
     'PL-052': ('tweakster', True, 'Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)'),
     'PL-053': ('mutfak-atolyesi', True, 'Codex proje adı: “PL -053· Mutfak Atölyesi”'),
+    'PL-055': ('mymind-ai', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
 }
 
 EK = [
@@ -109,11 +110,24 @@ EK = [
             'Geliştirme işleri': 'PC-01 işaretleyerek kaydet + yapısal veri okuyucu (3 sitede ≥%95) · PC-02 katalog/filtre/arama (500 kayıtta ≤1 sn) · PC-03 alındı işaretleme ve arşiv · PC-04 JSON/CSV içe/dışa aktarma (kayıp sıfır) · PC-05 bütçe planı (deterministik toplam) · PC-06 rakip fiyat ve benzer ürün (PL-004 motoru; her teklif kaynak ve tarihli).',
         },
     },
+    {
+        'id': 'PL-055', 'name': 'MyMind AI',
+        'category': KATEGORILER[6][2], 'source': None,
+        'description': 'PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.',
+        'fields': {
+            'Durum': 'v0.1.0 · Windows uygulaması (Rust + Tauri 2) + Chrome MV3 eklentisi',
+            'Platform': 'Windows uygulaması + Chrome eklentisi',
+            'Kaynak şartname': 'Notion kartı yok. Şartname: mind-palace/MYMIND.md (MyMind Lite sınırları), PluginLabs docs/ecosystem-v1/MY-MIND.md (ortak AI katmanı, sözleşme taslağı), docs/MUST-HAVE.md MH-6 ve ürün README’lerindeki MyMind ihtiyaçları.',
+            'MVP ve temel akış': 'Sağlayıcı seç (Hub anahtarı Windows kasasında; LM Studio/Ollama yalnız loopback) → sohbet veya görev şablonu → çıktı alan alan doğrulanır → kullanıcı isterse taslak olarak kaydeder. Eklenti: eşleştir → seçim/sayfa metnini önizle ve düzenle → masaüstünde tam metinle onayla → doğrulanmış yanıt.',
+            'Yapay zekânın rolü': 'Özet, analiz, görev/not taslağı, etiket, başlık sadeleştirme (dayanak denetimli), kategori, sonuç sınıflandırma, ihtiyaçtan özelliğe, karşılaştırma, yeniden yazma, çeviri, bağlama dayalı soru. Vision, araç çağrısı, bilgisayar kullanımı ve eğitim yok.',
+            'Teknik bağımlılık ve sınır': 'İstek ≤6000, bağlam ≤6000 karakter, ≤512 token, 30 sn; prompt/yanıt günlüğe yazılmaz; köprü yalnız 127.0.0.1, web Origin’i reddedilir, her istek masaüstünde onaylanır (5 dk).',
+        },
+    },
 ]
 
 TR = str.maketrans({'ı': 'i', 'İ': 'i', 'ş': 's', 'Ş': 's', 'ğ': 'g', 'Ğ': 'g', 'ü': 'u', 'Ü': 'u',
                     'ö': 'o', 'Ö': 'o', 'ç': 'c', 'Ç': 'c', '’': '', "'": ''})
-SLUG_OZEL = {'PL-054': 'mywishlist', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
+SLUG_OZEL = {'PL-054': 'mywishlist', 'PL-055': 'mymind-ai', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
 
 
 def slugify(id_, name):

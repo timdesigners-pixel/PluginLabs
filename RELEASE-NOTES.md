@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.10 — MyMind AI 0.1.0 kataloğa eklendi.
+
+- Katalog: MyMind AI 0.1.0 (PL-055; Rust/Tauri Windows uygulaması: yerel modelle sohbet, ürünlerin MyMind işleri için 13 doğrulanmış görev şablonu, taslaklar, Chrome eklentisi ve uygulamalar için onaylı yerel köprü). Boyut ve SHA-256 kaynak sürümdeki dosyadan alındı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.9 — Leo Helper 0.9.2 kataloğa eklendi.
 
 - Katalog: Leo Helper 0.9.2 (Alınan kodlar sayfası ve şartların kaydı: başarılı her kod, alındığı andaki şartlarıyla saklanır; şart, durum ve not sonradan düzeltilir). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.

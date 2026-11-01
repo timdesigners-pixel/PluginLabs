@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları
 
-PL-001–PL-053 arası 54 uygulamanın hiyerarşik dizini. Her klasörde ürünün ne işe yaradığını, hangi platformlar için yayınlanacağını ve özelliklerini anlatan bir `README.md` bulunur.
+PL-001–PL-055 arası 55 uygulamanın hiyerarşik dizini. Her klasörde ürünün ne işe yaradığını, hangi platformlar için yayınlanacağını ve özelliklerini anlatan bir `README.md` bulunur.
 
 Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/projects.json).
 
@@ -92,6 +92,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
 | PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-055 | [MyMind AI](07-yeni-urunler/PL-055-mymind-ai/README.md) | W · Chrome | v0.1.0 | — | [mymind-ai](https://github.com/timdesigners-pixel/mymind-ai) |
 
 ---
 Oluşturma: 29.10.2026

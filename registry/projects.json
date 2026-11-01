@@ -2042,6 +2042,47 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": "https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1"
+    },
+    {
+      "id": "PL-055",
+      "number": 55,
+      "slug": "mymind-ai",
+      "name": "MyMind AI",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows uygulaması (Rust + Tauri 2) + Chrome MV3 eklentisi",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows uygulaması + Chrome eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mymind-ai",
+        "url": "https://github.com/timdesigners-pixel/mymind-ai",
+        "verified": true,
+        "note": "Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)"
+      },
+      "appPath": "apps/07-yeni-urunler/PL-055-mymind-ai",
+      "codexProject": {
+        "name": "PL-055 · MyMind AI",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }
