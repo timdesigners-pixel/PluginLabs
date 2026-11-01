@@ -6,7 +6,7 @@
 | --- | --- |
 | Kimlik | `PL-026` · `workspace-scenes` |
 | Kategori | 03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030 |
-| Durum | 01.11.2026: **0.1.0 Windows uygulaması** kaynağı hazır, testleri geçti ([app/](app/README.md)); Windows release'i (`pluginlabs-dagitim` → `workspace-scenes-v0.1.0`) yayın izni bekliyor · Notion durumu: Yeni fikir |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [workspace-scenes-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.9 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) — 0.1.0 yalnız Windows masaüstü; Chrome eklentisi yok |

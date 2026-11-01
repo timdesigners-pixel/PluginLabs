@@ -110,6 +110,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot/app",
   },
   {
+    id: "workspace-scenes",
+    name: "Workspace Scenes",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Uygulama, klasör, dosya ve bağlantıları kayıtlı çalışma sahneleriyle önizleyip onayınızla sırayla açar; hiçbir şeyi kapatmaz. Masaüstü kısayolu, kurulum süresi ölçümü, eksik araç önerisi ve MyMind (onaylı).",
+    platform: "win32",
+    format: "exe",
+    file: "WorkspaceScenes.exe",
+    size: 81517551,
+    sha256: "c120a5703c61ed60d002d8279afec1d5baf2220f9eaa4da39b489f3d35bcc5a7",
+    url: dist("workspace-scenes", "0.1.0", "WorkspaceScenes-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-026-workspace-scenes/app",
+  },
+  {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
     kind: "app",

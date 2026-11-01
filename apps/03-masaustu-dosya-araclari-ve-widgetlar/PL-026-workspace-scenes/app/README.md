@@ -4,9 +4,19 @@
 
 Ürün kartı (Notion kaynağı, kısaltılmamış): [../README.md](../README.md) · Sürüm notları: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
-**İndir (Windows, imzasız önizleme):** yayımlandığında https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 — kurulum `.exe` ya da taşınabilir `.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 itibarıyla release henüz oluşturulmadı: derleme/yayın iş akışı ([ci/](ci/pluginlabs-dagitim-workspace-scenes-windows.yml)) `pluginlabs-dagitim` deposuna eklenince Windows runner'ında derlenip yayımlanır; ardından Hub kataloğuna girer.
+**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 — kurulum `WorkspaceScenes-0.1.0-Windows-x64.exe` ya da taşınabilir `WorkspaceScenes-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 06:42 UTC'de `pluginlabs-dagitim` iş akışıyla ([ci/](ci/pluginlabs-dagitim-workspace-scenes-windows.yml)) Windows runner'ında derlendi: `npm test` + gerçek Electron penceresinde duman testi geçti; kaynak commit `2154463`. Hub kataloğunda (Hub 0.4.9).
 
 ## Ekran görüntüleri
+
+**Windows (release'i üreten Windows runner'ı, 01.11.2026, kaynak `2154463`, test verisi):**
+
+| Sahne düzenleyici ve açılış dizisi | Açılış sonucu ve kurulum süresi |
+| --- | --- |
+| ![Windows sahne](docs/screenshots/windows-masaustu-01-sahne.png) | ![Windows açılış sonucu](docs/screenshots/windows-masaustu-02-acilis-sonucu.png) |
+| **Eksik araç önerileri (kural + MyMind)** | **Ayarlar ve yedek** |
+| ![Windows MyMind önerisi](docs/screenshots/windows-masaustu-03-mymind-oneri.png) | ![Windows ayarlar](docs/screenshots/windows-masaustu-04-ayarlar.png) |
+
+**Linux xvfb (aynı kaynak):**
 
 Gerçek uygulama penceresi; otomatik duman testinin geçici örnek çalışma alanıyla (test verisi) **Linux xvfb** üzerinde alınmıştır (kaynak bu klasör, 01.11.2026). Release'i üreten Windows runner'ında alınan aynı ekranlar release'te `windows-masaustu-*.png` adıyla bulunur.
 
