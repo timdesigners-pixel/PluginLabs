@@ -14,10 +14,18 @@ Kısa metinleri seçtiğiniz işleme (düzelt, sadeleştir, kısalt, biçimlendi
 | **Geçmiş** | **Sözlük, ayarlar ve ölçüler** |
 | ![Geçmiş](docs/screenshots/masaustu-06-gecmis.png) | ![Ölçüler](docs/screenshots/masaustu-07-sozluk-ayarlar-olculer.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (`masaustu-*`: Linux/xvfb). Windows runner görüntüleri release ekindedir.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (`masaustu-*`: Linux/xvfb, commit b3d7cd7; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 41318853222](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41318853222), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — fark görünümü](docs/screenshots/windows-masaustu-01-fark-gorunumu.png)
+
+| Windows — gizli veri koruması | Windows — MyMind alternatifleri |
+| --- | --- |
+| ![Windows gizli veri](docs/screenshots/windows-masaustu-04-gizli-veri-korumasi.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-05-mymind-alternatifler.png) |
 
 ## İndir
-Bkz. `pluginlabs-dagitim` → `text-forge-v0.1.0` (kurulum + taşınabilir exe, SHA256SUMS, BUILD-INFO). İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[text-forge-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/text-forge-v0.1.0) — `TextForge-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `1f02edc8…ae0e`), `TextForge-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `d550f53d…b78f`, 81 521 242 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Metni yazın/yapıştırın, **Panodan al**, **Dosya aç** (.txt/.md) ya da başka bir uygulamada metni kopyalayıp **Ctrl+Shift+Y**. İlk deneme için **Örnek**.

@@ -210,6 +210,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner/app",
   },
+  {
+    id: "text-forge",
+    name: "Text Forge",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Metin atölyesi: yapıştırdığınız ya da Ctrl+Shift+Y ile panodan aldığınız metni düzeltir, sadeleştirir, kısaltır, biçimlendirir ve seçtiğiniz tona (resmî, nötr, samimi ya da kendi ton örneğiniz) göre yeniden yazar. Sayı, tarih, tutar, ad, e-posta ve bağlantıları korur ve denetler; kelime düzeyinde fark gösterir, sonucu siz kopyalarsınız. MyMind ile onaylı alternatifler (sabit alan değerleri gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "TextForge.exe",
+    size: 81521242,
+    sha256: "d550f53dad44e761d7e9000885340c561478f7cad0a7e7e27b62af01cd66b78f",
+    url: dist("text-forge", "0.1.0", "TextForge-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-033-text-forge/app",
+  },
 
   {
     id: "mutfak-atolyesi",
