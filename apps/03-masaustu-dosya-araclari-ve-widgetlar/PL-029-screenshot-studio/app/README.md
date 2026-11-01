@@ -4,11 +4,21 @@
 
 Ürün kartı (Notion kaynağı, kısaltılmamış): [../README.md](../README.md) · Sürüm notları: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
-**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/screenshot-studio-v0.1.0 — kurulum `ScreenshotStudio-0.1.0-Windows-x64.exe` ya da taşınabilir `ScreenshotStudio-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın.
+**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/screenshot-studio-v0.1.0 — kurulum `ScreenshotStudio-0.1.0-Windows-x64.exe` ya da taşınabilir `ScreenshotStudio-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 10:59 UTC'de `pluginlabs-dagitim` iş akışıyla ([çalıştırma 41299757109](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41299757109)) Windows runner'ında derlendi: `npm test` + gerçek Electron pencerelerinde duman testi geçti (gerçek OCR, 7 maske piksel piksel doğrulandı, bağımsız OCR; Windows kasası/DPAPI etkin; pakette OCR dil verisi denetlendi); kaynak commit `9150522`. Hub kataloğunda (Hub 0.4.9).
 
 ## Ekran görüntüleri
 
-Gerçek uygulama pencereleri; otomatik duman testinin test verisiyle (uygulamanın kendi tuvalinde çizilen sahte fatura ekranı, taklit Hub) **Linux xvfb** üzerinde alınmıştır (01.11.2026). Windows runner görüntüleri release'te `windows-*.png` olarak yer alır.
+**Windows (release'i üreten Windows runner'ı, 01.11.2026, kaynak `9150522`, test verisi; runner ekranı 1024×768 olduğundan test "ekranı" yatayda sıkışık görünür):**
+
+| Hassas alan adayları ve işaretler | MyMind ek adayları (onaylı) |
+| --- | --- |
+| ![Windows adaylar](docs/screenshots/windows-masaustu-02-adaylar-ve-isaretler.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-adaylari.png) |
+| **Maskeler doğrulandı, kaydedildi** | **Gerçek çıktı (pencere çerçevesi)** |
+| ![Windows kaydedildi](docs/screenshots/windows-masaustu-04-kaydedildi-dogrulandi.png) | ![Windows çıktı](docs/screenshots/windows-masaustu-08-cikti-pencere-cercevesi.png) |
+| **Kayıtlar ve ölçüm** | **Ayarlar ve gizlilik** |
+| ![Windows kayıtlar](docs/screenshots/windows-masaustu-06-kayitlar.png) | ![Windows ayarlar](docs/screenshots/windows-masaustu-07-ayarlar.png) |
+
+**Linux xvfb (aynı uygulama, 1440×900):** gerçek uygulama pencereleri; otomatik duman testinin test verisiyle (uygulamanın kendi tuvalinde çizilen sahte fatura ekranı, taklit Hub) **Linux xvfb** üzerinde alınmıştır (01.11.2026).
 
 | Hassas alan adayları ve işaretler | MyMind ek adayları (onaylı) |
 | --- | --- |

@@ -161,6 +161,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app",
   },
   {
+    id: "screenshot-studio",
+    name: "Screenshot Studio",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Bölge, ekran ya da pencere yakalar; ok, numara, metin, vurgu, kırpma ve pencere çerçevesiyle panoya kopyalar ya da kaydeder. Hassas alanları (e-posta, IBAN, kart, telefon, anahtar…) cihazda okuyup aday olarak işaretler; kabul ettiğiniz maskeler çıktıda piksel piksel doğrulanır. MyMind ile onaylı ek aday.",
+    platform: "win32",
+    format: "exe",
+    file: "ScreenshotStudio.exe",
+    size: 100884428,
+    sha256: "1e4be055de5945e155ba5d5b5afa1fbf26ebf77181bf6f13c6756951fa8f2dd1",
+    url: dist("screenshot-studio", "0.1.0", "ScreenshotStudio-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-029-screenshot-studio/app",
+  },
+  {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
     kind: "app",

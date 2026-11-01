@@ -1,9 +1,10 @@
-PluginLabs Hub 0.4.9 — File Pilot 0.1.0, Workspace Scenes 0.1.0, Focus Orbit 0.1.0 ve Quick Convert 0.1.0 kataloğa eklendi.
+PluginLabs Hub 0.4.9 — File Pilot 0.1.0, Workspace Scenes 0.1.0, Focus Orbit 0.1.0, Quick Convert 0.1.0 ve Screenshot Studio 0.1.0 kataloğa eklendi.
 
 - Katalog: File Pilot 0.1.0 (PL-025; seçtiğiniz klasörlerde yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind ile onaylı anlamsal soru; dosyaları yalnız okur). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Katalog: Workspace Scenes 0.1.0 (PL-026; kayıtlı çalışma sahnelerini onayla sırayla açar, hiçbir şeyi kapatmaz).
 - Katalog: Focus Orbit 0.1.0 (PL-027; tek görevli odak zamanlayıcısı, her zaman üstte sürüklenebilir odak balonu, mola bildirimleri, dikkat listesi hatırlatması, kullanıcı bildirimli kesinti kaydı, MyMind ile onaylı görev parçalama ve seans özeti). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Katalog: Quick Convert 0.1.0 (PL-028; sürükle-bırak dosya dönüştürücü: PNG/JPEG/WebP/GIF/BMP → PNG/JPEG/WebP, kalite/hedef KB/boyut, UTF-8/UTF-16/Windows-1254 metin kodlaması ve satır sonu; kaynak korunur, çıktı doğrulanır; her zaman üstte bırakma kutusu; MyMind ile onaylı ayar önerisi). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Katalog: Screenshot Studio 0.1.0 (PL-029; bölge/ekran/pencere yakalama, ok/numara/metin/vurgu/kırpma, pencere çerçevesi, pano/PNG/JPEG; cihazda OCR ile hassas alan adayı, kalıcı maskenin çıktıda piksel piksel doğrulanması; MyMind ile onaylı ek aday). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Hub'ın kendi davranışı değişmedi.
 
 İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
