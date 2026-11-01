@@ -385,6 +385,8 @@ class Hub extends EventEmitter {
         kind: item.kind,
         name: item.name,
         file: item.file,
+        // Arşivden kurulan uygulamalarda açılacak dosya (ör. "content/App.exe").
+        ...(item.launch ? { launch: item.launch } : {}),
         previous: old?.version || null,
         settings: Object.fromEntries(
           Object.entries(item.settings || {}).map(([k, v]) => [
@@ -475,13 +477,19 @@ class Hub extends EventEmitter {
     await this.save();
     this.log(`${item.name} önceki sürüme döndü`);
   }
+  appFile(id) {
+    const record = this.installed(id),
+      relative = record.launch || record.file;
+    safeEntry(relative);
+    return path.join(this.folder(id, record.version), ...relative.split("/"));
+  }
   async launch(id) {
     const record = this.installed(id),
       item = this.item(id);
     if (record.kind !== "app" || !record.enabled) fail("Uygulama etkin değil");
     if (item.platform && item.platform !== process.platform)
       fail("Bu uygulama Windows üzerinde açılır");
-    const file = path.join(this.folder(id, record.version), record.file);
+    const file = this.appFile(id);
     await fs.access(file);
     const child = spawn(file, [], {
       detached: true,
