@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.9 — File Pilot 0.1.0 kataloğa eklendi.
+
+- Katalog: File Pilot 0.1.0 (PL-025; seçtiğiniz klasörlerde yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind ile onaylı anlamsal soru; dosyaları yalnız okur). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.8 — Leo Helper 0.9.1 kataloğa eklendi.
 
 - Katalog: Leo Helper 0.9.1 (kod takibi: uygunluk göstergesi, mesaj önizlemesi, sınıflandırma, kod şartları). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
