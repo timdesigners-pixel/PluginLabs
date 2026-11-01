@@ -13,6 +13,11 @@
   "main": "desktop/main.js",
   "author": "PluginLabs",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot/app"
+  },
   "devDependencies": {
     "electron": "33.2.1",
     "electron-builder": "25.1.8"
@@ -54,6 +59,7 @@
     "portable": {
       "artifactName": "FilePilot-${version}-Windows-Portable-${arch}.${ext}"
     },
-    "asar": true
+    "asar": true,
+    "publish": null
   }
 }
