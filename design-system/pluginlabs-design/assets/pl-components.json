@@ -109,6 +109,12 @@
       "ad": "MyWishlist",
       "aksan": "#fb7185",
       "platform": "Eklenti"
+    },
+    {
+      "kod": "gardrop",
+      "ad": "Gardrop",
+      "aksan": "#e879f9",
+      "platform": "Masaüstü / Eklenti"
     }
   ],
   "komponentler": [

@@ -2042,6 +2042,41 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": "https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1"
+    },
+    {
+      "id": "PL-055",
+      "number": 55,
+      "slug": "gardrop",
+      "name": "Gardrop",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows masaüstü + Chrome eklentisi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust) + Chrome (ve Chromium tarayıcılar) eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Dijital gardırop: kıyafetleri fotoğrafla kaydeder, kombin kurar, “Bugün ne giysem?” önerisi verir, giyim günlüğü ve kullanım analizi tutar; mağazadaki kıyafeti Chrome eklentisiyle istek listesine ekler.",
+      "repo": "timdesigners-pixel/gardrop",
+      "appPath": "apps/07-yeni-urunler/PL-055-gardrop",
+      "codexProject": {
+        "name": "PL-055 · Gardrop",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }

@@ -114,6 +114,22 @@ const catalog = [
     repo: "timdesigners-pixel/mutfak-atolyesi",
   },
   {
+    id: "gardrop",
+    name: "Gardrop",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Dijital gardırop: kıyafetleri fotoğrafla kaydet, kombin kur, “Bugün ne giysem?” önerisi al, giyim günlüğü ve kullanım analizi; Chrome eklentisiyle mağazadan istek listesine ekle (WebView2 gerekir).",
+    platform: "win32",
+    format: "exe",
+    file: "Gardrop.exe",
+    size: 3964928,
+    sha256: "9bd2bc8daa0ffb57946078c50e393e0d3b97f4d797324b3ceab304c2be6aeba1",
+    url: dist("gardrop", "0.1.0", "Gardrop-0.1.0-portable.exe"),
+    distAsset: "^Gardrop-[0-9.]+-portable\\.exe$",
+    repo: "timdesigners-pixel/gardrop",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",

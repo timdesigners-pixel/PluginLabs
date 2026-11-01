@@ -1,6 +1,6 @@
 ---
 name: pluginlabs-design
-description: PluginLabs ortak tasarım sistemi. PluginLabs Hub, masaüstü uygulamaları (Flow Dock, Tweakster) veya tarayıcı eklentileri (Leo Helper, Mind Palace, Design Replicator, Mutfak Atölyesi, Extension Manager, Ultimate Scrapper, MyWishlist, MyMind) için herhangi bir UI, ekran, komponent, popup, yan panel, stil veya tema yazılırken/değiştirilirken kullan. Mevcut tasarıma dokunmadan --pl- tokenları ve pl- komponentleriyle çalışır.
+description: PluginLabs ortak tasarım sistemi. PluginLabs Hub, masaüstü uygulamaları (Flow Dock, Tweakster) veya tarayıcı eklentileri (Leo Helper, Mind Palace, Design Replicator, Mutfak Atölyesi, Extension Manager, Ultimate Scrapper, MyWishlist, Gardrop, MyMind) için herhangi bir UI, ekran, komponent, popup, yan panel, stil veya tema yazılırken/değiştirilirken kullan. Mevcut tasarıma dokunmadan --pl- tokenları ve pl- komponentleriyle çalışır.
 metadata:
   short-description: PluginLabs tasarım sistemi — tokenlar, 79 komponent, prensipler
   version: 1.0.0
@@ -31,7 +31,7 @@ Kullanılmaz: backend, veri modeli, build/CI işleri; PluginLabs dışı projele
 - Mevcut ekranı değiştirmeden önce kullanıcıya hangi ekranın taşınacağını teyit ettir.
 
 ## İş akışı
-1. **Ürünü belirle** → `data-pl-product` kodu: `hub, leo, mindpalace, replicator, mutfak, flowdock, tweakster, extman, mymind, scrapper, wishlist`.
+1. **Ürünü belirle** → `data-pl-product` kodu: `hub, leo, mindpalace, replicator, mutfak, flowdock, tweakster, extman, mymind, scrapper, wishlist, gardrop`.
 2. **Yüzeyi belirle** → Hub/masaüstü (normal yoğunluk) · eklenti popup 380×560 / yan panel 400px (`data-pl-density="compact"`) · content script (Shadow DOM içine kur, tokenları shadow root'a enjekte et).
 3. **Tokenları bağla** → `assets/pl-tokens.css` + `assets/pl-components.css` dosyalarını projeye kopyala (ör. `packages/ui/pl/`) ve yükle. Kopyalanan dosyaları değiştirme; değişiklik bu skill'de yapılır.
 4. **Komponenti katalogdan al** → KOMPONENTLER.md'deki HTML'i temel al, sınıf adlarını koru. Framework'te bileşen yalnız sarmalayıcıdır.
