@@ -1,0 +1,64 @@
+{
+  "name": "source-trail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PL-031 Source Trail — Windows uygulaması: seçili metin/alıntı, URL, erişim tarihi ve kişisel notla kaynak kartları; iddia–kaynak ilişkisi (destekler/çürütür/bağlam), alıntının kaynak kartında aynen bulunduğu denetimi, açık “eksik kanıt” etiketi, aynı kaynağın kopyalarını bağımsız doğrulama saymama; APA/MLA/BibTeX/CSL-JSON/Markdown kaynakça ve kanıt izi dışa aktarma; MyMind ile onaylı karşılaştırma taslağı (alıntı uydurmaz, doğrulanmayan alıntı atılır)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never",
+    "smoke": "node tests/desktop-smoke.cjs"
+  },
+  "main": "desktop/main.js",
+  "author": "PluginLabs",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-031-source-trail/app"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.source-trail",
+    "productName": "Source Trail",
+    "copyright": "PluginLabs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "app.html",
+      "app.js",
+      "app.css",
+      "src/**",
+      "pl/**",
+      "icons/icon256.png",
+      "icons/icon32.png",
+      "icons/icon16.png",
+      "icons/icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "SourceTrail-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Source Trail"
+    },
+    "portable": {
+      "artifactName": "SourceTrail-${version}-Windows-Portable-${arch}.${ext}"
+    },
+    "asar": true,
+    "publish": null
+  }
+}
