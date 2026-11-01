@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace Scenes</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ws" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ws-side" aria-label="Ana menü">
+    <div class="ws-brand" aria-label="PluginLabs Apps">
+      <span class="ws-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ws-apps">APPS</span>
+    </div>
+    <div class="ws-product">
+      <span class="pl-applogo" aria-hidden="true">WS</span>
+      <div class="ws-product__text"><b>Workspace Scenes</b><span>Sahne başlatıcı</span></div>
+      <span class="ws-product__no pl-num" aria-label="Sıra numarası 26">26</span>
+    </div>
+    <button class="pl-btn pl-btn--primary ws-add" type="button" id="newScene">
+      <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Yeni sahne</span>
+    </button>
+    <div class="pl-inputwrap ws-filter">
+      <input class="pl-input" id="filter" type="search" placeholder="Sahne ara…" aria-label="Sahnelerde ara" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="ws-side__title pl-muted" id="listTitle">Sahneler</div>
+    <div class="ws-scenes" id="sceneList" role="list"></div>
+    <div class="ws-side__foot">
+      <button class="pl-navitem ws-navbtn" type="button" id="toggleArchive"><span>Arşiv</span><span class="pl-badge" id="archiveCount">0</span></button>
+      <button class="pl-navitem ws-navbtn" type="button" data-nav="settings"><span>Ayarlar ve yedek</span></button>
+      <button class="pl-navitem ws-navbtn" type="button" id="openMymind"><span class="ws-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+  <main class="ws-main">
+    <div class="ws-body" id="sceneView">
+      <section class="ws-editor" id="editor" aria-label="Sahne düzenleyici"></section>
+      <section class="ws-preview" id="preview" aria-label="Açılış önizlemesi"></section>
+    </div>
+
+    <div class="ws-view" id="settingsView" aria-label="Ayarlar" hidden>
+      <section class="ws-panel">
+        <div class="ws-panel__head"><h2 class="pl-h3">Varsayılanlar</h2><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="closeSettings">Sahnelere dön</button></div>
+        <div class="pl-field"><label class="pl-field__label" for="defaultDelay">Yeni sahnelerde adımlar arası bekleme</label><select class="pl-select" id="defaultDelay"></select><span class="pl-field__help">Ağır uygulamalar art arda açılırken sistemin yetişmesi için.</span></div>
+      </section>
+      <section class="ws-panel">
+        <div class="ws-panel__head"><h2 class="pl-h3">Yedek</h2></div>
+        <p class="pl-muted ws-small">Sahneler bu bilgisayarda tutulur. Başka bilgisayara taşımak için JSON olarak dışa aktarın; içe aktarılan sahneler mevcutlara eklenir (hiçbiri silinmez).</p>
+        <div class="ws-bar"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportBtn">Dışa aktar (.json)</button><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="importBtn">İçe aktar</button></div>
+      </section>
+      <section class="ws-panel ws-panel--wide">
+        <div class="ws-panel__head"><h2 class="pl-h3">Gizlilik ve sınırlar</h2></div>
+        <ul class="ws-steps" id="privacy"></ul>
+      </section>
+    </div>
+    <footer class="ws-foot pl-muted" id="foot">Sahneler bu bilgisayarda, Windows kasasıyla (DPAPI) şifreli tutulur. Workspace Scenes yalnız açar; hiçbir uygulamayı, pencereyi ya da sekmeyi kapatmaz.</footer>
+  </main>
+
+  <dialog class="pl-modal ws-dialog" id="pasteDialog" aria-labelledby="pasteTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pasteTitle">Birden çok bağlantı ekle</h2><p class="pl-muted ws-tight">Her satıra bir adres. Tarayıcıdaki açık sekmelerin adreslerini (ör. bir sekme listesi eklentisinden) toplu yapıştırabilirsiniz.</p></div></div>
+    <div class="pl-modal__body"><textarea class="pl-textarea ws-paste" id="pasteInput" rows="8" spellcheck="false" placeholder="https://github.com/…&#10;https://docs.google.com/…"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pasteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pasteOk">Ekle</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ws-dialog" id="urlDialog" aria-labelledby="urlTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="urlTitle">Bağlantı ekle</h2><p class="pl-muted ws-tight">Varsayılan tarayıcınızda açılır. Yalnız http/https; giriş bilgisi içeren adresler kabul edilmez.</p></div></div>
+    <div class="pl-modal__body ws-stack">
+      <div class="pl-field"><label class="pl-field__label" for="urlInput">Adres</label><input class="pl-input" id="urlInput" maxlength="2000" autocomplete="off" spellcheck="false" placeholder="https://"></div>
+      <div class="pl-field"><label class="pl-field__label" for="urlLabel">Ad (isteğe bağlı)</label><input class="pl-input" id="urlLabel" maxlength="80" autocomplete="off"></div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="urlCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="urlOk">Ekle</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ws-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ws-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ws-tight">Görev adına göre araç önerisi bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılır.</p></div></div>
+    <div class="pl-modal__body ws-stack">
+      <ol class="ws-steps">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ws-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="ws-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ws-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
