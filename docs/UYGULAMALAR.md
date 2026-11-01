@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları — tek bakışta durum
 
-Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC, PL-012–014 31.10.2026 ~08:00 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
+Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC, PL-012–014 31.10.2026 ~08:00 UTC, PL-017 31.10.2026 ~13:15 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
 
 ## Bugün indirip denenebilenler
 
@@ -59,7 +59,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-014 | Social Saves Organizer | Windows uygulaması · **v0.1.0** (Instagram dışa aktarımı/bağlantı listesi, etiket/not/koleksiyon, bozuk bağlantı denetimi, MyMind etiket önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
 | PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.1** (izleme rafı; youtube-shelf#3 ile main'e giren uygulama; imzasız önizleme) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1 |
 | PL-016 | Tab Atlas | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tab-atlas |
-| PL-017 | Page Capsule | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-capsule |
+| PL-017 | Page Capsule | Windows uygulaması · **v0.1.0** (bağlantıdan betiksiz yakalama, ekran görüntüsü, kaynağa bağlı özet, Markdown/HTML; imzasız önizleme; page-capsule#2 taslak) | https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0 |
 | PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
 | PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
 | PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
