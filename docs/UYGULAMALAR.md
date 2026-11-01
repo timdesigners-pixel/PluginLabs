@@ -25,6 +25,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Desk Tidy (PL-021) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
 | Twin Finder (PL-022) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO + 10 GB ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
 | Clip Vault (PL-023) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, gerçek Windows panosuyla kayıt testi, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
+| Snap OCR (PL-024) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, paketlenmiş uygulamada OCR doğruluk ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -33,9 +34,9 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-021–023, PL-053 ve Hub (PL-015–020'nin release kayıtları açık PR #24–#34'te). PL-004–014 ve PL-021–023 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-021–024, PL-053 ve Hub (PL-015–020'nin release kayıtları açık PR #24–#34'te). PL-004–014 ve PL-021–024 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-024 Snap OCR (yalnız plan), PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
+- Sıradaki (Windows sürümü yok): PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -64,7 +65,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-021 | Desk Tidy | Windows uygulaması · **v0.1.0** (gerekçeli klasör düzenleme, taşıma planı önizlemesi, günlük ve geri al, MyMind kategori önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
 | PL-022 | Twin Finder | Windows uygulaması · **v0.1.0** (birebir kopya: boyut → SHA-256 → bayt bayt doğrulama, gerekçeli tutulacak kopya, bağımlılık koruması, karantina ve geri alma, MyMind önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
 | PL-023 | Clip Vault | Windows uygulaması · **v0.1.0** (tepside pano geçmişi: kısayolla arama, sabitlenmiş parçalar, düz metin kopyalama, uygulama hariç tutma, DPAPI ile şifreli yerel geçmiş, MyMind ile düzenleme; imzasız önizleme) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
-| PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
+| PL-024 | Snap OCR | Windows uygulaması · **v0.1.0** (kısayolla ekran bölgesi seçme, cihazda çevrimdışı Türkçe/İngilizce OCR, kaynak görüntüye satır kutusuyla geri bağlantı, DPAPI ile şifreli geçmiş, MyMind ile OCR düzeltme/çeviri; imzasız önizleme) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
 | PL-025 | File Pilot | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-026 | Workspace Scenes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-027 | Focus Orbit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
