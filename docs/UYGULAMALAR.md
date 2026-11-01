@@ -34,7 +34,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
-- Sıradaki (Windows sürümü yok): PL-026–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
+- PL-026 Workspace Scenes 0.1.0: kaynak ve testler hazır (01.11.2026); `pluginlabs-dagitim` yayın iş akışının eklenmesi kullanıcı onayı bekliyor (otomatik oturumda herkese açık yayın izni reddedildi).
+- Sıradaki (Windows sürümü yok): PL-027–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -65,7 +66,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-023 | Clip Vault | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/clip-vault |
 | PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
 | PL-025 | File Pilot | Windows uygulaması · **v0.1.0** (yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind anlamsal soru; dosyaları yalnız okur; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-025-file-pilot/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
-| PL-026 | Workspace Scenes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-026 | Workspace Scenes | 0.1.0 Windows uygulaması **kaynağı hazır** (çalışma sahneleri: bağlantı/klasör/uygulama/dosya, onaylı sıralı açılış, hiçbir şey kapatılmaz, masaüstü kısayolu, MyMind önerisi); testler geçti; Windows release'i yayın izni bekliyor. Kaynak PluginLabs `apps/03-…/PL-026-workspace-scenes/app` | (yayımlanınca) https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 |
 | PL-027 | Focus Orbit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-028 | Quick Convert | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-029 | Screenshot Studio | Fikir / Hub içi önizleme (ayrı depo yok) | — |

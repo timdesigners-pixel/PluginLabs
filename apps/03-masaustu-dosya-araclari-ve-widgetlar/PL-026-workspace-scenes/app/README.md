@@ -4,7 +4,7 @@
 
 Ürün kartı (Notion kaynağı, kısaltılmamış): [../README.md](../README.md) · Sürüm notları: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
-**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 — kurulum `.exe` ya da taşınabilir `.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. PluginLabs Hub kataloğundan da kurulabilir.
+**İndir (Windows, imzasız önizleme):** yayımlandığında https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 — kurulum `.exe` ya da taşınabilir `.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 itibarıyla release henüz oluşturulmadı: derleme/yayın iş akışı ([ci/](ci/pluginlabs-dagitim-workspace-scenes-windows.yml)) `pluginlabs-dagitim` deposuna eklenince Windows runner'ında derlenip yayımlanır; ardından Hub kataloğuna girer.
 
 ## Ekran görüntüleri
 
