@@ -1962,7 +1962,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README)",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (tweakster#2 birleşti; release v0.1.0)",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1982,7 +1982,7 @@
         "name": "tweakster",
         "url": "https://github.com/timdesigners-pixel/tweakster",
         "verified": true,
-        "note": "Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)"
+        "note": "Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı) · 01.11.2026: 0.1.0 Windows uygulaması (release v0.1.0)"
       },
       "appPath": "apps/06-hub-disi-urun-depolari/PL-052-tweakster",
       "codexProject": {
