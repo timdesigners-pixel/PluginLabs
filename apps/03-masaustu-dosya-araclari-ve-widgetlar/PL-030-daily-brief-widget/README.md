@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-030` · `daily-brief-widget` |
 | Kategori | 03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030 |
-| Durum | Yeni fikir · Xtreme dashboard notlarından türetildi |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [daily-brief-widget-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.9 kataloğunda · Notion durumu: Yeni fikir · Xtreme dashboard notlarından türetildi |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS |
 | Dağıtım biçimi | masaüstü uygulaması, widget |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-daily-brief-widget-windows.yml)) |
 | Codex projesi | `PL-030 · Daily Brief Widget` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83) |
 
@@ -55,6 +55,12 @@ Sabah özeti okuma ≥%60; yanlış/eskimiş etkinlik oranı \<%1.
 ## Öncelik ve efor
 
 P1 · M; Xtreme bağımsız ürün olarak taşınmaz, bu dar modül yeniden kullanılır.
+
+## 0.1.0 sürümü (Windows)
+
+Yerel görevler + eklediğiniz takvimlerden (yerel etkinlik, `.ics` dosyası, Google/Outlook gizli iCal adresi; **yalnız okuma**) bugün görünümü ve her zaman üstte, sürüklenebilir **widget**. Etkinlik ve saatli görev çakışmaları yalnız **öneri** olarak gösterilir; takvim değiştirilmez (Notion: "takvimi otomatik değiştirmez"). Görevler çalışma saatlerindeki boş aralıklara kural tabanlı **kısa plan** olarak yerleştirilir; isteğe bağlı MyMind planı Hub üzerinden, onaylı ve veri azaltılmış (hassas başlıklar her zaman "Özel …"). **Hassas başlık gizleme modu**, her kaynağın **veri zamanı ve bağlantısı** (eskimiş veri işaretlenir), sabah bildirimi ve Notion doğrulama ölçütleri (sabah özeti okuma oranı, yanlış/eskimiş etkinlik oranı). OAuth hesap girişi ve sağlık/finans kaynakları bu sürümde yok. Ayrıntı, ekran görüntüleri ve kabul: [app/README.md](app/README.md).
+
+![Daily Brief Widget — bugün görünümü](app/docs/screenshots/masaustu-01-bugun.png)
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
