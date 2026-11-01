@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-031` · `source-trail` |
 | Kategori | 04 · Araştırma, yazma ve bilgi akışları — PL-031–040 |
-| Durum | Yeni fikir |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [source-trail-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/source-trail-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.11 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-source-trail-windows.yml)) |
 | Codex projesi | `PL-031 · Source Trail` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc) |
 
@@ -56,6 +56,14 @@ Kaynak metnin erişilebilirliği, özel sayfalar ve alıntı hakları. Aynı kay
 ## Öncelik ve efor
 
 P1 · M; Page Capsule yakalar, bu ürün iddia ve kanıt izini yönetir.
+
+## 0.1.0 sürümü (Windows)
+
+Tarayıcıda seçilen metin ve adres kopyalanıp **Panodan yakala** ile (pano yalnız kullanıcı eylemiyle okunur) ya da elle **kaynak kartına** alınır: seçili metin/alıntı, adres (izleme parametreleri ve # atılır), erişim tarihi, tür, yazar, yayıncı, yayın tarihi, kişisel not, proje. **İddia kartına** kaynak bağlanır (destekler / çürütür / bağlam); dayanak alıntı kaynak kartındaki metinde **aynen** yoksa bağ kaydedilmez. Kaynağı olmayan iddia açıkça **eksik kanıt** olarak etiketlenir; Notion doğrulama ölçütü (iddia kartlarının %100'ünde erişilebilir kayıtlı kaynak veya açık eksik etiketi) kenar çubuğunda ve Ölçüler'de canlı gösterilir. **Aynı kaynağın kopyaları** (aynı kanonik adres, aynı alıntı metni, aynı başlık + yazar ya da kullanıcı işareti) tek bağımsız kaynak sayılır; iddia durumu bağımsız destek sayısıyla hesaplanır (Kanıtlı ≥2 / Tek kaynak / Çelişkili / Eksik / Kaynaksız). Ulaşılamıyor işaretli ya da künyesi eksik kaynak kanıt sayılmaz. **Kaynakça:** APA 7, MLA 9, BibTeX, CSL-JSON, Markdown kanıt izi (panoya ya da dosyaya; kapsam ve proje süzgeci); JSON yedek. **MyMind** (Hub üzerinden, her istekte onaylı) iddia–kaynak karşılaştırma taslağı üretir: yalnız iddia metni ile bağlı kaynakların başlığı ve kayıtlı alıntısı gider; önerilen alıntı kaynakta aynen yoksa atılır (alıntı uydurmaz) ve ilişki “belirsiz” olur; kullanıcı “Uygula” demeden bağ değişmez. Silme yok, arşivleme var; kayıt Windows kasasıyla (DPAPI) şifreli.
+
+![Source Trail — iddia ve kanıtlar](app/docs/screenshots/masaustu-01-iddia-ve-kanitlar.png)
+
+Kapsam dışı (bu sürüm): Chrome eklentisi (sayfada seçimi doğrudan yakalama), Linux/macOS paketleri, BibTeX/RIS içe aktarma, ekip/proje alanı (Pro). Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
