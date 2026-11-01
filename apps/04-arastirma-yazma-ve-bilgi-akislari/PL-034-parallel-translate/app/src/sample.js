@@ -1,0 +1,32 @@
+/* Örnek belge ve temsilî terim kümesi (uydurma; gerçek kişi, şirket ya da sözleşme değildir). İlk deneme ve duman testi içindir. */
+module.exports = {
+  title: "Örnek — Hizmet sözleşmesi özeti",
+  context: "Bir yazılım hizmet sözleşmesinin müşteriye gönderilen özeti; resmî ve açık bir dil.",
+  text: [
+    "Hizmet Sözleşmesi Özeti",
+    "",
+    "Bu özet, Ayşe Demir ile PluginLabs Hub hizmeti arasındaki sözleşmenin ana maddelerini açıklar. Sözleşme 15.03.2026 tarihinde yürürlüğe girer ve 12 ay geçerlidir.",
+    "",
+    "Aylık hizmet bedeli 12.500 TL'dir ve her ayın ilk iş gününde faturalanır. Geç ödemede %2 gecikme faizi uygulanır.",
+    "",
+    "- Taraflar gizlilik yükümlülüğüne uyar.",
+    "- Kişisel veriler yalnız hizmetin sunulması için işlenir.",
+    "- Destek talepleri hafta içi 09:00–18:00 arasında yanıtlanır.",
+    "",
+    "Sözleşmenin feshi için 30 gün önceden yazılı bildirim gerekir. Fesih bildirimini destek@ornek-hizmet.com adresine gönderebilirsiniz.",
+  ].join("\n"),
+  glossary: [
+    { tr: "sözleşme", en: "agreement", note: "contract değil" },
+    { tr: "hizmet bedeli", en: "service fee" },
+    { tr: "taraf", en: "party" },
+    { tr: "gizlilik yükümlülüğü", en: "confidentiality obligation" },
+    { tr: "kişisel veri", en: "personal data" },
+    { tr: "fesih | feshi", en: "termination" },
+    { tr: "yazılı bildirim", en: "written notice" },
+    { tr: "gecikme faizi", en: "late payment interest" },
+    { tr: "yürürlüğe gir", en: "take effect | takes effect | come into force" },
+    { tr: "destek talep", en: "support request" },
+    { tr: "iş günü", en: "business day" },
+    { tr: "PluginLabs Hub", en: "PluginLabs Hub", note: "çevrilmez" },
+  ],
+};

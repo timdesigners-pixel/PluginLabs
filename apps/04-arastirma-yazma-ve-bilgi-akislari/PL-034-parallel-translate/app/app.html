@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parallel Translate</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="pt" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar pt-side" aria-label="Ana menü">
+    <div class="pt-brand" aria-label="PluginLabs Apps">
+      <span class="pt-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="pt-apps">APPS</span>
+    </div>
+    <div class="pt-product">
+      <span class="pl-applogo" aria-hidden="true">PT</span>
+      <div class="pt-product__text"><b>Parallel Translate</b><span>Yan yana çeviri</span></div>
+      <span class="pt-product__no pl-num" aria-label="Sıra numarası 34">34</span>
+    </div>
+    <div class="pt-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem pt-navbtn" type="button" data-nav="desk" role="tab">Çeviri masası</button>
+      <button class="pl-navitem pt-navbtn" type="button" data-nav="docs" role="tab">Belgeler<span class="pl-badge" id="docCount">0</span></button>
+      <button class="pl-navitem pt-navbtn" type="button" data-nav="glossary" role="tab">Terim sözlüğü<span class="pl-badge" id="termCount">0</span></button>
+      <button class="pl-navitem pt-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="pt-mini" id="sideInfo"></div>
+    <div class="pt-side__foot">
+      <button class="pl-navitem pt-navbtn" type="button" id="openMymind"><span class="pt-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="pt-main">
+    <!-- Çeviri masası -->
+    <div class="pt-view pt-desk" id="view-desk">
+      <!-- Başlangıç: metin al -->
+      <section class="pt-start" id="startPanel">
+        <div class="pt-card pt-start__card">
+          <div class="pt-bar"><h1 class="pl-h3 pt-h">Çevrilecek metin</h1><span class="pt-grow"></span>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clip" title="Panodaki metni al (yalnız siz bastığınızda okunur)">Panodan al</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="openFile">Dosya aç</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek</button></div>
+          <textarea class="pl-input pt-area" id="input" maxlength="30000" placeholder="Çevirmek istediğiniz metni yapıştırın ya da başka bir uygulamada metni kopyalayıp Ctrl+Shift+Space'e basın. Metin paragraf ve cümlelere ayrılır; her bölümün karşısına çevirisi gelir." aria-label="Kaynak metin" spellcheck="false"></textarea>
+          <div class="pt-row pt-small pl-muted"><span id="inCount">0 karakter</span><span class="pt-grow"></span><span id="inLang"></span></div>
+          <div class="pl-callout pl-callout--warning pt-sens" id="sensWarn" hidden></div>
+          <div class="pt-row">
+            <div class="pl-segment" role="radiogroup" aria-label="Çeviri yönü">
+              <button type="button" role="radio" data-dir="auto">Otomatik</button>
+              <button type="button" role="radio" data-dir="tr">Türkçe → İngilizce</button>
+              <button type="button" role="radio" data-dir="en">İngilizce → Türkçe</button>
+            </div>
+            <span class="pt-grow"></span>
+            <button class="pl-btn pl-btn--primary" type="button" id="createBtn">Bölümlere ayır</button>
+          </div>
+        </div>
+        <div class="pt-card pt-start__help">
+          <h2 class="pl-h3 pt-h">Nasıl çalışır</h2>
+          <ol class="pt-ul">
+            <li>Metin bölümlere (paragraf, madde, cümle) ayrılır; her bölümün karşısına çevirisi yazılır.</li>
+            <li><b>Terim sözlüğünüz</b> her bölümde denetlenir: kaynakta geçen terimin çeviride sizin karşılığınızla bulunması gerekir.</li>
+            <li>Çeviriyi elle yazın, var olan çeviriyi <b>yapıştırıp hizalayın</b> ya da isteğe bağlı olarak <b>MyMind</b> / bu bilgisayardaki <b>yerel model</b> ile üretin (her istekte onay).</li>
+            <li>Sayı, tutar, saat, bağlantı ve e-posta korunan alandır; çeviride eksikse işaretlenir. Gizli değerler modele gitmez.</li>
+            <li>Bitince TXT, iki sütunlu CSV (Excel), Markdown tablo ya da TMX (çeviri belleği) olarak dışa aktarın.</li>
+          </ol>
+          <p class="pl-muted pt-small">İlk sürüm Türkçe ⇄ İngilizce. Teknik ve hukuki anlamın doğrulanması sizdedir.</p>
+        </div>
+      </section>
+
+      <!-- Belge: yan yana tablo -->
+      <section class="pt-doc" id="docPanel" hidden>
+        <div class="pt-dochead">
+          <input class="pl-input pt-title" id="docTitle" maxlength="120" aria-label="Belge adı">
+          <span class="pl-badge pl-badge--accent pt-dir" id="docDir"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="swapBtn" title="Çeviri yönünü değiştir">⇄ Yönü değiştir</button>
+          <span class="pt-grow"></span>
+          <div class="pt-docstats" id="docStats"></div>
+        </div>
+        <div class="pt-toolbar">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="aiAllBtn"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>Boş bölümleri çevir</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="draftBtn" title="Boş bölümlere sözlük terimlerini yerleştirir (çevrimdışı; çeviri değildir)">Sözlük taslağı</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="alignBtn">Çeviriyi yapıştır ve hizala</button>
+          <span class="pt-sepv" aria-hidden="true"></span>
+          <select class="pl-input pt-select" id="exportFmt" aria-label="Dışa aktarma biçimi">
+            <option value="txt">Çeviri (.txt)</option>
+            <option value="csv">İki sütun (.csv, Excel)</option>
+            <option value="md">Tablo (.md)</option>
+            <option value="tmx">Çeviri belleği (.tmx)</option>
+          </select>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportBtn">Dışa aktar</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="copyBtn">Çeviriyi kopyala</button>
+          <span class="pt-grow"></span>
+          <label class="pt-check pt-check--inline"><input type="checkbox" id="onlyIssues"> <span>Yalnız sorunlu</span></label>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="newBtn">Yeni metin</button>
+        </div>
+        <div class="pt-context">
+          <label class="pl-muted pt-small" for="docContext">Bağlam (isteğe bağlı, modele gider):</label>
+          <input class="pl-input pt-grow" id="docContext" maxlength="300" placeholder="Örn. resmî iş yazışması; hukuki metin; kullanıcı arayüzü metinleri">
+        </div>
+        <div class="pt-docbody">
+          <div class="pt-table" id="segTable" role="list" aria-label="Yan yana bölümler">
+            <div class="pt-thead" aria-hidden="true"><span>#</span><span id="thSrc">Kaynak</span><span id="thTgt">Çeviri</span></div>
+            <div class="pt-rows" id="rows"></div>
+          </div>
+          <aside class="pt-card pt-inspector" id="inspector" aria-label="Seçili bölüm"></aside>
+        </div>
+      </section>
+    </div>
+
+    <!-- Belgeler -->
+    <div class="pt-view pt-panels" id="view-docs" hidden>
+      <section class="pt-card pt-card--wide">
+        <div class="pt-bar"><h2 class="pl-h3 pt-h">Belgeler</h2><span class="pl-muted pt-small">Yalnız bu bilgisayarda; arşivlenen belge silinmez.</span><span class="pt-grow"></span>
+          <label class="pt-check pt-check--inline"><input type="checkbox" id="showArchived"> <span>Arşivi göster</span></label>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="pt-docs" id="docList"></ul>
+      </section>
+    </div>
+
+    <!-- Terim sözlüğü -->
+    <div class="pt-view pt-panels" id="view-glossary" hidden>
+      <section class="pt-card pt-card--wide">
+        <div class="pt-bar"><h2 class="pl-h3 pt-h">Kişisel terim sözlüğü</h2><span class="pt-grow"></span>
+          <input class="pl-input pt-search" id="termSearch" placeholder="Sözlükte ara" aria-label="Sözlükte ara">
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="importBtn">CSV içe aktar</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportGlossaryBtn">CSV dışa aktar</button></div>
+        <p class="pl-muted pt-small">Türkçe terim eklere duyarlıdır (sözleşme → sözleşmenin, sözleşmeyi; kitap → kitabı). İngilizcede çoğul ve iyelik (party → parties, party's) tanınır. Birden çok kabul edilen karşılığı “|” ile ayırın; ilki tercih edilir. Aynı yazılan terim (ör. ürün adı) çevrilmez.</p>
+        <form class="pt-termform" id="termForm">
+          <input class="pl-input" id="termTr" maxlength="80" placeholder="Türkçe (ör. sözleşme)" aria-label="Türkçe terim">
+          <input class="pl-input" id="termEn" maxlength="160" placeholder="İngilizce (ör. agreement)" aria-label="İngilizce karşılık">
+          <input class="pl-input" id="termNote" maxlength="200" placeholder="Not (isteğe bağlı)" aria-label="Not">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">Ekle</button>
+        </form>
+        <div class="pt-terms" id="terms" role="table" aria-label="Terimler"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="pt-view pt-panels" id="view-settings" hidden>
+      <section class="pt-card pt-card--wide">
+        <h2 class="pl-h3 pt-h">Ölçüler</h2>
+        <p class="pl-muted pt-small">Notion doğrulama ölçütü: temsilî terim kümesinde sözlük uyumu ≥ %95 ve insan kalite değerlendirmesi (bölümlere verdiğiniz İyi / Düzeltme gerekti / Kötü notları). Yalnız bu bilgisayarda, arşivlenmemiş belgelerden sayılır.</p>
+        <div class="pt-metrics" id="metrics"></div>
+      </section>
+      <section class="pt-card">
+        <h2 class="pl-h3 pt-h">Çeviri motoru</h2>
+        <p class="pl-muted pt-small">İsteğe bağlıdır; çeviri masası, sözlük denetimi, hizalama ve dışa aktarma motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="pt-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632) üzerinden; Hub istemci anahtarı gerekir.</span></label>
+        <label class="pt-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…). Gizli sözleşme ve mesajlar için önerilir.</span></label>
+        <div class="pt-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false" placeholder="ör. qwen2.5-7b-instruct"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="pt-card">
+        <h2 class="pl-h3 pt-h">Seçim paneli ve dil</h2>
+        <label class="pt-check"><input type="checkbox" id="setHotkey"> <span><b>Ctrl+Shift+Space</b> genel kısayolu: başka bir uygulamada metni kopyalayın, kısayola basın — Parallel Translate açılır ve panodaki metni alır.</span></label>
+        <label class="pt-check"><input type="checkbox" id="setDetect"> <span>Kaynak dili otomatik tespit et (Türkçe / İngilizce).</span></label>
+        <p class="pl-muted pt-small" id="hotkeyInfo"></p>
+      </section>
+      <section class="pt-card pt-card--wide">
+        <h2 class="pl-h3 pt-h">Gizlilik ve sınırlar</h2>
+        <ul class="pt-ul">
+          <li>Parallel Translate yalnız sizin yapıştırdığınız metni, açtığınız dosyayı ya da sizin bastığınız düğme/kısayolla panodaki metni okur. Pano kendiliğinden okunmaz; parola gibi görünen tek parça metin alınmaz.</li>
+          <li>Çeviri motoru isteğe bağlıdır ve yalnız bu bilgisayardadır (Hub ya da yerel model). Her istekte ne gideceği gösterilir ve onay istenir. Sayı, tutar, bağlantı, e-posta ve gizli değerlerin (IBAN, kart, T.C. kimlik, parola) değerleri gönderilmez; yalnız ⟦n⟧ yer tutucuları gider. Sözlükten yalnız ilgili bölümlerde geçen terimler gider.</li>
+          <li>Makine çevirisi hata yapabilir. Teknik, tıbbi ve hukuki anlamın doğrulanması kullanıcıdadır; uygulama çeviri kalitesi için güvence vermez.</li>
+          <li>Belgeler ve sözlük silinmez, arşivlenir. Belgeler sınırı (60) aşınca en eski arşivli belge çıkarılır; önce JSON yedek alabilirsiniz.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="pt-foot pl-muted" id="foot">Parallel Translate 0.1.0 · PluginLabs · çevrimdışı çalışır; çeviri motoru isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal pt-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon pt-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted pt-tight">Bağlama uygun çeviri, alternatif terim ve kısa açıklama bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla üretilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body pt-stack">
+      <ol class="pt-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted pt-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <dialog class="pl-modal pt-dialog pt-dialog--wide" id="alignDialog" aria-labelledby="alignTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="alignTitle">Var olan çeviriyi hizala</h2><p class="pl-muted pt-tight">Elinizdeki çeviriyi yapıştırın; cümleler uzunluk oranına göre kaynak bölümlerle eşleştirilir (1-1, 1-2, 2-1). Bölümlerdeki mevcut çevirilerin yerine geçer.</p></div></div>
+    <div class="pl-modal__body pt-stack">
+      <textarea class="pl-input pt-area pt-area--dlg" id="alignText" maxlength="30000" spellcheck="false" aria-label="Çeviri metni"></textarea>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="alignCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="alignRun">Hizala</button></div>
+  </dialog>
+  <div class="pt-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="pt-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
