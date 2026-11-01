@@ -14,7 +14,18 @@ Açık metni veya belgeyi seçtiğiniz bölüm üzerinden açıklar: yan yana sa
 | **Kitaplık** | **Ayarlar ve ölçüler** |
 | ![Kitaplık](docs/screenshots/masaustu-06-kitaplik.png) | ![Ölçüler](docs/screenshots/masaustu-07-ayarlar-olculer.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (`masaustu-*`: Linux/xvfb; `windows-masaustu-*`: GitHub Actions Windows runner, release ekinde).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (`masaustu-*`: Linux/xvfb, commit 21dfc62; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 41313481531](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41313481531), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — yan yana sadeleştirme](docs/screenshots/windows-masaustu-01-yan-yana-sadelestirme.png)
+
+| Windows — MyMind alıntı denetimi | Windows — Soru-cevap |
+| --- | --- |
+| ![Windows MyMind](docs/screenshots/windows-masaustu-05-mymind-alinti-denetimi.png) | ![Windows soru-cevap](docs/screenshots/windows-masaustu-04-soru-cevap.png) |
+
+## İndir
+[read-partner-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/read-partner-v0.1.0) — `ReadPartner-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `c115a44f…9f80`), `ReadPartner-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `8ca3b8ba…8fae`, 81 527 089 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub 0.4.9 kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Kitaplık → Yeni metin**: metni yapıştırın ya da **Dosya aç** (.txt, .md, .html; Ctrl+O). İlk deneme için **Örnek metni aç**.
