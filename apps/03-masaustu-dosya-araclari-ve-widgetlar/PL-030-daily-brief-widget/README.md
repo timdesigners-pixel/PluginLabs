@@ -60,7 +60,7 @@ P1 · M; Xtreme bağımsız ürün olarak taşınmaz, bu dar modül yeniden kull
 
 Yerel görevler + eklediğiniz takvimlerden (yerel etkinlik, `.ics` dosyası, Google/Outlook gizli iCal adresi; **yalnız okuma**) bugün görünümü ve her zaman üstte, sürüklenebilir **widget**. Etkinlik ve saatli görev çakışmaları yalnız **öneri** olarak gösterilir; takvim değiştirilmez (Notion: "takvimi otomatik değiştirmez"). Görevler çalışma saatlerindeki boş aralıklara kural tabanlı **kısa plan** olarak yerleştirilir; isteğe bağlı MyMind planı Hub üzerinden, onaylı ve veri azaltılmış (hassas başlıklar her zaman "Özel …"). **Hassas başlık gizleme modu**, her kaynağın **veri zamanı ve bağlantısı** (eskimiş veri işaretlenir), sabah bildirimi ve Notion doğrulama ölçütleri (sabah özeti okuma oranı, yanlış/eskimiş etkinlik oranı). OAuth hesap girişi ve sağlık/finans kaynakları bu sürümde yok. Ayrıntı, ekran görüntüleri ve kabul: [app/README.md](app/README.md).
 
-![Daily Brief Widget — bugün görünümü](app/docs/screenshots/masaustu-01-bugun.png)
+![Daily Brief Widget — bugün görünümü (Windows)](app/docs/screenshots/windows-masaustu-01-bugun.png)
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

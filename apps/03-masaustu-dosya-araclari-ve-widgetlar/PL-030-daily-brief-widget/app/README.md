@@ -4,11 +4,19 @@
 
 Ürün kartı (Notion kaynağı, kısaltılmamış): [../README.md](../README.md) · Sürüm notları: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
-**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0 — kurulum `DailyBrief-0.1.0-Windows-x64.exe` ya da taşınabilir `DailyBrief-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. <!-- WINDOWS-YAYIN -->
+**İndir (Windows, imzasız önizleme):** https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0 — kurulum `DailyBrief-0.1.0-Windows-x64.exe` ya da taşınabilir `DailyBrief-0.1.0-Windows-Portable-x64.exe`; `SHA256SUMS-windows.txt` ile doğrulayın. 01.11.2026 11:58 UTC'de `pluginlabs-dagitim` iş akışıyla ([çalıştırma 41304114393](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41304114393)) Windows runner'ında derlendi: `npm test` + gerçek Electron penceresinde duman testi geçti (Windows kasası/DPAPI etkin); kaynak commit `c72b946`. Hub kataloğunda (Hub 0.4.9).
 
 ## Ekran görüntüleri
 
-<!-- WINDOWS-EKRANLAR -->
+**Windows (release'i üreten Windows runner'ı, 01.11.2026, kaynak `c72b946`, test verisi):**
+
+| Bugün: takvim, çakışmalar, görevler, kısa plan | Widget (her zaman üstte, sürüklenir) |
+| --- | --- |
+| ![Windows bugün](docs/screenshots/windows-masaustu-01-bugun.png) | ![Windows widget](docs/screenshots/windows-masaustu-02-widget.png) |
+| **Takvimler ve veri zamanı** | **Gizleme kipi** |
+| ![Windows takvimler](docs/screenshots/windows-masaustu-03-takvimler.png) | ![Windows gizleme kipi](docs/screenshots/windows-masaustu-04-gizleme-kipi.png) |
+| **MyMind planı** | **Ölçüler ve gizlilik** |
+| ![Windows MyMind planı](docs/screenshots/windows-masaustu-05-mymind-plan.png) | ![Windows ayarlar](docs/screenshots/windows-masaustu-06-ayarlar-olculer.png) |
 
 **Linux xvfb (bu klasördeki kaynak, 01.11.2026):** gerçek uygulama pencereleri; otomatik duman testinin test verisiyle (saat 3 Kasım 2026 08:30'a sabit, taklit takvim sunucusu ve taklit Hub).
 
