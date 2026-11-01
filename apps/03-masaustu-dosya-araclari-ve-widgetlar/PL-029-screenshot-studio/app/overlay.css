@@ -1,0 +1,13 @@
+/* Seçim katmanı: donmuş ekran görüntüsü, karartma ve seçim çerçevesi. Renkler PluginLabs tokenlarından. */
+html, body { margin: 0; height: 100%; overflow: hidden; cursor: crosshair; user-select: none; background: #000; font-family: var(--pl-font-sans); }
+#shot { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; pointer-events: none; }
+#dim { position: fixed; inset: 0; background: rgb(5 8 16 / .45); pointer-events: none; }
+#sel { position: fixed; box-sizing: border-box; border: 2px solid var(--pl-accent); box-shadow: 0 0 0 9999px rgb(5 8 16 / .45); background: transparent; pointer-events: none; }
+#sel[hidden] { display: none; }
+body.has-sel #dim { display: none; }
+#size { position: absolute; left: -2px; top: -1.75rem; padding: 2px 8px; border-radius: var(--pl-radius-sm); background: var(--pl-accent); color: var(--pl-fg-on-accent); font-size: var(--pl-text-xs); font-weight: 600; white-space: nowrap; }
+#hint { position: fixed; top: var(--pl-space-6); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; padding: var(--pl-space-2) var(--pl-space-4); border: 1px solid var(--pl-line-strong); border-radius: var(--pl-radius-lg); background: color-mix(in srgb, var(--pl-bg-1) 92%, transparent); color: var(--pl-fg-1); font-size: var(--pl-text-sm); pointer-events: none; box-shadow: var(--pl-shadow-2, 0 8px 24px rgb(0 0 0 / .4)); }
+#hint span { color: var(--pl-fg-3); font-size: var(--pl-text-xs); }
+kbd { font: inherit; padding: 0 5px; border: 1px solid var(--pl-line-strong); border-radius: 4px; color: var(--pl-fg-2); }
+body.dragging #hint { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) { #hint { transition: opacity var(--pl-dur-fast, .12s); } }

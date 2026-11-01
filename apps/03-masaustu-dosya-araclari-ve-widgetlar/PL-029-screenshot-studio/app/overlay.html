@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Screenshot Studio — bölge seç</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="overlay.css">
+</head>
+<body data-pl data-pl-theme="dark" data-pl-product="hub">
+<img id="shot" alt="" draggable="false">
+<div id="dim"></div>
+<div id="sel" hidden><span id="size"></span></div>
+<div id="hint" role="status"><b>Yakalanacak bölgeyi sürükleyerek seçin</b><span><kbd>Esc</kbd> vazgeç · <kbd>Ctrl</kbd>+<kbd>A</kbd> tüm ekran · oklar taşır, <kbd>Alt</kbd>+oklar boyutlandırır, <kbd>Enter</kbd> onaylar</span></div>
+<script src="overlay.js"></script>
+</body>
+</html>
