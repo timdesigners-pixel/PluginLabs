@@ -57,6 +57,22 @@ const catalog = [
     repo: "timdesigners-pixel/the-ultimate-scrapper",
   },
   {
+    id: "mymind-ai",
+    name: "MyMind AI",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "PluginLabs ortak yerel yapay zekâsı: Hub MyMind Lite, LM Studio veya Ollama ile sohbet; ürünlerin MyMind işleri için 13 doğrulanmış görev şablonu, taslaklar; Chrome eklentisi ve uygulamalar için onaylı yerel köprü. Yalnız bu cihazdaki modeller.",
+    platform: "win32",
+    format: "exe",
+    file: "MyMindAI.exe",
+    size: 4033024,
+    sha256: "7bb058c56f5da974360bbd994a80eef8058906f8b85345b5328af92032d135d1",
+    url: dist("mymind-ai", "0.1.0", "MyMindAI-0.1.0-portable.exe"),
+    distAsset: "^MyMindAI-[0-9.]+-portable\.exe$",
+    repo: "timdesigners-pixel/mymind-ai",
+  },
+  {
     id: "finansal-asistan",
     name: "Finansal Asistan",
     kind: "app",
