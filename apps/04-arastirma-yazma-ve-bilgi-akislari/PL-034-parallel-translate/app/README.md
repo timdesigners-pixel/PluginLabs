@@ -14,10 +14,18 @@ Seçtiğiniz ya da yapıştırdığınız metni paragraf, madde ve cümle **böl
 | **Metin girişi (dil tespiti, gizli veri uyarısı)** | **Belgeler (arşiv)** |
 | ![Metin girişi](docs/screenshots/masaustu-00-metin-girisi.png) | ![Belgeler](docs/screenshots/masaustu-05-belgeler.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek sözleşme özeti; taklit MyMind yanıtı) alınmıştır (`masaustu-*`: Linux/xvfb).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek sözleşme özeti; taklit MyMind yanıtı) alınmıştır (`masaustu-*`: Linux/xvfb, commit 4127858; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 41344219418](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41344219418), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — yan yana çeviri](docs/screenshots/windows-masaustu-01-yan-yana-ceviri.png)
+
+| Windows — alternatif terim | Windows — hizalama |
+| --- | --- |
+| ![Windows alternatif](docs/screenshots/windows-masaustu-02-alternatif-terim.png) | ![Windows hizalama](docs/screenshots/windows-masaustu-04-hizalama.png) |
 
 ## İndir
-Windows sürümü: `pluginlabs-dagitim` → `parallel-translate-v0.1.0` (kurulum + taşınabilir exe, SHA256SUMS, BUILD-INFO, Windows ekran görüntüleri). İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[parallel-translate-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/parallel-translate-v0.1.0) — `ParallelTranslate-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `1ea56960…3c13`), `ParallelTranslate-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `9cf8b34c…5c1b`, 81 527 975 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Metni yapıştırın, **Panodan al**, **Dosya aç** (.txt/.md) ya da başka bir uygulamada metni kopyalayıp **Ctrl+Shift+Space**. İlk deneme için **Örnek** (temsilî terim kümesini de ekler).
