@@ -660,7 +660,7 @@
         "name": "youtube-shelf",
         "url": "https://github.com/timdesigners-pixel/youtube-shelf",
         "verified": true,
-        "note": "31.10.2026: 0.1.1 Windows uygulaması (youtube-shelf#3 + #4 birleşti, release v0.1.1); v0.1.0 kapatılan paralel #2 dalından yayımlanmıştı"
+        "note": "Depo GitHub'da doğrulandı 31.10.2026 · 31.10.2026: 0.1.1 Windows uygulaması (youtube-shelf#3 birleşti, release v0.1.1 31.10.2026 13:42 UTC; v0.1.0 kapatılan #2 dalının derlemesidir)"
       },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-015-youtube-shelf",
       "codexProject": {
@@ -696,7 +696,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Tarayıcı sekmelerini gruplar; çalışma oturumlarını kaydeder ve yeniden açar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tab-atlas",
+        "url": "https://github.com/timdesigners-pixel/tab-atlas",
+        "verified": true,
+        "note": "Depo GitHub'da doğrulandı 31.10.2026 · 31.10.2026: 0.1.0 Windows uygulaması + Chrome eklentisi zip (release v0.1.0 31.10.2026 09:59 UTC, dal commit'inden; tab-atlas#2 birleştirme bekliyor)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas",
       "codexProject": {
         "name": "PL-016 · Tab Atlas",
@@ -2048,6 +2054,47 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": "https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1"
+    },
+    {
+      "id": "PL-055",
+      "number": 55,
+      "slug": "mymind-ai",
+      "name": "MyMind AI",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows uygulaması (Rust + Tauri 2) + Chrome MV3 eklentisi",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows uygulaması + Chrome eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mymind-ai",
+        "url": "https://github.com/timdesigners-pixel/mymind-ai",
+        "verified": true,
+        "note": "Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)"
+      },
+      "appPath": "apps/07-yeni-urunler/PL-055-mymind-ai",
+      "codexProject": {
+        "name": "PL-055 · MyMind AI",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }
