@@ -13,6 +13,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Mind Palace (PL-003) | **v1.11.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.0 |
 | The Ultimate Scrapper (PL-004) | v0.7.0 (PluginLabs Scrapper) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.7.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
+| MyWishlist (PL-054) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
 | Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
 | Prompt Dünyası (PL-008) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
@@ -32,7 +33,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-015–024 (yalnız plan), PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
+- Sıradaki (Windows sürümü yok): PL-015–024 (yalnız plan), PL-025–050 (fikir; depo yok).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -91,5 +92,5 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-051 | Extension Manager / Eklenti Yöneticisi | Chrome eklentisi kaynak kodu (11 dosya, v1.0.0), release yok | https://github.com/timdesigners-pixel/extension-manager |
 | PL-052 | Tweakster | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tweakster |
 | PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.4.1** (GitHub release; Hub kataloğunda) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
-| PL-054 | MyWishlist | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-055 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.0 |
+| PL-054 | MyWishlist | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (istek listeleri, fiyat takibi, çok sitede arama ve karşılaştırma, MyMind ile ekleme, görselden tanıma; imzasız önizleme) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |

@@ -44,6 +44,7 @@ REPOLAR = {
     'PL-051': ('extension-manager', True, 'Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici'),
     'PL-052': ('tweakster', True, 'Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)'),
     'PL-053': ('mutfak-atolyesi', True, 'Codex proje adı: “PL -053· Mutfak Atölyesi”'),
+    'PL-054': ('mywishlist', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
     'PL-055': ('mymind-ai', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
 }
 

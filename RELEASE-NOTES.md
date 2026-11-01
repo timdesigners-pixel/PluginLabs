@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.11 — MyWishlist 0.1.0 kataloğa eklendi.
+
+- Katalog: MyWishlist 0.1.0 (PL-054; Rust/Tauri Windows uygulaması + Chrome eklentisi: istek listeleri, öncelik, fiyat takibi ve uyarılar, ürün adıyla çok sitede arama ve karşılaştırma, sepet planı, alışveriş asistanı, MyMind ile ekleme, ekran görüntüsünden tanıma). Boyut ve SHA-256 kaynak sürümdeki taşınabilir exe’den alındı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.10 — MyMind AI 0.1.0 kataloğa eklendi.
 
 - Katalog: MyMind AI 0.1.0 (PL-055; Rust/Tauri Windows uygulaması: yerel modelle sohbet, ürünlerin MyMind işleri için 13 doğrulanmış görev şablonu, taslaklar, Chrome eklentisi ve uygulamalar için onaylı yerel köprü). Boyut ve SHA-256 kaynak sürümdeki dosyadan alındı.

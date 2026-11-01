@@ -2018,7 +2018,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "Yeni fikir · kullanıcı notundan ürünleştirme",
+      "status": "v0.1.0 · Tauri 2/Rust Windows uygulaması + Chrome eklentisi (MV3); imzasız önizleme",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2034,7 +2034,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mywishlist",
+        "url": "https://github.com/timdesigners-pixel/mywishlist",
+        "verified": true,
+        "note": "Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)"
+      },
       "appPath": "apps/07-yeni-urunler/PL-054-mywishlist",
       "codexProject": {
         "name": "PL-054 · MyWishlist",
