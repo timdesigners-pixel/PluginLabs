@@ -12,10 +12,18 @@ Araştırmada bir sonucun **hangi kaynağa ve hangi alıntıya** dayandığını
 | **MyMind karşılaştırma taslağı: uydurma alıntı atılır** | **Ölçüler (hedef %100)** |
 | ![MyMind](docs/screenshots/masaustu-04-mymind-karsilastirma.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin uydurma örnek verisiyle (example.org/.com/.net) alınmıştır (`masaustu-*`: Linux/xvfb). Windows runner'ında alınanlar (`windows-masaustu-*`) release ekindedir.
+Ekran görüntüleri gerçek uygulamadan, duman testinin uydurma örnek verisiyle (example.org/.com/.net) alınmıştır (`masaustu-*`: Linux/xvfb, commit f3cf9cc; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 41338751278](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/41338751278), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — iddia ve kanıtlar](docs/screenshots/windows-masaustu-01-iddia-ve-kanitlar.png)
+
+| Windows — kaynak kartı | Windows — MyMind karşılaştırma |
+| --- | --- |
+| ![Windows kaynak kartı](docs/screenshots/windows-masaustu-02-kaynak-karti.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-04-mymind-karsilastirma.png) |
 
 ## İndir
-[source-trail-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/source-trail-v0.1.0) — `SourceTrail-0.1.0-Windows-x64.exe` (kurulum), `SourceTrail-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[source-trail-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/source-trail-v0.1.0) — `SourceTrail-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `3b6b8d21…6510`), `SourceTrail-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `6cc6d8ac…7176`, 81 526 123 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Tarayıcıda alıntılamak istediğiniz metni seçip kopyalayın; adres çubuğundaki bağlantıyı da metnin altına/ayrı satıra ekleyin (isteğe bağlı `Başlık:` ve `Yazar:` satırları tanınır). **Kaynaklar → Panodan yakala**. İlk deneme için **Kaynakça → Örnek projeyi ekle**.
