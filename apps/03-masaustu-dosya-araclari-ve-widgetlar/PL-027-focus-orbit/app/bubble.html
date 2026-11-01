@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Focus Orbit — odak balonu</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="fb-body">
+<div class="fb" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <div class="fb-ring" id="ring" aria-hidden="true"><svg viewBox="0 0 44 44"><circle class="fo-ring__bg" cx="22" cy="22" r="18"/><circle class="fo-ring__fg" id="ringFg" cx="22" cy="22" r="18" pathLength="1000"/></svg><span class="fb-mark">FO</span></div>
+  <div class="fb-main">
+    <div class="fb-top"><span class="fb-phase" id="phase">Hazır</span><b class="fb-time pl-num" id="time" role="timer">--:--</b></div>
+    <div class="fb-task" id="task">Görev yok</div>
+  </div>
+  <div class="fb-tools">
+    <button class="fb-btn" type="button" id="toggle" title="Duraklat" aria-label="Duraklat"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path id="toggleIco" d="M7 4h4v16H7zM13 4h4v16h-4z"/></svg></button>
+    <button class="fb-btn" type="button" id="interrupt" title="Dağıldım (kesinti kaydet)" aria-label="Dağıldım"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></button>
+    <button class="fb-btn" type="button" id="open" title="Ana pencereyi aç" aria-label="Ana pencereyi aç"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-8 8M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+    <button class="fb-btn" type="button" id="hide" title="Balonu gizle (sayaç sürer)" aria-label="Balonu gizle"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="fb-note" id="note" role="status" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="bubble.js"></script>
+</body>
+</html>
