@@ -31,7 +31,7 @@ Kullanılmaz: backend, veri modeli, build/CI işleri; PluginLabs dışı projele
 - Mevcut ekranı değiştirmeden önce kullanıcıya hangi ekranın taşınacağını teyit ettir.
 
 ## İş akışı
-1. **Ürünü belirle** → `data-pl-product` kodu: `hub, leo, mindpalace, replicator, mutfak, flowdock, tweakster, extman, mymind, scrapper, wishlist`.
+1. **Ürünü belirle** → `data-pl-product` kodu: `hub, leo, mindpalace, replicator, mutfak, flowdock, tweakster, extman, mymind, scrapper, wishlist, tork`.
 2. **Yüzeyi belirle** → Hub/masaüstü (normal yoğunluk) · eklenti popup 380×560 / yan panel 400px (`data-pl-density="compact"`) · content script (Shadow DOM içine kur, tokenları shadow root'a enjekte et).
 3. **Tokenları bağla** → `assets/pl-tokens.css` + `assets/pl-components.css` dosyalarını projeye kopyala (ör. `packages/ui/pl/`) ve yükle. Kopyalanan dosyaları değiştirme; değişiklik bu skill'de yapılır.
 4. **Komponenti katalogdan al** → KOMPONENTLER.md'deki HTML'i temel al, sınıf adlarını koru. Framework'te bileşen yalnız sarmalayıcıdır.

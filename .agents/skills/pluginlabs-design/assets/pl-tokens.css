@@ -119,6 +119,7 @@
 :where([data-pl-product="mymind"])     { --pl-accent: #f0b429; }  /* MyMind (AI)         */
 :where([data-pl-product="scrapper"])   { --pl-accent: #f87171; }  /* The Ultimate Scrapper */
 :where([data-pl-product="wishlist"])   { --pl-accent: #fb7185; }  /* MyWishlist (PL-054) */
+:where([data-pl-product="tork"])       { --pl-accent: #facc15; }  /* Tork (PL-057)       */
 
 /* ---------- 4. YOĞUNLUK ---------- */
 :where([data-pl-density="compact"]) {   /* eklenti popup / yan panel */
