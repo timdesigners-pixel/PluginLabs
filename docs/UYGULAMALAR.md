@@ -26,6 +26,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Focus Orbit (PL-027) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0 |
 | Screenshot Studio (PL-029) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/screenshot-studio-v0.1.0 |
 | Daily Brief Widget (PL-030) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0 |
+| Read Partner (PL-032) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/read-partner-v0.1.0 |
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
@@ -37,14 +38,15 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 ## Özet
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio ve Daily Brief Widget Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget ve Read Partner Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
 - PL-026 Workspace Scenes 0.1.0 yayımlandı (01.11.2026 06:42 UTC; `pluginlabs-dagitim` workspace-scenes-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-027 Focus Orbit 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` focus-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-028 Quick Convert 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` quick-convert-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-029 Screenshot Studio 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` screenshot-studio-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-030 Daily Brief Widget 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` daily-brief-widget-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
-- Sıradaki (Windows sürümü yok): PL-031–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
+- PL-032 Read Partner 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` read-partner-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
+- Sıradaki (Windows sürümü yok): PL-031 (başka oturumda devam ediyor), PL-033–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -81,7 +83,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-029 | Screenshot Studio | Windows uygulaması · **v0.1.0** (bölge/ekran/pencere yakalama, ok/numara/metin/vurgu/bulanık, kalıcı maske, kırpma, pencere çerçevesi, pano/PNG/JPEG; cihazda OCR ile hassas alan adayı, maskenin piksel piksel doğrulanması; MyMind ek aday; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-029-screenshot-studio/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/screenshot-studio-v0.1.0 |
 | PL-030 | Daily Brief Widget | Windows uygulaması · **v0.1.0** (günün özeti: yerel görevler + salt-okur takvimler (yerel, .ics dosyası, gizli iCal adresi), her zaman üstte widget, çakışma önerileri, boş aralık ve kısa plan, hassas başlık gizleme, veri zamanı, sabah bildirimi, MyMind planı; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-030-daily-brief-widget/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0 |
 | PL-031 | Source Trail | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-032 | Read Partner | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-032 | Read Partner | Windows uygulaması · **v0.1.0** (okuma yardımcısı: .txt/.md/.html ya da yapıştırma, seçili bölüm için yan yana sadeleştirme, terimler metnin içinden (bilinmiyor işaretli), 3 anlama sorusu, kaynak içi soru-cevap, sayfa içi talimat işaretleme, MyMind seviyeli açıklama + alıntı denetimi; imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-032-read-partner/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/read-partner-v0.1.0 |
 | PL-033 | Text Forge | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-034 | Parallel Translate | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-035 | Meeting Trace | Fikir / Hub içi önizleme (ayrı depo yok) | — |

@@ -12,7 +12,7 @@ permissions:
   contents: read
 env:
   SOURCE_REPO: timdesigners-pixel/PluginLabs
-  SOURCE_SHA: KAYNAK_SHA
+  SOURCE_SHA: 21dfc629efb36b0d5c92f5501f4e2b791ed16218
   APP_DIR: src/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner/app
 jobs:
   windows:
