@@ -8,7 +8,15 @@
 
 ## Ekran görüntüleri
 
-Gerçek uygulama penceresi; otomatik duman testinin geçici örnek klasörüyle (test verisi) alınmıştır. Linux xvfb görüntüleridir; Windows runner'ında alınan aynı görüntüler release'te `windows-masaustu-*.png` adıyla bulunur.
+**Windows** (release'i üreten Windows runner'ında, paketlemeden önceki duman testinde alındı; kaynak commit `1d9b500`, test verisi):
+
+| Arama | MyMind yanıtı (kaynağa ve satıra bağlı) |
+| --- | --- |
+| ![Windows arama](docs/screenshots/windows-masaustu-01-arama.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-02-mymind-yanit.png) |
+
+**Linux xvfb** (geliştirme ortamı, aynı duman testi):
+
+Gerçek uygulama penceresi; otomatik duman testinin geçici örnek klasörüyle (test verisi) alınmıştır. Windows görüntülerinin tamamı release'te `windows-masaustu-*.png` adıyla bulunur.
 
 | Arama ve eşleşen bölüm | MyMind yanıtı (kaynağa bağlı) |
 | --- | --- |
@@ -30,7 +38,7 @@ Gerçek uygulama penceresi; otomatik duman testinin geçici örnek klasörüyle 
 - Ağ yalnız `desktop/net.js` içinde, onaylı MyMind isteği için ve yalnız yerel Hub adresine.
 
 ## Doğrulama ölçütü (Notion)
-"1000 belgede bilinen dosyayı ilk 5 sonuçta bulma ≥ %90; p95 sorgu ≤ 1 sn" — `src/bench.js` belirleyici sentetik derlemle ölçer (`npm run bench`; paketlenmiş uygulamada `FP_SELFTEST=<çıktı.json>` ile). Sorgular, belgenin en belirgin iki kök sözcüğünü üç biçimde kullanır: belgedeki ekli biçim, eksiz kök, aksansız yazım + kişi/şehir. Linux ölçümü: ilk 5 %98,7–99,7, p95 6–8 ms. Sınır: yalnız genel konu sözcükleri hatırlandığında isabet düşer (tekdüze derlemde %66) — gerçek klasörlerde kullanıcı kabulüyle ayrıca ölçülmelidir.
+"1000 belgede bilinen dosyayı ilk 5 sonuçta bulma ≥ %90; p95 sorgu ≤ 1 sn" — `src/bench.js` belirleyici sentetik derlemle ölçer (`npm run bench`; paketlenmiş uygulamada `FP_SELFTEST=<çıktı.json>` ile). Sorgular, belgenin en belirgin iki kök sözcüğünü üç biçimde kullanır: belgedeki ekli biçim, eksiz kök, aksansız yazım + kişi/şehir. Linux ölçümü: ilk 5 %98,7–99,7, p95 6–8 ms; Windows'ta paketlenmiş uygulama (release `BENCH-windows.json`): ilk 5 %99, p95 5,37 ms. Sınır: yalnız genel konu sözcükleri hatırlandığında isabet düşer (tekdüze derlemde %66) — gerçek klasörlerde kullanıcı kabulüyle ayrıca ölçülmelidir.
 
 ## Geliştirme
 ```bash

@@ -32,7 +32,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 ## Özet
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
 - Sıradaki (Windows sürümü yok): PL-026–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
