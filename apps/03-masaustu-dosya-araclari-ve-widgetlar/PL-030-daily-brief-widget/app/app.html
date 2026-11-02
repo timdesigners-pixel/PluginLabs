@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Brief Widget</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="db" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar db-side" aria-label="Ana menü">
+    <div class="db-brand" aria-label="PluginLabs Apps">
+      <span class="db-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="db-apps">APPS</span>
+    </div>
+    <div class="db-product">
+      <span class="pl-applogo" aria-hidden="true">DB</span>
+      <div class="db-product__text"><b>Daily Brief</b><span>Günün özeti</span></div>
+      <span class="db-product__no pl-num" aria-label="Sıra numarası 30">30</span>
+    </div>
+    <div class="db-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem db-navbtn" type="button" data-nav="today" role="tab">Bugün<span class="pl-badge" id="todayCount">0</span></button>
+      <button class="pl-navitem db-navbtn" type="button" data-nav="tasks" role="tab">Görevler<span class="pl-badge" id="tasksCount">0</span></button>
+      <button class="pl-navitem db-navbtn" type="button" data-nav="calendars" role="tab">Takvimler<span class="pl-badge" id="calCount">0</span></button>
+      <button class="pl-navitem db-navbtn" type="button" data-nav="settings" role="tab">Ayarlar ve ölçüler</button>
+    </div>
+    <div class="db-mini" id="sideNext" aria-live="off"></div>
+    <div class="db-side__foot">
+      <button class="pl-navitem db-navbtn" type="button" id="hideBtn"><span>Gizleme kipi</span><span class="pl-badge" id="hideState">Kapalı</span></button>
+      <button class="pl-navitem db-navbtn" type="button" id="widgetBtn"><span>Widget</span><span class="pl-badge" id="widgetState">Gizli</span></button>
+      <button class="pl-navitem db-navbtn" type="button" id="openMymind"><span class="db-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="db-main">
+    <div class="db-view db-today" id="view-today">
+      <header class="db-dayhead">
+        <div><h1 class="pl-h2 db-date" id="dayTitle">Bugün</h1><p class="pl-muted db-small" id="dayHeadline"></p></div>
+        <span class="db-grow"></span>
+        <span class="db-fresh" id="dayFresh"></span>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="readBtn">Okudum</button>
+      </header>
+      <div class="db-cols">
+        <section class="db-col" aria-label="Takvim">
+          <div class="db-card">
+            <div class="db-bar"><h2 class="db-sub">Takvim <span class="pl-badge" id="evCount">0</span></h2><span class="db-grow"></span><span class="pl-muted db-small" id="busyInfo"></span></div>
+            <ol class="db-timeline" id="timeline"></ol>
+          </div>
+          <div class="db-card db-conflicts" id="conflictCard" hidden>
+            <div class="db-bar"><h2 class="db-sub">Çakışmalar <span class="pl-badge pl-badge--warning" id="confCount">0</span></h2><span class="db-grow"></span><span class="pl-muted db-small">Öneri; takvim değiştirilmez</span></div>
+            <ul class="db-list" id="conflicts"></ul>
+          </div>
+        </section>
+        <section class="db-col" aria-label="Görevler ve plan">
+          <div class="db-card">
+            <div class="db-bar"><h2 class="db-sub">Bugünün görevleri <span class="pl-badge" id="dueCount">0</span></h2><span class="db-grow"></span>
+              <form class="db-quick" id="quickForm"><input class="pl-input" id="quickTask" maxlength="140" autocomplete="off" placeholder="Bugüne görev ekle ve Enter" aria-label="Bugüne hızlı görev"></form></div>
+            <ul class="db-tasks" id="todayTasks"></ul>
+          </div>
+          <div class="db-card">
+            <div class="db-bar"><h2 class="db-sub">Kısa plan</h2><span class="db-grow"></span>
+              <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="planBtn"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile planla</button></div>
+            <p class="pl-muted db-small" id="planInfo"></p>
+            <ol class="db-plan" id="plan"></ol>
+            <div class="db-ai" id="aiPlan" hidden></div>
+          </div>
+          <div class="db-card">
+            <div class="db-bar"><h2 class="db-sub">Veri zamanı ve kaynaklar</h2></div>
+            <ul class="db-list db-sources-mini" id="srcMini"></ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="db-view db-panels" id="view-tasks" hidden>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Yeni görev</h2></div>
+        <form class="db-stack" id="taskForm">
+          <div class="pl-field"><label class="pl-field__label" for="tTitle">Görev</label><input class="pl-input" id="tTitle" maxlength="140" autocomplete="off" placeholder="ör. Çeyrek raporunun ilk taslağı"></div>
+          <div class="db-grid3">
+            <div class="pl-field"><label class="pl-field__label" for="tDue">Tarih (boş: tarihsiz)</label><input class="pl-input" id="tDue" type="date"></div>
+            <div class="pl-field"><label class="pl-field__label" for="tTime">Saat (isteğe bağlı)</label><input class="pl-input" id="tTime" type="time"></div>
+            <div class="pl-field"><label class="pl-field__label" for="tDur">Süre (dk)</label><input class="pl-input" id="tDur" type="number" min="5" max="480" step="5" value="30"></div>
+          </div>
+          <div class="db-bar">
+            <label class="db-check" for="tPri">Öncelik <select class="pl-input db-select" id="tPri"><option value="1">Yüksek</option><option value="2" selected>Normal</option><option value="3">Düşük</option></select></label>
+            <label class="db-check"><input type="checkbox" id="tSens"> Hassas (gizleme kipinde “Özel görev”)</label>
+            <span class="db-grow"></span>
+            <button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">Ekle</button>
+          </div>
+        </form>
+      </section>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Açık görevler</h2><span class="pl-muted db-small" id="openInfo"></span></div>
+        <div class="db-groups" id="taskGroups"></div>
+      </section>
+      <section class="db-panel db-panel--wide">
+        <div class="db-panel__head"><h2 class="pl-h3">Tamamlananlar</h2><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="clearDone">Tamamlananları temizle</button></div>
+        <ul class="db-tasks" id="doneTasks"></ul>
+      </section>
+    </div>
+
+    <div class="db-view db-panels" id="view-calendars" hidden>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Takvim ekle</h2></div>
+        <p class="pl-muted db-small">Google Takvim (Ayarlar → takvim → <b>iCal biçiminde gizli adres</b>), Outlook (Takvimi yayımla → ICS) ya da herhangi bir .ics adresi. Daily Brief takvimi yalnız <b>okur</b>; takvime hiçbir şey yazmaz. Hesap girişi (OAuth) 0.1.0'da yok.</p>
+        <form class="db-stack" id="urlForm">
+          <div class="pl-field"><label class="pl-field__label" for="icsUrl">Takvim adresi (https:// ya da webcal://)</label><input class="pl-input" id="icsUrl" maxlength="1000" autocomplete="off" spellcheck="false" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics"></div>
+          <div class="db-bar"><input class="pl-input db-grow" id="icsName" maxlength="60" autocomplete="off" placeholder="Ad (isteğe bağlı), ör. İş" aria-label="Takvim adı"><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">Adresi ekle</button></div>
+        </form>
+        <div class="db-bar"><span class="pl-muted db-small db-grow">ya da dışa aktarılmış bir takvim dosyası:</span><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="icsFile">.ics dosyası içe aktar</button></div>
+      </section>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Yerel etkinlik</h2></div>
+        <form class="db-stack" id="eventForm">
+          <div class="pl-field"><label class="pl-field__label" for="eTitle">Başlık</label><input class="pl-input" id="eTitle" maxlength="200" autocomplete="off" placeholder="ör. Diş hekimi"></div>
+          <div class="db-grid3">
+            <div class="pl-field"><label class="pl-field__label" for="eDate">Tarih</label><input class="pl-input" id="eDate" type="date"></div>
+            <div class="pl-field"><label class="pl-field__label" for="eFrom">Başlangıç</label><input class="pl-input" id="eFrom" type="time" value="09:00"></div>
+            <div class="pl-field"><label class="pl-field__label" for="eTo">Bitiş</label><input class="pl-input" id="eTo" type="time" value="10:00"></div>
+          </div>
+          <div class="pl-field"><label class="pl-field__label" for="eLoc">Yer (isteğe bağlı)</label><input class="pl-input" id="eLoc" maxlength="160" autocomplete="off"></div>
+          <div class="db-bar"><label class="db-check"><input type="checkbox" id="eAll"> Tüm gün</label><label class="db-check"><input type="checkbox" id="eSens"> Hassas</label><span class="db-grow"></span><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">Ekle</button></div>
+        </form>
+        <ul class="db-list" id="localEvents"></ul>
+      </section>
+      <section class="db-panel db-panel--wide">
+        <div class="db-panel__head"><h2 class="pl-h3">Takvimlerim</h2><span class="pl-muted db-small">Adres kaynakları yenileme süresinin iki katından eskiyse “eskimiş” sayılır ve özette işaretlenir.</span></div>
+        <div class="db-sources" id="sources"></div>
+      </section>
+    </div>
+
+    <div class="db-view db-panels" id="view-settings" hidden>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Gün</h2></div>
+        <div class="db-grid3">
+          <div class="pl-field"><label class="pl-field__label" for="sStart">Çalışma başlangıcı</label><input class="pl-input" id="sStart" type="time"></div>
+          <div class="pl-field"><label class="pl-field__label" for="sEnd">Çalışma bitişi</label><input class="pl-input" id="sEnd" type="time"></div>
+          <div class="pl-field"><label class="pl-field__label" for="sBrief">Sabah özeti saati</label><input class="pl-input" id="sBrief" type="time"></div>
+          <div class="pl-field"><label class="pl-field__label" for="sDur">Varsayılan görev süresi (dk)</label><input class="pl-input" id="sDur" type="number" min="5" max="480" step="5"></div>
+        </div>
+        <label class="db-check"><input type="checkbox" id="sNotify"> Sabah özeti bildirimi (günde bir kez)</label>
+        <label class="db-check"><input type="checkbox" id="sWidget"> Açılışta widget'ı göster</label>
+        <label class="db-check"><input type="checkbox" id="sMotion"> Hareketi azalt (sistem ayarı da izlenir)</label>
+      </section>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Hassas başlıklar</h2></div>
+        <label class="db-check"><input type="checkbox" id="sHide"> Gizleme kipi: hassas etkinlik ve görevler “Özel …” görünür (widget dahil)</label>
+        <div class="pl-field"><label class="pl-field__label" for="sWords">Hassas sayılan kelimeler (virgülle)</label><textarea class="pl-input db-area" id="sWords" rows="3" maxlength="1200" spellcheck="false"></textarea></div>
+        <p class="pl-muted db-small">Ayrıca takvimdeki “özel” (CLASS:PRIVATE) etkinlikler, “hassas” işaretli görevler ve “tüm başlıkları gizli say” seçilmiş takvimler hassastır. MyMind'a hassas başlıklar her zaman “Özel …” olarak gider.</p>
+      </section>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Ölçüler (son 14 gün)</h2></div>
+        <div class="db-metrics" id="metrics"></div>
+        <p class="pl-muted db-small">Notion doğrulama ölçütü: sabah özeti okuma ≥%60 (“Okudum”), yanlış/eskimiş etkinlik oranı &lt;%1 (eskimiş kaynaktan gösterilen + sizin “yanlış” işaretlediğiniz etkinlikler). Yalnız bu bilgisayarda hesaplanır.</p>
+      </section>
+      <section class="db-panel">
+        <div class="db-panel__head"><h2 class="pl-h3">Yedek</h2></div>
+        <p class="pl-muted db-small">JSON yedek: görevler, yerel etkinlikler, içe aktarılan takvim dosyaları ve ayarlar. Abonelik adresleri yedeğe yazılmaz (gizli anahtar içerebilir). İçe aktarma aynı görevi iki kez eklemez, hiçbir şeyi silmez.</p>
+        <div class="db-bar"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportBtn">Dışa aktar (.json)</button><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="importBtn">İçe aktar</button></div>
+      </section>
+      <section class="db-panel db-panel--wide">
+        <div class="db-panel__head"><h2 class="pl-h3">Gizlilik ve sınırlar</h2></div>
+        <ul class="db-ul" id="privacy"></ul>
+      </section>
+    </div>
+    <footer class="db-foot pl-muted" id="foot">Kayıtlar bu bilgisayarda, Windows kasasıyla (DPAPI) şifreli tutulur. Daily Brief takvimlerinizi yalnız okur; hiçbir etkinliği değiştirmez.</footer>
+  </main>
+
+  <dialog class="pl-modal db-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon db-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted db-tight">“Günü kısa plana dönüştür” bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılır. İsteğe bağlıdır; kural tabanlı plan her zaman çalışır.</p></div></div>
+    <div class="pl-modal__body db-stack">
+      <ol class="db-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted db-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="db-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="db-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

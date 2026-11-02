@@ -6,6 +6,7 @@ PluginLabs Hub 0.4.9 — File Pilot 0.1.0, Workspace Scenes 0.1.0, Focus Orbit 0
 - Katalog: Quick Convert 0.1.0 (PL-028; sürükle-bırak dosya dönüştürücü: PNG/JPEG/WebP/GIF/BMP → PNG/JPEG/WebP, kalite/hedef KB/boyut, UTF-8/UTF-16/Windows-1254 metin kodlaması ve satır sonu; kaynak korunur, çıktı doğrulanır; her zaman üstte bırakma kutusu; MyMind ile onaylı ayar önerisi). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Katalog: Screenshot Studio 0.1.0 (PL-029; bölge/ekran/pencere yakalama, ok/numara/metin/vurgu/kırpma, pencere çerçevesi, pano/PNG/JPEG; cihazda OCR ile hassas alan adayı, kalıcı maskenin çıktıda piksel piksel doğrulanması; MyMind ile onaylı ek aday). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Katalog: Leo Helper 0.9.2 (Alınan kodlar sayfası ve şartların kaydı: başarılı her kod, alındığı andaki şartlarıyla saklanır; şart, durum ve not sonradan düzeltilir). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Katalog: Daily Brief Widget 0.1.0 (PL-030; yerel görevler ve salt-okur takvimlerden günün özeti, her zaman üstte widget, çakışma önerileri, kısa plan, hassas başlık gizleme, veri zamanı; MyMind ile onaylı plan). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
 - Hub'ın kendi davranışı değişmedi.
 
 İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.

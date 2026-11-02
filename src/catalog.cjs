@@ -192,7 +192,24 @@ const catalog = [
     distAsset: "Windows-Portable-x64\\.exe$",
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-029-screenshot-studio/app",
+  },  {
+    id: "daily-brief-widget",
+    name: "Daily Brief Widget",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Yerel görevler ve eklediğiniz takvimlerden (yerel etkinlik, .ics dosyası, gizli iCal adresi; yalnız okuma) günün özeti: her zaman üstte widget, çakışma önerileri, boş aralıklara kısa plan, hassas başlık gizleme ve görünür veri zamanı. Takvimi değiştirmez; MyMind ile onaylı plan.",
+    platform: "win32",
+    format: "exe",
+    file: "DailyBrief.exe",
+    size: 81525447,
+    sha256: "06606b917e03914c82bcdc620a9d7c1c96fb17718c4a6bfbdc1382857c38bf2f",
+    url: dist("daily-brief-widget", "0.1.0", "DailyBrief-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-030-daily-brief-widget/app",
   },
+
   {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
