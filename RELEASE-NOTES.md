@@ -1,3 +1,15 @@
+PluginLabs Hub 0.4.15 — Üst çerçeve menüsü, bölünmüş Yükle düğmesi, uygulama logo karoları ve fotoğraf alanlı widget'lar.
+
+- Üst çerçeve: Dosya / Görünüm / Araçlar / Yardım menüsü pencerenin en üstünde, tüm genişlikte (PLC-029 başlık çubuğu kalıbı: logo, başlık, menüler, “Her şeyi ara · Ctrl K”). Kenar çubuğu ve içerik bunun altında başlar.
+- Sayfa geçişi: menüden bir sayfaya tıklayınca sayfa artık en üstten açılır (önceden bir miktar aşağıdan başlıyordu).
+- Çalışma alanınız için: kartlarda yalnızca uygulama logosu, ad ve boyut var; “Yükle” bölünmüş düğmedir (indirme oku simgesi, ▾ ile açılan menüde Detaylı bilgi, Ayarlar ve paket bilgisi, Kaynağı gör). Tüm uygulama kartlarında ve “+ Yükle” düğmelerinde artı yerine indirme oku kullanılır.
+- Uygulama simgeleri: tasarım sistemindeki uygulama logo karoları (iki harfli kısaltma + ürün aksanı; ürün aksanı olmayanlara palet rengi).
+- Günün kombini ve Günün menüsü widget'ları: fotoğraf alanları. Varsayılan olarak ÇİZİM önizlemesi gösterilir; kendi fotoğrafınızı (kombin) ve yemek fotoğraflarını ekleyebilirsiniz. Fotoğraflar yalnızca bu cihazda saklanır (küçültülüp yerel depoya yazılır), hiçbir yere gönderilmez. Sizin üzerinizde gerçekçi kombin görüntüsü üretimi yoktur; bu, Gardrop'un sanal deneme özelliğine bağlıdır ve henüz yok.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
 PluginLabs Hub 0.4.14 — PluginLabs Advanced arayüzü, Akış panosu ve Widget düzenleyici.
 
 - Tasarım sistemi: PluginLabs Advanced (v2.0.0) depoya kuruldu (`design-system/pluginlabs-advanced`, eski `pluginlabs-design` `design-system/_arsiv/` altında). Hub arayüzü Advanced bileşenleri ve değerlerine taşındı; Hub Yeşil ve Iris paletleri ile koyu/açık tema korundu.

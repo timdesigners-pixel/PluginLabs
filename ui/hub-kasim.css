@@ -820,3 +820,248 @@ html[data-mode="light"] .card {
   margin-top: 0;
 }
 .stat-rich > .pl-row { min-height: 34px; }
+
+/* ==========================================================================
+   Üst çerçeve: uygulama menüsü pencerenin en üstünde, tüm genişlikte (PLC-029 başlık çubuğu kalıbı)
+   ========================================================================== */
+body[data-pl] {
+  padding-top: 40px;
+}
+aside {
+  top: 40px;
+}
+.menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 40px;
+  padding: 0 14px;
+  background: var(--pl-bg-0);
+  border-bottom: 1px solid var(--pl-line);
+}
+.menubar .mb-logo {
+  width: 22px;
+  height: 22px;
+  font-size: 9px;
+  border-radius: 6px;
+  margin-right: 8px;
+}
+.menubar .mb-title {
+  margin-right: 14px;
+  font-size: var(--pl-text-sm);
+  color: var(--pl-fg-2);
+  font-weight: 500;
+}
+.mb-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+.mb-center .pl-titlebar__search {
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--pl-text-xs);
+  color: var(--pl-fg-3);
+  padding: 0 8px;
+}
+.mb-center .pl-titlebar__search:hover {
+  border-color: var(--pl-line-strong);
+  color: var(--pl-fg-2);
+}
+.mb-drop {
+  z-index: 70;
+}
+#content {
+  scroll-margin-top: 0;
+}
+
+/* Widget fotoğraf alanları (Günün kombini, Günün menüsü) */
+.wdg-outfit {
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+}
+.wdg-outfit__side {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  align-content: space-between;
+  gap: 12px;
+}
+.wdg-photo {
+  flex: none;
+  width: 168px;
+  display: grid;
+  gap: 6px;
+}
+.wdg-photo__img {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--pl-radius-lg);
+  overflow: hidden;
+  background: var(--pl-bg-3);
+  border: 1px solid var(--pl-line);
+}
+.wdg-photo__img > svg,
+.wdg-photo__img > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.wdg-photo__note {
+  font-size: var(--pl-text-2xs);
+  line-height: 1.4;
+}
+.wdg-pick {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--pl-line-strong);
+  background: var(--pl-bg-1);
+  color: var(--pl-fg-1);
+  cursor: pointer;
+  opacity: 0.88;
+}
+.wdg-pick:hover,
+.wdg-pick:focus-visible {
+  opacity: 1;
+  border-color: var(--pl-accent);
+  outline: 2px solid var(--pl-accent);
+  outline-offset: 1px;
+}
+.wdg-pick--sm {
+  width: 24px;
+  height: 24px;
+  right: 2px;
+  bottom: 2px;
+}
+.wdg-dishes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.wdg-dish {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  font-size: var(--pl-text-xs);
+  min-width: 0;
+}
+.wdg-dish b {
+  color: var(--pl-fg-1);
+  font-size: var(--pl-text-sm);
+}
+.wdg-dish > span {
+  line-height: 1.4;
+}
+.wdg-dish__img {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: visible;
+  box-shadow: var(--pl-shadow-float);
+}
+.wdg-dish__img > svg,
+.wdg-dish__img > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+.wdg-meta small {
+  flex-basis: 100%;
+  font-size: var(--pl-text-2xs);
+}
+/* Bölünmüş düğme (Yükle ▾) ve kompakt uygulama kartı */
+.app-split {
+  position: relative;
+  flex: none;
+}
+.app-split .pl-btn {
+  border: 0;
+  cursor: pointer;
+}
+.app-split .pl-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.split-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 30;
+  min-width: 220px;
+  background-color: var(--pl-bg-1);
+  opacity: 1;
+}
+.split-menu[hidden] {
+  display: none;
+}
+.split-menu .pl-menuitem {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--pl-text-sm);
+  text-align: left;
+}
+.split-menu .pl-menuitem:hover,
+.split-menu .pl-menuitem:focus-visible {
+  background: var(--pl-bg-3);
+  color: var(--pl-fg-1);
+}
+.app-compact {
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+}
+.app-compact .ac-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.app-compact .ac-text {
+  flex: 1;
+  min-width: 0;
+}
+.app-compact .ac-text h3 {
+  margin: 0;
+  font-size: var(--pl-text-md);
+  color: var(--pl-fg-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-compact .ac-text small {
+  font-size: var(--pl-text-xs);
+}
+.app-compact .progress {
+  margin: 0;
+}
+.card .card-bottom .app-split {
+  margin-left: auto;
+}
+.btn svg {
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+@media (max-width: 1150px) {
+  .wdg-photo {
+    width: 140px;
+  }
+}

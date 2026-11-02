@@ -89,8 +89,35 @@ const customModelCard = () => {
 };
 const button = (text, action, id = "", style = "") =>
   `<button class="btn ${style}" data-action="${action}" data-id="${esc(id)}" ${busy.has(action + id) ? "disabled" : ""}>${busy.has(action + id) ? "İşleniyor…" : text}</button>`;
-const icon = (id) =>
-  `<span class="app-icon ${esc(id)}">${icons[id] || "▧"}</span>`;
+const logoMap = {
+  "mind-palace": ["mindpalace", "MP"],
+  "leo-helper": ["leo", "LH"],
+  "pluginlabs-scrapper": ["scrapper", "US"],
+  mywishlist: ["wishlist", "MW"],
+  "mymind-ai": ["mymind", "MM"],
+  "mymind-lite": ["mymind", "ML"],
+  "llama-engine": ["mymind", "LE"],
+  "mutfak-atolyesi": ["mutfak", "MA"],
+  "flow-dock": ["flowdock", "FD"],
+};
+function logoInitials(name) {
+  const w = String(name || "?").replace(/[^\p{L}\p{N} ]/gu, "").split(/\s+/).filter(Boolean);
+  const t = w.length > 1 ? w[0][0] + w[1][0] : (w[0] || "?").slice(0, 2);
+  return t.toLocaleUpperCase("tr");
+}
+function logoFor(id, name) {
+  const m = logoMap[id];
+  const txt = m ? m[1] : logoInitials(name || id);
+  let h = 0;
+  for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const attr = m
+    ? `data-pl-product="${m[0]}"`
+    : `style="--pl-accent:var(--pl-viz-${(h % 8) + 1})"`;
+  return `<span class="pl-applogo" ${attr} aria-hidden="true">${esc(txt)}</span>`;
+}
+function icon(id) {
+  return logoFor(id, state?.catalog?.find((i) => i.id === id)?.name);
+}
 const heading = (title, desc, action = "") =>
   `<div class="page-heading"><div><div class="eyebrow">PLUGINLABS / ${esc(titles[page])}</div><h1>${title}</h1><p>${desc}</p></div>${action}</div>`;
 function toast(text) {
@@ -161,7 +188,39 @@ function appRow(item) {
           : "";
   return `<article class="pl-card pl-row app-row">${icon(item.id)}<div class="sc-main"><b>${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec.version)}</span></div></div>${status}<div class="button-row">${primary}${button("Yönet", "manage", item.id)}</div></article>`;
 }
-function card(item) {
+const dlIco =
+  '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>';
+const chevIco =
+  '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+function actionHTML(item, installed, job, different) {
+  if (job) return button("İptal", "cancel", job.id);
+  const b = (action, label, ic = "") =>
+    `<button class="pl-btn pl-btn--primary pl-btn--sm" data-action="${action}" data-id="${esc(item.id)}" ${busy.has(action + item.id) ? "disabled" : ""}>${ic}${label}</button>`;
+  const main = !installed
+    ? b("install", "Yükle", dlIco)
+    : different
+      ? b("install", "Güncelle", dlIco)
+      : item.kind === "app"
+        ? b("launch", "Aç ↗")
+        : item.kind === "preview"
+          ? b("openProduct", "Aç ↗")
+          : b("manage", "Yönet");
+  const mi = (action, label) =>
+    `<button class="pl-menuitem" role="menuitem" data-action="${action}" data-id="${esc(item.id)}">${label}</button>`;
+  const menu = [
+    mi("info", "Detaylı bilgi"),
+    installed ? mi("manage", "Ayarlar ve paket bilgisi") : "",
+    item.repo || item.source ? mi("openSource", "Kaynağı gör ↗") : "",
+  ].join("");
+  return `<div class="pl-split app-split">${main}<button class="pl-btn pl-btn--primary pl-btn--sm" data-split-toggle aria-haspopup="menu" aria-expanded="false" aria-label="${esc(item.name)} için diğer seçenekler">${chevIco}</button><div class="pl-menu split-menu" role="menu" aria-label="${esc(item.name)}" hidden>${menu}</div></div>`;
+}
+function closeSplitMenus() {
+  document.querySelectorAll(".split-menu").forEach((m) => (m.hidden = true));
+  document
+    .querySelectorAll("[data-split-toggle]")
+    .forEach((t) => t.setAttribute("aria-expanded", "false"));
+}
+function card(item, compact = false) {
   const installed = state.installed[item.id],
     job = state.jobs.find(
       (j) =>
@@ -169,11 +228,17 @@ function card(item) {
         ["queued", "downloading", "installing"].includes(j.status),
     );
   const different = installed && verNewer(item.version, installed.version);
-  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${job ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>` : ""}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${job ? button("İptal", "cancel", job.id) : !installed ? button("＋ Yükle", "install", item.id) : different ? button("Güncelle", "install", item.id, "primary") : item.kind === "app" ? button("Aç ↗", "launch", item.id) : item.kind === "preview" ? button("Aç ↗", "openProduct", item.id) : button("Yönet", "manage", item.id)}</div>${installed ? `<div class="detail-actions"><button class="text-button" data-action="manage" data-id="${item.id}">Ayarlar ve paket bilgisi</button></div>` : ""}</article>`;
+  const prog = job
+    ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>`
+    : "";
+  const act = actionHTML(item, installed, job, different);
+  if (compact)
+    return `<article class="card app-compact"><div class="ac-row">${icon(item.id)}<div class="ac-text"><h3>${esc(item.name)}</h3><small class="pl-muted pl-num">${bytes(item.size)}${installed ? " · yüklü" : ""}</small></div>${act}</div>${prog}</article>`;
+  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${prog}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${act}</div></article>`;
 }
-function grid(items) {
+function grid(items, compact = false) {
   return items.length
-    ? `<div class="app-grid">${items.map(card).join("")}</div>`
+    ? `<div class="app-grid${compact ? " compact" : ""}">${items.map((i) => card(i, compact)).join("")}</div>`
     : '<div class="empty"><span>⌕</span>Bu görünümde henüz içerik yok.<br>Katalogdan paket yükleyebilir veya aramayı değiştirebilirsiniz.</div>';
 }
 const paletteChoices = [
@@ -343,7 +408,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -424,7 +489,7 @@ function render() {
       statusCards(false) +
       `<div class="notice">My Mind Lite, Qwen3 0.6B açık modelini llama.cpp ile çalıştırır. İndirmeler internet gerektirir; metin analizi yerel sunucuda yapılır. İlk sürüm CPU kullanır.</div><div class="model-grid">${catalog
         .filter((i) => ["mymind-lite", "llama-engine"].includes(i.id))
-        .map(card)
+        .map((i) => card(i))
         .join(
           "",
         )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="btn primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
@@ -488,7 +553,7 @@ function navigate(next) {
   page = next;
   filter = "all";
   render();
-  content.scrollIntoView({ block: "start" });
+  window.scrollTo(0, 0);
 }
 function showModal(body) {
   $("#modal-content").innerHTML = body;
@@ -531,8 +596,20 @@ async function run(action, id, fn) {
   }
 }
 document.addEventListener("click", async (e) => {
+  if (!e.target.closest(".app-split")) closeSplitMenus();
   const b = e.target.closest("button,[data-go]");
   if (!b || b.disabled) return;
+  if (b.dataset.splitToggle !== undefined) {
+    const m = b.parentElement.querySelector(".split-menu"),
+      was = !m.hidden;
+    closeSplitMenus();
+    if (!was) {
+      m.hidden = false;
+      b.setAttribute("aria-expanded", "true");
+    }
+    return;
+  }
+  if (b.closest(".split-menu")) closeSplitMenus();
   if (b.dataset.page) return navigate(b.dataset.page);
   if (b.dataset.go) return navigate(b.dataset.go);
   if (b.dataset.widgetEdit !== undefined) {
@@ -581,6 +658,14 @@ document.addEventListener("click", async (e) => {
   if (!action) return;
   if (action === "closeModal") return closeModal();
   if (action === "openPalette") return openPalette();
+  if (action === "info") {
+    const item = state.catalog.find((i) => i.id === id);
+    if (!item) return;
+    const rec = state.installed[id];
+    return showModal(
+      `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="pl-row" style="flex-wrap:nowrap;gap:14px;margin-bottom:14px">${icon(id)}<div style="min-width:0"><b style="color:var(--pl-fg-1)">${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec?.version || item.version)}</span></div></div>${rec ? '<span class="pl-badge pl-badge--success" style="margin-left:auto">Yüklü</span>' : ""}</div><p>${esc(item.description)}</p>${plKv([["Tür", esc(kindLabels[item.kind] || item.kind)], ["Sürüm", `<span class="pl-num">${esc(item.version)}</span>`], ["Boyut", `<span class="pl-num">${bytes(item.size)}</span>`], ["SHA-256", item.sha256 ? `<span class="pl-num" style="word-break:break-all;font-size:11px">${esc(item.sha256)}</span>` : "—"]])}<div class="modal-actions">${rec ? button("Ayarlar", "manage", id) : ""}${button("Kapat", "closeModal", "", "primary")}</div>`,
+    );
+  }
   if (action === "showShortcuts")
     return showModal(
       `<div class="modal-title"><h2>Klavye kısayolları</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><dl class="pl-kv"><dt>Komut paleti</dt><dd><span class="pl-kbd">Ctrl</span> <span class="pl-kbd">K</span></dd><dt>Aramaya git</dt><dd><span class="pl-kbd">/</span></dd><dt>Menüleri gezin</dt><dd><span class="pl-kbd">←</span> <span class="pl-kbd">→</span> <span class="pl-kbd">↓</span></dd><dt>Kapat</dt><dd><span class="pl-kbd">Esc</span></dd></dl><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
@@ -922,6 +1007,8 @@ menubar.addEventListener("keydown", (e) => {
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".menubar")) closeMenus();
 });
+window.plWidgets.onChange = () => render();
+window.plWidgets.onError = (m) => toast(m);
 function syncPlTheme() {
   const m = document.documentElement.dataset.mode === "light" ? "light" : "dark";
   document.querySelectorAll("[data-pl]").forEach((e) => (e.dataset.plTheme = m));
@@ -1079,7 +1166,7 @@ function ideaCard(item) {
         j.item === id &&
         ["queued", "downloading", "installing"].includes(j.status),
     );
-  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button("＋ Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
+  return `<article class="card idea-card"><div class="card-top">${logoFor(item.id, item.name)}<div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button(dlIco + "Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
 }
 function ideasPage() {
   let items = state.ideas.filter(
@@ -1180,7 +1267,7 @@ function extensionsPage() {
             )
             .map(
               (i) =>
-                `<div class="list-row"><span class="app-icon">⌘</span><div class="grow"><h3>${esc(i.id)}</h3><p>v${esc(i.version)}</p></div><button class="btn" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="update">Güncelle</button><button class="btn danger" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="uninstall">Kaldır</button></div>`,
+                `<div class="list-row"><span class="pl-applogo" style="--pl-accent:var(--pl-viz-7)" aria-hidden="true">${logoInitials(i.id)}</span><div class="grow"><h3>${esc(i.id)}</h3><p>v${esc(i.version)}</p></div><button class="btn" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="update">Güncelle</button><button class="btn danger" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="uninstall">Kaldır</button></div>`,
             )
             .join("")
         : '<div class="empty">Henüz uygulama eklenti envanteri yok.</div>'
@@ -1212,7 +1299,7 @@ function extensionsPage() {
     )
     .map(
       (i) =>
-        `<article class="card"><div class="card-top"><span class="app-icon">◇</span><div><h3>${esc(i.name)}</h3><small>${esc(browser.name)} · v${esc(i.version)}</small></div></div><p>${esc(i.description)}</p><span class="badge ${i.enabled ? "online" : ""}">${i.enabled ? "● Etkin" : "○ Devre dışı"}${i.id === browser.bridgeId ? " · Hub bağlantısı" : ""}</span><details class="extension-permissions"><summary>İzinler ve eklenti kimliği</summary><div class="code">${esc(i.id)}<br>${[...i.permissions, ...i.hostPermissions].map(esc).join("<br>") || "Ek izin bildirilmedi"}</div></details><div class="button-row">${i.id === browser.bridgeId ? '<span class="subtle">Bağlantı eklentisini tarayıcınızdan yönetin.</span>' : `<button class="btn" data-action="confirmBrowser" data-id="${i.id}" data-operation="${i.enabled ? "disable" : "enable"}" ${!browser.online || !i.mayDisable ? "disabled" : ""}>${i.enabled ? "Devre dışı bırak" : "Etkinleştir"}</button><button class="btn ghost" data-action="confirmBrowser" data-id="${i.id}" data-operation="options" ${!browser.online ? "disabled" : ""}>Ayarlar</button><button class="btn danger" data-action="confirmBrowser" data-id="${i.id}" data-operation="uninstall" ${!browser.online || !i.mayDisable ? "disabled" : ""}>Kaldır</button>`}</div></article>`,
+        `<article class="card"><div class="card-top">${logoFor(i.id, i.name)}<div><h3>${esc(i.name)}</h3><small>${esc(browser.name)} · v${esc(i.version)}</small></div></div><p>${esc(i.description)}</p><span class="badge ${i.enabled ? "online" : ""}">${i.enabled ? "● Etkin" : "○ Devre dışı"}${i.id === browser.bridgeId ? " · Hub bağlantısı" : ""}</span><details class="extension-permissions"><summary>İzinler ve eklenti kimliği</summary><div class="code">${esc(i.id)}<br>${[...i.permissions, ...i.hostPermissions].map(esc).join("<br>") || "Ek izin bildirilmedi"}</div></details><div class="button-row">${i.id === browser.bridgeId ? '<span class="subtle">Bağlantı eklentisini tarayıcınızdan yönetin.</span>' : `<button class="btn" data-action="confirmBrowser" data-id="${i.id}" data-operation="${i.enabled ? "disable" : "enable"}" ${!browser.online || !i.mayDisable ? "disabled" : ""}>${i.enabled ? "Devre dışı bırak" : "Etkinleştir"}</button><button class="btn ghost" data-action="confirmBrowser" data-id="${i.id}" data-operation="options" ${!browser.online ? "disabled" : ""}>Ayarlar</button><button class="btn danger" data-action="confirmBrowser" data-id="${i.id}" data-operation="uninstall" ${!browser.online || !i.mayDisable ? "disabled" : ""}>Kaldır</button>`}</div></article>`,
     )
     .join("")}</div>`;
   return html;

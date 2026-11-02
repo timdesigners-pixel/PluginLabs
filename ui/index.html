@@ -18,6 +18,14 @@
     <link rel="stylesheet" href="hub-kasim.css" />
   </head>
   <body data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+    <div class="menubar" role="menubar" aria-label="Uygulama menüsü">
+        <span class="pl-applogo pl-applogo--sm mb-logo" data-pl-product="hub" aria-hidden="true">PL</span><span class="pl-titlebar__title mb-title">PluginLabs Hub</span>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="file">Dosya</button><div class="pl-menu mb-drop" role="menu" aria-label="Dosya" hidden><button class="pl-menuitem" role="menuitem" data-action="importPack">Kaynak paketi içe aktar…<span class="pl-menuitem__meta">.plpack</span></button><button class="pl-menuitem" role="menuitem" data-action="newClient">Yeni API istemcisi…</button><hr><button class="pl-menuitem" role="menuitem" data-action="openData">Veri klasörünü aç</button></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="view">Görünüm</button><div class="pl-menu mb-drop" role="menu" aria-label="Görünüm" hidden><button class="pl-menuitem" role="menuitem" data-go="home">Genel bakış</button><button class="pl-menuitem" role="menuitem" data-go="apps">Uygulamalarım</button><button class="pl-menuitem" role="menuitem" data-go="ideas">Uygulama kataloğu</button><button class="pl-menuitem" role="menuitem" data-go="resources">Kaynak kütüphanesi</button><button class="pl-menuitem" role="menuitem" data-go="mymind">My Mind</button><hr><button class="pl-menuitem" role="menuitem" data-set-palette="hub-yesil">Palet: Hub Yeşil</button><button class="pl-menuitem" role="menuitem" data-set-palette="iris">Palet: Iris</button><button class="pl-menuitem" role="menuitem" data-set-mode="dark">Tema: Koyu</button><button class="pl-menuitem" role="menuitem" data-set-mode="light">Tema: Açık</button></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="tools">Araçlar</button><div class="pl-menu mb-drop" role="menu" aria-label="Araçlar" hidden><button class="pl-menuitem" role="menuitem" data-action="openPalette">Komut paleti<span class="pl-menuitem__meta">Ctrl K</span></button><button class="pl-menuitem" role="menuitem" data-action="checkUpdates">Güncellemeleri denetle</button><hr><span id="mb-server"></span></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="help">Yardım</button><div class="pl-menu mb-drop" role="menu" aria-label="Yardım" hidden><button class="pl-menuitem" role="menuitem" data-action="showShortcuts">Klavye kısayolları</button><button class="pl-menuitem" role="menuitem" data-go="api">API ve izinler</button><button class="pl-menuitem" role="menuitem" data-action="showAbout">PluginLabs Hub hakkında</button></div></div>
+        <div class="mb-center"><button class="pl-titlebar__search" data-action="openPalette" aria-label="Komut paletini aç"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Her şeyi ara<span class="pl-kbd">Ctrl K</span></button></div><span class="mb-note">Önizleme</span>
+      </div>
     <aside>
       <a class="brand" href="#home"
         ><span class="logo">p<span>l</span></span
@@ -57,13 +65,6 @@
       </div>
     </aside>
     <main>
-      <div class="menubar" role="menubar" aria-label="Uygulama menüsü">
-        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="file">Dosya</button><div class="pl-menu mb-drop" role="menu" aria-label="Dosya" hidden><button class="pl-menuitem" role="menuitem" data-action="importPack">Kaynak paketi içe aktar…<span class="pl-menuitem__meta">.plpack</span></button><button class="pl-menuitem" role="menuitem" data-action="newClient">Yeni API istemcisi…</button><hr><button class="pl-menuitem" role="menuitem" data-action="openData">Veri klasörünü aç</button></div></div>
-        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="view">Görünüm</button><div class="pl-menu mb-drop" role="menu" aria-label="Görünüm" hidden><button class="pl-menuitem" role="menuitem" data-go="home">Genel bakış</button><button class="pl-menuitem" role="menuitem" data-go="apps">Uygulamalarım</button><button class="pl-menuitem" role="menuitem" data-go="ideas">Uygulama kataloğu</button><button class="pl-menuitem" role="menuitem" data-go="resources">Kaynak kütüphanesi</button><button class="pl-menuitem" role="menuitem" data-go="mymind">My Mind</button><hr><button class="pl-menuitem" role="menuitem" data-set-palette="hub-yesil">Palet: Hub Yeşil</button><button class="pl-menuitem" role="menuitem" data-set-palette="iris">Palet: Iris</button><button class="pl-menuitem" role="menuitem" data-set-mode="dark">Tema: Koyu</button><button class="pl-menuitem" role="menuitem" data-set-mode="light">Tema: Açık</button></div></div>
-        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="tools">Araçlar</button><div class="pl-menu mb-drop" role="menu" aria-label="Araçlar" hidden><button class="pl-menuitem" role="menuitem" data-action="openPalette">Komut paleti<span class="pl-menuitem__meta">Ctrl K</span></button><button class="pl-menuitem" role="menuitem" data-action="checkUpdates">Güncellemeleri denetle</button><hr><span id="mb-server"></span></div></div>
-        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="help">Yardım</button><div class="pl-menu mb-drop" role="menu" aria-label="Yardım" hidden><button class="pl-menuitem" role="menuitem" data-action="showShortcuts">Klavye kısayolları</button><button class="pl-menuitem" role="menuitem" data-go="api">API ve izinler</button><button class="pl-menuitem" role="menuitem" data-action="showAbout">PluginLabs Hub hakkında</button></div></div>
-        <span class="mb-spacer"></span><span class="mb-note">PluginLabs Hub</span>
-      </div>
       <div class="ticker-wrap"><div class="pl-ticker" id="ticker" role="status" aria-label="Canlı durum akışı"><span class="pl-ticker__label"><span class="pl-dot pl-dot--live"></span>CANLI</span><div class="pl-ticker__viewport"><div class="pl-ticker__track" id="ticker-track" aria-hidden="true"></div></div></div></div>
       <header>
         <div class="breadcrumbs">
@@ -72,9 +73,6 @@
         </div>
         <div class="header-right">
           <div class="hdr-pl">
-            <button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="openPalette" title="Komut paleti" aria-label="Komut paletini aç">
-              <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span class="pl-kbd">Ctrl</span><span class="pl-kbd">K</span>
-            </button>
             <button class="pl-btn pl-btn--gradient pl-btn--sm" data-action="goPro">
               <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7z"/><path d="M5 20h14"/></svg>Pro'ya geç
             </button>
