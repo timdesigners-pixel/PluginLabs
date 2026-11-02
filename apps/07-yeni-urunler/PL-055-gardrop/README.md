@@ -13,7 +13,7 @@
 | Geliştirme deposu | [timdesigners-pixel/gardrop](https://github.com/timdesigners-pixel/gardrop) (özel) |
 | Hub dağıtımı | `pluginlabs-dagitim` → `gardrop-v<sürüm>` · `src/catalog.cjs` kaydı `gardrop` |
 | Codex projesi | `PL-055 · Gardrop` — ikinci klasör: PluginLabs |
-| Notion kaynağı | Notion sayfası açılınca eklenecek |
+| Notion kaynağı | [PL-055 · Gardrop](https://app.notion.com/p/40b8aa13d8f98120819bc0bf6c966773) |
 
 ## Ne işe yarar
 

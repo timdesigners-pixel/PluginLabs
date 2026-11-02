@@ -655,6 +655,18 @@
       "$value": "#facc15",
       "ad": "Tork",
       "platform": "Masaüstü"
+    },
+    "gardrop": {
+      "$type": "color",
+      "$value": "#e879f9",
+      "ad": "Gardrop",
+      "platform": "Masaüstü / Eklenti"
+    },
+    "upscaler": {
+      "$type": "color",
+      "$value": "#38bdf8",
+      "ad": "The Ultimate Upscaler",
+      "platform": "Masaüstü / Eklenti"
     }
   }
 }

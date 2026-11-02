@@ -20,7 +20,9 @@ PRODUCTS = [("hub","PluginLabs Hub","#7c6cff","Masaüstü"),("leo","Leo Helper",
  ("tweakster","Tweakster","#a3e635","Masaüstü"),("extman","Extension Manager","#60a5fa","Eklenti"),
  ("mymind","MyMind","#f0b429","AI servis"),("scrapper","The Ultimate Scrapper","#f87171","Eklenti"),
  ("wishlist","MyWishlist","#fb7185","Eklenti"),
- ("tork","Tork","#facc15","Masaüstü")]
+ ("tork","Tork","#facc15","Masaüstü"),
+ ("gardrop","Gardrop","#e879f9","Masaüstü / Eklenti"),
+ ("upscaler","The Ultimate Upscaler","#38bdf8","Masaüstü / Eklenti")]
 PNAME = {p[0]: p[1] for p in PRODUCTS}
 
 def clean(h):  # galeri dışı kullanım için önizleme-özel satır içi stilleri koru, sadece boşlukları düzelt
