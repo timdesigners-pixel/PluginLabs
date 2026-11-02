@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read Partner</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="rp" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar rp-side" aria-label="Ana menü">
+    <div class="rp-brand" aria-label="PluginLabs Apps">
+      <span class="rp-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="rp-apps">APPS</span>
+    </div>
+    <div class="rp-product">
+      <span class="pl-applogo" aria-hidden="true">RP</span>
+      <div class="rp-product__text"><b>Read Partner</b><span>Okuma yardımcısı</span></div>
+      <span class="rp-product__no pl-num" aria-label="Sıra numarası 32">32</span>
+    </div>
+    <div class="rp-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem rp-navbtn" type="button" data-nav="read" role="tab">Okuma</button>
+      <button class="pl-navitem rp-navbtn" type="button" data-nav="library" role="tab">Kitaplık<span class="pl-badge" id="libCount">0</span></button>
+      <button class="pl-navitem rp-navbtn" type="button" data-nav="settings" role="tab">Ayarlar ve ölçüler</button>
+    </div>
+    <div class="rp-mini" id="sideDoc"></div>
+    <div class="rp-side__foot">
+      <button class="pl-navitem rp-navbtn" type="button" id="openMymind"><span class="rp-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="rp-main">
+    <!-- Okuma -->
+    <div class="rp-view rp-read" id="view-read">
+      <div class="rp-empty-state" id="readEmpty" hidden>
+        <div class="rp-card rp-welcome">
+          <h1 class="pl-h2">Okumaya başlayın</h1>
+          <p class="pl-muted">Bir metni yapıştırın ya da bilgisayarınızdaki bir belgeyi açın (.txt, .md, .html). Read Partner yalnız sizin seçtiğiniz bölümü açıklar; tarama geçmişinize erişmez, her şey bu bilgisayarda kalır.</p>
+          <div class="rp-row"><button class="pl-btn pl-btn--primary" type="button" data-act="openFile">Dosya aç</button><button class="pl-btn pl-btn--secondary" type="button" data-act="goLibrary">Metin yapıştır</button><button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek metni aç</button></div>
+        </div>
+      </div>
+      <div class="rp-reader" id="reader" hidden>
+        <header class="rp-readhead">
+          <div class="rp-readhead__title"><h1 class="pl-h3 rp-title" id="docTitle"></h1><p class="pl-muted rp-small" id="docMeta"></p></div>
+          <span class="rp-grow"></span>
+          <span class="pl-badge" id="readScore" title="Ateşman okunabilirlik puanı (0–100; yüksek = kolay)"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="exportMd">Dışa aktar (.md)</button>
+        </header>
+        <div class="pl-callout pl-callout--warning rp-inj" id="injWarn" hidden></div>
+        <div class="rp-split">
+          <section class="rp-doc" id="doc" aria-label="Belge metni" tabindex="0"></section>
+          <aside class="rp-panel" aria-label="Açıklama paneli">
+            <div class="rp-selbar">
+              <div class="rp-selinfo"><b id="selLabel">Seçim yok</b><span class="pl-muted rp-small" id="selHint">Bir paragrafın ¶ numarasına tıklayın (Shift ile aralık) ya da metinden bir bölüm seçin.</span></div>
+              <div class="pl-segment rp-level" role="radiogroup" aria-label="Açıklama seviyesi">
+                <button type="button" role="radio" data-level="baslangic">Başlangıç</button>
+                <button type="button" role="radio" data-level="orta">Orta</button>
+                <button type="button" role="radio" data-level="ileri">İleri</button>
+              </div>
+              <div class="rp-row">
+                <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="explainBtn" disabled>Açıkla</button>
+                <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="aiBtn" disabled><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile açıkla</button>
+              </div>
+            </div>
+            <div class="pl-tabs rp-tabs" role="tablist" aria-label="Açıklama bölümleri">
+              <button class="pl-tab" type="button" role="tab" data-tab="simple">Sade</button>
+              <button class="pl-tab" type="button" role="tab" data-tab="terms">Terimler</button>
+              <button class="pl-tab" type="button" role="tab" data-tab="questions">Sorular</button>
+              <button class="pl-tab" type="button" role="tab" data-tab="ask">Soru sor</button>
+            </div>
+            <div class="rp-tabbody" id="tabBody"></div>
+            <div class="rp-rate" id="rateRow" hidden>
+              <span class="rp-small">Bu açıklama anlaşılır mıydı?</span>
+              <div class="rp-stars" id="stars" role="radiogroup" aria-label="Anlaşılırlık puanı"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kitaplık -->
+    <div class="rp-view rp-panels" id="view-library" hidden>
+      <section class="rp-card rp-card--wide">
+        <div class="rp-bar"><h2 class="pl-h3 rp-h">Yeni metin</h2><span class="rp-grow"></span>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="openFile">Dosya aç (.txt, .md, .html)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek metni aç</button></div>
+        <form class="rp-stack" id="pasteForm">
+          <input class="pl-input" id="pasteTitle" maxlength="120" placeholder="Başlık (isteğe bağlı)" aria-label="Başlık">
+          <textarea class="pl-input rp-area" id="pasteText" rows="7" placeholder="Okumak istediğiniz metni buraya yapıştırın. Paragraflar boş satırla ayrılır; her paragraf ¶ numarasıyla kaynak olarak gösterilir." aria-label="Metin"></textarea>
+          <div class="rp-row"><span class="pl-muted rp-small" id="pasteInfo">Metin yalnız bu bilgisayarda saklanır.</span><span class="rp-grow"></span><button class="pl-btn pl-btn--primary" type="submit">Kitaplığa ekle ve oku</button></div>
+        </form>
+      </section>
+      <section class="rp-card rp-card--wide">
+        <div class="rp-bar"><h2 class="pl-h3 rp-h">Kitaplık</h2><span class="rp-grow"></span><input class="pl-input rp-search" id="libSearch" placeholder="Başlıkta ara" aria-label="Kitaplıkta ara"></div>
+        <ul class="rp-docs" id="docs"></ul>
+      </section>
+    </div>
+
+    <!-- Ayarlar ve ölçüler -->
+    <div class="rp-view rp-panels" id="view-settings" hidden>
+      <section class="rp-card">
+        <h2 class="pl-h3 rp-h">Okuma</h2>
+        <div class="pl-field"><span class="pl-field__label">Varsayılan açıklama seviyesi</span>
+          <div class="pl-segment" role="radiogroup" aria-label="Varsayılan seviye" id="setLevel"><button type="button" role="radio" data-v="baslangic">Başlangıç</button><button type="button" role="radio" data-v="orta">Orta</button><button type="button" role="radio" data-v="ileri">İleri</button></div></div>
+        <div class="pl-field"><label class="pl-field__label" for="setFont">Metin boyutu</label>
+          <select class="pl-input rp-select" id="setFont"><option value="15">15 px</option><option value="16">16 px</option><option value="17">17 px</option><option value="18">18 px</option><option value="20">20 px</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setLine">Satır aralığı</label>
+          <select class="pl-input rp-select" id="setLine"><option value="1.5">Sık (1,5)</option><option value="1.7">Normal (1,7)</option><option value="1.9">Geniş (1,9)</option></select></div>
+      </section>
+      <section class="rp-card">
+        <h2 class="pl-h3 rp-h">Ölçüler</h2>
+        <p class="pl-muted rp-small">Notion doğrulama ölçütü: anlaşılırlık ≥ 4/5, desteklenmeyen ek iddia &lt; %5. Yalnız bu bilgisayarda sayılır.</p>
+        <div class="rp-metrics" id="metrics"></div>
+      </section>
+      <section class="rp-card rp-card--wide">
+        <h2 class="pl-h3 rp-h">Gizlilik ve sınırlar</h2>
+        <ul class="rp-ul">
+          <li>Read Partner yalnız sizin yapıştırdığınız metni ya da açtığınız dosyayı okur. Tarama geçmişine, sekmelere ve panoya kendiliğinden erişmez.</li>
+          <li>Sadeleştirme, terimler, sorular ve soru-cevap bu bilgisayarda kural tabanlı çalışır; açıklamalar yalnız metnin içinden gelir. Metinde karşılığı olmayan nokta “bilinmiyor” olarak işaretlenir.</li>
+          <li>Metindeki talimatlar (“önceki talimatları yok say” gibi) güvenilmeyen veri sayılır, işaretlenir ve MyMind'a uygulanmaması söylenerek gönderilir.</li>
+          <li>MyMind isteğe bağlıdır: her istekte neyin gideceğini gösteren onay penceresi açılır; yalnız seçili paragraflar (ya da soruyla eşleşen en çok 4 paragraf) PluginLabs Hub üzerinden gider.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="rp-foot pl-muted" id="foot">Read Partner 0.1.0 · PluginLabs · çevrimdışı çalışır</footer>
+  </main>
+
+  <dialog class="pl-modal rp-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon rp-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted rp-tight">Seviyeye göre açıklama ve kaynak içi soru-cevap, bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır; yerel açıklama her zaman çalışır.</p></div></div>
+    <div class="pl-modal__body rp-stack">
+      <ol class="rp-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted rp-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="rp-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="rp-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

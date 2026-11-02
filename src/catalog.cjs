@@ -209,6 +209,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-030-daily-brief-widget/app",
   },
+  {
+    id: "read-partner",
+    name: "Read Partner",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Okuma yardımcısı: yapıştırdığınız metni ya da .txt/.md/.html belgeyi ¶ numaralı açar; seçtiğiniz bölümü özgün metinle yan yana sadeleştirir, terimleri yalnız metnin içinden açıklar (tanımı yoksa bilinmiyor), 3 anlama sorusu üretir ve metne sorduğunuz soruyu kaynağıyla yanıtlar. Sayfa içi talimatları işaretler; MyMind ile onaylı, alıntı denetimli açıklama.",
+    platform: "win32",
+    format: "exe",
+    file: "ReadPartner.exe",
+    size: 81527089,
+    sha256: "8ca3b8ba5a09cf5413747d2bb2d77cf55d527b3822ad36705fa5f06986938fae",
+    url: dist("read-partner", "0.1.0", "ReadPartner-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner/app",
+  },
 
   {
     id: "mutfak-atolyesi",
