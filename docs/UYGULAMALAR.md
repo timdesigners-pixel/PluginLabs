@@ -1,6 +1,6 @@
 # PluginLabs uygulamaları — tek bakışta durum
 
-Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC, PL-012–014 31.10.2026 ~08:00 UTC, PL-015–018 31.10.2026 ~15:30 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
+Ayrıntılı ürün metinleri `apps/` altındaki README'lerde (Notion kaynaklı, kısaltılmaz). Bu sayfa yalnızca **hangi uygulamayı bugün açıp deneyebileceğinizi** gösterir. Durumlar 30.10.2026 tarihinde GitHub depolarından okunmuştur (PL-001–009 release durumu 30.10.2026 ~10:00 UTC, PL-010 ~11:10 UTC, PL-001/004/005/011 ~11:50 UTC, PL-012–014 31.10.2026 ~08:00 UTC, PL-015–018 31.10.2026 ~15:30 UTC, PL-019 31.10.2026 ~18:10 UTC itibarıyla doğrulandı) (depolar klonlanıp dosyalar sayıldı); "taranmadı" yazanlara bakılmamıştır.
 
 ## Bugün indirip denenebilenler
 
@@ -26,6 +26,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Tab Atlas (PL-016) | v0.1.0 (Windows kurulum/taşınabilir + Chrome eklentisi) | https://github.com/timdesigners-pixel/tab-atlas/releases/tag/v0.1.0 |
 | Page Capsule (PL-017) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0 |
 | Form Flow (PL-018) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/form-flow/releases/tag/v0.1.0 |
+| Compare Lens (PL-019) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/compare-lens/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
@@ -35,9 +36,9 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–018, PL-053 ve Hub. PL-004–018 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock. PL-006–018'in Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-019–024 (yalnız plan), PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–019, PL-053 ve Hub. PL-004–019 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock. PL-006–019'un Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- Sıradaki (Windows sürümü yok): PL-020–024 (yalnız plan), PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -61,7 +62,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-016 | Tab Atlas | Windows uygulaması + Chrome eklentisi · **v0.1.0** (çalışma oturumları; imzasız önizleme) | https://github.com/timdesigners-pixel/tab-atlas/releases/tag/v0.1.0 |
 | PL-017 | Page Capsule | Windows uygulaması · **v0.1.0** (kaynaklı sayfa kapsülleri, ekran görüntüsü, kaynağa bağlı özet; imzasız önizleme) | https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0 |
 | PL-018 | Form Flow | Windows uygulaması · **v0.1.0** (şifreli profiller, gerekçeli alan eşleme, yalnız seçilen alanları doldurma — form gönderilmez; imzasız önizleme) | https://github.com/timdesigners-pixel/form-flow/releases/tag/v0.1.0 |
-| PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
+| PL-019 | Compare Lens | Windows uygulaması · **v0.1.0** (kaynaklı karar matrisi: onaylı sayfa okuma — yalnız JSON-LD/meta, eksik alan "Bilinmiyor", yalnız ölçülenlerden puan, MyMind özeti; imzasız önizleme) | https://github.com/timdesigners-pixel/compare-lens/releases/tag/v0.1.0 |
 | PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
 | PL-021 | Desk Tidy | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/desk-tidy |
 | PL-022 | Twin Finder | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/twin-finder |
