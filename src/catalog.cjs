@@ -260,6 +260,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-033-text-forge/app",
   },
+  {
+    id: "parallel-translate",
+    name: "Parallel Translate",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Yan yana çeviri: seçtiğiniz ya da Ctrl+Shift+Space ile panodan aldığınız metni paragraf ve cümle bölümlerine ayırır, her bölümün karşısına çevirisini koyar (Türkçe ⇄ İngilizce). Kişisel terim sözlüğünüzü her bölümde denetler (Türkçe ekler, İngilizce çoğul/fiil), sayı, tutar ve bağlantıları çeviride arar; var olan çeviriyi hizalar; TXT, CSV, Markdown ve TMX dışa aktarır. MyMind ya da yerel model ile onaylı çeviri ve alternatif terim (korunan alan değerleri gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "ParallelTranslate.exe",
+    size: 81527975,
+    sha256: "9cf8b34cea8f0aa9c1969a35fd8747287fac76c98c56dda0fc12a1bafe285c1b",
+    url: dist("parallel-translate", "0.1.0", "ParallelTranslate-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-034-parallel-translate/app",
+  },
 
   {
     id: "mutfak-atolyesi",
