@@ -227,6 +227,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner/app",
   },
   {
+    id: "source-trail",
+    name: "Source Trail",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Kanıt izi arşivi: tarayıcıdan kopyaladığınız seçili metin ve adresi erişim tarihi, künye ve notla kaynak kartına alır; iddiaları kaynaklara (destekler, çürütür, bağlam) kaynakta aynen bulunan alıntıyla bağlar, kaynağı olmayan iddiayı açıkça eksik olarak etiketler, aynı kaynağın kopyalarını bağımsız saymaz. APA, MLA, BibTeX, CSL-JSON ve Markdown kanıt izi dışa aktarır. MyMind ile onaylı karşılaştırma taslağı (alıntı uydurmaz).",
+    platform: "win32",
+    format: "exe",
+    file: "SourceTrail.exe",
+    size: 81526123,
+    sha256: "6cc6d8ac3f19e6199514105d2d4920d08e2606dd0dc65cb226d6acc916d17176",
+    url: dist("source-trail", "0.1.0", "SourceTrail-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-031-source-trail/app",
+  },
+  {
     id: "text-forge",
     name: "Text Forge",
     kind: "app",
