@@ -22,7 +22,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Dilekçe Oluştur (PL-012) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
 | Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| Page Change Radar (PL-020) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/page-change-radar/releases/tag/v0.1.0 |
+| Desk Tidy (PL-021) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.3.0** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.3.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
@@ -59,8 +59,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-017 | Page Capsule | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-capsule |
 | PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
 | PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
-| PL-020 | Page Change Radar | Windows uygulaması · **v0.1.0** (onaylı sayfa bölümü izleme, robots.txt uyumu, fark + Kozmetik/Küçük/Önemli sınıflama, tekrar bildirim önleme, sessiz saatler, MyMind önem önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/page-change-radar/releases/tag/v0.1.0 |
-| PL-021 | Desk Tidy | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/desk-tidy |
+| PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
+| PL-021 | Desk Tidy | Windows uygulaması · **v0.1.0** (gerekçeli klasör düzenleme, taşıma planı önizlemesi, günlük ve geri al, MyMind kategori önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
 | PL-022 | Twin Finder | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/twin-finder |
 | PL-023 | Clip Vault | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/clip-vault |
 | PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
