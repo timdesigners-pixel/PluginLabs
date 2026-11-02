@@ -138,6 +138,41 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
     approve: (id, allow) => hub.approve(id, allow),
     startModel: () => hub.startModel(),
     stopModel: () => hub.stopModel(),
+    importModel: async () => {
+      const selected = await dialog.showOpenDialog(window, {
+        properties: ["openFile"],
+        filters: [{ name: "GGUF model", extensions: ["gguf"] }],
+      });
+      if (selected.canceled) return null;
+      const fs = require("node:fs/promises"),
+        path = require("node:path"),
+        file = selected.filePaths[0],
+        dir = path.dirname(file);
+      // export_gguf.py çıktısı: aynı klasörde SHA256SUMS ve training_info.json bulunur.
+      const small = async (name, max) => {
+        const target = path.join(dir, name),
+          stat = await fs.stat(target).catch(() => null);
+        return stat?.isFile() && stat.size <= max
+          ? fs.readFile(target, "utf8")
+          : null;
+      };
+      let sha256 = null,
+        name = null;
+      const sums = await small("SHA256SUMS", 65536);
+      if (sums)
+        for (const line of sums.split(/\r?\n/)) {
+          const m = /^([0-9a-fA-F]{64})\s+\*?(.+)$/.exec(line.trim());
+          if (m && m[2] === path.basename(file)) sha256 = m[1];
+        }
+      try {
+        const info = JSON.parse((await small("training_info.json", 2e6)) || "null");
+        if (info?.base_model)
+          name = `${String(info.name || "MyMind").slice(0, 30)} · ${String(info.base_model).slice(0, 45)}`;
+      } catch {}
+      return hub.importModel(file, { sha256, name });
+    },
+    setModelSource: (source) => hub.setModelSource(source),
+    removeCustomModel: () => hub.removeCustomModel(),
     chat: (b) => hub.chat(b),
     readResource: (id) => hub.readResource(id),
     exportResource: async (id) => {

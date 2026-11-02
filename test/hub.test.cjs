@@ -264,6 +264,107 @@ test("AI proxy fails closed and enforces payload constraints", async (t) => {
   );
   hub.model = null;
 });
+test("custom My Mind model: GGUF import, hash check, source switch", async (t) => {
+  const hub = await fixture(t);
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-model-"));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const good = Buffer.concat([Buffer.from("GGUF"), Buffer.alloc(1024 * 1024)]),
+    file = path.join(dir, "mymind-q8_0.gguf"),
+    folder = path.dirname(hub.customModelPath());
+  await fs.writeFile(file, good);
+  await assert.rejects(hub.importModel("goreli.gguf"), /Geçersiz model/);
+  const wrongExt = path.join(dir, "model.bin");
+  await fs.writeFile(wrongExt, good);
+  await assert.rejects(hub.importModel(wrongExt), /\.gguf/);
+  const tiny = path.join(dir, "kucuk.gguf");
+  await fs.writeFile(tiny, Buffer.from("GGUF1234"));
+  await assert.rejects(hub.importModel(tiny), /1 MB/);
+  const fake = path.join(dir, "sahte.gguf");
+  await fs.writeFile(fake, Buffer.concat([Buffer.from("ABCD"), Buffer.alloc(1024 * 1024)]));
+  await assert.rejects(hub.importModel(fake), /GGUF biçiminde/);
+  await assert.rejects(hub.importModel(file, { sha256: "0".repeat(64) }), /eşleşmiyor/);
+  await assert.rejects(hub.importModel(file, { sha256: "abc" }), /Geçersiz SHA-256/);
+  assert.deepEqual(await fs.readdir(folder), [], "başarısız içe aktarma geçici dosya bırakmaz");
+  await assert.rejects(hub.setModelSource("custom"), /Önce/);
+
+  const model = await hub.importModel(file, { sha256: digest(good), name: "MyMind · test" });
+  assert.equal(model.sha256, digest(good));
+  assert.equal(model.verified, true);
+  assert.equal(model.size, good.length);
+  assert.deepEqual(await fs.readFile(hub.customModelPath()), good);
+  assert.deepEqual(await fs.readdir(folder), ["mymind.gguf"]);
+  assert.equal(hub.snapshot().model.source, "catalog", "içe aktarma kaynağı kendiliğinden değiştirmez");
+
+  await assert.rejects(hub.setModelSource("bulut"), /Geçersiz model kaynağı/);
+  await hub.setModelSource("custom");
+  assert.equal(hub.snapshot().model.source, "custom");
+  assert.equal(hub.snapshot().model.custom.name, "MyMind · test");
+  assert.equal(await hub.modelFile(), hub.customModelPath());
+  const saved = JSON.parse(await fs.readFile(path.join(hub.root, "state.json"), "utf8"));
+  assert.equal(saved.settings.modelSource, "custom");
+  assert.equal(saved.customModel.sha256, digest(good));
+
+  await fs.appendFile(hub.customModelPath(), "x");
+  await assert.rejects(hub.modelFile(), /yeniden içe aktarın/);
+  await assert.rejects(hub.startModel(), /yükleyin|etkinleştirin/); // motor kurulu değil
+
+  await hub.removeCustomModel();
+  assert.equal(hub.state.settings.modelSource, "catalog");
+  assert.equal(hub.state.customModel, null);
+  await assert.rejects(fs.stat(hub.customModelPath()));
+});
+test("older state without a model source defaults to the catalog model", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-test-"));
+  await fs.writeFile(
+    path.join(root, "state.json"),
+    JSON.stringify({ schema: 1, installed: {}, clients: [], activity: [], settings: { apiEnabled: true, modelContext: 4096 } }),
+  );
+  const hub = await new Hub(root, { catalog: [] }).init();
+  // Önce Hub kapanır (bekleyen kayıt biter), sonra klasör silinir; Windows'ta sıra önemli.
+  t.after(async () => {
+    await hub.close();
+    await fs.rm(root, { recursive: true, force: true });
+  });
+  assert.equal(hub.snapshot().model.source, "catalog");
+  assert.equal(hub.snapshot().model.custom, null);
+});
+test("AI proxy forwards the client temperature within 0–1", async (t) => {
+  const hub = await fixture(t);
+  hub.model = { healthy: true, key: "k" }; // sahte; fixture kapanmadan önce kaldırılır
+  try {
+  for (const bad of [2, -0.1, "0", Number.NaN])
+    await assert.rejects(
+      hub.chat({ messages: [{ role: "user", content: "hi" }], temperature: bad }),
+      /Sıcaklık/,
+    );
+  // Model sunucusu sabit 127.0.0.1:8765 adresinde; port doluysa iletim denetimi atlanır.
+  const seen = [];
+  const server = http.createServer((req, res) => {
+    let raw = "";
+    req.on("data", (c) => (raw += c));
+    req.on("end", () => {
+      seen.push(JSON.parse(raw));
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ id: "x", created: 1, choices: [{ message: { role: "assistant", content: "{}" } }] }));
+    });
+  });
+  const listening = await new Promise((resolve) => {
+    server.once("error", () => resolve(false));
+    server.listen(8765, "127.0.0.1", () => resolve(true));
+  });
+  if (!listening) return t.skip("127.0.0.1:8765 kullanımda");
+  try {
+    await hub.chat({ messages: [{ role: "user", content: "hi" }], temperature: 0 });
+    await hub.chat({ messages: [{ role: "user", content: "hi" }] });
+  } finally {
+    await new Promise((r) => { server.closeAllConnections(); server.close(r); });
+  }
+  assert.deepEqual(seen.map((b) => b.temperature), [0, 0.4]);
+  assert.equal(seen[0].model, "mymind-lite");
+  } finally {
+    hub.model = null;
+  }
+});
 test("archive paths and version handling", () => {
   for (const bad of [
     "../x",

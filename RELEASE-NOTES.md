@@ -1,3 +1,14 @@
+PluginLabs Hub 0.4.13 — Özel MyMind modeli ve istemci sıcaklığı.
+
+- My Mind: kendi eğitilmiş GGUF modelini içe aktarma (GGUF imzası, 1 MB–8 GB sınırı, aynı klasördeki SHA256SUMS ile SHA-256 doğrulaması, geçici dosya temizliği), katalog/özel model kaynağı seçimi, kaldırma. Model aynı `mymind-lite` API adıyla sunulur; istemcilerde değişiklik gerekmez.
+- API: `/v1/chat/completions` istemcinin `temperature` değerini (0–1) iletir; verilmezse 0,4. Önceden her istek 0,4 ile gidiyordu.
+- Eski kayıtlar: model kaynağı olmayan durum dosyası katalog modeliyle açılır.
+- Bu sürüm, ayrı yayımlanmamış 0.4.11 (MyWishlist 0.1.0) ve 0.4.12 (The Ultimate Upscaler 0.1.0) katalog değişikliklerini de içerir.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir.
+
+---
+
 PluginLabs Hub 0.4.12 — The Ultimate Upscaler 0.1.0 kataloğa eklendi.
 
 - Katalog: The Ultimate Upscaler 0.1.0 (PL-056; cihazda görsel büyütme: Otomatik/Fotoğraf/Çizim/Piksel/Yumuşak profilleri, önce/sonra karşılaştırma, toplu sıra, MyMind ile yalnız ölçümlerle onaylı ayar önerisi; Chrome eklentisi sağ tık ile aynı sürümde). Boyut ve SHA-256 dağıtım deposundaki dosyayla doğrulandı.
