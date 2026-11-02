@@ -73,18 +73,8 @@ Ayrıntı ve kanıt listesi: [docs/MUST-HAVE.md](docs/MUST-HAVE.md). Bu maddeler
 - Notion-sourced content (`resources/notion-catalog.json` and the "Notion kartının özgün metni" sections) must not be shortened, summarised or rewritten. Archive instead of deleting (`docs/arsiv/`).
 ## PluginLabs Tasarım Sistemi (Codex)
 
-- Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-advanced/SKILL.md` dosyasını oku ve uygula.
-- Ortak kaynak: Claude Code aynı skill'i `.claude/skills/pluginlabs-advanced/` altından okur. İki kopya **aynıdır**; değişiklik yalnız `design-system/pluginlabs-advanced/` (kanonik) klasöründe yapılır ve `design-system/kurulum/kur.sh` ile eşitlenir.
+- Herhangi bir UI/stil işinde önce `.agents/skills/pluginlabs-design/SKILL.md` dosyasını oku ve uygula.
+- Ortak kaynak: Claude Code aynı skill'i `.claude/skills/pluginlabs-design/` altından okur. İki kopya **aynıdır**; değişiklik yalnız `design-system/pluginlabs-design/` (kanonik) klasöründe yapılır ve `design-system/kurulum/kur.sh` ile eşitlenir.
 - Mevcut tasarıma dokunma: yalnız `[data-pl]` kapsayıcısı, `--pl-` tokenları ve `pl-` sınıfları.
 - Görev sonunda 📌 GÖREV / ✅ DURUM / 📁 ÇIKTI / ⚠️ NOTLAR / 🔜 SONRAKİ ADIM formatında raporla.
 - Uygulama paletleri: `hub-yesil` (varsayılan, mevcut Windows Hub) ve `iris`; modlar `koyu` (varsayılan) ve `acik`. Seçim Ayarlar → Görünüm'den yapılır; tokenlar `ui/styles.css` + `ui/themes.css` içindedir (`node scripts/generate-themes.cjs` ile yeniden üretilir). Palet çelişkisinde `AGENTS.md` üstteki "Design language" bölümü ve mevcut Hub varsayılanı geçerlidir.
-
-<!-- PLUGINLABS-ADVANCED-VARSAYILAN -->
-## Varsayılan tasarım sistemi: PluginLabs Advanced (Codex)
-
-- Herhangi bir UI/stil işinde önce `pluginlabs-advanced` skill'inin `SKILL.md` dosyasını oku ve uygula. Eski temel `pluginlabs-design` skill'inin yerine geçer.
-- Skill konumu: repoda `.agents/skills/pluginlabs-advanced/` varsa o, yoksa kişisel `~/.agents/skills/pluginlabs-advanced/`. Kanonik kaynak: `PluginLabs/design-system/pluginlabs-advanced/`; Claude Code aynı skill'i `.claude/skills/pluginlabs-advanced/` altından okur.
-- CSS sırası: `pl-tokens.css` → `pl-components.css` → `pl-advanced.css`; yalnız `[data-pl]`, `--pl-` tokenları ve `pl-` sınıfları.
-- Tam ekranlarda önce Ekran Şablonları (PLA-091…102) ve pin ekranları incelenir; yüzey `data-pl-surface` ile seçilir, ürün aksanı `data-pl-product` korunur.
-- Mevcut tasarıma dokunma; taşıma opt-in. Silme yok, `_arsiv/GG.AA.YYYY/`.
-<!-- /PLUGINLABS-ADVANCED-VARSAYILAN -->

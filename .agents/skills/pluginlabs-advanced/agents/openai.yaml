@@ -1,8 +1,0 @@
-# Codex uygulaması için arayüz meta verisi (isteğe bağlı)
-interface:
-  display_name: "PluginLabs Advanced"
-  short_description: "PluginLabs masaüstü tasarım sistemi: --pl- tokenları, 6 yüzey teması, 181 komponent, 12 ekran şablonu"
-  brand_color: "#7C6CFF"
-  default_prompt: "PluginLabs Advanced tasarım sistemini kullanarak bu ekranı oluştur; en yakın ekran şablonundan başla ve mevcut tasarıma dokunma."
-policy:
-  allow_implicit_invocation: true
