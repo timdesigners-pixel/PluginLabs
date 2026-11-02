@@ -90,9 +90,11 @@
         </div>
       </header>
       <div id="content" tabindex="-1"></div>
-      <footer>
-        <span id="footer-status">Yerel merkez hazırlanıyor…</span
-        ><span>PluginLabs · Create your own workflow</span>
+      <footer class="pl-statusbar" role="status">
+        <span class="pl-statusbar__item is-accent" id="footer-status">Yerel merkez hazırlanıyor…</span>
+        <span class="pl-statusbar__item"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Yalnızca bu bilgisayar</span>
+        <span class="pl-statusbar__spacer"></span>
+        <span class="pl-statusbar__item">PluginLabs · Create your own workflow</span>
       </footer>
     </main>
     <div id="toast" role="status" aria-live="polite"></div>

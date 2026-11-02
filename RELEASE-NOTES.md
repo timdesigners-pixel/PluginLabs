@@ -5,6 +5,7 @@ PluginLabs Hub 0.4.15 — Üst çerçeve menüsü, bölünmüş Yükle düğmesi
 - Çalışma alanınız için: kartlarda yalnızca uygulama logosu, ad ve boyut var; “Yükle” bölünmüş düğmedir (indirme oku simgesi, ▾ ile açılan menüde Detaylı bilgi, Ayarlar ve paket bilgisi, Kaynağı gör). Tüm uygulama kartlarında ve “+ Yükle” düğmelerinde artı yerine indirme oku kullanılır.
 - Uygulama simgeleri: tasarım sistemindeki uygulama logo karoları (iki harfli kısaltma + ürün aksanı; ürün aksanı olmayanlara palet rengi).
 - Günün kombini ve Günün menüsü widget'ları: fotoğraf alanları. Varsayılan olarak ÇİZİM önizlemesi gösterilir; kendi fotoğrafınızı (kombin) ve yemek fotoğraflarını ekleyebilirsiniz. Fotoğraflar yalnızca bu cihazda saklanır (küçültülüp yerel depoya yazılır), hiçbir yere gönderilmez. Sizin üzerinizde gerçekçi kombin görüntüsü üretimi yoktur; bu, Gardrop'un sanal deneme özelliğine bağlıdır ve henüz yok.
+- Tasarım sistemi bileşenleri: karşılama kahramanı (OnboardingHero), eklenti satırları anahtarlı (ExtensionRow), izin isteği kartı (PermissionCard), güncelleme kartı (UpdateCard), indirme satırı (InstallRow), durum çubuğu (StatusBar). Tüm düğmeler tasarım sistemindeki Button bileşeniyle birebir (pl-btn; yazı boyutu, ağırlık, köşe, yükseklik); “+”, “↻”, “▶”, “↗” harf simgeleri çizgi ikonlarıyla değişti. Önceden Hub'ın genel yazı kuralı düğme yazı değerlerini eziyordu.
 
 İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
 

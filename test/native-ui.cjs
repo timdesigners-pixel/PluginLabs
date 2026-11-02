@@ -53,7 +53,7 @@ const fs = require("node:fs/promises");
     .getByRole("button", { name: "Devre dışı bırak", exact: true })
     .click();
   await page.locator('nav [data-page="api"]').click();
-  await page.getByRole("button", { name: "＋ İstemci oluştur" }).click();
+  await page.getByRole("button", { name: "İstemci oluştur", exact: true }).click();
   await page.locator('input[name="name"]').fill("UI test client");
   await page.locator('input[value="resources.read"]').check();
   await page

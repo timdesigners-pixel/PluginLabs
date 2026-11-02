@@ -751,9 +751,9 @@ html[data-mode="light"] .card {
   align-items: center;
   gap: 6px;
 }
-.wdg-edit-actions .btn {
-  min-height: 28px;
-  padding: 0 10px;
+.wdg-edit-actions .pl-btn {
+  height: var(--pl-control-sm);
+  padding: 0 var(--pl-space-2);
 }
 @media (max-width: 1150px) {
   .wdg-grid {
@@ -800,9 +800,10 @@ html[data-mode="light"] .card {
   gap: 6px;
   flex-wrap: wrap;
 }
-.sc-rich .btn {
-  min-height: 28px;
-  padding: 0 12px;
+.sc-rich .pl-btn {
+  height: var(--pl-control-sm);
+  padding: 0 var(--pl-space-3);
+  font-size: var(--pl-text-xs);
 }
 .sc-rich .sc-err {
   font-size: var(--pl-text-xs);
@@ -1054,14 +1055,222 @@ aside {
 .card .card-bottom .app-split {
   margin-left: auto;
 }
-.btn svg {
-  width: 14px;
-  height: 14px;
-  margin-right: 6px;
-  vertical-align: -2px;
-}
+
 @media (max-width: 1150px) {
   .wdg-photo {
     width: 140px;
   }
+}
+
+/* ==========================================================================
+   Tasarım sistemi bileşenleri: OnboardingHero, ExtensionRow, PermissionCard, UpdateCard, InstallRow, StatusBar
+   ========================================================================== */
+.onb-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 36px 40px;
+  margin: 0 0 28px;
+  border-radius: var(--pl-radius-xl);
+  animation: none;
+}
+.onb-hero .pl-hero__title {
+  font-size: 40px;
+  margin: 14px 0;
+}
+.onb-hero .pl-hero__title em {
+  background: linear-gradient(135deg, var(--pl-accent), var(--pl-brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.onb-hero .pl-btn {
+  border: 0;
+  cursor: pointer;
+}
+.onb-hero .pl-btn--secondary {
+  border: 1px solid var(--pl-line);
+}
+.onb-hero .pl-btn--lg {
+  height: var(--pl-control-lg);
+  padding: 0 20px;
+}
+.onb-art {
+  position: relative;
+  min-height: 230px;
+}
+.onb-art .hero-art {
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  right: 0;
+  width: 100%;
+}
+.ext-list {
+  padding: 6px 8px;
+  display: grid;
+}
+.ext-item {
+  padding: 4px 4px 10px;
+}
+.ext-item + .ext-item {
+  border-top: 1px solid var(--pl-line);
+}
+.ext-item .pl-listrow {
+  border-top: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.ext-desc {
+  margin: 0 0 6px 52px;
+  font-size: var(--pl-text-xs);
+  line-height: 1.5;
+}
+.ext-item .extension-permissions {
+  margin: 0 0 0 52px;
+}
+.ext-more {
+  display: inline-flex;
+}
+.ext-more .split-menu {
+  right: 0;
+  min-width: 160px;
+}
+.perm-list,
+.upd-list {
+  display: grid;
+  gap: 12px;
+}
+.perm-list .pl-perm {
+  background: var(--pl-bg-2);
+}
+.perm-list .pl-btn,
+.upd-list .pl-btn,
+.job-list .pl-btn {
+  border: 0;
+  cursor: pointer;
+}
+.job-list .pl-btn--secondary {
+  border: 1px solid var(--pl-line);
+}
+.pl-installrow .time {
+  font-size: var(--pl-text-xs);
+  color: var(--pl-fg-3);
+}
+footer.pl-statusbar {
+  padding: 0 38px;
+  height: var(--pl-statusbar-h, 26px);
+  min-height: 26px;
+  border-top: 1px solid var(--pl-line);
+  background: var(--pl-bg-1);
+  color: var(--pl-fg-3);
+  font-size: var(--pl-text-2xs);
+  justify-content: flex-start;
+}
+@media (max-width: 1150px) {
+  .onb-hero {
+    grid-template-columns: 1fr;
+  }
+  .onb-art {
+    display: none;
+  }
+}
+.ext-item h3.pl-listrow__title { margin: 0; line-height: 1.4; }
+
+
+/* ==========================================================================
+   Düğme: tasarım sistemi PLC-001 (pl-btn) ile birebir.
+   Hub'ın katmansız `button { font: inherit }` kuralı katmanlı pl-btn yazı değerlerini eziyordu;
+   sınıf özgüllüğüyle bileşenin değerleri geri verilir.
+   ========================================================================== */
+.pl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pl-space-2);
+  height: var(--pl-control-md);
+  padding: 0 var(--pl-space-4);
+  border-radius: var(--pl-radius-sm);
+  font-family: var(--pl-font-sans, inherit);
+  font-size: var(--pl-text-sm);
+  font-weight: var(--pl-weight-semibold, 600);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  outline-offset: 2px;
+}
+.pl-btn--sm {
+  height: var(--pl-control-sm);
+  padding: 0 var(--pl-space-3);
+  font-size: var(--pl-text-xs);
+}
+.pl-btn--lg {
+  height: var(--pl-control-lg);
+  padding: 0 var(--pl-space-5);
+  font-size: var(--pl-text-md);
+}
+.pl-btn:not(:disabled):not(.is-disabled) {
+  cursor: pointer;
+}
+.pl-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.pl-btn .pl-ico {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin: 0;
+}
+.pl-btn--sm .pl-ico {
+  width: 14px;
+  height: 14px;
+}
+.pl-btn--secondary {
+  border: 1px solid var(--pl-line);
+  background: var(--pl-bg-3);
+  color: var(--pl-fg-1);
+}
+.pl-btn--secondary:hover:not(:disabled) {
+  background: var(--pl-bg-4);
+  border-color: var(--pl-line-strong);
+}
+.pl-btn--primary {
+  border: 1px solid transparent;
+  background: var(--pl-accent);
+  color: var(--pl-fg-on-accent);
+}
+.pl-btn--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pl-accent) 86%, white);
+}
+.pl-btn--ghost {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--pl-fg-2);
+}
+.pl-btn--ghost:hover:not(:disabled) {
+  background: var(--pl-bg-3);
+  color: var(--pl-fg-1);
+}
+.pl-btn--danger {
+  border: 1px solid color-mix(in srgb, var(--pl-danger) 35%, transparent);
+  background: var(--pl-danger-soft);
+  color: var(--pl-danger);
+}
+.pl-btn--gradient {
+  border: 1px solid transparent;
+  background: var(--pl-brand-gradient);
+  color: #fff;
+}
+/* Bölünmüş düğme: PLC-004 */
+.pl-split {
+  display: inline-flex;
+}
+.pl-split .pl-btn:first-child {
+  border-radius: var(--pl-radius-sm) 0 0 var(--pl-radius-sm);
+}
+.pl-split .pl-btn:nth-child(2) {
+  border-radius: 0 var(--pl-radius-sm) var(--pl-radius-sm) 0;
+  padding: 0 var(--pl-space-2);
+  border-left: 1px solid color-mix(in srgb, var(--pl-fg-on-accent) 25%, transparent);
 }
