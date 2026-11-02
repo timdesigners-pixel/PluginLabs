@@ -10,7 +10,7 @@
 | Öncelik / efor | P0 · S |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | [timdesigners-pixel/page-capsule](https://github.com/timdesigners-pixel/page-capsule) · Windows release [v0.1.0](https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0) |
+| Geliştirme deposu | [timdesigners-pixel/page-capsule](https://github.com/timdesigners-pixel/page-capsule) · Windows sürümü [v0.1.0](https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0) |
 | Codex projesi | `PL-017 · Page Capsule` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743) |
 
