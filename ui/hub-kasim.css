@@ -84,3 +84,19 @@ nav .nav-ico[data-ni="activity"] { --ni: #a3e635; --ni-2: #d9f99d; }
 nav .nav-ico[data-ni="api"] { --ni: #f87171; --ni-2: #fca5a5; }
 nav .nav-ico[data-ni="settings"] { --ni: #94a3b8; --ni-2: #cbd5e1; }
 nav button.active > .nav-ico { background: color-mix(in srgb, var(--ni) 26%, transparent); }
+
+/* Boşluk düzeltmesi: bir bloğun hemen altındaki iki sütunlu / bölünmüş satır üst boşluk alır (My Mind: "Yerel model sunucusu" + "Hızlı deneme"). */
+#content > * + .two-col,
+#content > * + .section-split {
+  margin-top: 20px;
+}
+
+/* Başlık çubuğu: PluginLabs Advanced düğmeleri (komut paleti, Pro'ya geç) */
+.hdr-pl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hdr-pl .pl-btn {
+  white-space: nowrap;
+}

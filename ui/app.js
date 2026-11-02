@@ -346,6 +346,11 @@ document.addEventListener("click", async (e) => {
     id = b.dataset.id || "";
   if (!action) return;
   if (action === "closeModal") return closeModal();
+  if (action === "openPalette") return openPalette();
+  if (action === "goPro")
+    return showModal(
+      `<div class="modal-title"><h2>PluginLabs Pro</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Pro planı henüz yayında değil. Hesap, ücretli mağaza ve bulut eşitleme planlandı; şu an Hub tamamen yerel çalışır ve hiçbir veri hesaba bağlanmaz.</p><div class="notice">Pro yayına girdiğinde bu düğme plan seçimini açacak.</div><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
+    );
   if (action === "manage") return manage(id);
   if (action === "openProduct") return openProduct(id);
   if (action === "pairBrowser") return pairBrowser();
@@ -532,6 +537,15 @@ document.addEventListener("keydown", (e) => {
     $("#search").focus();
   }
 });
+function syncPlTheme() {
+  const m = document.documentElement.dataset.mode === "light" ? "light" : "dark";
+  document.querySelectorAll("[data-pl]").forEach((e) => (e.dataset.plTheme = m));
+}
+new MutationObserver(syncPlTheme).observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ["data-mode"],
+});
+syncPlTheme();
 /* Komut paleti (Ctrl/⌘+K) — PluginLabs Advanced PLC-033, opak panel */
 const palette = $("#palette"),
   paletteInput = $("#palette-input"),
