@@ -41,9 +41,11 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–024, PL-051–053 ve Hub (PL-015–024, PL-051, PL-052 01.11.2026 ~05:00 UTC itibarıyla release listesinden doğrulandı). PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-025–050 ve PL-054 (fikir; GitHub deposu yok). Sıradaki ürün PL-025 File Pilot; önce `file-pilot` deposunun açılması gerekiyor.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
+- PL-026 Workspace Scenes 0.1.0: kaynak ve testler hazır (01.11.2026); `pluginlabs-dagitim` yayın iş akışının eklenmesi kullanıcı onayı bekliyor (otomatik oturumda herkese açık yayın izni reddedildi).
+- Sıradaki (Windows sürümü yok): PL-027–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -63,18 +65,18 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-012 | Dilekçe Oluştur | Windows uygulaması · **v0.1.0** (şablonlu dilekçe taslağı, eksik bilgi ve kaynaksız atıf denetimi, RTF/TXT; imzasız önizleme) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
 | PL-013 | Gadget Dünyası Companion | Windows uygulaması · **v0.1.0** (şarj cihazı/kulaklık × cihaz uyumluluğu, karşılaştırma; imzasız önizleme) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | PL-014 | Social Saves Organizer | Windows uygulaması · **v0.1.0** (Instagram dışa aktarımı/bağlantı listesi, etiket/not/koleksiyon, bozuk bağlantı denetimi, MyMind etiket önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| PL-015 | YouTube Shelf | Windows uygulaması · **v0.1.1** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1 |
-| PL-016 | Tab Atlas | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/tab-atlas/releases/tag/v0.1.0 |
-| PL-017 | Page Capsule | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/page-capsule/releases/tag/v0.1.0 |
-| PL-018 | Form Flow | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/form-flow/releases/tag/v0.1.0 |
-| PL-019 | Compare Lens | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/compare-lens/releases/tag/v0.1.0 |
-| PL-020 | Page Change Radar | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/page-change-radar/releases/tag/v0.1.0 |
-| PL-021 | Desk Tidy | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
-| PL-022 | Twin Finder | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
-| PL-023 | Clip Vault | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 31.10.2026; imzasız) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
-| PL-024 | Snap OCR | Windows uygulaması · **v0.1.0** (GitHub release “önizleme”, 01.11.2026; imzasız) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
-| PL-025 | File Pilot | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-026 | Workspace Scenes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-015 | YouTube Shelf | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/youtube-shelf |
+| PL-016 | Tab Atlas | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tab-atlas |
+| PL-017 | Page Capsule | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-capsule |
+| PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
+| PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
+| PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
+| PL-021 | Desk Tidy | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/desk-tidy |
+| PL-022 | Twin Finder | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/twin-finder |
+| PL-023 | Clip Vault | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/clip-vault |
+| PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
+| PL-025 | File Pilot | Windows uygulaması · **v0.1.0** (yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind anlamsal soru; dosyaları yalnız okur; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-025-file-pilot/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
+| PL-026 | Workspace Scenes | 0.1.0 Windows uygulaması **kaynağı hazır** (çalışma sahneleri: bağlantı/klasör/uygulama/dosya, onaylı sıralı açılış, hiçbir şey kapatılmaz, masaüstü kısayolu, MyMind önerisi); testler geçti; Windows release'i yayın izni bekliyor. Kaynak PluginLabs `apps/03-…/PL-026-workspace-scenes/app` | (yayımlanınca) https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 |
 | PL-027 | Focus Orbit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-028 | Quick Convert | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-029 | Screenshot Studio | Fikir / Hub içi önizleme (ayrı depo yok) | — |
