@@ -406,3 +406,101 @@ dialog#palette {
 html[data-mode="light"] .card {
   box-shadow: 0 1px 2px rgb(15 20 36 / 0.08);
 }
+
+/* Ayarlar sayfası — Advanced bileşenleri: sekmeler, ayar satırları, segment, anahtar-değer, akordeon, uyarı kutusu */
+.settings-tabs {
+  margin: 0 0 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.settings-tabs::-webkit-scrollbar {
+  display: none;
+}
+.settings-tabs .pl-tab {
+  font: inherit;
+  font-size: var(--pl-text-md);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.settings-body {
+  display: grid;
+  gap: 18px;
+  max-width: 920px;
+}
+.settings-card .sc-head {
+  margin-bottom: 6px;
+}
+.settings-card .sc-head p {
+  margin: 6px 0 0;
+  font-size: var(--pl-text-sm);
+  line-height: 1.6;
+}
+.settings-card .pl-setting {
+  padding: 16px 0;
+  gap: 24px;
+}
+.settings-card .pl-setting + .pl-setting {
+  border-top: 1px solid var(--pl-line);
+}
+.settings-card .pl-setting__text b {
+  color: var(--pl-fg-1);
+  font-size: var(--pl-text-md);
+}
+.settings-card .pl-setting__text .pl-muted {
+  font-size: var(--pl-text-sm);
+  line-height: 1.5;
+}
+.settings-card .pl-kv {
+  margin-top: 14px;
+  gap: 12px 24px;
+}
+.settings-card .pl-kv dd {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.settings-tabs + .settings-body > .status-row {
+  margin: 0;
+}
+.pl-segment button {
+  font: inherit;
+  font-size: var(--pl-text-sm);
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+.pl-segment button.is-active {
+  background: var(--pl-accent-soft);
+}
+.pl-tab:focus-visible,
+.pl-segment button:focus-visible {
+  outline: 2px solid var(--pl-accent);
+  outline-offset: -2px;
+}
+.settings-update .pl-row b {
+  color: var(--pl-fg-1);
+}
+.settings-faq summary {
+  cursor: pointer;
+}
+.settings-faq {
+  background: var(--pl-bg-2);
+  border: 1px solid var(--pl-line);
+  border-radius: var(--pl-radius-lg);
+  overflow: hidden;
+}
+.settings-faq summary {
+  padding: 14px 18px;
+  color: var(--pl-fg-1);
+}
+.settings-faq details > div {
+  padding: 0 18px 16px;
+  color: var(--pl-fg-2);
+  font-size: var(--pl-text-sm);
+  line-height: 1.6;
+}
+.settings-faq details + details {
+  border-top: 1px solid var(--pl-line);
+}

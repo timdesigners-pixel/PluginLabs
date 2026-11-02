@@ -115,6 +115,8 @@ async function refresh(renderPage = true) {
   $("#update-count").textContent = active || "";
   renderTicker();
   updateMenuServer();
+  const pv = document.querySelector(".profile small");
+  if (pv && state.version) pv.textContent = `Sürüm ${state.version} · Önizleme`;
   if (renderPage && changed) render();
 }
 function matches(item) {
@@ -164,9 +166,114 @@ function choiceGroup(name, legend, choices, current) {
     )
     .join("")}</fieldset>`;
 }
-function appearanceHTML() {
+let settingsTab = "gorunum";
+const settingsTabs = [
+  ["gorunum", "Görünüm"],
+  ["veri", "Veri ve gizlilik"],
+  ["baglanti", "Bağlantılar"],
+  ["kisayol", "Kısayollar"],
+  ["hakkinda", "Hakkında"],
+];
+const plSegment = (attr, current, opts) =>
+  `<div class="pl-segment" role="tablist">${opts
+    .map(
+      ([v, l]) =>
+        `<button class="${v === current ? "is-active" : ""}" role="tab" aria-selected="${v === current}" data-${attr}="${v}">${l}</button>`,
+    )
+    .join("")}</div>`;
+const plSetting = (title, desc, control) =>
+  `<div class="pl-setting"><div class="pl-setting__text"><b>${title}</b><span class="pl-muted">${desc}</span></div>${control}</div>`;
+const plCallout = (kind, title, text, d) =>
+  `<div class="pl-callout pl-callout--${kind}" role="note">${plIco(d)}<div><div class="pl-callout__title">${title}</div>${text}</div></div>`;
+const plKv = (rows) =>
+  `<dl class="pl-kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
+const kbd = (...k) => k.map((x) => `<span class="pl-kbd">${x}</span>`).join(" ");
+const settingsCard = (title, desc, body) =>
+  `<section class="card settings-card"><div class="sc-head"><h2>${title}</h2>${desc ? `<p class="pl-muted">${desc}</p>` : ""}</div>${body}</section>`;
+function settingsHTML() {
   const t = window.plTheme.get();
-  return `<section class="card appearance" style="margin-bottom:20px"><h2>Görünüm</h2><p style="margin:15px 0">Palet ve tema bu cihazda saklanır; uygulama yeniden açıldığında korunur.</p><div class="choice-grid">${choiceGroup("palette", "Palet", paletteChoices, t.palette)}${choiceGroup("mode", "Tema", modeChoices, t.mode)}</div></section>`;
+  const tabs = `<div class="pl-tabs settings-tabs" role="tablist" aria-label="Ayar bölümleri">${settingsTabs
+    .map(
+      ([k, l]) =>
+        `<button class="pl-tab ${k === settingsTab ? "is-active" : ""}" role="tab" aria-selected="${k === settingsTab}" data-settings-tab="${k}">${l}</button>`,
+    )
+    .join("")}</div>`;
+  const infoIc = '<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/>';
+  const warnIc = '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>';
+  const chev = plIco('<path d="m6 9 6 6 6-6"/>');
+  let body = "";
+  if (settingsTab === "gorunum")
+    body =
+      settingsCard(
+        "Görünüm",
+        "Palet ve tema bu cihazda saklanır; uygulama yeniden açıldığında korunur.",
+        plSetting("Palet", "Hub Yeşil mevcut Hub görünümüdür; Iris mor-mavi PluginLabs tasarım sistemidir.", plSegment("set-palette", t.palette, [["hub-yesil", "Hub Yeşil"], ["iris", "Iris"]])) +
+          plSetting("Tema", "Koyu varsayılandır; açık tema aydınlık ortamlar içindir.", plSegment("set-mode", t.mode, [["dark", "Koyu"], ["light", "Açık"]])),
+      ) +
+      settingsCard(
+        "Hareket ve klavye",
+        "",
+        plKv([
+          ["Hareket azaltma", "Sistem ayarına uyar"],
+          ["Kayan akış bandı", "Üzerine gelince durur"],
+          ["Komut paleti", kbd("Ctrl", "K")],
+          ["Aramaya git", kbd("/")],
+        ]),
+      );
+  else if (settingsTab === "veri")
+    body =
+      settingsCard(
+        "Yerel veri alanı",
+        "Paketler, kaynak ayarları ve erişim izinleri uygulamanın kullanıcı veri klasöründe saklanır.",
+        plSetting("Veri klasörü", "Merkezin bu cihazdaki klasörünü dosya yöneticisinde açar.", button("Klasörü aç ↗", "openData")) +
+          plSetting("Kaynak paketi", "Kendi veri veya görünüm paketinizi (.plpack) içe aktarın.", button("İçe aktar", "importPack")),
+      ) +
+      plCallout("warning", "API anahtarları", "Bu merkezde özetlenerek saklanır. İstemci uygulamalar kendi anahtarlarını işletim sistemi kasalarında tutmalıdır.", warnIc) +
+      `<div class="pl-accordion settings-faq"><details open><summary>Verilerim nerede saklanır?${chev}</summary><div>Yalnızca bu cihazda, uygulamanın kullanıcı veri klasöründe. Merkez hesap, bulut eşitleme veya çok cihaz yönetimi sunmaz.</div></details><details><summary>Yerel API kimlere açık?${chev}</summary><div>Yalnızca 127.0.0.1 üzerinde dinler. Her istemci izin ister; izinler "API ve izinler" sayfasında verilir ve geri alınır.</div></details><details><summary>Üçüncü taraf eklentiler neden doğrudan yüklenmez?${chev}</summary><div>Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. İşlevler izinli sağlayıcı SDK’sı üzerinden eklenir.</div></details></div>`;
+  else if (settingsTab === "baglanti")
+    body =
+      statusCards(false) +
+      settingsCard(
+        "Yerel API",
+        "Uygulamalar ve eklentiler Hub’a yalnızca bu adres üzerinden bağlanır.",
+        plKv([
+          ["Adres", `<span class="pl-num">http://127.0.0.1:${state.api.port || 47632}/v1</span>`],
+          ["Dinleme", "Yalnızca bu bilgisayar"],
+          ["İstemci", `<span class="pl-num">${state.clients.length}</span>`],
+          ["Sağlayıcı", `<span class="pl-num">${state.providers.length}</span>`],
+          ["My Mind bağlamı", `<span class="pl-num">${state.settings?.modelContext || 4096} token</span>`],
+          ["Model kaynağı", state.model.source === "custom" ? "Özel model" : "Katalog"],
+        ]) +
+          `<div class="button-row" style="margin-top:16px"><button class="btn primary" data-go="api">API ve izinleri yönet ↗</button>${button("Yeni istemci", "newClient")}</div>`,
+      );
+  else if (settingsTab === "kisayol")
+    body = settingsCard(
+      "Klavye kısayolları",
+      "Menüleri ve komut paletini fare olmadan kullanın.",
+      plKv([
+        ["Komut paleti", kbd("Ctrl", "K")],
+        ["Aramaya git", kbd("/")],
+        ["Menüler arasında gez", kbd("←", "→")],
+        ["Menü maddeleri arasında gez", kbd("↑", "↓")],
+        ["Menüyü veya paleti kapat", kbd("Esc")],
+        ["Seçileni aç", kbd("↵")],
+      ]),
+    );
+  else
+    body =
+      `<div class="pl-card pl-stack settings-update"><div class="pl-row" style="flex-wrap:nowrap"><span class="pl-applogo pl-applogo--sm" data-pl-product="hub">PL</span><div style="flex:1"><b>PluginLabs Hub</b><div class="pl-num pl-muted">Sürüm ${esc(state.version || "")} · Önizleme</div></div><span class="pl-badge pl-badge--accent">Önizleme</span></div><div class="pl-row" style="justify-content:flex-end">${button("↻ Güncellemeleri denetle", "checkUpdates")}</div></div>` +
+      settingsCard(
+        "Sürüm bilgileri",
+        "",
+        plKv([
+          ["Uygulama", "Electron masaüstü uygulaması"],
+          ["Yerel API", "HTTP · yalnızca 127.0.0.1"],
+          ["Model motoru", "Windows x64 / Linux x64 CPU"],
+          ["Arayüz", "PluginLabs Advanced"],
+        ]),
+      ) +
+      plCallout("warning", "Önizleme sürümü", "Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. Üçüncü taraf çalıştırılabilir eklentiler doğrudan yüklenmez; işlevler izinli sağlayıcı SDK’sı üzerinden eklenir.", warnIc);
+  return `${tabs}<div class="settings-body">${body}</div>`;
 }
 function render() {
   if (!state) return;
@@ -267,9 +374,11 @@ function render() {
       `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section><div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div><section class="card">${state.clients.length ? state.clients.map((c) => `<div class="list-row"><span class="avatar">${esc(c.name.slice(0, 2).toUpperCase())}</span><div class="grow"><h3>${esc(c.name)}</h3><p>${c.scopes.map(esc).join(" · ") || "İzin verilmedi"}</p></div>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</div>`).join("") : "<p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p>"}</section><div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
-      heading("Merkez ayarları", "Görünüm, kurulum, veri alanı ve sürüm bilgileri.") +
-      appearanceHTML() +
-      `<div class="two-col"><section class="card"><h2>Yerel veri alanı</h2><p style="margin:15px 0">Paketler, kaynak ayarları ve erişim izinleri uygulamanın kullanıcı veri klasöründe saklanır.</p>${button("Klasörü aç ↗", "openData")}<div class="notice">API anahtarları bu merkezde özetlenerek saklanır. İstemci uygulamalar kendi anahtarlarını işletim sistemi kasalarında tutmalıdır.</div></section><section class="card"><h2>PluginLabs Hub 0.3.0</h2><p style="margin:15px 0">Electron masaüstü uygulaması · Yerel HTTP API<br>Windows ürün paketleri Windows üzerinde açılır.<br>Model motoru: Windows x64 / Linux x64 CPU.</p><div class="notice warn">Önizleme sürümü. Ürün indirmeleri ve motor kaynakları katalogda sabitlenmiştir. Üçüncü taraf çalıştırılabilir eklentiler doğrudan yüklenmez; işlevler izinli sağlayıcı SDK’sı üzerinden eklenir.</div></section></div>`;
+      heading(
+        "Merkez ayarları",
+        "Görünüm, veri alanı, bağlantılar, kısayollar ve sürüm bilgileri.",
+        `<span class="pl-badge pl-badge--accent">v${esc(state.version || "")}</span>`,
+      ) + settingsHTML();
   content.innerHTML = html;
 }
 function jobsHTML() {
@@ -341,6 +450,20 @@ document.addEventListener("click", async (e) => {
   if (!b || b.disabled) return;
   if (b.dataset.page) return navigate(b.dataset.page);
   if (b.dataset.go) return navigate(b.dataset.go);
+  if (b.dataset.settingsTab) {
+    settingsTab = b.dataset.settingsTab;
+    return render();
+  }
+  if ((b.dataset.setPalette || b.dataset.setMode) && b.closest("#content")) {
+    window.plTheme.set(
+      b.dataset.setPalette
+        ? { palette: b.dataset.setPalette }
+        : { mode: b.dataset.setMode },
+    );
+    render();
+    document.querySelector("#content .pl-segment .is-active")?.focus();
+    return;
+  }
   if (b.dataset.filter) {
     filter = b.dataset.filter;
     return render();

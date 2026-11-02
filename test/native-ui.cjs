@@ -119,6 +119,16 @@ const fs = require("node:fs/promises");
   await page.getByRole("button", { name: /Pro'ya geç/ }).click();
   await page.locator("#modal[open]").waitFor();
   await page.getByRole("button", { name: "Tamam" }).click();
+  // Ayarlar: Advanced sekmeleri, segment ile palet/tema, gerçek sürüm
+  await page.locator('nav [data-page="settings"]').click();
+  await page.locator(".pl-tabs [data-settings-tab]").first().waitFor();
+  await page.locator('#content [data-set-palette="iris"]').click();
+  require("node:assert/strict").equal(await page.evaluate(() => document.documentElement.dataset.palette), "iris");
+  await page.locator('#content [data-set-palette="hub-yesil"]').click();
+  await page.locator('[data-settings-tab="hakkinda"]').click();
+  await page.getByText(/Sürüm \d+\.\d+\.\d+ · Önizleme/).first().waitFor();
+  await page.locator('[data-settings-tab="veri"]').click();
+  await page.locator(".settings-faq details").first().waitFor();
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
