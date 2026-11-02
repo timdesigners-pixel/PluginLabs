@@ -37,6 +37,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
 | Gardrop (PL-055) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.1.0 |
+| The Ultimate Upscaler (PL-056) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
 
 Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanımı) `main` dalındadır: `npm ci && npm run test:agent`. Eski `wip-agent-inapp` dalı bunun taslağıydı; `main` onu aşmıştır.
 

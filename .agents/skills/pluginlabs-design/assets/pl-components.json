@@ -111,9 +111,21 @@
       "platform": "Eklenti"
     },
     {
+      "kod": "tork",
+      "ad": "Tork",
+      "aksan": "#facc15",
+      "platform": "Masaüstü"
+    },
+    {
       "kod": "gardrop",
       "ad": "Gardrop",
       "aksan": "#e879f9",
+      "platform": "Masaüstü / Eklenti"
+    },
+    {
+      "kod": "upscaler",
+      "ad": "The Ultimate Upscaler",
+      "aksan": "#38bdf8",
       "platform": "Masaüstü / Eklenti"
     }
   ],

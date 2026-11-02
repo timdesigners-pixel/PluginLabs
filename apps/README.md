@@ -93,6 +93,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | --- | --- | --- | --- | --- | --- |
 | PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · Chrome | v0.1.0 | P1 · M | [mywishlist](https://github.com/timdesigners-pixel/mywishlist) |
 | PL-055 | [MyMind AI](07-yeni-urunler/PL-055-mymind-ai/README.md) | W · Chrome | v0.1.0 | — | [mymind-ai](https://github.com/timdesigners-pixel/mymind-ai) |
+| PL-056 | [The Ultimate Upscaler](07-yeni-urunler/PL-056-ultimate-upscaler/README.md) | W · Chrome | v0.1.0 · Windows + Chrome eklentisi | P1 · M | [ultimate-upscaler](https://github.com/timdesigners-pixel/ultimate-upscaler) |
 | PL-057 | [Tork](07-yeni-urunler/PL-057-tork/README.md) | W | v0.1.0 geliştirmede · Windows masaüstü + tork-cli | P2 · M | [tork](https://github.com/timdesigners-pixel/tork) (açılacak) |
 
 ---

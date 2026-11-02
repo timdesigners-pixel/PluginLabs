@@ -2201,7 +2201,42 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": null
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f98120819bc0bf6c966773"
+    },
+    {
+      "id": "PL-056",
+      "number": 56,
+      "slug": "ultimate-upscaler",
+      "name": "The Ultimate Upscaler",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows masaüstü + Chrome eklentisi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust) + Chrome (ve Chromium tarayıcılar) eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Cihazda görsel büyütme: fotoğraf, çizim/logo ve piksel sanatı için profiller, önce/sonra karşılaştırma, toplu sıra; Chrome eklentisiyle web'deki görsele sağ tıklayıp büyütme. Görseller buluta gitmez.",
+      "repo": "timdesigners-pixel/ultimate-upscaler",
+      "appPath": "apps/07-yeni-urunler/PL-056-ultimate-upscaler",
+      "codexProject": {
+        "name": "PL-056 · The Ultimate Upscaler",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f98160b46ae02a20055404"
     },
     {
       "id": "PL-057",
