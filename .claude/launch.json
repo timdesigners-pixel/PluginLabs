@@ -4,7 +4,7 @@
     {
       "name": "kurgu-atolyesi",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5755", "--bind", "127.0.0.1", "--directory", "apps/07-yeni-urunler/PL-055-kurgu-atolyesi/ui"],
+      "runtimeArgs": ["-m", "http.server", "5755", "--bind", "127.0.0.1", "--directory", "apps/07-yeni-urunler/PL-058-kurgu-atolyesi/ui"],
       "port": 5755
     }
   ]

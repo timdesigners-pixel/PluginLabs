@@ -10,7 +10,7 @@
 | Öncelik / efor | P0 · M |
 | Hedef platformlar | Windows, Linux, macOS |
 | Dağıtım biçimi | masaüstü uygulaması |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | [timdesigners-pixel/twin-finder](https://github.com/timdesigners-pixel/twin-finder) · Windows sürümü [v0.1.0](https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0) |
 | Codex projesi | `PL-022 · Twin Finder` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83) |
 

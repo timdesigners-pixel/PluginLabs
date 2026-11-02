@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-033` · `text-forge` |
 | Kategori | 04 · Araştırma, yazma ve bilgi akışları — PL-031–040 |
-| Durum | Yeni fikir |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [text-forge-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/text-forge-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.9 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P0 · S |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-text-forge-windows.yml)) |
 | Codex projesi | `PL-033 · Text Forge` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc) |
 
@@ -56,6 +56,16 @@ Sabit sayı/isim koruma ≥%99; öneriyi kullanma oranı ≥%50.
 ## Öncelik ve efor
 
 P0 · S; Prompt Dünyası şablon altyapısı ortak.
+
+## 0.1.0 sürümü (Windows)
+
+Metin yazılır/yapıştırılır, **Panodan al** düğmesiyle ya da başka bir uygulamada kopyalayıp **Ctrl+Shift+Y** hızlı pencere kısayoluyla (pano yalnız kullanıcı eylemiyle okunur; parola gibi görünen tek parça metin alınmaz) veya `.txt`/`.md` dosyasından alınır. Seçilen işlemler cihazda, kural tabanlı çalışır: **Düzelt** (noktalama, tekrar, sık yazım hataları, cümle başı), **Sadeleştir** (eski/bürokratik kelimeler, “-mektedir → -iyor”, uzun cümle bölme), **Kısalt** (dolgu ifadeler, gereksiz tekrarlar), **Biçimlendir** (satır içi sayım → madde listesi, tırnak, tire). **Ton:** koru, resmî, nötr, samimi ya da kullanıcının verdiği **ton örneğinden** çıkarılan üslup.
+
+**Sabit alanlar** (sayı, tarih, saat, tutar, yüzde, ad/özel isim, e-posta, bağlantı, @/# etiket, terim sözlüğü) işlemden önce yer tutucuya alınır, sonra geri konur ve her birinin sonuçta aynen bulunduğu denetlenir (Notion ölçütü ≥ %99). Parola/PIN, kart, IBAN, T.C. kimlik gizli sabit alan sayılır: maskelenir, değişmez, MyMind'a gitmez (Notion: “özel alan/şifre kutularında devre dışı”). Sonuç **kelime düzeyinde fark** ve değişiklik listesiyle gösterilir; **kaynak uygulamaya otomatik yazılmaz** — Kopyala / Kopyala ve küçült ile kullanıcı yapıştırır; e-posta gönderimi yok. **MyMind** (Hub üzerinden, her istekte onaylı) en çok 2 alternatif yazar; yalnız ⟦n⟧ yer tutuculu metin gider, eksik sabit alanlı alternatif uyarıyla işaretlenir. Ölçüler: sabit alan koruma, öneri kullanma oranı (Notion ölçütü ≥ %50). Geçmiş ve terim sözlüğü cihazda (DPAPI).
+
+![Text Forge — fark görünümü](app/docs/screenshots/masaustu-01-fark-gorunumu.png)
+
+Kapsam dışı (bu sürüm): Chrome seçili metin menüsü, freemium karakter kotası, ekip sözlüğü (Pro). Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

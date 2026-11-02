@@ -10,13 +10,27 @@ Aşağıdaki ekranlar v0.2.1 uygulamasından alınmıştır. Fontlar, uygulama a
 
 Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan erişim.
 
-![PluginLabs Hub genel bakış ekranı](docs/screenshots/overview.png)
+![PluginLabs Hub genel bakış ekranı (0.4.14, Linux/Xvfb)](docs/screenshots/overview.png)
+
+Genel bakışın girişinde durum ve istatistik kartları yer alır, özgün düzen korunur; sonunda Akış panosu (uygulamalardan gelecek veri akışları için widget'lar) gelir. Şimdilik My Mind dışındakiler örnek veridir; uygulama yüklenince ilgili widget genişler.
+
+![Akış panosu widget'ları, örnek veri (0.4.14, Linux/Xvfb)](docs/screenshots/akis-panosu.png)
+
+Çalışma alanınız için: yalnızca logo, ad, boyut ve bölünmüş “Yükle” düğmesi (▾ menüsünde Detaylı bilgi).
+
+![Çalışma alanınız için kartları ve bölünmüş düğme menüsü (0.4.15, Linux/Xvfb)](docs/screenshots/calisma-alani-kartlari.png)
+
+Widget düzenleyici (Ayarlar › Widget'lar): widget ekle/çıkar, sırayı değiştir, varsayılana dön.
+
+![Ayarlar › Widget düzenleyici (0.4.14, Linux/Xvfb)](docs/screenshots/ayarlar-widgetlar.png)
+
+Önceki genel bakış görüntüsü (0.4.13, tarihsel): `docs/screenshots/onceki/overview-0.4.13.png`.
 
 ### Uygulama kataloğu
 
 50 uygulama; ne işe yaradığını anlatan açıklamalar, platform bilgileri ve önizleme paketi yükleme seçenekleriyle listelenir.
 
-![Keşfet: Hub üzerinden kurulabilen uygulamalar (0.4.9)](docs/screenshots/app-catalog.png)
+![Keşfet: Hub üzerinden kurulabilen uygulamalar (0.4.10)](docs/screenshots/app-catalog.png)
 
 ### Eklenti yöneticisi
 
@@ -73,6 +87,23 @@ Geliştirme: [katkı/PR politikası](CONTRIBUTING.md), [güvenlik](SECURITY.md),
 ## My Mind
 
 My Mind Lite, Qwen3 0.6B Q8_0 ağırlıkları + llama.cpp CPU sunucusunu yöneten uygulama katmanıdır; sıfırdan eğitilmiş veya ince ayarlanmış model değildir. Model yaklaşık 640 MB, motor yaklaşık 18–20 MB. Kurulum internet; analiz yerel CPU/RAM gerektirir. Model ve motor ayrı ayrı yüklenir, ardından My Mind ekranından sunucu başlatılır. Kapanırken yalnızca merkezin oluşturduğu süreç durdurulur.
+
+### Özel MyMind modeli (0.4.13)
+
+Katalogdaki My Mind Lite yerine kendi eğittiğiniz kapalı MyMind modelini kullanabilirsiniz (eğitim hattı: [mymind-ai/training](https://github.com/timdesigners-pixel/mymind-ai/tree/main/training)). My Mind ekranında **GGUF içe aktar** ile dosya seçilir.
+
+- **Doğrulama:** Dosya `.gguf` uzantılı ve GGUF imzalı olmalı, boyutu 1 MB–8 GB arasında. Aynı klasörde `SHA256SUMS` varsa SHA-256 onunla karşılaştırılır; uyuşmazsa içe aktarma reddedilir ve geride geçici dosya kalmaz.
+- **Saklama:** Dosya Hub veri klasörüne kopyalanır (`models/mymind-ozel/`); internetten hiçbir şey indirilmez.
+- **Kullanım:** **Özel modeli kullan** ile kaynak değişir, çalışan sunucu durdurulur. Uygulamalar modeli aynı `mymind-lite` API adıyla çağırır; Leo Helper gibi istemcilerde değişiklik gerekmez. Sunucu her başlatıldığında dosya boyutu denetlenir; değişmişse yeniden içe aktarma istenir.
+- **Sıcaklık:** `/v1/chat/completions` artık istemcinin `temperature` değerini (0–1) modele iletir; verilmezse 0,4 kalır. Karar veren istemciler (Leo: 0) böylece kararlı çıktı alır.
+
+<details>
+<summary>Özel model kartı (Windows, 02.11.2026, geçici veri; yüklü durumda 1 MB'lık sahte test dosyası)</summary>
+
+![Özel MyMind modeli, boş durum](docs/screenshots/my-mind-ozel-model-bos.png)
+![Özel MyMind modeli, içe aktarılmış ve kullanımda](docs/screenshots/my-mind-ozel-model-yuklu.png)
+
+</details>
 
 Motor `127.0.0.1:8765` üzerinde rastgele oturum anahtarıyla çalışır. Ortak API varsayılan `127.0.0.1:47632` üzerinden yetkili istemcileri modele yönlendirir. 4096 token bağlam, en fazla 512 token çıktı, tek eşzamanlı istek, 120 saniye sınırı. Bu sürümde streaming, görüntü girdisi, eğitim, fine-tuning ve otomatik araç çalıştırma yoktur. Küçük modelin Türkçe ve karmaşık analiz kalitesi sınırlıdır. LM Studio veya önceki Windows PluginLabs AI paketi bu sürümde yönetilmez.
 

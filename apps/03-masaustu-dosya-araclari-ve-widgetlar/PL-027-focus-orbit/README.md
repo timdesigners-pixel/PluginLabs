@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-027` · `focus-orbit` |
 | Kategori | 03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030 |
-| Durum | Yeni fikir |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [focus-orbit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.9 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P0 · S |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3), yüzen balon |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-focus-orbit-windows.yml)) |
 | Codex projesi | `PL-027 · Focus Orbit` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83) |
 

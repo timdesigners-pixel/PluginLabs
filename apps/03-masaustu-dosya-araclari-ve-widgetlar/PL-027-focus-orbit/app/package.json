@@ -1,0 +1,66 @@
+{
+  "name": "focus-orbit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PL-027 Focus Orbit — Windows uygulaması: tek görevli odak zamanlayıcısı, her zaman üstte sürüklenebilir odak balonu, mola hatırlatmaları, dikkat listesi ve kullanıcı bildirimli kesinti kaydı; MyMind ile isteğe bağlı görev parçalama ve seans özeti (onaylı)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never",
+    "smoke": "node tests/desktop-smoke.cjs"
+  },
+  "main": "desktop/main.js",
+  "author": "PluginLabs",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-027-focus-orbit/app"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.focus-orbit",
+    "productName": "Focus Orbit",
+    "copyright": "PluginLabs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "app.html",
+      "app.js",
+      "app.css",
+      "bubble.html",
+      "bubble.js",
+      "src/**",
+      "pl/**",
+      "icons/icon256.png",
+      "icons/icon32.png",
+      "icons/icon16.png",
+      "icons/icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "FocusOrbit-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Focus Orbit"
+    },
+    "portable": {
+      "artifactName": "FocusOrbit-${version}-Windows-Portable-${arch}.${ext}"
+    },
+    "asar": true,
+    "publish": null
+  }
+}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Forge</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="tf" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar tf-side" aria-label="Ana menü">
+    <div class="tf-brand" aria-label="PluginLabs Apps">
+      <span class="tf-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="tf-apps">APPS</span>
+    </div>
+    <div class="tf-product">
+      <span class="pl-applogo" aria-hidden="true">TF</span>
+      <div class="tf-product__text"><b>Text Forge</b><span>Metin atölyesi</span></div>
+      <span class="tf-product__no pl-num" aria-label="Sıra numarası 33">33</span>
+    </div>
+    <div class="tf-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem tf-navbtn" type="button" data-nav="forge" role="tab">Atölye</button>
+      <button class="pl-navitem tf-navbtn" type="button" data-nav="history" role="tab">Geçmiş<span class="pl-badge" id="histCount">0</span></button>
+      <button class="pl-navitem tf-navbtn" type="button" data-nav="settings" role="tab">Sözlük, ayarlar ve ölçüler</button>
+    </div>
+    <div class="tf-mini" id="sideInfo"></div>
+    <div class="tf-side__foot">
+      <button class="pl-navitem tf-navbtn" type="button" id="openMymind"><span class="tf-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="tf-main">
+    <!-- Atölye -->
+    <div class="tf-view tf-forge" id="view-forge">
+      <section class="tf-col">
+        <div class="tf-card tf-input">
+          <div class="tf-bar"><h1 class="pl-h3 tf-h">Metin</h1><span class="tf-grow"></span>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clip" title="Panodaki metni al (yalnız siz bastığınızda okunur)">Panodan al</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="openFile">Dosya aç</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="clear" aria-label="Metni temizle">Temizle</button></div>
+          <textarea class="pl-input tf-area" id="input" maxlength="20000" placeholder="Yeniden yazmak istediğiniz metni buraya yapıştırın ya da başka bir uygulamada metni kopyalayıp Ctrl+Shift+Y'ye basın. Sayılar, tarihler, adlar, e-posta ve bağlantılar sabit alan olarak korunur." aria-label="Girdi metni" spellcheck="false"></textarea>
+          <div class="tf-row tf-small pl-muted"><span id="inCount">0 karakter</span><span class="tf-grow"></span><span id="fieldsSummary"></span></div>
+          <div class="tf-chips" id="fields" aria-label="Sabit alanlar"></div>
+          <div class="pl-callout pl-callout--warning tf-sens" id="sensWarn" hidden></div>
+        </div>
+        <div class="tf-card tf-opts">
+          <div class="tf-optrow"><span class="tf-label">İşlemler</span>
+            <div class="tf-toggles" role="group" aria-label="İşlemler">
+              <button type="button" class="tf-toggle" data-op="duzelt" aria-pressed="false">Düzelt</button>
+              <button type="button" class="tf-toggle" data-op="sadelestir" aria-pressed="false">Sadeleştir</button>
+              <button type="button" class="tf-toggle" data-op="kisalt" aria-pressed="false">Kısalt</button>
+              <button type="button" class="tf-toggle" data-op="bicim" aria-pressed="false">Biçimlendir</button>
+            </div></div>
+          <div class="tf-optrow"><span class="tf-label">Ton</span>
+            <div class="pl-segment" role="radiogroup" aria-label="Ton">
+              <button type="button" role="radio" data-tone="koru">Koru</button>
+              <button type="button" role="radio" data-tone="resmi">Resmî</button>
+              <button type="button" role="radio" data-tone="notr">Nötr</button>
+              <button type="button" role="radio" data-tone="samimi">Samimi</button>
+              <button type="button" role="radio" data-tone="ornek">Örneğe göre</button>
+            </div></div>
+          <div class="tf-sample" id="sampleBox" hidden>
+            <label class="pl-field__label" for="toneSample">Ton örneği — kendi yazdığınız, üslubunu taklit etmek istediğiniz kısa bir metin</label>
+            <textarea class="pl-input tf-area tf-area--sm" id="toneSample" maxlength="4000" rows="3" placeholder="Örn. daha önce gönderdiğiniz bir e-posta ya da mesaj." spellcheck="false"></textarea>
+            <span class="pl-muted tf-small" id="toneProfile"></span>
+          </div>
+          <div class="tf-row">
+            <button class="pl-btn pl-btn--primary" type="button" id="runBtn">Dönüştür</button>
+            <button class="pl-btn pl-btn--ghost" type="button" id="aiBtn"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind alternatifleri</button>
+            <span class="tf-grow"></span><span class="pl-muted tf-small">Ctrl+Enter</span>
+          </div>
+        </div>
+      </section>
+      <section class="tf-card tf-result" aria-label="Sonuç">
+        <div class="tf-bar"><h2 class="pl-h3 tf-h">Sonuç</h2><span class="tf-grow"></span><span class="pl-badge" id="keepBadge" hidden></span></div>
+        <div class="tf-stats" id="resStats"></div>
+        <div class="pl-tabs tf-tabs" role="tablist" aria-label="Sonuç görünümü">
+          <button class="pl-tab" type="button" role="tab" data-tab="diff">Fark</button>
+          <button class="pl-tab" type="button" role="tab" data-tab="out">Sonuç</button>
+          <button class="pl-tab" type="button" role="tab" data-tab="changes">Değişiklikler<span class="pl-badge" id="chgCount">0</span></button>
+          <button class="pl-tab" type="button" role="tab" data-tab="ai">MyMind<span class="pl-badge" id="aiCount" hidden>0</span></button>
+        </div>
+        <div class="tf-resbody" id="resBody" tabindex="0"></div>
+        <div class="tf-resfoot">
+          <button class="pl-btn pl-btn--primary" type="button" id="copyBtn" disabled>Kopyala</button>
+          <button class="pl-btn pl-btn--secondary" type="button" id="copyHideBtn" disabled title="Kopyalar ve pencereyi küçültür; kaynak uygulamada Ctrl+V ile yapıştırın">Kopyala ve küçült</button>
+          <button class="pl-btn pl-btn--ghost" type="button" id="reuseBtn" disabled>Girdiye al</button>
+          <span class="tf-grow"></span><span class="pl-muted tf-small" id="resNote">Kaynak uygulamaya kendiliğinden yazılmaz; kopyalayıp siz yapıştırırsınız.</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Geçmiş -->
+    <div class="tf-view tf-panels" id="view-history" hidden>
+      <section class="tf-card tf-card--wide">
+        <div class="tf-bar"><h2 class="pl-h3 tf-h">Geçmiş</h2><span class="pl-muted tf-small">Son 100 öneri; yalnız bu bilgisayarda.</span><span class="tf-grow"></span>
+          <input class="pl-input tf-search" id="histSearch" placeholder="Geçmişte ara" aria-label="Geçmişte ara">
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="clearHistory">Tümünü sil</button></div>
+        <ul class="tf-hist" id="hist"></ul>
+      </section>
+    </div>
+
+    <!-- Sözlük, ayarlar ve ölçüler -->
+    <div class="tf-view tf-panels" id="view-settings" hidden>
+      <section class="tf-card">
+        <h2 class="pl-h3 tf-h">Terim sözlüğü</h2>
+        <p class="pl-muted tf-small">Buradaki terimler (ürün, marka, kişi adları…) her zaman sabit alan sayılır: hiçbir işlem ve MyMind onları değiştiremez.</p>
+        <form class="tf-row" id="termForm"><input class="pl-input tf-grow" id="termInput" maxlength="60" placeholder="Terim ekle (örn. PluginLabs Hub)" aria-label="Terim"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="submit">Ekle</button></form>
+        <div class="tf-chips" id="glossary"></div>
+      </section>
+      <section class="tf-card">
+        <h2 class="pl-h3 tf-h">Hızlı pencere</h2>
+        <label class="tf-check"><input type="checkbox" id="setHotkey"> <span><b>Ctrl+Shift+Y</b> genel kısayolu: başka bir uygulamada metni kopyalayın, kısayola basın — Text Forge açılır ve panodaki metni alır.</span></label>
+        <label class="tf-check"><input type="checkbox" id="setHide"> <span>“Kopyala ve küçült” sonrası pencereyi küçült (kaynak uygulamaya dönüp Ctrl+V ile yapıştırırsınız).</span></label>
+        <p class="pl-muted tf-small" id="hotkeyInfo"></p>
+      </section>
+      <section class="tf-card tf-card--wide">
+        <h2 class="pl-h3 tf-h">Ölçüler</h2>
+        <p class="pl-muted tf-small">Notion doğrulama ölçütü: sabit sayı/isim koruma ≥ %99, öneriyi kullanma oranı ≥ %50 (kopyalanan öneri / üretilen öneri). Yalnız bu bilgisayarda sayılır.</p>
+        <div class="tf-metrics" id="metrics"></div>
+      </section>
+      <section class="tf-card tf-card--wide">
+        <h2 class="pl-h3 tf-h">Gizlilik ve sınırlar</h2>
+        <ul class="tf-ul">
+          <li>Text Forge yalnız sizin yazdığınız/yapıştırdığınız metni, açtığınız dosyayı ya da sizin bastığınız düğme/kısayolla panodaki metni okur. Pano kendiliğinden okunmaz.</li>
+          <li>Parola kutusundan kopyalanmış gibi görünen tek parça metin (boşluksuz, karışık karakter) alınmaz. Metindeki parola/PIN/anahtar, kart, IBAN ve T.C. kimlik numaraları gizli sabit alan sayılır, ekranda maskelenir ve MyMind'a gitmez.</li>
+          <li>Sonuç kaynak uygulamaya kendiliğinden yazılmaz ve e-posta gönderilmez: “Kopyala” dersiniz, siz yapıştırırsınız.</li>
+          <li>Düzeltme, sadeleştirme, kısaltma, ton ve biçimlendirme bu bilgisayarda kural tabanlı çalışır. MyMind isteğe bağlıdır: her istekte onay penceresi açılır; sabit alanların değerleri gönderilmez, yalnız ⟦n⟧ yer tutucuları gider.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="tf-foot pl-muted" id="foot">Text Forge 0.1.0 · PluginLabs · çevrimdışı çalışır</footer>
+  </main>
+
+  <dialog class="pl-modal tf-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon tf-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted tf-tight">Tonunuza göre alternatif yazımlar bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla üretilebilir. İsteğe bağlıdır; yerel dönüştürme her zaman çalışır.</p></div></div>
+    <div class="pl-modal__body tf-stack">
+      <ol class="tf-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted tf-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="tf-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="tf-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

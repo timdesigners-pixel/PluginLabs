@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screenshot Studio</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ss" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ss-side" aria-label="Ana menü">
+    <div class="ss-brand" aria-label="PluginLabs Apps">
+      <span class="ss-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ss-apps">APPS</span>
+    </div>
+    <div class="ss-product">
+      <span class="pl-applogo" aria-hidden="true">SS</span>
+      <div class="ss-product__text"><b>Screenshot Studio</b><span>İşaretle ve gizle</span></div>
+      <span class="ss-product__no pl-num" aria-label="Sıra numarası 29">29</span>
+    </div>
+    <div class="ss-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ss-navbtn" type="button" data-nav="studio" role="tab">Stüdyo</button>
+      <button class="pl-navitem ss-navbtn" type="button" data-nav="history" role="tab">Kayıtlar<span class="pl-badge" id="historyCount">0</span></button>
+      <button class="pl-navitem ss-navbtn" type="button" data-nav="settings" role="tab">Ayarlar ve gizlilik</button>
+    </div>
+    <div class="ss-side__foot">
+      <div class="ss-shortcut" id="shortcutInfo"><span class="pl-muted">Bölge yakalama</span><span class="pl-kbd" id="shortcutKbd">Ctrl Shift X</span></div>
+      <button class="pl-navitem ss-navbtn" type="button" id="openMymind"><span class="ss-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+      <button class="pl-navitem ss-navbtn" type="button" id="openPalette"><span>Komutlar</span><span class="pl-kbd">Ctrl K</span></button>
+    </div>
+  </nav>
+
+  <main class="ss-main">
+    <div class="ss-view ss-studio" id="view-studio">
+      <header class="ss-toolbar" aria-label="Yakalama ve araçlar">
+        <div class="ss-group" role="group" aria-label="Yakala">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="capRegion" title="Bölge yakala">Bölge yakala</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="capScreen">Tüm ekran</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="capWindow">Pencere…</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="openFile">Aç</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="pasteBtn">Panodan</button>
+        </div>
+        <span class="ss-sep" aria-hidden="true"></span>
+        <div class="ss-tools" id="tools" role="toolbar" aria-label="Düzenleme araçları"></div>
+        <span class="ss-sep" aria-hidden="true"></span>
+        <div class="ss-colors" id="colors" role="radiogroup" aria-label="Renk"></div>
+        <span class="ss-grow"></span>
+        <button class="pl-iconbtn pl-iconbtn--sm" type="button" id="undoBtn" aria-label="Geri al (Ctrl+Z)" title="Geri al (Ctrl+Z)"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-4"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" type="button" id="redoBtn" aria-label="Yinele (Ctrl+Y)" title="Yinele (Ctrl+Y)"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h4"/></svg></button>
+      </header>
+
+      <div class="ss-work">
+        <section class="ss-stage" id="stage" aria-label="Düzenleme alanı">
+          <div class="ss-empty" id="empty">
+            <div class="ss-empty__art" aria-hidden="true"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <b>Ekran görüntüsü alın</b>
+            <span class="pl-muted" id="emptyHint">“Bölge yakala” ya da kısayol ile ekranın bir bölümünü seçin. Pencere, tüm ekran, dosya ve pano da olur.</span>
+            <div class="ss-bar"><button class="pl-btn pl-btn--primary" type="button" id="emptyRegion">Bölge yakala</button><button class="pl-btn pl-btn--secondary" type="button" id="emptyOpen">Görüntü aç</button></div>
+          </div>
+          <div class="ss-canvaswrap" id="canvasWrap" hidden>
+            <canvas id="canvas" tabindex="0" aria-label="Ekran görüntüsü düzenleyici. Araç kısayolları: V seç, A ok, R kutu, N numara, T metin, H vurgu, B bulanık, M maske, C kırp."></canvas>
+            <input class="ss-textinput" id="textInput" type="text" maxlength="200" hidden aria-label="Metin">
+          </div>
+          <div class="ss-stagebar" id="stageBar" hidden>
+            <span class="pl-muted" id="imgInfo"></span>
+            <span class="ss-grow"></span>
+            <span class="ss-timer" id="timer" title="Yakalamadan bu yana geçen süre (hedef ≤30 sn)"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="clearCrop" hidden>Kırpmayı kaldır</button>
+          </div>
+        </section>
+
+        <aside class="ss-panel" aria-label="Hassas alanlar ve dışa aktarma">
+          <div class="ss-card" id="sensCard">
+            <div class="ss-bar"><h2 class="ss-sub">Hassas alanlar <span class="pl-badge" id="candCount">0</span></h2><span class="ss-grow"></span>
+              <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="scanBtn">Tara</button></div>
+            <p class="pl-muted ss-small" id="scanInfo">Görüntüdeki yazı bu bilgisayarda okunur; e-posta, telefon, IBAN, kart, T.C. kimlik, anahtar ve şifre gibi alanlar <b>aday</b> olarak işaretlenir. Siz onaylamadan maskelenmez.</p>
+            <ul class="ss-cands" id="cands" aria-live="polite"></ul>
+            <div class="ss-bar">
+              <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="acceptAll" disabled>Tümünü maskele</button>
+              <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="aiBtn"><svg class="pl-ico ss-gold" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile ek aday</button>
+            </div>
+            <p class="pl-muted ss-small">Öneri sızıntı olmayacağını garanti etmez; görüntüyü kendiniz de gözden geçirin. Maske (M) aracıyla elle de ekleyebilirsiniz.</p>
+          </div>
+
+          <div class="ss-card">
+            <div class="ss-bar"><h2 class="ss-sub">Çerçeve</h2><span class="ss-grow"></span><canvas class="ss-preview" id="preview" width="160" height="100" aria-label="Çıktı önizlemesi"></canvas></div>
+            <div class="pl-segment" role="tablist" id="frameSeg" aria-label="Çerçeve biçimi">
+              <button type="button" role="tab" data-frame="none">Yok</button><button type="button" role="tab" data-frame="shadow">Gölge</button><button type="button" role="tab" data-frame="window">Pencere</button>
+            </div>
+            <div class="ss-backdrops" id="backdrops" aria-label="Zemin"></div>
+            <div class="pl-field" id="titleField"><label class="pl-field__label" for="frameTitle">Pencere başlığı <span class="pl-muted">(isteğe bağlı)</span></label><input class="pl-input" id="frameTitle" maxlength="80" autocomplete="off" placeholder="ör. Ayarlar → Fatura"></div>
+          </div>
+
+          <div class="ss-card ss-export">
+            <div class="ss-bar"><h2 class="ss-sub">Dışa aktar</h2><span class="ss-grow"></span>
+              <div class="pl-segment" role="tablist" id="fmtSeg" aria-label="Biçim"><button type="button" role="tab" data-fmt="png">PNG</button><button type="button" role="tab" data-fmt="jpeg">JPEG</button></div></div>
+            <button class="pl-btn pl-btn--primary pl-btn--lg ss-go" type="button" id="copyBtn">Panoya kopyala <span class="pl-kbd">Ctrl C</span></button>
+            <button class="pl-btn pl-btn--secondary ss-go" type="button" id="saveBtn">Kaydet <span class="pl-kbd">Ctrl S</span></button>
+            <div class="ss-result" id="result" hidden></div>
+            <p class="pl-muted ss-small ss-path" id="outInfo"></p>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="ss-view ss-history" id="view-history" hidden>
+      <div class="ss-kpis" id="kpis"></div>
+      <div class="ss-panel__head"><h2 class="pl-h3">Dışa aktarılanlar</h2><span class="pl-muted ss-small">Yalnız kayıt bilgisi (dosya adı, ölçü, süre, maske sayısı) bu bilgisayarda — kasa varsa şifreli — tutulur. Görüntüler yalnız siz kaydettiğinizde diske yazılır.</span></div>
+      <ul class="ss-hist" id="history"></ul>
+    </div>
+
+    <div class="ss-view ss-panels" id="view-settings" hidden>
+      <section class="ss-panel2">
+        <div class="ss-panel__head"><h2 class="pl-h3">Yakalama</h2></div>
+        <div class="pl-field"><label class="pl-field__label" for="setShortcut">Bölge yakalama kısayolu</label><select class="pl-select" id="setShortcut"></select><span class="pl-muted ss-small" id="shortcutState"></span></div>
+        <label class="ss-check"><input type="checkbox" id="setHide"> Yakalarken bu pencereyi gizle</label>
+        <label class="ss-check"><input type="checkbox" id="setScan"> Yakaladıktan sonra hassas alanları kendiliğinden tara</label>
+        <div class="ss-panel__head"><h2 class="pl-h3">Dışa aktarma</h2></div>
+        <div class="ss-grid2">
+          <div class="pl-field"><label class="pl-field__label" for="setQuality">JPEG kalitesi</label><input class="pl-input" id="setQuality" type="number" min="50" max="100"></div>
+          <div class="pl-field"><label class="pl-field__label" for="setMask">Maske rengi</label><select class="pl-select" id="setMask"><option value="#000000">Siyah</option><option value="#ffffff">Beyaz</option><option value="#1b2236">Koyu lacivert</option></select></div>
+        </div>
+        <label class="ss-check"><input type="checkbox" id="setCopy"> Kaydederken panoya da kopyala</label>
+        <div class="ss-bar"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="chooseDir">Kayıt klasörü seç</button><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="defaultDir">Resimler klasörüne dön</button></div>
+        <span class="pl-muted ss-small ss-path" id="dirInfo"></span>
+        <label class="ss-check"><input type="checkbox" id="setMotion"> Hareketi azalt (geçişler kapalı; sistem ayarı da izlenir)</label>
+      </section>
+      <section class="ss-panel2">
+        <div class="ss-panel__head"><h2 class="pl-h3">Gizlilik ve sınırlar</h2></div>
+        <ul class="ss-list" id="privacy"></ul>
+      </section>
+    </div>
+    <footer class="ss-foot pl-muted">Yakalama, yazı okuma ve maskeleme bu bilgisayarda yapılır; görüntüler hiçbir yere yüklenmez. Maskeli alanlar çıktıda piksel piksel denetlenir.</footer>
+  </main>
+
+  <dialog class="pl-modal ss-dialog ss-windows" id="winDialog" aria-labelledby="winTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="winTitle">Pencere seçin</h2><p class="pl-muted ss-tight">Açık pencerelerden birinin görüntüsü alınır. Küçültülmüş pencereler listede görünmeyebilir.</p></div></div>
+    <div class="pl-modal__body"><ul class="ss-winlist" id="winList"></ul></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="winRefresh">Yenile</button><button class="pl-btn pl-btn--ghost" type="button" id="winCancel">Vazgeç</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ss-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ss-gold"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ss-tight">Kurallarla bulunamayan adlar, adres parçaları gibi ek hassas alan adayları bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla önerilir. İsteğe bağlıdır; görüntü hiçbir zaman gönderilmez.</p></div></div>
+    <div class="pl-modal__body ss-stack">
+      <ol class="ss-list">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ss-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <dialog class="ss-cmdk-dialog" id="palette" aria-label="Komut paleti">
+    <div class="pl-cmdk">
+      <div class="pl-cmdk__input"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="paletteInput" role="combobox" aria-controls="paletteList" aria-expanded="true" aria-label="Komut ara" autocomplete="off" placeholder="Komut ara"><span class="pl-kbd">Esc</span></div>
+      <div class="pl-cmdk__list" id="paletteList" role="listbox"></div>
+      <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gezin</span><span><span class="pl-kbd">↵</span> çalıştır</span><span><span class="pl-kbd">Ctrl</span><span class="pl-kbd">C</span> kopyala</span></div>
+    </div>
+  </dialog>
+  <div class="ss-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ss-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/studio.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

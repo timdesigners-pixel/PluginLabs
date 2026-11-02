@@ -1,0 +1,66 @@
+{
+  "name": "quick-convert",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PL-028 Quick Convert — Windows uygulaması: sürükle-bırak dosya dönüştürücü; görüntü biçimi/boyutu (PNG, JPEG, WebP, GIF, BMP → PNG, JPEG, WebP) ve metin kodlaması (UTF-8, UTF-16, Windows-1254, satır sonu); kaynak korunur, çıktı doğrulanır; her zaman üstte bırakma kutusu; MyMind ile isteğe bağlı ayar önerisi (onaylı)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never",
+    "smoke": "node tests/desktop-smoke.cjs"
+  },
+  "main": "desktop/main.js",
+  "author": "PluginLabs",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.quick-convert",
+    "productName": "Quick Convert",
+    "copyright": "PluginLabs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "app.html",
+      "app.js",
+      "app.css",
+      "drop.html",
+      "drop.js",
+      "src/**",
+      "pl/**",
+      "icons/icon256.png",
+      "icons/icon32.png",
+      "icons/icon16.png",
+      "icons/icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "QuickConvert-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Quick Convert"
+    },
+    "portable": {
+      "artifactName": "QuickConvert-${version}-Windows-Portable-${arch}.${ext}"
+    },
+    "asar": true,
+    "publish": null
+  }
+}

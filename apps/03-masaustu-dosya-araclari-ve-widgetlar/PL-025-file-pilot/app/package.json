@@ -1,0 +1,65 @@
+{
+  "name": "file-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PL-025 File Pilot — Windows uygulaması: seçtiğiniz klasörleri yerel olarak indeksler; ad/metin/etiket araması, eşleşen bölüm önizlemesi, benzer belge ve MyMind ile anlamsal sorgu (onaylı)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "bench": "node tests/bench.cjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never",
+    "smoke": "node tests/desktop-smoke.cjs"
+  },
+  "main": "desktop/main.js",
+  "author": "PluginLabs",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot/app"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.file-pilot",
+    "productName": "File Pilot",
+    "copyright": "PluginLabs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "app.html",
+      "app.js",
+      "app.css",
+      "src/**",
+      "pl/**",
+      "icons/icon256.png",
+      "icons/icon32.png",
+      "icons/icon16.png",
+      "icons/icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "FilePilot-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "File Pilot"
+    },
+    "portable": {
+      "artifactName": "FilePilot-${version}-Windows-Portable-${arch}.${ext}"
+    },
+    "asar": true,
+    "publish": null
+  }
+}

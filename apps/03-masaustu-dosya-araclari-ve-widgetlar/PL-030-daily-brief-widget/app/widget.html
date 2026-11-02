@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Daily Brief — bugün</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="dw-body">
+<div class="dw" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <header class="dw-head">
+    <span class="dw-mark" aria-hidden="true">DB</span>
+    <div class="dw-head__text"><b id="date">Bugün</b><span id="headline" class="pl-muted"></span></div>
+    <div class="dw-tools">
+      <button class="dw-btn" type="button" id="hide" title="Hassas başlıkları gizle" aria-label="Hassas başlıkları gizle" aria-pressed="false"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path id="hideIco" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></button>
+      <button class="dw-btn" type="button" id="open" title="Ana pencereyi aç" aria-label="Ana pencereyi aç"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-8 8M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+      <button class="dw-btn" type="button" id="close" title="Widget'ı gizle" aria-label="Widget'ı gizle"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+  </header>
+  <section class="dw-next" id="next" aria-live="polite"></section>
+  <section class="dw-sec"><h2 class="dw-h">Takvim</h2><ol class="dw-list" id="events"></ol></section>
+  <section class="dw-sec"><h2 class="dw-h">Görevler</h2><ul class="dw-list" id="tasks"></ul></section>
+  <div class="dw-warn" id="warn" hidden></div>
+  <footer class="dw-foot">
+    <span class="pl-muted dw-fresh" id="fresh"></span>
+    <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="read">Okudum</button>
+  </footer>
+</div>
+<script src="src/core.js"></script>
+<script src="widget.js"></script>
+</body>
+</html>

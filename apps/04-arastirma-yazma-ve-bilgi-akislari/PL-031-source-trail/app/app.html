@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source Trail</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="st" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar st-side" aria-label="Ana menü">
+    <div class="st-brand" aria-label="PluginLabs Apps">
+      <span class="st-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="st-apps">APPS</span>
+    </div>
+    <div class="st-product">
+      <span class="pl-applogo" aria-hidden="true">ST</span>
+      <div class="st-product__text"><b>Source Trail</b><span>Kanıt izi arşivin</span></div>
+      <span class="st-product__no pl-num" aria-label="Sıra numarası 31">31</span>
+    </div>
+    <div class="st-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem st-navbtn" type="button" data-nav="claims" role="tab">İddialar<span class="pl-badge" id="claimCount">0</span></button>
+      <button class="pl-navitem st-navbtn" type="button" data-nav="sources" role="tab">Kaynaklar<span class="pl-badge" id="sourceCount">0</span></button>
+      <button class="pl-navitem st-navbtn" type="button" data-nav="biblio" role="tab">Kaynakça ve dışa aktarma</button>
+      <button class="pl-navitem st-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve gizlilik</button>
+    </div>
+    <div class="st-proj">
+      <label class="pl-field__label" for="projectFilter">Proje</label>
+      <select class="pl-input st-select" id="projectFilter" aria-label="Proje süzgeci"></select>
+    </div>
+    <div class="st-mini" id="sideInfo"></div>
+    <div class="st-side__foot">
+      <button class="pl-navitem st-navbtn" type="button" id="openMymind"><span class="st-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="st-main">
+    <!-- İddialar -->
+    <div class="st-view st-split" id="view-claims">
+      <section class="st-card st-listcol" aria-label="İddia listesi">
+        <form class="st-stack" id="newClaimForm">
+          <textarea class="pl-input st-area st-area--sm" id="newClaim" maxlength="2000" rows="3" placeholder="Yeni iddia yazın (ör. “Evden çalışma odaklanmayı artırır.”) — sonra kaynak bağlayın ya da eksik olarak etiketleyin." aria-label="Yeni iddia"></textarea>
+          <div class="st-row"><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">İddia ekle</button><span class="st-grow"></span>
+            <select class="pl-input st-select st-select--sm" id="claimFilter" aria-label="Duruma göre süz">
+              <option value="">Tüm durumlar</option><option value="etiketsiz">Kaynaksız — etiket yok</option><option value="eksik">Eksik (etiketli)</option><option value="tek">Tek bağımsız kaynak</option><option value="celiskili">Çelişkili</option><option value="guclu">Kanıtlı</option><option value="arsiv">Arşiv</option>
+            </select></div>
+        </form>
+        <ul class="st-list" id="claimList" aria-label="İddialar"></ul>
+      </section>
+      <section class="st-card st-detail" id="claimDetail" aria-label="İddia ayrıntısı"></section>
+    </div>
+
+    <!-- Kaynaklar -->
+    <div class="st-view st-split" id="view-sources" hidden>
+      <section class="st-card st-listcol" aria-label="Kaynak listesi">
+        <div class="st-row">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="capture" title="Tarayıcıda metni ve adres çubuğunu kopyalayın; bu düğmeye bastığınızda pano okunur">Panodan yakala</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="newSource">Yeni kaynak</button>
+          <span class="st-grow"></span>
+          <label class="st-check st-small"><input type="checkbox" id="showArchivedSources"> Arşiv</label>
+        </div>
+        <input class="pl-input" id="sourceSearch" placeholder="Kaynaklarda ara (başlık, yazar, alıntı, adres)" aria-label="Kaynaklarda ara">
+        <ul class="st-list" id="sourceList" aria-label="Kaynaklar"></ul>
+      </section>
+      <section class="st-card st-detail" aria-label="Kaynak kartı">
+        <form class="st-form" id="sourceForm" autocomplete="off">
+          <div class="st-bar"><h2 class="pl-h3 st-h" id="sourceFormTitle">Yeni kaynak kartı</h2><span class="st-grow"></span><span id="sourceBadges" class="st-row"></span></div>
+          <div class="st-grid2">
+            <div class="pl-field"><label class="pl-field__label" for="fTitle">Başlık</label><input class="pl-input" id="fTitle" maxlength="400"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fType">Tür</label><select class="pl-input st-select" id="fType"></select></div>
+            <div class="pl-field st-span2"><label class="pl-field__label" for="fUrl">Adres (URL)</label><input class="pl-input" id="fUrl" maxlength="2000" placeholder="https://…" spellcheck="false"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fAuthors">Yazar(lar) — “Soyad, Ad; Kurum”</label><input class="pl-input" id="fAuthors" maxlength="600"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fPublisher">Yayıncı / site / dergi</label><input class="pl-input" id="fPublisher" maxlength="300"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fPublished">Yayın tarihi (YYYY, YYYY-AA-GG ya da GG.AA.YYYY)</label><input class="pl-input" id="fPublished" maxlength="40"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fAccessed">Erişim tarihi</label><input class="pl-input" id="fAccessed" maxlength="40"></div>
+            <div class="pl-field st-span2"><label class="pl-field__label" for="fQuote">Seçili metin / alıntı (kaynakta aynen geçen)</label><textarea class="pl-input st-area" id="fQuote" maxlength="6000" rows="5" spellcheck="false"></textarea></div>
+            <div class="pl-field st-span2"><label class="pl-field__label" for="fNote">Kişisel not</label><textarea class="pl-input st-area st-area--sm" id="fNote" maxlength="4000" rows="2"></textarea></div>
+            <div class="pl-field"><label class="pl-field__label" for="fProject">Proje</label><input class="pl-input" id="fProject" maxlength="80" list="projectList"></div>
+            <div class="pl-field"><label class="pl-field__label" for="fCopyOf">Şu kaynağın kopyası (bağımsız sayılmaz)</label><select class="pl-input st-select" id="fCopyOf"></select></div>
+          </div>
+          <label class="st-check"><input type="checkbox" id="fUnreachable"> <span>Kaynağa artık ulaşılamıyor (sayfa kalktı, özel/ücretli erişim) — kanıt sayılmaz</span></label>
+          <div class="st-row">
+            <button class="pl-btn pl-btn--primary" type="submit">Kaydet</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="openUrl">Adresi aç</button>
+            <span class="st-grow"></span>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="archiveSource">Arşivle</button>
+          </div>
+          <div class="st-usedby" id="sourceUsedBy"></div>
+        </form>
+        <datalist id="projectList"></datalist>
+      </section>
+    </div>
+
+    <!-- Kaynakça -->
+    <div class="st-view st-panels" id="view-biblio" hidden>
+      <section class="st-card st-card--wide">
+        <div class="st-bar"><h2 class="pl-h3 st-h">Kaynakça</h2><span class="st-grow"></span>
+          <div class="pl-segment" role="radiogroup" aria-label="Biçim" id="formatSeg"></div></div>
+        <div class="st-row">
+          <select class="pl-input st-select st-select--sm" id="scopeSel" aria-label="Kapsam"><option value="kullanilan">Yalnız iddialarda kullanılan kaynaklar</option><option value="tum">Tüm kaynaklar</option></select>
+          <span class="pl-muted st-small" id="biblioInfo"></span><span class="st-grow"></span>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="exportCopy">Panoya kopyala</button>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="exportSave">Dosyaya kaydet</button>
+        </div>
+        <pre class="st-pre" id="biblioPreview" tabindex="0" aria-label="Kaynakça önizlemesi"></pre>
+      </section>
+      <section class="st-card">
+        <h2 class="pl-h3 st-h">Yedek</h2>
+        <p class="pl-muted st-small">Tüm kaynak ve iddia kartları tek bir JSON dosyasına yazılır. İçe aktarmada var olan kartlar ezilmez, yalnız yeni kimlikler eklenir.</p>
+        <div class="st-row"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="backupExport">Yedeği dışa aktar</button><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="backupImport">Yedeği içe aktar</button></div>
+      </section>
+      <section class="st-card">
+        <h2 class="pl-h3 st-h">Örnek proje</h2>
+        <p class="pl-muted st-small">“Örnek: Uzaktan çalışma” projesi: uydurma örnek kaynaklarla (example.org/.com/.net) iddia–kaynak ilişkisini, kopya kaynağı, eksik etiketini ve çelişkiyi gösterir.</p>
+        <div class="st-row"><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek projeyi ekle</button></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler -->
+    <div class="st-view st-panels" id="view-settings" hidden>
+      <section class="st-card st-card--wide">
+        <h2 class="pl-h3 st-h">Ölçüler</h2>
+        <p class="pl-muted st-small">Notion doğrulama ölçütü: iddia kartlarının %100'ünde erişilebilir kayıtlı kaynak veya açık eksik etiketi. Yalnız bu bilgisayarda hesaplanır; proje süzgecine uyar.</p>
+        <div class="st-metrics" id="metrics"></div>
+      </section>
+      <section class="st-card st-card--wide">
+        <h2 class="pl-h3 st-h">Kurallar, gizlilik ve sınırlar</h2>
+        <ul class="st-ul">
+          <li>Kaynak kartı yalnız sizin yapıştırdığınız seçimden ve yazdığınız künyeden oluşur. Source Trail sayfaları indirmez, kazımaz; pano yalnız “Panodan yakala” düğmesine bastığınızda okunur.</li>
+          <li>Bir iddiaya bağladığınız alıntı, kaynak kartındaki kayıtlı metinde aynen (boşluk, tipografik tırnak ve büyük/küçük harf farkı dışında) bulunmalıdır; bulunmuyorsa kaydedilmez.</li>
+          <li>Aynı adres (izleme parametreleri, www, # yok sayılır), aynı metin, aynı başlık+yazar ya da sizin “kopyası” işaretiniz → tek bağımsız kaynak. Haber sitesinin bir raporu aktarması ikinci doğrulama sayılmaz.</li>
+          <li>Ulaşılamıyor işaretli ya da künyesi eksik (adres yok; başlık, yazar ve yayıncı/tarih yok) kaynak kanıt sayılmaz.</li>
+          <li>MyMind isteğe bağlıdır ve yalnız taslak üretir: her istekte onay penceresi açılır; yalnız iddia metni ile bağlı kaynakların başlığı ve kayıtlı alıntısı gider (adres, yazar, not, proje gitmez). Önerilen alıntı kaynak metninde aynen yoksa atılır; siz “Uygula” demeden hiçbir bağ değişmez.</li>
+          <li>Silme yok, arşivleme var: arşivlenen kart listelerden ve kaynakçadan çıkar, geri alınabilir.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="st-foot pl-muted" id="foot">Source Trail 0.1.0 · PluginLabs · çevrimdışı çalışır</footer>
+  </main>
+
+  <dialog class="pl-modal st-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon st-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted st-tight">Bir iddianın kaynaklarla karşılaştırma taslağı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla üretilebilir. İsteğe bağlıdır; arşiv ve kaynakça her zaman çevrimdışı çalışır.</p></div></div>
+    <div class="pl-modal__body st-stack">
+      <ol class="st-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted st-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="st-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="st-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,3 +1,70 @@
+PluginLabs Hub 0.4.15 — Üst çerçeve menüsü, bölünmüş Yükle düğmesi, uygulama logo karoları ve fotoğraf alanlı widget'lar.
+
+- Üst çerçeve: Dosya / Görünüm / Araçlar / Yardım menüsü pencerenin en üstünde, tüm genişlikte (PLC-029 başlık çubuğu kalıbı: logo, başlık, menüler, “Her şeyi ara · Ctrl K”). Kenar çubuğu ve içerik bunun altında başlar.
+- Sayfa geçişi: menüden bir sayfaya tıklayınca sayfa artık en üstten açılır (önceden bir miktar aşağıdan başlıyordu).
+- Çalışma alanınız için: kartlarda yalnızca uygulama logosu, ad ve boyut var; “Yükle” bölünmüş düğmedir (indirme oku simgesi, ▾ ile açılan menüde Detaylı bilgi, Ayarlar ve paket bilgisi, Kaynağı gör). Tüm uygulama kartlarında ve “+ Yükle” düğmelerinde artı yerine indirme oku kullanılır.
+- Uygulama simgeleri: tasarım sistemindeki uygulama logo karoları (iki harfli kısaltma + ürün aksanı; ürün aksanı olmayanlara palet rengi).
+- Günün kombini ve Günün menüsü widget'ları: fotoğraf alanları. Varsayılan olarak ÇİZİM önizlemesi gösterilir; kendi fotoğrafınızı (kombin) ve yemek fotoğraflarını ekleyebilirsiniz. Fotoğraflar yalnızca bu cihazda saklanır (küçültülüp yerel depoya yazılır), hiçbir yere gönderilmez. Sizin üzerinizde gerçekçi kombin görüntüsü üretimi yoktur; bu, Gardrop'un sanal deneme özelliğine bağlıdır ve henüz yok.
+- Tasarım sistemi bileşenleri: karşılama kahramanı (OnboardingHero), eklenti satırları anahtarlı (ExtensionRow), izin isteği kartı (PermissionCard), güncelleme kartı (UpdateCard), indirme satırı (InstallRow), durum çubuğu (StatusBar). Tüm düğmeler tasarım sistemindeki Button bileşeniyle birebir (pl-btn; yazı boyutu, ağırlık, köşe, yükseklik); “+”, “↻”, “▶”, “↗” harf simgeleri çizgi ikonlarıyla değişti. Önceden Hub'ın genel yazı kuralı düğme yazı değerlerini eziyordu.
+- Daha fazla tasarım sistemi bileşeni: Filtre çubuğu + seçim kutusu (Keşfet/Kaynak), karşılama başlığı ve duyuru bandı (Genel bakış), hap gezinme (Eklenti yöneticisi), proje kenar çubuğu (Uygulama kataloğu), HUD metrik + HUD tablo (API ve izinler), modal başlık/gövde/alt yapısı; widget'larda gün şeridi + ajanda, karanlık görev kartı (başlangıç görevleri gerçek veriyle), büyük sayı üçlüsü, bütçe göstergesi, aktivite karosu, yemek kartı, saat-hava + iklim çipleri, iş kuyruğu, değerleme hesaplayıcı (çalışır), kişi kartı, cihaz anahtar karosu. Widget verileri “Örnek veri” rozetiyle işaretlidir (başlangıç görevleri ve My Mind widget'ı gerçek).
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
+PluginLabs Hub 0.4.14 — PluginLabs Advanced arayüzü, Akış panosu ve Widget düzenleyici.
+
+- Tasarım sistemi: PluginLabs Advanced (v2.0.0) depoya kuruldu (`design-system/pluginlabs-advanced`, eski `pluginlabs-design` `design-system/_arsiv/` altında). Hub arayüzü Advanced bileşenleri ve değerlerine taşındı; Hub Yeşil ve Iris paletleri ile koyu/açık tema korundu.
+- Üst menü (Dosya, Görünüm, Araçlar, Yardım), kayan akış bandı, sunucu ve bağlantı durum kartları, istatistik kartları, Ctrl+K komut paleti (opak panel), renkli menü simgeleri; menüde kaydırma çubuğu yok.
+- Genel bakış: girişte başlığın altında işlem düğmeli My Mind sunucusu ve Uygulama bağlantısı durum kartları ile ilerleme çubuklu istatistik kartları; özgün düzen (karşılama, “Çalışma alanınız için”, kaynaklar ve API kartı) olduğu gibi korunur; sonunda Akış panosu — Veri akışı, Günün kombini, Günün menüsü, Bugün, Yaklaşan ödemeler, Fiyat düşüşleri, Yakalanan kodlar, Son notlar, Kazıma görevleri, Odak ve My Mind widget'ları. Şimdilik My Mind dışındakiler ÖRNEK VERİ gösterir ve "Örnek veri" rozeti taşır; uygulama yüklüyse ilgili widget genişler. Uygulamalar Hub'a veri akıtmaya başlayana kadar gerçek veri yoktur.
+- Ayarlar: beş sekme (Görünüm, Widget'lar, Veri ve gizlilik, Bağlantılar, Kısayollar, Hakkında) ve Widget düzenleyici (widget ekle/çıkar, sıra, varsayılana dön; bu cihazda saklanır). Hub sürümü artık gerçek değeri gösterir (önceden 0.3.0 yazıyordu).
+- Uygulamalarım: istatistik kartları, tür süzgeci, ızgara/liste görünümü, boş durum. My Mind sayfasındaki kart boşluğu düzeltildi.
+- Üst başlıkta "Pro'ya geç" düğmesi var; Pro planı henüz yoktur, düğme bunu açıklayan bir pencere açar.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
+PluginLabs Hub 0.4.13 — Özel MyMind modeli ve istemci sıcaklığı.
+
+- My Mind: kendi eğitilmiş GGUF modelini içe aktarma (GGUF imzası, 1 MB–8 GB sınırı, aynı klasördeki SHA256SUMS ile SHA-256 doğrulaması, geçici dosya temizliği), katalog/özel model kaynağı seçimi, kaldırma. Model aynı `mymind-lite` API adıyla sunulur; istemcilerde değişiklik gerekmez.
+- API: `/v1/chat/completions` istemcinin `temperature` değerini (0–1) iletir; verilmezse 0,4. Önceden her istek 0,4 ile gidiyordu.
+- Eski kayıtlar: model kaynağı olmayan durum dosyası katalog modeliyle açılır.
+- Bu sürüm, ayrı yayımlanmamış 0.4.11 (MyWishlist 0.1.0) ve 0.4.12 (The Ultimate Upscaler 0.1.0) katalog değişikliklerini de içerir.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir.
+
+---
+
+PluginLabs Hub 0.4.12 — The Ultimate Upscaler 0.1.0 kataloğa eklendi.
+
+- Katalog: The Ultimate Upscaler 0.1.0 (PL-056; cihazda görsel büyütme: Otomatik/Fotoğraf/Çizim/Piksel/Yumuşak profilleri, önce/sonra karşılaştırma, toplu sıra, MyMind ile yalnız ölçümlerle onaylı ayar önerisi; Chrome eklentisi sağ tık ile aynı sürümde). Boyut ve SHA-256 dağıtım deposundaki dosyayla doğrulandı.
+- Tasarım sistemi: `upscaler` (`#38bdf8`) aksanı eklendi; Tork birleştirmesinde kaybolan `gardrop` (`#e879f9`) aksanı geri getirildi. Kanonik kaynak ve iki skill kopyası eşit.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir.
+
+---
+
+PluginLabs Hub 0.4.11 — MyWishlist 0.1.0 kataloğa eklendi.
+
+- Katalog: MyWishlist 0.1.0 (PL-054; Rust/Tauri Windows uygulaması + Chrome eklentisi: istek listeleri, öncelik, fiyat takibi ve uyarılar, ürün adıyla çok sitede arama ve karşılaştırma, sepet planı, alışveriş asistanı, MyMind ile ekleme, ekran görüntüsünden tanıma). Boyut ve SHA-256 kaynak sürümdeki taşınabilir exe’den alındı.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
+PluginLabs Hub 0.4.10 — MyMind AI 0.1.0 kataloğa eklendi.
+
+- Katalog: Gardrop 0.1.0 (PL-055; dijital gardırop: parçalar, kombinler, “Bugün ne giysem?”, giyim günlüğü, analiz, istek listesi, MyMind ile onaylı kombin önerisi; Chrome eklentisi aynı sürümde). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Tasarım sistemi: `gardrop` ürün aksanı (`#e879f9`) kanonik kaynağa ve iki skill kopyasına eklendi.
+- Hub'ın kendi davranışı değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.
+
+---
+
 PluginLabs Hub 0.4.9 — Leo Helper 0.9.2 kataloğa eklendi.
 
 - Katalog: Leo Helper 0.9.2 (Alınan kodlar sayfası ve şartların kaydı: başarılı her kod, alındığı andaki şartlarıyla saklanır; şart, durum ve not sonradan düzeltilir). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.

@@ -12,8 +12,20 @@
     <script src="theme-init.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="themes.css" />
+    <link rel="stylesheet" href="pl/pl-tokens.css" />
+    <link rel="stylesheet" href="pl/pl-components.css" />
+    <link rel="stylesheet" href="pl/pl-advanced.css" />
+    <link rel="stylesheet" href="hub-kasim.css" />
   </head>
-  <body>
+  <body data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+    <div class="menubar" role="menubar" aria-label="Uygulama menüsü">
+        <span class="pl-applogo pl-applogo--sm mb-logo" data-pl-product="hub" aria-hidden="true">PL</span><span class="pl-titlebar__title mb-title">PluginLabs Hub</span>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="file">Dosya</button><div class="pl-menu mb-drop" role="menu" aria-label="Dosya" hidden><button class="pl-menuitem" role="menuitem" data-action="importPack">Kaynak paketi içe aktar…<span class="pl-menuitem__meta">.plpack</span></button><button class="pl-menuitem" role="menuitem" data-action="newClient">Yeni API istemcisi…</button><hr><button class="pl-menuitem" role="menuitem" data-action="openData">Veri klasörünü aç</button></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="view">Görünüm</button><div class="pl-menu mb-drop" role="menu" aria-label="Görünüm" hidden><button class="pl-menuitem" role="menuitem" data-go="home">Genel bakış</button><button class="pl-menuitem" role="menuitem" data-go="apps">Uygulamalarım</button><button class="pl-menuitem" role="menuitem" data-go="ideas">Uygulama kataloğu</button><button class="pl-menuitem" role="menuitem" data-go="resources">Kaynak kütüphanesi</button><button class="pl-menuitem" role="menuitem" data-go="mymind">My Mind</button><hr><button class="pl-menuitem" role="menuitem" data-set-palette="hub-yesil">Palet: Hub Yeşil</button><button class="pl-menuitem" role="menuitem" data-set-palette="iris">Palet: Iris</button><button class="pl-menuitem" role="menuitem" data-set-mode="dark">Tema: Koyu</button><button class="pl-menuitem" role="menuitem" data-set-mode="light">Tema: Açık</button></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="tools">Araçlar</button><div class="pl-menu mb-drop" role="menu" aria-label="Araçlar" hidden><button class="pl-menuitem" role="menuitem" data-action="openPalette">Komut paleti<span class="pl-menuitem__meta">Ctrl K</span></button><button class="pl-menuitem" role="menuitem" data-action="checkUpdates">Güncellemeleri denetle</button><hr><span id="mb-server"></span></div></div>
+        <div class="mb-menu"><button class="mb-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-menu="help">Yardım</button><div class="pl-menu mb-drop" role="menu" aria-label="Yardım" hidden><button class="pl-menuitem" role="menuitem" data-action="showShortcuts">Klavye kısayolları</button><button class="pl-menuitem" role="menuitem" data-go="api">API ve izinler</button><button class="pl-menuitem" role="menuitem" data-action="showAbout">PluginLabs Hub hakkında</button></div></div>
+        <div class="mb-center"><button class="pl-titlebar__search" data-action="openPalette" aria-label="Komut paletini aç"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Her şeyi ara<span class="pl-kbd">Ctrl K</span></button></div><span class="mb-note">Önizleme</span>
+      </div>
     <aside>
       <a class="brand" href="#home"
         ><span class="logo">p<span>l</span></span
@@ -24,21 +36,21 @@
       </div>
       <nav aria-label="Ana gezinme">
         <button data-page="home" class="active">
-          <span>◈</span>Genel bakış</button
-        ><button data-page="apps"><span>▦</span>Uygulamalarım</button
-        ><button data-page="extensions"><span>◇</span>Eklenti yöneticisi</button
-        ><button data-page="ideas"><span>▱</span>Uygulama kataloğu</button
-        ><button data-page="discover"><span>⌘</span>Keşfet</button
-        ><button data-page="resources"><span>▧</span>Kaynak kütüphanesi</button
+          <span class="nav-ico" data-ni="home" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" d="M4 11l8-7 8 7v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path class="s" d="M4 11l8-7 8 7v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path class="a" d="M10 20.5v-5.2a2 2 0 0 1 4 0v5.2z"/></svg></span>Genel bakış</button
+        ><button data-page="apps"><span class="nav-ico" data-ni="apps" aria-hidden="true"><svg viewBox="0 0 24 24"><rect class="f" x="4" y="4" width="7" height="7" rx="2"/><rect class="s" x="4" y="4" width="7" height="7" rx="2"/><rect class="s" x="13" y="4" width="7" height="7" rx="2"/><rect class="s" x="4" y="13" width="7" height="7" rx="2"/><rect class="a" x="13" y="13" width="7" height="7" rx="2"/></svg></span>Uygulamalarım</button
+        ><button data-page="extensions"><span class="nav-ico" data-ni="extensions" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" d="M10 4a2 2 0 1 1 4 0v1.5h3.5A1.5 1.5 0 0 1 19 7v3h-1.5a2 2 0 1 0 0 4H19v4a1.5 1.5 0 0 1-1.5 1.5h-4V18a2 2 0 1 0-4 0v1.5h-4A1.5 1.5 0 0 1 4 18v-4h1.5a2 2 0 1 0 0-4H4V7a1.5 1.5 0 0 1 1.5-1.5H10z"/><path class="s" d="M10 4a2 2 0 1 1 4 0v1.5h3.5A1.5 1.5 0 0 1 19 7v3h-1.5a2 2 0 1 0 0 4H19v4a1.5 1.5 0 0 1-1.5 1.5h-4V18a2 2 0 1 0-4 0v1.5h-4A1.5 1.5 0 0 1 4 18v-4h1.5a2 2 0 1 0 0-4H4V7a1.5 1.5 0 0 1 1.5-1.5H10z"/></svg></span>Eklenti yöneticisi</button
+        ><button data-page="ideas"><span class="nav-ico" data-ni="ideas" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path class="s" d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5zM12 6.5v13"/></svg></span>Uygulama kataloğu</button
+        ><button data-page="discover"><span class="nav-ico" data-ni="discover" aria-hidden="true"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><circle class="s" cx="12" cy="12" r="8.5"/><path class="a" d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg></span>Keşfet</button
+        ><button data-page="resources"><span class="nav-ico" data-ni="resources" aria-hidden="true"><svg viewBox="0 0 24 24"><rect class="f" x="4" y="5" width="4.5" height="15" rx="1.2"/><rect class="s" x="4" y="5" width="4.5" height="15" rx="1.2"/><rect class="s" x="10" y="4" width="4.5" height="16" rx="1.2"/><rect class="a" x="16" y="6" width="4.5" height="14" rx="1.2" transform="rotate(-12 18.2 13)"/></svg></span>Kaynak kütüphanesi</button
         ><button data-page="mymind">
-          <span>✳</span>My Mind <b>LOCAL AI</b>
+          <span class="nav-ico" data-ni="mymind" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" d="M11 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5L3.5 11l5.5-2z"/><path class="s" d="M11 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5L3.5 11l5.5-2z"/><path class="a" d="M18.5 3.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span>My Mind <b>LOCAL AI</b>
         </button>
         <div class="nav-label">YÖNETİM</div>
         <button data-page="updates">
-          <span>↻</span>Güncellemeler <em id="update-count"></em></button
-        ><button data-page="activity"><span>◷</span>İşlem geçmişi</button
-        ><button data-page="api"><span>⌁</span>API ve izinler</button
-        ><button data-page="settings"><span>⚙</span>Ayarlar</button>
+          <span class="nav-ico" data-ni="updates" aria-hidden="true"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8"/><path class="s" d="M20 12a8 8 0 1 1-2.4-5.7"/><path class="s" d="M20 4.5v4.2h-4.2"/></svg></span>Güncellemeler <em id="update-count"></em></button
+        ><button data-page="activity"><span class="nav-ico" data-ni="activity" aria-hidden="true"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><circle class="s" cx="12" cy="12" r="8.5"/><path class="s" d="M12 7.5V12l3 2"/></svg></span>İşlem geçmişi</button
+        ><button data-page="api"><span class="nav-ico" data-ni="api" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" d="M12 3l7 3v5.5c0 4.2-3 7.7-7 9-4-1.3-7-4.8-7-9V6z"/><path class="s" d="M12 3l7 3v5.5c0 4.2-3 7.7-7 9-4-1.3-7-4.8-7-9V6z"/><path class="a" d="M8.8 12.2l2.2 2.2 4.2-4.4" style="fill:none;stroke:var(--ni-2);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"/></svg></span>API ve izinler</button
+        ><button data-page="settings"><span class="nav-ico" data-ni="settings" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="s" d="M4 7h16M4 12h16M4 17h16"/><circle class="a" cx="9" cy="7" r="2.3"/><circle class="a" cx="15.5" cy="12" r="2.3"/><circle class="a" cx="8" cy="17" r="2.3"/></svg></span>Ayarlar</button>
       </nav>
       <div class="aside-bottom">
         <div class="local-note">
@@ -53,12 +65,18 @@
       </div>
     </aside>
     <main>
+      <div class="ticker-wrap"><div class="pl-ticker" id="ticker" role="status" aria-label="Canlı durum akışı"><span class="pl-ticker__label"><span class="pl-dot pl-dot--live"></span>CANLI</span><div class="pl-ticker__viewport"><div class="pl-ticker__track" id="ticker-track" aria-hidden="true"></div></div></div></div>
       <header>
         <div class="breadcrumbs">
           Çalışma alanı <span>/</span>
           <strong id="breadcrumb">Genel bakış</strong>
         </div>
         <div class="header-right">
+          <div class="hdr-pl">
+            <button class="pl-btn pl-btn--gradient pl-btn--sm" data-action="goPro">
+              <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7z"/><path d="M5 20h14"/></svg>Pro'ya geç
+            </button>
+          </div>
           <label class="search"
             ><span>⌕</span
             ><input
@@ -72,13 +90,29 @@
         </div>
       </header>
       <div id="content" tabindex="-1"></div>
-      <footer>
-        <span id="footer-status">Yerel merkez hazırlanıyor…</span
-        ><span>PluginLabs · Create your own workflow</span>
+      <footer class="pl-statusbar" role="status">
+        <span class="pl-statusbar__item is-accent" id="footer-status">Yerel merkez hazırlanıyor…</span>
+        <span class="pl-statusbar__item"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Yalnızca bu bilgisayar</span>
+        <span class="pl-statusbar__spacer"></span>
+        <span class="pl-statusbar__item">PluginLabs · Create your own workflow</span>
       </footer>
     </main>
     <div id="toast" role="status" aria-live="polite"></div>
     <dialog id="modal"><div id="modal-content"></div></dialog>
+    <dialog id="palette" aria-label="Komut paleti">
+      <div class="palette-wrap">
+        <div class="pl-cmdk" role="dialog" aria-label="Komut paleti">
+          <div class="pl-cmdk__input">
+            <svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="palette-input" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-label="Komut ara" placeholder="Sayfa, uygulama veya eylem ara…" autocomplete="off" />
+            <span class="pl-kbd">Esc</span>
+          </div>
+          <div class="pl-cmdk__list" id="palette-list" role="listbox"></div>
+          <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gezin</span><span><span class="pl-kbd">↵</span> aç</span><span><span class="pl-kbd">Esc</span> kapat</span></div>
+        </div>
+      </div>
+    </dialog>
+    <script src="widgets.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

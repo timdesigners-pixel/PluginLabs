@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Convert</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="qc" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar qc-side" aria-label="Ana menü">
+    <div class="qc-brand" aria-label="PluginLabs Apps">
+      <span class="qc-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="qc-apps">APPS</span>
+    </div>
+    <div class="qc-product">
+      <span class="pl-applogo" aria-hidden="true">QC</span>
+      <div class="qc-product__text"><b>Quick Convert</b><span>Bırak, dönüştür</span></div>
+      <span class="qc-product__no pl-num" aria-label="Sıra numarası 28">28</span>
+    </div>
+    <div class="qc-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem qc-navbtn" type="button" data-nav="convert" role="tab">Dönüştür<span class="pl-badge" id="queueCount">0</span></button>
+      <button class="pl-navitem qc-navbtn" type="button" data-nav="history" role="tab">Geçmiş<span class="pl-badge" id="historyCount">0</span></button>
+      <button class="pl-navitem qc-navbtn" type="button" data-nav="settings" role="tab">Ayarlar ve gizlilik</button>
+    </div>
+    <div class="qc-side__foot">
+      <button class="pl-navitem qc-navbtn" type="button" id="dropBtn"><span>Bırakma kutusu</span><span class="pl-badge" id="dropState">Gizli</span></button>
+      <button class="pl-navitem qc-navbtn" type="button" id="openMymind"><span class="qc-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+      <button class="pl-navitem qc-navbtn" type="button" id="openPalette"><span>Komutlar</span><span class="pl-kbd">Ctrl K</span></button>
+    </div>
+  </nav>
+
+  <main class="qc-main">
+    <div class="qc-view qc-convert" id="view-convert">
+      <section class="qc-col" aria-label="Dosyalar">
+        <div class="pl-dropzone qc-dropzone" id="dropzone" tabindex="0" role="button" aria-describedby="dropHint">
+          <div class="pl-dropzone__icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+          <b class="qc-drop-title">Dosyaları buraya bırakın</b>
+          <span id="dropHint">PNG, JPEG, WebP, GIF, BMP görüntüleri ve düz metin (.txt, .csv, .srt …) · görüntü en fazla 50 MB · kaynak dosya değişmez</span>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="pickBtn">Dosya seç</button>
+        </div>
+        <div class="qc-card qc-queue-card">
+          <div class="qc-bar"><h2 class="qc-sub">Kuyruk <span class="pl-badge" id="queueInfo">0</span></h2><span class="qc-grow"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="clearDone">Tamamlananları temizle</button></div>
+          <ul class="qc-queue" id="queue" aria-live="polite"></ul>
+        </div>
+      </section>
+      <section class="qc-col" aria-label="Ayarlar">
+        <div class="qc-card">
+          <div class="pl-field"><label class="pl-field__label" for="need">Ne istiyorsunuz? <span class="pl-muted">(isteğe bağlı)</span></label>
+            <input class="pl-input" id="need" maxlength="240" autocomplete="off" placeholder="ör. e-posta için küçült · 1080 px webp · Excel'de Türkçe karakterler bozuk"></div>
+          <div class="qc-bar">
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="suggestBtn">Ayar öner</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="aiBtn"><svg class="pl-ico qc-gold" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile öner</button>
+            <span class="qc-grow"></span><span class="pl-muted qc-small">Öneri yalnız ayarları doldurur; dönüştürmeyi siz başlatırsınız.</span>
+          </div>
+          <div class="qc-suggest" id="suggestion" hidden></div>
+        </div>
+        <div class="qc-card" id="imgCard">
+          <div class="qc-bar"><h2 class="qc-sub">Görüntü <span class="pl-badge" id="imgCount">0</span></h2><span class="qc-grow"></span><span class="pl-muted qc-small" id="imgSummary"></span></div>
+          <div class="qc-presets" id="presets" aria-label="Hazır ayarlar"></div>
+          <div class="qc-row">
+            <span class="qc-label">Biçim</span>
+            <div class="pl-segment" role="tablist" id="fmtSeg" aria-label="Çıktı biçimi">
+              <button type="button" role="tab" data-fmt="same">Aynı</button><button type="button" role="tab" data-fmt="png">PNG</button><button type="button" role="tab" data-fmt="jpeg">JPEG</button><button type="button" role="tab" data-fmt="webp">WebP</button>
+            </div>
+          </div>
+          <div class="qc-row" id="qualityRow">
+            <label class="qc-label" for="quality">Kalite <b class="pl-num" id="qualityVal">%85</b></label>
+            <input class="pl-slider qc-grow" type="range" id="quality" min="10" max="100" step="1">
+            <label class="qc-inline" for="maxKB">en fazla</label><input class="pl-input qc-num" id="maxKB" type="number" min="0" max="51200" step="10" aria-label="Hedef dosya boyutu (KB), 0 = sınır yok"><span class="pl-muted qc-small">KB</span>
+          </div>
+          <div class="qc-row">
+            <span class="qc-label">Boyut</span>
+            <div class="pl-segment" role="tablist" id="rsSeg" aria-label="Yeniden boyutlandırma">
+              <button type="button" role="tab" data-rs="none">Değiştirme</button><button type="button" role="tab" data-rs="fit">Kutuya sığdır</button><button type="button" role="tab" data-rs="percent">Yüzde</button>
+            </div>
+          </div>
+          <div class="qc-row" id="fitRow"><span class="qc-label"></span><input class="pl-input qc-num" id="w" type="number" min="1" max="16384" aria-label="En fazla genişlik (px)"><span class="pl-muted">×</span><input class="pl-input qc-num" id="h" type="number" min="1" max="16384" aria-label="En fazla yükseklik (px)"><span class="pl-muted qc-small">px · oran korunur, büyütülmez</span></div>
+          <div class="qc-row" id="pctRow"><span class="qc-label"></span><input class="pl-input qc-num" id="pct" type="number" min="1" max="100" aria-label="Yüzde"><span class="pl-muted qc-small">% · büyütülmez</span></div>
+          <div class="qc-row" id="bgRow"><label class="qc-label" for="bg">Saydam alan</label><input class="qc-color" id="bg" type="color"><span class="pl-muted qc-small">JPEG saydamlığı desteklemez; saydam alanlar bu renkle doldurulur.</span></div>
+        </div>
+        <div class="qc-card" id="txtCard">
+          <div class="qc-bar"><h2 class="qc-sub">Metin kodlaması <span class="pl-badge" id="txtCount">0</span></h2></div>
+          <div class="qc-grid2">
+            <div class="pl-field"><label class="pl-field__label" for="from">Kaynak</label><select class="pl-select" id="from"></select></div>
+            <div class="pl-field"><label class="pl-field__label" for="to">Hedef</label><select class="pl-select" id="to"></select></div>
+            <div class="pl-field"><label class="pl-field__label" for="eol">Satır sonu</label><select class="pl-select" id="eol"><option value="keep">Değiştirme</option><option value="crlf">CRLF (Windows)</option><option value="lf">LF (Linux/macOS)</option></select></div>
+            <label class="qc-check qc-check--field"><input type="checkbox" id="replace"> Hedefte olmayan karakterleri “?” ile değiştir (kayıplı)</label>
+          </div>
+        </div>
+        <div class="qc-card qc-run">
+          <div class="qc-bar">
+            <span class="qc-label">Kayıt yeri</span>
+            <div class="pl-segment" role="tablist" id="outSeg" aria-label="Çıktı yeri"><button type="button" role="tab" data-out="beside">Kaynağın yanına</button><button type="button" role="tab" data-out="folder">Seçilen klasöre</button></div>
+            <span class="qc-grow qc-path pl-muted" id="outPath"></span>
+          </div>
+          <button class="pl-btn pl-btn--primary pl-btn--lg qc-go" type="button" id="convertBtn">Dönüştür</button>
+          <p class="pl-muted qc-small qc-tight" id="runHint">Sonuç “-donusturuldu” ekiyle yeni dosyaya yazılır; var olan hiçbir dosyanın üzerine yazılmaz.</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="qc-view qc-history" id="view-history" hidden>
+      <div class="qc-kpis" id="kpis"></div>
+      <div class="qc-panel__head"><h2 class="pl-h3">Dönüşüm geçmişi</h2><span class="pl-muted qc-small">Son 300 dönüşüm bu bilgisayarda (kasa varsa şifreli) tutulur. Kaynak dosyalar hiçbir zaman değiştirilmez.</span></div>
+      <ul class="qc-hist" id="history"></ul>
+    </div>
+
+    <div class="qc-view qc-panels" id="view-settings" hidden>
+      <section class="qc-panel">
+        <div class="qc-panel__head"><h2 class="pl-h3">Davranış</h2></div>
+        <label class="qc-check"><input type="checkbox" id="setAutorun"> Bırakma kutusuna bırakılan dosyaları geçerli ayarlarla hemen dönüştür</label>
+        <label class="qc-check"><input type="checkbox" id="setMotion"> Hareketi azalt (geçişler kapalı; sistem ayarı da izlenir)</label>
+        <div class="qc-bar"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="chooseDir">Çıktı klasörü seç</button><span class="pl-muted qc-small qc-path" id="dirInfo"></span></div>
+        <div class="qc-panel__head"><h2 class="pl-h3">Desteklenen dönüşümler</h2></div>
+        <ul class="qc-list" id="support"></ul>
+      </section>
+      <section class="qc-panel">
+        <div class="qc-panel__head"><h2 class="pl-h3">Gizlilik ve sınırlar</h2></div>
+        <ul class="qc-list" id="privacy"></ul>
+      </section>
+    </div>
+    <footer class="qc-foot pl-muted" id="foot">Dönüştürme bu bilgisayarda yapılır; dosyalar hiçbir yere yüklenmez. Kaynak dosya değişmez, sonuç yeni dosyaya yazılır.</footer>
+  </main>
+
+  <dialog class="pl-modal qc-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon qc-gold"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted qc-tight">İhtiyaç cümlenizden dönüştürme ayarı önerisi bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılır. İsteğe bağlıdır; dönüştürme her zaman yerel motorlarla yapılır.</p></div></div>
+    <div class="pl-modal__body qc-stack">
+      <ol class="qc-list">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted qc-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <dialog class="qc-cmdk-dialog" id="palette" aria-label="Komut paleti">
+    <div class="pl-cmdk">
+      <div class="pl-cmdk__input"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="paletteInput" role="combobox" aria-controls="paletteList" aria-expanded="true" aria-label="Komut ara" autocomplete="off" placeholder="Komut ya da hazır ayar ara"><span class="pl-kbd">Esc</span></div>
+      <div class="pl-cmdk__list" id="paletteList" role="listbox"></div>
+      <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gezin</span><span><span class="pl-kbd">↵</span> çalıştır</span><span><span class="pl-kbd">Ctrl</span><span class="pl-kbd">Enter</span> dönüştür</span></div>
+    </div>
+  </dialog>
+  <div class="qc-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="qc-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

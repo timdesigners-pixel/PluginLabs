@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-054` · `mywishlist` |
 | Kategori | 07 · Yeni ürünler — PL-054+ |
-| Durum | Yeni fikir · kullanıcı notundan ürünleştirme |
+| Durum | **v0.1.0** (01.11.2026) · Tauri 2/Rust Windows uygulaması + Chrome eklentisi (MV3); imzasız önizleme |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | [timdesigners-pixel/mywishlist](https://github.com/timdesigners-pixel/mywishlist) (private) · sürüm [v0.1.0](https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0) |
 | Codex projesi | `PL-054 · MyWishlist` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4088aa13d8f9819d9319c134d29ccae1) |
 
@@ -79,6 +79,12 @@ P1 · M (öneri); PL-004 The Ultimate Scrapper’ın takip/sepet motorunu kullan
 - Dal adı: `codex/PL-054-<konu>` veya `claude/PL-054-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
 - İşe başlamadan önce [AKTIF-ISLER.md](../../../docs/ortak-calisma/AKTIF-ISLER.md) tablosuna satır eklenir; iş bitince devir notu yazılır.
 - Kurallar: [AGENTS.md](../../../AGENTS.md) (her iki ajan için ortak), protokol: [AI-ORTAK-CALISMA.md](../../../docs/ortak-calisma/AI-ORTAK-CALISMA.md).
+
+## 0.1.0 durumu (01.11.2026, Claude Code)
+
+- Yapılan: istek listeleri, öncelik, karşılaştırma, ürün adıyla çok sitede arama (Scrapper okuma sırası), fiyat takibi ve uyarılar, Scrapper ALIŞVERİŞ bölümünün tamamı (favoriler, fiyat değişimleri, son hareketler, izleme, sepet planı, asistan), Chrome’da tek tuş + sağ tık + MyMind ile ekleme, ekran görüntüsünden tanıma (Windows OCR, cihazda).
+- Testler: Rust 21/21, okuyucu 6/6, masaüstü uçtan uca 19/19, eklenti uçtan uca 8/8 (Windows 11). Linux/macOS derlenmedi.
+- Ayrıntı ve ekran görüntüleri ürün deposunun README’sinde; devir notu `docs/DEVIR-0.1.0.md`.
 
 ---
 Oluşturma: 29.10.2026 · Kaynak → hedef: Notion kataloğu → `registry/projects.json` → bu dosya

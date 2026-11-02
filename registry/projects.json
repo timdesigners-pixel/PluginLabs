@@ -655,7 +655,13 @@
         "widget"
       ],
       "summary": "YouTube videolarını izleme listelerine ayırır; notları ve ilgili kaynakları video bağlantısıyla saklar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "youtube-shelf",
+        "url": "https://github.com/timdesigners-pixel/youtube-shelf",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.1 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-015-youtube-shelf",
       "codexProject": {
         "name": "PL-015 · YouTube Shelf",
@@ -690,7 +696,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Tarayıcı sekmelerini gruplar; çalışma oturumlarını kaydeder ve yeniden açar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tab-atlas",
+        "url": "https://github.com/timdesigners-pixel/tab-atlas",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-016-tab-atlas",
       "codexProject": {
         "name": "PL-016 · Tab Atlas",
@@ -725,7 +737,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Web sayfalarını kaynak bağlantısı ve yakalama tarihiyle birlikte okunabilir arşivlere kaydeder.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "page-capsule",
+        "url": "https://github.com/timdesigners-pixel/page-capsule",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-017-page-capsule",
       "codexProject": {
         "name": "PL-017 · Page Capsule",
@@ -760,7 +778,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Tekrarlanan form bilgilerini şablonlarda saklar ve seçilen alanlara kontrollü biçimde yerleştirir.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "form-flow",
+        "url": "https://github.com/timdesigners-pixel/form-flow",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-018-form-flow",
       "codexProject": {
         "name": "PL-018 · Form Flow",
@@ -795,7 +819,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Açık sayfalardaki ürün ve hizmet bilgilerini ortak ölçütlerle yan yana karşılaştırır.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "compare-lens",
+        "url": "https://github.com/timdesigners-pixel/compare-lens",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-019-compare-lens",
       "codexProject": {
         "name": "PL-019 · Compare Lens",
@@ -830,7 +860,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Seçilen web sayfalarındaki değişiklikleri izler, farkları gösterir ve bildirim oluşturur.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "page-change-radar",
+        "url": "https://github.com/timdesigners-pixel/page-change-radar",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/02-kisisel-arsiv-ve-chrome-araclari/PL-020-page-change-radar",
       "codexProject": {
         "name": "PL-020 · Page Change Radar",
@@ -864,7 +900,13 @@
         "masaüstü uygulaması"
       ],
       "summary": "Seçilen klasörlerdeki dosyaları kurallara göre gruplar; taşıma planını uygulamadan önce gösterir.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "desk-tidy",
+        "url": "https://github.com/timdesigners-pixel/desk-tidy",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-021-desk-tidy",
       "codexProject": {
         "name": "PL-021 · Desk Tidy",
@@ -898,7 +940,13 @@
         "masaüstü uygulaması"
       ],
       "summary": "Dosya özetlerini karşılaştırarak yinelenen dosyaları bulur ve temizleme önizlemesi sunar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "twin-finder",
+        "url": "https://github.com/timdesigners-pixel/twin-finder",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-022-twin-finder",
       "codexProject": {
         "name": "PL-022 · Twin Finder",
@@ -933,7 +981,13 @@
         "sistem tepsisi"
       ],
       "summary": "Pano geçmişini cihazda saklar; kopyalanan metinleri aramayı ve yeniden kullanmayı sağlar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "clip-vault",
+        "url": "https://github.com/timdesigners-pixel/clip-vault",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (31.10.2026, önizleme)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-023-clip-vault",
       "codexProject": {
         "name": "PL-023 · Clip Vault",
@@ -968,7 +1022,13 @@
         "yüzen balon"
       ],
       "summary": "Ekranın seçilen bölümündeki yazıları OCR ile metne dönüştürür.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "snap-ocr",
+        "url": "https://github.com/timdesigners-pixel/snap-ocr",
+        "verified": true,
+        "note": "GitHub’da doğrulandı 01.11.2026 · release v0.1.0 (01.11.2026, önizleme)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-024-snap-ocr",
       "codexProject": {
         "name": "PL-024 · Snap OCR",
@@ -987,7 +1047,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim file-pilot-v0.1.0; kaynak PluginLabs apps/…/PL-025-file-pilot/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -999,7 +1059,7 @@
       },
       "platformText": "W / L / M dosya penceresi",
       "formFactors": [
-        "masaüstü uygulaması"
+        "masaüstü uygulaması (Windows)"
       ],
       "summary": "Dosyaları önizlemeli kurallarla yeniden adlandırır, sınıflandırır ve klasörlere yerleştirir.",
       "repo": null,
@@ -1009,7 +1069,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot/app",
+      "release": {
+        "tag": "file-pilot-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-026",
@@ -1021,7 +1087,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim workspace-scenes-v0.1.0; kaynak PluginLabs apps/…/PL-026-workspace-scenes/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1033,8 +1099,8 @@
       },
       "platformText": "W / L / M; Chrome oturum eklentisi",
       "formFactors": [
-        "masaüstü uygulaması",
-        "Chrome eklentisi (Manifest V3)"
+        "masaüstü uygulaması (Windows)",
+        "Chrome eklentisi (Manifest V3) — planlı"
       ],
       "summary": "Uygulamaları, klasörleri ve tarayıcı oturumlarını kayıtlı çalışma sahneleriyle birlikte açar.",
       "repo": null,
@@ -1044,7 +1110,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-026-workspace-scenes/app",
+      "release": {
+        "tag": "workspace-scenes-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-027",
@@ -1056,7 +1128,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim focus-orbit-v0.1.0; kaynak PluginLabs apps/…/PL-027-focus-orbit/app) · Notion: Yeni fikir",
       "priority": "P0",
       "effort": "S",
       "platforms": {
@@ -1068,9 +1140,8 @@
       },
       "platformText": "W / L / M odak balonu + Chrome dikkat filtresi",
       "formFactors": [
-        "masaüstü uygulaması",
-        "Chrome eklentisi (Manifest V3)",
-        "yüzen balon"
+        "masaüstü uygulaması (Windows) + odak balonu",
+        "Chrome eklentisi (Manifest V3) — planlı"
       ],
       "summary": "Odak zamanlayıcısını, mola hatırlatmalarını ve isteğe bağlı dikkat filtrelerini birlikte yönetir.",
       "repo": null,
@@ -1080,7 +1151,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-027-focus-orbit/app",
+      "release": {
+        "tag": "focus-orbit-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-028",
@@ -1092,7 +1169,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim quick-convert-v0.1.0; kaynak PluginLabs apps/…/PL-028-quick-convert/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1104,8 +1181,7 @@
       },
       "platformText": "W / L / M dosya bırakma widget’ı",
       "formFactors": [
-        "masaüstü uygulaması",
-        "widget"
+        "masaüstü uygulaması (Windows) + bırakma kutusu (widget)"
       ],
       "summary": "Desteklenen dosyaları sürükle-bırak ile farklı biçimlere dönüştürür.",
       "repo": null,
@@ -1115,7 +1191,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app",
+      "release": {
+        "tag": "quick-convert-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-029",
@@ -1127,7 +1209,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim screenshot-studio-v0.1.0; kaynak PluginLabs apps/…/PL-029-screenshot-studio/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1149,7 +1231,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-029-screenshot-studio/app",
+      "release": {
+        "tag": "screenshot-studio-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/screenshot-studio-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-030",
@@ -1161,7 +1249,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir · Xtreme dashboard notlarından türetildi",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim daily-brief-widget-v0.1.0; kaynak PluginLabs apps/…/PL-030-daily-brief-widget/app) · Notion: Yeni fikir · Xtreme dashboard notlarından türetildi",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1184,7 +1272,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f98193b5c3ef18528e0c83",
+      "sourcePath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-030-daily-brief-widget/app",
+      "release": {
+        "tag": "daily-brief-widget-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/daily-brief-widget-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-031",
@@ -1196,7 +1290,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim source-trail-v0.1.0; kaynak PluginLabs apps/…/PL-031-source-trail/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1219,7 +1313,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "sourcePath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-031-source-trail/app",
+      "release": {
+        "tag": "source-trail-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/source-trail-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-032",
@@ -1231,7 +1331,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim read-partner-v0.1.0; kaynak PluginLabs apps/…/PL-032-read-partner/app) · Notion: Yeni fikir",
       "priority": "P0",
       "effort": "S",
       "platforms": {
@@ -1255,7 +1355,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "sourcePath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-032-read-partner/app",
+      "release": {
+        "tag": "read-partner-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/read-partner-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-033",
@@ -1267,7 +1373,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim text-forge-v0.1.0; kaynak PluginLabs apps/…/PL-033-text-forge/app) · Notion: Yeni fikir",
       "priority": "P0",
       "effort": "S",
       "platforms": {
@@ -1290,7 +1396,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "sourcePath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-033-text-forge/app",
+      "release": {
+        "tag": "text-forge-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/text-forge-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-034",
@@ -1302,7 +1414,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim parallel-translate-v0.1.0; kaynak PluginLabs apps/…/PL-034-parallel-translate/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1325,7 +1437,13 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "sourcePath": "apps/04-arastirma-yazma-ve-bilgi-akislari/PL-034-parallel-translate/app",
+      "release": {
+        "tag": "parallel-translate-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/parallel-translate-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-035",
@@ -1898,11 +2016,11 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · özellik listesi depodan doğrulanacak",
+      "status": "01.11.2026: 1.1.0 Windows uygulaması + Chrome eklentisi yayımlandı (extension-manager#2; release v1.1.0)",
       "priority": null,
       "effort": null,
       "platforms": {
-        "windows": false,
+        "windows": true,
         "linux": false,
         "macos": false,
         "chrome": true,
@@ -1910,6 +2028,7 @@
       },
       "platformText": "Chrome eklentisi (Codex: PL · Eklenti · Extension Manager)",
       "formFactors": [
+        "masaüstü uygulaması (Windows)",
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Eklenti yöneticisi (Chrome eklentisi).",
@@ -1918,7 +2037,7 @@
         "name": "extension-manager",
         "url": "https://github.com/timdesigners-pixel/extension-manager",
         "verified": true,
-        "note": "Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici"
+        "note": "Codex projesi PL-051 · Extension Manager (29.10.2026 doğrulandı); yerel klasör Chrome-Eklentileri\\Yonetici · 01.11.2026: Windows sürümü release v1.1.0 (01.11.2026; kurulum + taşınabilir, imzasız önizleme)"
       },
       "appPath": "apps/06-hub-disi-urun-depolari/PL-051-extension-manager",
       "codexProject": {
@@ -1938,7 +2057,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README)",
+      "status": "01.11.2026: 0.1.0 Windows uygulaması yayımlandı (tweakster#2 birleşti; release v0.1.0)",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -1958,7 +2077,7 @@
         "name": "tweakster",
         "url": "https://github.com/timdesigners-pixel/tweakster",
         "verified": true,
-        "note": "Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)"
+        "note": "Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı) · 01.11.2026: Windows sürümü release v0.1.0 (01.11.2026; kurulum + taşınabilir, imzasız önizleme)"
       },
       "appPath": "apps/06-hub-disi-urun-depolari/PL-052-tweakster",
       "codexProject": {
@@ -2018,7 +2137,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "Yeni fikir · kullanıcı notundan ürünleştirme",
+      "status": "v0.1.0 · Tauri 2/Rust Windows uygulaması + Chrome eklentisi (MV3); imzasız önizleme",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2034,7 +2153,13 @@
         "Chrome eklentisi (Manifest V3)"
       ],
       "summary": "Webde gezinirken ürünleri işaretleyerek kaydeden; katalogda kaynak site, rakip fiyatlar, açıklama, özellik ve görselleri gösteren tarayıcı eklentisi (çalışma adı; kaynak fikir: MyWishlist).",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "mywishlist",
+        "url": "https://github.com/timdesigners-pixel/mywishlist",
+        "verified": true,
+        "note": "Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)"
+      },
       "appPath": "apps/07-yeni-urunler/PL-054-mywishlist",
       "codexProject": {
         "name": "PL-054 · MyWishlist",
@@ -2046,6 +2171,117 @@
     {
       "id": "PL-055",
       "number": 55,
+      "slug": "gardrop",
+      "name": "Gardrop",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows masaüstü + Chrome eklentisi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust) + Chrome (ve Chromium tarayıcılar) eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Dijital gardırop: kıyafetleri fotoğrafla kaydeder, kombin kurar, “Bugün ne giysem?” önerisi verir, giyim günlüğü ve kullanım analizi tutar; mağazadaki kıyafeti Chrome eklentisiyle istek listesine ekler.",
+      "repo": "timdesigners-pixel/gardrop",
+      "appPath": "apps/07-yeni-urunler/PL-055-gardrop",
+      "codexProject": {
+        "name": "PL-055 · Gardrop",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f98120819bc0bf6c966773"
+    },
+    {
+      "id": "PL-056",
+      "number": 56,
+      "slug": "ultimate-upscaler",
+      "name": "The Ultimate Upscaler",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows masaüstü + Chrome eklentisi",
+      "priority": "P1",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust) + Chrome (ve Chromium tarayıcılar) eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "Cihazda görsel büyütme: fotoğraf, çizim/logo ve piksel sanatı için profiller, önce/sonra karşılaştırma, toplu sıra; Chrome eklentisiyle web'deki görsele sağ tıklayıp büyütme. Görseller buluta gitmez.",
+      "repo": "timdesigners-pixel/ultimate-upscaler",
+      "appPath": "apps/07-yeni-urunler/PL-056-ultimate-upscaler",
+      "codexProject": {
+        "name": "PL-056 · The Ultimate Upscaler",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f98160b46ae02a20055404"
+    },
+    {
+      "id": "PL-057",
+      "number": 57,
+      "slug": "tork",
+      "name": "Tork",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 geliştirmede · Windows masaüstü (Tauri 2 / Rust) + tork-cli",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust); ölçüm motoru ve tork-cli Linux’ta da derlenir",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "komut satırı aracı"
+      ],
+      "summary": "Sistem benchmark’ı: CPU (tek/çok çekirdek), bellek ve disk testleriyle puan verir; ölçüm geçmişi, önce/sonra karşılaştırması, JSON/CSV dışa aktarma ve MyMind ile darboğaz yorumu.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tork",
+        "url": "https://github.com/timdesigners-pixel/tork",
+        "verified": false,
+        "note": "Yerel depo hazır; GitHub deposu kullanıcı onayıyla açılacak (01.11.2026)"
+      },
+      "appPath": "apps/07-yeni-urunler/PL-057-tork",
+      "codexProject": {
+        "name": "PL-057 · Tork",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f981d7b221f34a525ed045"
+    },
+    {
+      "id": "PL-058",
+      "number": 58,
       "slug": "kurgu-atolyesi",
       "name": "Kurgu Atölyesi",
       "category": {
@@ -2069,9 +2305,9 @@
       ],
       "summary": "Proje videolarını tek ekranda kurgulayan video düzenleyici: önizleme, metin/efekt/video/ses izli zaman çizelgesi, renk düzeltme, ortak çalışma imleçleri ve MyMind ile metin, görsel, avatar üretimi.",
       "repo": null,
-      "appPath": "apps/07-yeni-urunler/PL-055-kurgu-atolyesi",
+      "appPath": "apps/07-yeni-urunler/PL-058-kurgu-atolyesi",
       "codexProject": {
-        "name": "PL-055 · Kurgu Atölyesi",
+        "name": "PL-058 · Kurgu Atölyesi",
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
