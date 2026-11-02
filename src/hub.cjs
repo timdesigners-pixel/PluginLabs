@@ -27,7 +27,22 @@ const scopes = [
   "providers.register",
   "actions.invoke",
   "browser.manage",
+  "channels.publish",
+  "channels.read",
 ];
+const { Channels } = require("./channels.cjs");
+const mymindTasks = require("./mymind-tasks.cjs");
+function slugNamespace(name) {
+  const s = String(name)
+    .toLocaleLowerCase("tr")
+    .replace(/ı/g, "i")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+  return s.length >= 2 ? s : "uygulama";
+}
 function fail(message, status = 400) {
   throw Object.assign(new Error(message), { status });
 }
@@ -204,6 +219,10 @@ class Hub extends EventEmitter {
     this.jobs = new Map();
     this.pending = new Map();
     this.providers = new Map();
+    this.channels = new Channels();
+    this.streams = new Set();
+    this.channels.on("publish", () => this.emit("change"));
+    this.channels.on("closed", () => this.emit("change"));
     this.controllers = new Map();
     this.tasks = new Set();
     this.extensions = new (require("./extensions.cjs").ExtensionManager)(this);
@@ -286,7 +305,12 @@ class Hub extends EventEmitter {
       installed: this.state.installed,
       jobs: [...this.jobs.values()],
       activity: this.state.activity,
-      clients: this.state.clients.map(({ hash, ...c }) => c),
+      clients: this.state.clients.map(({ hash, ...c }) => ({
+        ...c,
+        namespace: this.namespaceOf(c),
+      })),
+      channels: this.channels.list(null),
+      mymindTasks: mymindTasks.catalog(),
       pending: [...this.pending.values()].map(({ run, ...p }) => p),
       providers: [...this.providers.values()]
         .filter((p) => p.expires > Date.now())
@@ -574,7 +598,10 @@ class Hub extends EventEmitter {
     this.log("Güncelleme denetimi tamamlandı");
     return results;
   }
-  async createClient(name, requested) {
+  namespaceOf(client) {
+    return client.namespace || slugNamespace(client.name);
+  }
+  async createClient(name, requested, namespace) {
     boundedText(name, 80);
     if (
       !name.trim() ||
@@ -582,11 +609,21 @@ class Hub extends EventEmitter {
       requested.some((s) => !scopes.includes(s))
     )
       fail("Geçersiz istemci veya izin");
+    const taken = (n) => this.state.clients.some((c) => this.namespaceOf(c) === n);
+    let ns = namespace ? String(namespace) : slugNamespace(name);
+    if (!Channels.validNamespace(ns))
+      fail("Ad alanı 2–40 karakter, küçük harf, rakam ve tire içermeli");
+    if (taken(ns)) {
+      if (namespace) fail("Bu ad alanı başka bir istemcide kullanılıyor", 409);
+      const base = ns.slice(0, 36);
+      for (let i = 2; taken(ns); i++) ns = `${base}-${i}`;
+    }
     const token = "plh_" + crypto.randomBytes(32).toString("hex");
     const client = {
       id: crypto.randomUUID(),
       name,
       scopes: [...new Set(requested)],
+      namespace: ns,
       hash: digest(token),
       createdAt: new Date().toISOString(),
     };
@@ -597,6 +634,7 @@ class Hub extends EventEmitter {
   }
   async revokeClient(id) {
     this.state.clients = this.state.clients.filter((c) => c.id !== id);
+    this.channels.dropOwner(id);
     for (const [key, p] of this.providers)
       if (p.clientId === id) this.providers.delete(key);
     for (const p of this.pending.values())
@@ -606,6 +644,41 @@ class Hub extends EventEmitter {
       }
     await this.save();
     this.log("API istemcisi iptal edildi");
+  }
+  closeChannel(name) {
+    return this.channels.close(name);
+  }
+  openStream(req, res, client, names) {
+    if (this.streams.size >= 8) fail("Çok fazla açık akış", 429);
+    const ns = this.namespaceOf(client);
+    const wanted = names ? new Set(names) : null;
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-store",
+      Connection: "keep-alive",
+      "X-Content-Type-Options": "nosniff",
+    });
+    const write = (event, data) =>
+      res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+    const ok = (r) =>
+      (!wanted || wanted.has(r.channel)) && this.channels.readable(r, ns);
+    for (const r of this.channels.list(ns))
+      if (!wanted || wanted.has(r.channel)) write("channel", r);
+    const onPublish = (r) => ok(r) && write("channel", this.channels.view(r));
+    const onClosed = ({ channel }) =>
+      (!wanted || wanted.has(channel)) && write("closed", { channel });
+    this.channels.on("publish", onPublish);
+    this.channels.on("closed", onClosed);
+    const ping = setInterval(() => res.write(": ping\n\n"), 20000);
+    const stream = { res };
+    this.streams.add(stream);
+    const done = () => {
+      clearInterval(ping);
+      this.channels.off("publish", onPublish);
+      this.channels.off("closed", onClosed);
+      this.streams.delete(stream);
+    };
+    res.on("close", done);
   }
   authenticate(req, scope) {
     const raw = req.headers.authorization || "";
@@ -1305,11 +1378,63 @@ class Hub extends EventEmitter {
         abort = new AbortController();
       res.on("close", () => abort.abort());
       out = await this.chat(b, abort.signal);
+    } else if (req.method === "GET" && url.pathname === "/v1/channels") {
+      const c = this.authenticate(req, "channels.read");
+      out = { channels: this.channels.list(this.namespaceOf(c)) };
+    } else if (
+      req.method === "GET" &&
+      url.pathname.startsWith("/v1/channels/")
+    ) {
+      const c = this.authenticate(req, "channels.read");
+      out = this.channels.get(
+        decodeURIComponent(url.pathname.slice(13)),
+        this.namespaceOf(c),
+      );
+    } else if (
+      req.method === "POST" &&
+      url.pathname.startsWith("/v1/channels/")
+    ) {
+      const c = this.authenticate(req, "channels.publish");
+      out = this.channels.publish(
+        c,
+        this.namespaceOf(c),
+        decodeURIComponent(url.pathname.slice(13)),
+        await body(),
+      );
+    } else if (req.method === "GET" && url.pathname === "/v1/stream") {
+      const c = this.authenticate(req, "channels.read");
+      const raw = url.searchParams.get("channels");
+      const names = raw ? raw.split(",").slice(0, 32) : null;
+      if (names && names.some((n) => !Channels.validName(n)))
+        fail("Geçersiz kanal adı");
+      return this.openStream(req, res, c, names);
+    } else if (
+      req.method === "GET" &&
+      url.pathname === "/v1/mymind/capabilities"
+    ) {
+      this.authenticate(req, "mymind.chat");
+      out = {
+        ready: !!this.model?.healthy,
+        tasks: mymindTasks.catalog(),
+      };
+    } else if (req.method === "POST" && url.pathname === "/v1/mymind/run") {
+      this.authenticate(req, "mymind.chat");
+      const b = await body(),
+        abort = new AbortController();
+      res.on("close", () => abort.abort());
+      if (typeof b.task !== "string") fail("Görev gerekli");
+      out = await mymindTasks.run(
+        (x, sig) => this.chat(x, sig),
+        b.task,
+        b.input,
+        abort.signal,
+      );
     } else fail("API yolu bulunamadı", 404);
     send(out);
   }
   async close() {
     this.closed = true;
+    for (const s of this.streams) s.res.end();
     for (const c of this.controllers.values()) c.abort();
     await Promise.allSettled([...this.tasks]);
     await this.stopModel();
