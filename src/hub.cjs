@@ -299,6 +299,7 @@ class Hub extends EventEmitter {
         custom: this.state.customModel || null,
       },
       api: { port: this.port || null, running: !!this.server },
+      version: require("../package.json").version,
       settings: publicSettings,
     };
   }
