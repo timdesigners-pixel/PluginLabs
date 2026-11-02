@@ -66,7 +66,7 @@ const fs = require("node:fs/promises");
   if (!token.startsWith("plh_")) throw Error("Missing token");
   await page.getByRole("button", { name: "Tamam", exact: true }).click();
   await page
-    .getByRole("cell", { name: "UI test client", exact: true })
+    .getByRole("cell", { name: "UI test client" })
     .waitFor();
   await page.screenshot({
     path: require("node:path").resolve(__dirname, "../preview-api.png"),
@@ -182,6 +182,25 @@ const fs = require("node:fs/promises");
   await page.locator('.wdg-photo[data-slot="kombin"] img').waitFor();
   await page.locator('[data-photo-clear="kombin"]').click();
   await page.getByRole("img", { name: "Kombin çizimi" }).waitFor();
+  // Canlı veri: bir uygulama kanala yayın yapınca widget örnek veriden canlıya geçer
+  const created = await page.evaluate(() =>
+    window.pluginlabs.call("createClient", "Leo Helper", ["channels.publish"], "leo-helper"),
+  );
+  const port = (await page.evaluate(() => window.pluginlabs.call("snapshot"))).api.port;
+  const sent = await fetch(`http://127.0.0.1:${port}/v1/channels/leo-helper.codes`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${created.token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ data: { total: 4321, label: "Bugün yakalanan kod", chips: [{ text: "TESTKOD" }] } }),
+  });
+  require("node:assert/strict").equal(sent.status, 200);
+  await page.locator('.wdg[data-w="kodlar"] .pl-badge', { hasText: "Canlı · Leo Helper" }).waitFor();
+  await page.locator('.wdg[data-w="kodlar"] .wdg-big', { hasText: "4321" }).waitFor();
+  await page.locator('nav [data-page="api"]').click();
+  await page.getByRole("heading", { name: /Kanallar ve köprüler \(1\)/ }).waitFor();
+  await page.getByRole("button", { name: "Kapat" }).first().click();
+  await page.getByRole("heading", { name: /Kanallar ve köprüler \(0\)/ }).waitFor();
+  await page.locator('nav [data-page="mymind"]').click();
+  await page.getByRole("heading", { name: /Uygulamalar için hazır görevler/ }).waitFor();
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",

@@ -133,7 +133,9 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
     rollback: (id) => hub.rollback(id),
     launch: (id) => hub.launch(id),
     checkUpdates: () => hub.checkUpdates(),
-    createClient: (name, permissions) => hub.createClient(name, permissions),
+    createClient: (name, permissions, namespace) =>
+      hub.createClient(name, permissions, namespace),
+    closeChannel: (name) => hub.closeChannel(name),
     revokeClient: (id) => hub.revokeClient(id),
     approve: (id, allow) => hub.approve(id, allow),
     startModel: () => hub.startModel(),

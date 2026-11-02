@@ -1,3 +1,16 @@
+PluginLabs Hub 0.4.16 — Kanal API'si (canlı veri akışı ve uygulamalar arası köprü) ve My Mind hazır görevleri.
+
+- Kanallar: uygulamalar `POST /v1/channels/<ad-alanı>.<konu>` ile veri yayınlar; Genel bakış widget'ları (kodlar, fiyat düşüşleri, notlar, kazıma görevleri, yaklaşan ödemeler, veri akışı) “Canlı · <uygulama>” rozetiyle gerçek veriyi gösterir; süre dolunca örnek veriye döner. Yayın izni kendi ad alanıyla sınırlıdır; veri boyut, derinlik, süre ve hız sınırlıdır; yalnızca bellekte tutulur.
+- Köprü: yayıncı `share` ile açtığı kanalı başka bir uygulama `GET /v1/channels/<kanal>` veya canlı `GET /v1/stream` (SSE) ile okuyabilir. Varsayılan olarak yalnızca Hub arayüzü okur. Yeni izinler: `channels.publish`, `channels.read`.
+- Arayüz: API ve izinler sayfasında “Kanallar ve köprüler” tablosu (yayıncı, paylaşım, güncelleme, Kapat); anahtar oluştururken isteğe bağlı kanal ad alanı; istemci tablosunda ad alanı.
+- My Mind: 12 hazır görev (özetle, yeniden yaz, etiket, kod ayıklama, çeviri, gün planı, görev parçalama, kombin, menü, fiyat notu, harcama sınıfı, metinden yanıt). `GET /v1/mymind/capabilities`, `POST /v1/mymind/run`; SDK `hub.mymind.*`. Girdi veri olarak işlenir, çıktı doğrulanır. My Mind sayfasında görev kataloğu listelenir.
+- SDK: `publish`, `read`, `channels`, `subscribe`, `mymind.capabilities`, `mymind.run`.
+- Belgeler: `docs/ecosystem-v1/KANAL-API.md`, `docs/ecosystem-v1/MYMIND-YETENEKLER.md`.
+
+Uygulamaların bu kanallara yayın yapması kendi sürümlerinde yapılacaktır; bu sürüm Hub tarafını ve sözleşmeyi getirir. İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
 PluginLabs Hub 0.4.15 — Üst çerçeve menüsü, bölünmüş Yükle düğmesi, uygulama logo karoları ve fotoğraf alanlı widget'lar.
 
 - Üst çerçeve: Dosya / Görünüm / Araçlar / Yardım menüsü pencerenin en üstünde, tüm genişlikte (PLC-029 başlık çubuğu kalıbı: logo, başlık, menüler, “Her şeyi ara · Ctrl K”). Kenar çubuğu ve içerik bunun altında başlar.

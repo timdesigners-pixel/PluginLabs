@@ -31,6 +31,57 @@ class PluginLabsClient {
   invoke(provider, action, input) {
     return this.request("/v1/actions/invoke", { provider, action, input });
   }
+  // Kanallar: veri akışı ve uygulamalar arası köprü
+  publish(channel, data, { ttlSeconds, share } = {}) {
+    return this.request(`/v1/channels/${encodeURIComponent(channel)}`, {
+      data,
+      ...(ttlSeconds !== undefined && { ttlSeconds }),
+      ...(share !== undefined && { share }),
+    });
+  }
+  read(channel) {
+    return this.request(`/v1/channels/${encodeURIComponent(channel)}`);
+  }
+  async channels() {
+    return (await this.request("/v1/channels")).channels;
+  }
+  // Canlı akış: her güncellemede onChange(kayıt) çağrılır. Dönen işlev akışı kapatır.
+  subscribe(channels, onChange, onClosed) {
+    const abort = new AbortController();
+    const query = channels?.length
+      ? `?channels=${channels.map(encodeURIComponent).join(",")}`
+      : "";
+    (async () => {
+      const response = await fetch(this.base + "/v1/stream" + query, {
+        headers: { Authorization: `Bearer ${this.token}` },
+        signal: abort.signal,
+      });
+      if (!response.ok) throw Error((await response.json()).error);
+      const decoder = new TextDecoder();
+      let buffer = "";
+      for await (const chunk of response.body) {
+        buffer += decoder.decode(chunk, { stream: true });
+        let end;
+        while ((end = buffer.indexOf("\n\n")) >= 0) {
+          const block = buffer.slice(0, end);
+          buffer = buffer.slice(end + 2);
+          const event = /^event: (.+)$/m.exec(block)?.[1],
+            data = /^data: (.+)$/m.exec(block)?.[1];
+          if (!event || !data) continue;
+          if (event === "channel") onChange(JSON.parse(data));
+          else if (event === "closed") onClosed?.(JSON.parse(data));
+        }
+      }
+    })().catch((e) => {
+      if (!abort.signal.aborted) onClosed?.({ error: e.message });
+    });
+    return () => abort.abort();
+  }
+  // My Mind hazır görevleri
+  mymind = {
+    capabilities: () => this.request("/v1/mymind/capabilities"),
+    run: (task, input) => this.request("/v1/mymind/run", { task, input }),
+  };
 }
 class ProviderAgent {
   constructor(client, { id, name, actions }) {

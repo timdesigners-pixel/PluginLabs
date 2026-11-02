@@ -25,6 +25,17 @@
     `<div class="wdg-row"><span>${l}</span><b class="pl-num">${r}</b>${extra}</div>`;
   const chip = (c, t) => `<span class="wdg-chip" style="--c:var(--pl-viz-${c})"><i></i>${t}</span>`;
 
+  // Canlı kanal verisi: Hub'a uygulamaların yayınladığı kayıt. Metinler kaçışlanır ve sınırlanır.
+  const esc = (v, n = 80) =>
+    String(v ?? "").slice(0, n).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const chan = (st, name) => (st.channels || []).find((c) => c.channel === name && c.data && typeof c.data === "object") || null;
+  const list = (v, n = 8) => (Array.isArray(v) ? v.filter((x) => x && typeof x === "object").slice(0, n) : []);
+  const numOf = (v) => (Number.isFinite(v) ? v : null);
+  const ago = (t) => {
+    const m = Math.max(0, Math.round((Date.now() - t) / 60000));
+    return m < 1 ? "şimdi" : m < 60 ? m + " dk" : m < 1440 ? Math.round(m / 60) + " sa" : Math.round(m / 1440) + " gün";
+  };
+
   const PK = "pluginlabs.photo.";
   const photoOf = (k) => {
     try { return localStorage.getItem(PK + k) || ""; } catch { return ""; }
@@ -125,7 +136,14 @@
   const registry = [
     {
       id: "akis", title: "Veri akışı", app: "Tüm uygulamalar", appId: "", color: 1, icon: P.feed, wide: true, always: true,
-      render: (rich) => {
+      render: (rich, st) => {
+        const live = (st.channels || [])
+          .filter((c) => /\.feed$/.test(c.channel))
+          .flatMap((c) => list(c.data.events, 6).map((e) => [c.namespace, e, c]))
+          .sort((a, b) => (b[2].updatedAt || 0) - (a[2].updatedAt || 0))
+          .slice(0, rich ? 8 : 5);
+        if (live.length)
+          return `<div class="wdg-feed">${live.map(([ns, e, c]) => `<div class="wdg-feedrow" style="--c:var(--pl-viz-1)">${logo("", esc(ns, 2).toUpperCase())}<span class="wdg-msg">${esc(e.message, 120)}</span><span class="pl-muted pl-num">${esc(e.time || ago(c.updatedAt), 12)}</span></div>`).join("")}</div>`;
         const f = [
           ["leo", "LH", 5, "Yeni indirim kodu yakalandı: HAFTA20", "2 dk"],
           ["wishlist", "MW", 4, "Kablosuz kulaklık %12 ucuzladı", "14 dk"],
@@ -174,28 +192,69 @@
     },
     {
       id: "finans", title: "Yaklaşan ödemeler", app: "Finansal Asistan", appId: "finansal-asistan", color: 4, icon: P.wallet,
-      render: (rich) =>
-        `<div class="pl-kpi"><div class="pl-row" style="justify-content:space-between"><span class="pl-label">Kasım bütçesi</span><span class="pl-badge pl-badge--warning">%82</span></div><span class="pl-kpi__value" style="font-size:22px">8.200 ₺ <span class="pl-muted" style="font-size:13px">/ 10.000 ₺</span></span><div class="pl-progress" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:82%;background:var(--pl-warning)"></span></div><span class="pl-muted">Kalan <b class="pl-num" style="color:var(--pl-gold)">1.800 ₺</b> · 3 ödeme</span></div><div class="wdg-lines">${row("Kira", "8.500,00 ₺", '<em>3 gün</em>')}${row("Fatura", "1.249,90 ₺", '<em>6 gün</em>')}${rich ? row("Taksit", "2.700,10 ₺", '<em>12 gün</em>') : ""}</div>`,
+      channel: "finansal-asistan.upcoming",
+      render: (rich, st) => {
+        const c = chan(st, "finansal-asistan.upcoming");
+        if (c) {
+          const rows = list(c.data.rows, rich ? 4 : 3).map((r) => row(esc(r.name, 40), esc(r.amount, 16), r.when ? `<em>${esc(r.when, 12)}</em>` : "")).join("");
+          return `<div class="pl-kpi"><span class="pl-label">Yaklaşan ödeme</span><span class="pl-kpi__value" style="font-size:22px">${esc(c.data.total ?? "—", 20)}</span></div><div class="wdg-lines">${rows}</div>`;
+        }
+        return `<div class="pl-kpi"><div class="pl-row" style="justify-content:space-between"><span class="pl-label">Kasım bütçesi</span><span class="pl-badge pl-badge--warning">%82</span></div><span class="pl-kpi__value" style="font-size:22px">8.200 ₺ <span class="pl-muted" style="font-size:13px">/ 10.000 ₺</span></span><div class="pl-progress" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:82%;background:var(--pl-warning)"></span></div><span class="pl-muted">Kalan <b class="pl-num" style="color:var(--pl-gold)">1.800 ₺</b> · 3 ödeme</span></div><div class="wdg-lines">${row("Kira", "8.500,00 ₺", '<em>3 gün</em>')}${row("Fatura", "1.249,90 ₺", '<em>6 gün</em>')}${rich ? row("Taksit", "2.700,10 ₺", '<em>12 gün</em>') : ""}</div>`;
+      },
     },
     {
       id: "fiyat", title: "Fiyat düşüşleri", app: "MyWishlist", appId: "mywishlist", color: 5, icon: P.tag,
-      render: (rich) =>
-        `<div class="wdg-lines">${row("Kablosuz kulaklık", "1.249,90 ₺", '<em class="is-up">%12 ↓</em>')}${row("Mekanik klavye", "2.099,00 ₺", '<em class="is-up">%8 ↓</em>')}${rich ? row("Masa lambası", "649,00 ₺", '<em class="is-up">%5 ↓</em>') : ""}</div><div class="wdg-meta">${chip(5, "3 ürün hedef fiyata yakın")}</div>`,
+      channel: "mywishlist.drops",
+      render: (rich, st) => {
+        const c = chan(st, "mywishlist.drops");
+        if (c) {
+          const rows = list(c.data.rows, rich ? 4 : 3).map((r) => row(esc(r.name, 40), esc(r.price, 16), r.change ? `<em class="is-up">${esc(r.change, 10)}</em>` : "")).join("");
+          return `<div class="wdg-lines">${rows}</div>`;
+        }
+        return `<div class="wdg-lines">${row("Kablosuz kulaklık", "1.249,90 ₺", '<em class="is-up">%12 ↓</em>')}${row("Mekanik klavye", "2.099,00 ₺", '<em class="is-up">%8 ↓</em>')}${rich ? row("Masa lambası", "649,00 ₺", '<em class="is-up">%5 ↓</em>') : ""}</div><div class="wdg-meta">${chip(5, "3 ürün hedef fiyata yakın")}</div>`;
+      },
     },
     {
       id: "kodlar", title: "Yakalanan kodlar", app: "Leo Helper", appId: "leo-helper", color: 5, icon: P.code,
-      render: (rich) =>
-        `<div class="wdg-big pl-num">1.284</div><div class="pl-muted wdg-sub">Bu hafta yakalanan kod</div><div class="wdg-meta"><span class="pl-badge pl-badge--success">HAFTA20</span><span class="pl-badge">YAZ-15</span>${rich ? '<span class="pl-badge">KARGO0</span><span class="pl-badge">ILKSIPARIS</span>' : ""}</div>`,
+      channel: "leo-helper.codes",
+      render: (rich, st) => {
+        const c = chan(st, "leo-helper.codes");
+        if (c) {
+          const chips = list(c.data.chips, rich ? 4 : 2).map((x, i) => `<span class="pl-badge${i ? "" : " pl-badge--success"}">${esc(x.text ?? x.code, 24)}</span>`).join("");
+          return `<div class="wdg-big pl-num">${esc(numOf(c.data.total) ?? "—", 12)}</div><div class="pl-muted wdg-sub">${esc(c.data.label || "Yakalanan kod", 60)}</div><div class="wdg-meta">${chips}</div>`;
+        }
+        return `<div class="wdg-big pl-num">1.284</div><div class="pl-muted wdg-sub">Bu hafta yakalanan kod</div><div class="wdg-meta"><span class="pl-badge pl-badge--success">HAFTA20</span><span class="pl-badge">YAZ-15</span>${rich ? '<span class="pl-badge">KARGO0</span><span class="pl-badge">ILKSIPARIS</span>' : ""}</div>`;
+      },
     },
     {
       id: "notlar", title: "Son notlar", app: "Mind Palace", appId: "mind-palace", color: 1, icon: P.note,
-      render: (rich) =>
-        `<div class="wdg-lines">${row("Kasım plan toplantısı", "bugün")}${row("Fikir: haftalık özet", "dün")}${rich ? row("Okuma listesi", "2 gün") : ""}</div><div class="wdg-meta"><span class="pl-badge pl-badge--accent">MyMind özeti</span>${chip(1, "7 görev")}</div>`,
+      channel: "mind-palace.notes",
+      render: (rich, st) => {
+        const c = chan(st, "mind-palace.notes");
+        if (c) {
+          const rows = list(c.data.rows, rich ? 4 : 3).map((r) => row(esc(r.title, 50), esc(r.when, 12))).join("");
+          return `<div class="wdg-lines">${rows}</div>`;
+        }
+        return `<div class="wdg-lines">${row("Kasım plan toplantısı", "bugün")}${row("Fikir: haftalık özet", "dün")}${rich ? row("Okuma listesi", "2 gün") : ""}</div><div class="wdg-meta"><span class="pl-badge pl-badge--accent">MyMind özeti</span>${chip(1, "7 görev")}</div>`;
+      },
     },
     {
       id: "tarama", title: "Kazıma görevleri", app: "PluginLabs Scrapper", appId: "pluginlabs-scrapper", color: 7, icon: P.scrape,
-      render: (rich) =>
-        `<div class="pl-queue" role="list" aria-label="Kazıma görevleri">${queueItem("FT", "Fiyat taraması", "148 / 230 ürün", '<span class="pl-badge pl-badge--info">%64</span>', true)}${queueItem("SR", "Site rehberi", "hazır", '<span class="pl-badge pl-badge--success">Tamam</span>')}${rich ? queueItem("ZM", "Zamanlanmış", "yarın 08:00", '<span class="pl-badge">Yarın</span>') : ""}</div><div class="pl-progress" role="progressbar" aria-label="Fiyat taraması" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:64%"></span></div>`,
+      channel: "pluginlabs-scrapper.tasks",
+      render: (rich, st) => {
+        const c = chan(st, "pluginlabs-scrapper.tasks");
+        if (c) {
+          const items = list(c.data.tasks, rich ? 4 : 3);
+          const q = items.map((t, i) => {
+            const pct = Math.min(100, Math.max(0, numOf(t.pct) ?? 0));
+            const badge = t.state === "done" ? '<span class="pl-badge pl-badge--success">Tamam</span>' : `<span class="pl-badge pl-badge--info">%${pct}</span>`;
+            return queueItem(esc(t.name, 2).toUpperCase() || "GR", esc(t.name, 40), esc(t.sub, 40), badge, i === 0);
+          }).join("");
+          const lead = Math.min(100, Math.max(0, numOf(items[0]?.pct) ?? 0));
+          return `<div class="pl-queue" role="list" aria-label="Kazıma görevleri">${q}</div><div class="pl-progress" role="progressbar" aria-label="${esc(items[0]?.name, 40)}" aria-valuenow="${lead}" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:${lead}%"></span></div>`;
+        }
+        return `<div class="pl-queue" role="list" aria-label="Kazıma görevleri">${queueItem("FT", "Fiyat taraması", "148 / 230 ürün", '<span class="pl-badge pl-badge--info">%64</span>', true)}${queueItem("SR", "Site rehberi", "hazır", '<span class="pl-badge pl-badge--success">Tamam</span>')}${rich ? queueItem("ZM", "Zamanlanmış", "yarın 08:00", '<span class="pl-badge">Yarın</span>') : ""}</div><div class="pl-progress" role="progressbar" aria-label="Fiyat taraması" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:64%"></span></div>`;
+      },
     },
     {
       id: "odak", title: "Odak", app: "Focus Orbit", appId: "focus-orbit", color: 2, icon: P.focus,
@@ -269,8 +328,12 @@
     const w = registry.find((x) => x.id === id);
     if (!w) return "";
     const installed = !!(w.appId && st.installed[w.appId]);
-    const rich = installed || w.live || w.always;
-    const badges = w.live
+    const rich = installed || w.live || w.always || !!(w.channel && chan(st, w.channel));
+    const ch = w.channel ? chan(st, w.channel) : null;
+    const isLive = w.live || !!ch || (w.id === "akis" && (st.channels || []).some((c) => /\.feed$/.test(c.channel)));
+    const badges = ch
+      ? `<span class="pl-badge pl-badge--success" title="${esc(w.channel, 80)}">Canlı · ${esc(ch.owner, 24)}</span>`
+      : isLive
       ? '<span class="pl-badge pl-badge--success">Canlı</span>'
       : `<span class="pl-badge">Örnek veri</span>${installed ? '<span class="pl-badge pl-badge--success">Yüklü</span>' : ""}`;
     return `<section class="card wdg${w.wide || installed ? " is-wide" : ""}" data-w="${w.id}" style="--c:var(--pl-viz-${w.color})"><header class="wdg-head"><span class="wdg-ic">${ico(w.icon)}</span><div class="wdg-title"><h3>${w.title}</h3><small class="pl-muted">${w.app}</small></div><div class="wdg-badges">${badges}</div></header><div class="wdg-body">${w.render(rich, st)}</div></section>`;
