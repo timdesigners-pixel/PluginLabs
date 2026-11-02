@@ -80,6 +80,79 @@ const fs = require("node:fs/promises");
     path: require("node:path").resolve(__dirname, "../preview-mymind.png"),
     fullPage: true,
   });
+  // Kasım kuralları: menüde kaydırma çubuğu yok, komut paleti opak ve klavyeyle çalışır
+  const asideBar = await page.evaluate(() => {
+    const a = document.querySelector("aside");
+    const cs = getComputedStyle(a);
+    return (
+      a.offsetWidth - a.clientWidth -
+      parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth)
+    );
+  });
+  require("node:assert/strict").equal(asideBar, 0);
+  await page.keyboard.press("Control+k");
+  await page.locator("#palette[open] .pl-cmdk").waitFor();
+  const panelAlpha = await page.evaluate(() => {
+    const c = getComputedStyle(document.querySelector("#palette .pl-cmdk")).backgroundColor;
+    const m = c.match(/rgba?\(([^)]+)\)/);
+    const parts = m[1].split(/[ ,/]+/).filter(Boolean);
+    return parts.length > 3 ? parseFloat(parts[3]) : 1;
+  });
+  require("node:assert/strict").equal(panelAlpha, 1);
+  await page.keyboard.type("API ve izinler");
+  await page.screenshot({
+    path: require("node:path").resolve(__dirname, "../preview-palette.png"),
+  });
+  await page.keyboard.press("Enter");
+  await page.locator('nav [data-page="api"].active').waitFor();
+  require("node:assert/strict").equal(await page.locator("#palette[open]").count(), 0);
+  // Advanced kabuğu: üst menü, kayan akış bandı, durum kartları
+  await page.getByRole("menuitem", { name: "Dosya" }).click();
+  await page.getByRole("menuitem", { name: /Veri klasörünü aç/ }).waitFor();
+  await page.keyboard.press("Escape");
+  require("node:assert/strict").equal(await page.locator(".mb-drop:not([hidden])").count(), 0);
+  await page.locator("#ticker-track span").first().waitFor({ state: "attached" });
+  require("node:assert/strict").ok((await page.locator("#ticker-track span").count()) >= 8);
+  await page.locator('nav [data-page="home"]').click();
+  await page.locator('[data-card="server"]').waitFor();
+  await page.locator('[data-card="connection"]').waitFor();
+  await page.getByRole("button", { name: /Pro'ya geç/ }).click();
+  await page.locator("#modal[open]").waitFor();
+  await page.getByRole("button", { name: "Tamam" }).click();
+  // Ayarlar: Advanced sekmeleri, segment ile palet/tema, gerçek sürüm
+  await page.locator('nav [data-page="settings"]').click();
+  await page.locator(".pl-tabs [data-settings-tab]").first().waitFor();
+  await page.locator('#content [data-set-palette="iris"]').click();
+  require("node:assert/strict").equal(await page.evaluate(() => document.documentElement.dataset.palette), "iris");
+  await page.locator('#content [data-set-palette="hub-yesil"]').click();
+  await page.locator('[data-settings-tab="hakkinda"]').click();
+  await page.getByText(/Sürüm \d+\.\d+\.\d+ · Önizleme/).first().waitFor();
+  await page.locator('[data-settings-tab="veri"]').click();
+  await page.locator(".settings-faq details").first().waitFor();
+  // Uygulamalarım: istatistik kartları, tür süzgeci, ızgara/liste görünümü
+  await page.locator('nav [data-page="apps"]').click();
+  await page.locator(".stat-row .pl-statcard").first().waitFor();
+  await page.locator('[data-apps-view="list"]').click();
+  await page.locator(".app-list .app-row").first().waitFor();
+  await page.locator('[data-apps-view="grid"]').click();
+  await page.locator(".app-grid .card").first().waitFor();
+  // Widget'lar: panoda örnek widget'lar, Ayarlar'dan çıkar/ekle ve sıra değiştir
+  await page.locator('nav [data-page="home"]').click();
+  await page.locator(".wdg").first().waitFor();
+  const wdgTotal = await page.locator(".wdg").count();
+  require("node:assert/strict").ok(wdgTotal >= 10);
+  await page.locator("[data-widget-edit]").first().click();
+  await page.locator('[data-settings-tab="widget"].is-active').waitFor();
+  await page.locator('[data-widget-toggle="kombin"]').uncheck();
+  await page.locator('nav [data-page="home"]').click();
+  require("node:assert/strict").equal(await page.locator('.wdg[data-w="kombin"]').count(), 0);
+  require("node:assert/strict").equal(await page.locator(".wdg").count(), wdgTotal - 1);
+  await page.locator("[data-widget-edit]").first().click();
+  await page.locator('[data-widget-toggle="kombin"]').check();
+  await page.locator('[data-widget-move="down"][data-id="akis"]').click();
+  await page.locator("[data-widget-reset]").click();
+  await page.locator('nav [data-page="home"]').click();
+  require("node:assert/strict").equal(await page.locator(".wdg").count(), wdgTotal);
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
