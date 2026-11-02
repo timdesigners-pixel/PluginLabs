@@ -127,6 +127,40 @@ function matches(item) {
       .includes(query.toLocaleLowerCase("tr"))
   );
 }
+let appsView = "grid",
+  appsKind = "all";
+function verNewer(a, b) {
+  const x = String(a).split(".").map(Number),
+    y = String(b).split(".").map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) {
+    if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+  }
+  return false;
+}
+function appRow(item) {
+  const rec = state.installed[item.id],
+    job = state.jobs.find(
+      (j) => j.item === item.id && ["queued", "downloading", "installing"].includes(j.status),
+    ),
+    different = verNewer(item.version, rec.version);
+  const status = job
+    ? '<span class="pl-status pl-status--syncing">İşleniyor</span>'
+    : different
+      ? '<span class="pl-status pl-status--warning">Güncelleme var</span>'
+      : rec.enabled
+        ? '<span class="pl-status pl-status--online">Etkin</span>'
+        : '<span class="pl-status">Devre dışı</span>';
+  const primary = job
+    ? button("İptal", "cancel", job.id)
+    : different
+      ? button("Güncelle", "install", item.id, "primary")
+      : item.kind === "app"
+        ? button("Aç ↗", "launch", item.id)
+        : item.kind === "preview"
+          ? button("Aç ↗", "openProduct", item.id)
+          : "";
+  return `<article class="pl-card pl-row app-row">${icon(item.id)}<div class="sc-main"><b>${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec.version)}</span></div></div>${status}<div class="button-row">${primary}${button("Yönet", "manage", item.id)}</div></article>`;
+}
 function card(item) {
   const installed = state.installed[item.id],
     job = state.jobs.find(
@@ -134,15 +168,7 @@ function card(item) {
         j.item === item.id &&
         ["queued", "downloading", "installing"].includes(j.status),
     );
-  const newer = (a, b) => {
-    const x = a.split(".").map(Number),
-      y = b.split(".").map(Number);
-    for (let i = 0; i < Math.max(x.length, y.length); i++) {
-      if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
-    }
-    return false;
-  };
-  const different = installed && newer(item.version, installed.version);
+  const different = installed && verNewer(item.version, installed.version);
   return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${job ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>` : ""}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${job ? button("İptal", "cancel", job.id) : !installed ? button("＋ Yükle", "install", item.id) : different ? button("Güncelle", "install", item.id, "primary") : item.kind === "app" ? button("Aç ↗", "launch", item.id) : item.kind === "preview" ? button("Aç ↗", "openProduct", item.id) : button("Yönet", "manage", item.id)}</div>${installed ? `<div class="detail-actions"><button class="text-button" data-action="manage" data-id="${item.id}">Ayarlar ve paket bilgisi</button></div>` : ""}</article>`;
 }
 function grid(items) {
@@ -299,13 +325,44 @@ function render() {
         "",
       )}</section><section class="card api-card"><div class="eyebrow">BİRBİRİYLE ÇALIŞAN ARAÇLAR</div><h3>Bir merkez.<br>Bağlantılı bir ekosistem.</h3><p>Uygulamalarınızı izinli yerel API ile bağlayın. Kaynakları paylaşın, ortak AI motorunu kullanın.</p><div class="api-stat"><div><strong>${installed}</strong>yüklü paket</div><div><strong>${state.providers.length}</strong>bağlı sağlayıcı</div><div><strong>${state.clients.length}</strong>API istemcisi</div></div><button class="btn ghost" data-go="api">API ve bağlantıları yönet ↗</button></section></div>`;
   }
-  if (page === "apps")
+  if (page === "apps") {
+    const mine = catalog.filter((i) => state.installed[i.id]);
+    const all = state.catalog.filter((i) => state.installed[i.id]);
+    const kindsPresent = [...new Set(all.map((i) => i.kind))];
+    if (appsKind !== "all" && !kindsPresent.includes(appsKind)) appsKind = "all";
+    const shown = mine.filter((i) => appsKind === "all" || i.kind === appsKind);
+    const upd = all.filter((i) => verNewer(i.version, state.installed[i.id].version)).length;
+    const off = all.filter((i) => !state.installed[i.id].enabled).length;
+    const act = state.jobs.filter((j) => ["queued", "downloading", "installing"].includes(j.status)).length;
+    const stat = (c, ic, lbl, val) =>
+      `<div class="pl-statcard${val && c === 4 ? " is-hot" : ""}" style="--c:var(--pl-viz-${c})"><span class="pl-statcard__ic">${plIco(ic)}</span><span class="pl-statcard__lbl">${lbl}</span><span class="pl-statcard__val">${val}</span></div>`;
+    const stats = `<div class="stat-row">${stat(7, '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m9 12 2 2 4-4"/>', "Yüklü", all.length)}${stat(4, '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>', "Güncelleme bekliyor", upd)}${stat(3, '<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>', "Devre dışı", off)}${stat(5, '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>', "Etkin indirme", act)}</div>`;
+    const kindOpts = [["all", "Tümü"], ...kindsPresent.map((k) => [k, kindLabels[k] || k])];
+    const viewOpts = [
+      ["grid", `${plIco('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>')}Izgara`],
+      ["list", `${plIco('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>')}Liste`],
+    ];
+    const toolbar = all.length
+      ? `<div class="apps-toolbar">${plSegment("apps-kind", appsKind, kindOpts)}${plSegment("apps-view", appsView, viewOpts)}</div>`
+      : "";
+    let list;
+    if (!all.length)
+      list = `<div class="pl-empty"><div class="pl-empty__art">${plIco('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>')}</div><h3 class="pl-h3">Henüz yüklü uygulama yok</h3><p class="pl-muted" style="margin:0 0 8px;max-width:340px">Katalogdan bir uygulama veya eklenti yüklediğinizde burada görünür; buradan açabilir, güncelleyebilir ve ayarlarını yönetebilirsiniz.</p><button class="pl-btn pl-btn--primary pl-btn--sm" data-go="discover">${plIco('<path d="M5 12h14M12 5v14"/>')}Uygulama ekle</button></div>`;
+    else if (!shown.length)
+      list = `<div class="pl-empty"><div class="pl-empty__art">${plIco('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>')}</div><h3 class="pl-h3">Eşleşen uygulama yok</h3><p class="pl-muted" style="margin:0;max-width:340px">Aramayı veya türü değiştirin.</p></div>`;
+    else if (appsView === "list")
+      list = `<div class="app-list">${shown.map(appRow).join("")}</div>`;
+    else list = grid(shown);
     html =
       heading(
         "Uygulamalarım",
         "Bu merkez üzerinden yüklediğiniz uygulamaları ve eklentileri yönetin.",
         `<div class="button-row"><button class="btn" data-go="ideas">Uygulama kataloğu · 50 ürün</button><button class="btn primary" data-go="discover">＋ Uygulama ekle</button></div>`,
-      ) + grid(catalog.filter((i) => state.installed[i.id]));
+      ) +
+      stats +
+      toolbar +
+      list;
+  }
   if (page === "discover" || page === "resources") {
     const list = page === "resources" ? resources : catalog;
     html =
@@ -450,6 +507,14 @@ document.addEventListener("click", async (e) => {
   if (!b || b.disabled) return;
   if (b.dataset.page) return navigate(b.dataset.page);
   if (b.dataset.go) return navigate(b.dataset.go);
+  if (b.dataset.appsKind) {
+    appsKind = b.dataset.appsKind;
+    return render();
+  }
+  if (b.dataset.appsView) {
+    appsView = b.dataset.appsView;
+    return render();
+  }
   if (b.dataset.settingsTab) {
     settingsTab = b.dataset.settingsTab;
     return render();

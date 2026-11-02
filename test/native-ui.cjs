@@ -129,6 +129,13 @@ const fs = require("node:fs/promises");
   await page.getByText(/Sürüm \d+\.\d+\.\d+ · Önizleme/).first().waitFor();
   await page.locator('[data-settings-tab="veri"]').click();
   await page.locator(".settings-faq details").first().waitFor();
+  // Uygulamalarım: istatistik kartları, tür süzgeci, ızgara/liste görünümü
+  await page.locator('nav [data-page="apps"]').click();
+  await page.locator(".stat-row .pl-statcard").first().waitFor();
+  await page.locator('[data-apps-view="list"]').click();
+  await page.locator(".app-list .app-row").first().waitFor();
+  await page.locator('[data-apps-view="grid"]').click();
+  await page.locator(".app-grid .card").first().waitFor();
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
