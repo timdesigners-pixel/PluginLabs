@@ -91,7 +91,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · Chrome | v0.1.0 | P1 · M | [mywishlist](https://github.com/timdesigners-pixel/mywishlist) |
 | PL-055 | [MyMind AI](07-yeni-urunler/PL-055-mymind-ai/README.md) | W · Chrome | v0.1.0 | — | [mymind-ai](https://github.com/timdesigners-pixel/mymind-ai) |
 | PL-057 | [Tork](07-yeni-urunler/PL-057-tork/README.md) | W | v0.1.0 geliştirmede · Windows masaüstü + tork-cli | P2 · M | [tork](https://github.com/timdesigners-pixel/tork) (açılacak) |
 

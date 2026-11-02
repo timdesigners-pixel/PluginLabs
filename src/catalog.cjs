@@ -57,6 +57,22 @@ const catalog = [
     repo: "timdesigners-pixel/the-ultimate-scrapper",
   },
   {
+    id: "mywishlist",
+    name: "MyWishlist",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "İstek listeleri ve fiyat takibi: Chrome'da tek tuşla ya da sağ tıkla (MyMind ile) ekle; öncelik ve bütçe, ürün adıyla mağazalarda arama ve karşılaştırma, rakip fiyatlar, fiyat düşüşü uyarıları, sepet planı, alışveriş asistanı, ekran görüntüsünden ürün tanıma (cihazda).",
+    platform: "win32",
+    format: "exe",
+    file: "MyWishlist.exe",
+    size: 5445632,
+    sha256: "3f58a7a009e7e5d59af67eb85a394940497afbfc7335564119734ec454bf5bdb",
+    url: dist("mywishlist", "0.1.0", "MyWishlist-0.1.0-portable.exe"),
+    distAsset: "^MyWishlist-[0-9.]+-portable\\.exe$",
+    repo: "timdesigners-pixel/mywishlist",
+  },
+  {
     id: "mymind-ai",
     name: "MyMind AI",
     kind: "app",
