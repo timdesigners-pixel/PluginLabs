@@ -192,9 +192,36 @@ function choiceGroup(name, legend, choices, current) {
     )
     .join("")}</fieldset>`;
 }
+function widgetsSection() {
+  const L = window.plWidgets.layout.get();
+  const shown = L.order.filter((id) => !L.hidden.includes(id));
+  const body = shown.length
+    ? `<div class="wdg-grid">${shown.map((id) => window.plWidgets.render(id, state)).join("")}</div>`
+    : `<div class="pl-empty"><div class="pl-empty__art">${plIco('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17 14v7M14 17.5h7"/>')}</div><h3 class="pl-h3">Panoda widget yok</h3><p class="pl-muted" style="margin:0 0 8px;max-width:340px">Ayarlar › Widget'lar bölümünden istediğiniz widget'ları ekleyin.</p><button class="pl-btn pl-btn--primary pl-btn--sm" data-widget-edit>Widget ekle</button></div>`;
+  return `<div class="row-heading wdg-heading"><h2>Akış panosu</h2><div class="button-row"><span class="pl-badge">Örnek veri</span><button class="btn" data-widget-edit>＋ Widget ekle / düzenle</button></div></div>${body}`;
+}
+function widgetEditor() {
+  const L = window.plWidgets.layout.get();
+  const reg = Object.fromEntries(window.plWidgets.registry.map((w) => [w.id, w]));
+  const rows = L.order
+    .map((id, i) => {
+      const w = reg[id],
+        on = !L.hidden.includes(id),
+        inst = w.appId && state.installed[w.appId];
+      return `<div class="pl-setting wdg-edit-row" data-w="${id}"><span class="wdg-ic" style="--c:var(--pl-viz-${w.color})">${plIco(w.icon)}</span><div class="pl-setting__text"><b>${w.title}</b><span class="pl-muted">${w.app}${w.live ? " · canlı veri" : inst ? " · yüklü, genişletilmiş" : w.appId ? " · yüklü değil (örnek veri)" : " · örnek veri"}</span></div><div class="wdg-edit-actions"><button class="btn ghost" data-widget-move="up" data-id="${id}" aria-label="${w.title} yukarı taşı" ${i === 0 ? "disabled" : ""}>↑</button><button class="btn ghost" data-widget-move="down" data-id="${id}" aria-label="${w.title} aşağı taşı" ${i === L.order.length - 1 ? "disabled" : ""}>↓</button><label class="pl-switch"><input type="checkbox" role="switch" data-widget-toggle="${id}" aria-label="${w.title} panoda göster" ${on ? "checked" : ""}></label></div></div>`;
+    })
+    .join("");
+  const n = L.order.length - L.hidden.length;
+  return settingsCard(
+    "Genel bakış widget'ları",
+    `Panoda ${n} / ${L.order.length} widget var. Anahtar widget'ı ekler veya çıkarır; oklar sırayı değiştirir. Uygulama yüklenince ilgili widget genişler; uygulamalar veri akıtmaya başlayınca örnek veri gerçek veriyle değişir.`,
+    rows + `<div class="button-row" style="margin-top:16px"><button class="btn" data-widget-reset>Varsayılana dön</button><button class="btn primary" data-go="home">Panoyu gör ↗</button></div>`,
+  );
+}
 let settingsTab = "gorunum";
 const settingsTabs = [
   ["gorunum", "Görünüm"],
+  ["widget", "Widget'lar"],
   ["veri", "Veri ve gizlilik"],
   ["baglanti", "Bağlantılar"],
   ["kisayol", "Kısayollar"],
@@ -246,6 +273,7 @@ function settingsHTML() {
           ["Aramaya git", kbd("/")],
         ]),
       );
+  else if (settingsTab === "widget") body = widgetEditor();
   else if (settingsTab === "veri")
     body =
       settingsCard(
@@ -315,7 +343,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}${widgetsSection()}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -507,6 +535,21 @@ document.addEventListener("click", async (e) => {
   if (!b || b.disabled) return;
   if (b.dataset.page) return navigate(b.dataset.page);
   if (b.dataset.go) return navigate(b.dataset.go);
+  if (b.dataset.widgetEdit !== undefined) {
+    settingsTab = "widget";
+    return navigate("settings");
+  }
+  if (b.dataset.widgetMove) {
+    window.plWidgets.layout.move(b.dataset.id, b.dataset.widgetMove);
+    render();
+    document.querySelector(`[data-widget-move="${b.dataset.widgetMove}"][data-id="${b.dataset.id}"]:not([disabled])`)?.focus();
+    return;
+  }
+  if (b.dataset.widgetReset !== undefined) {
+    window.plWidgets.layout.reset();
+    toast("Widget düzeni varsayılana döndü");
+    return render();
+  }
   if (b.dataset.appsKind) {
     appsKind = b.dataset.appsKind;
     return render();
@@ -1182,6 +1225,13 @@ document.addEventListener("change", (e) => {
     window.plTheme.set({ [choice.name]: choice.value });
     render();
     document.querySelector(`.choice input[name="${choice.name}"]:checked`)?.focus();
+    return;
+  }
+  const wt = e.target.closest?.("[data-widget-toggle]");
+  if (wt) {
+    window.plWidgets.layout.toggle(wt.dataset.widgetToggle);
+    render();
+    document.querySelector(`[data-widget-toggle="${wt.dataset.widgetToggle}"]`)?.focus();
     return;
   }
   if (e.target.id === "browser-selection") {

@@ -136,6 +136,23 @@ const fs = require("node:fs/promises");
   await page.locator(".app-list .app-row").first().waitFor();
   await page.locator('[data-apps-view="grid"]').click();
   await page.locator(".app-grid .card").first().waitFor();
+  // Widget'lar: panoda örnek widget'lar, Ayarlar'dan çıkar/ekle ve sıra değiştir
+  await page.locator('nav [data-page="home"]').click();
+  await page.locator(".wdg").first().waitFor();
+  const wdgTotal = await page.locator(".wdg").count();
+  require("node:assert/strict").ok(wdgTotal >= 10);
+  await page.locator("[data-widget-edit]").first().click();
+  await page.locator('[data-settings-tab="widget"].is-active').waitFor();
+  await page.locator('[data-widget-toggle="kombin"]').uncheck();
+  await page.locator('nav [data-page="home"]').click();
+  require("node:assert/strict").equal(await page.locator('.wdg[data-w="kombin"]').count(), 0);
+  require("node:assert/strict").equal(await page.locator(".wdg").count(), wdgTotal - 1);
+  await page.locator("[data-widget-edit]").first().click();
+  await page.locator('[data-widget-toggle="kombin"]').check();
+  await page.locator('[data-widget-move="down"][data-id="akis"]').click();
+  await page.locator("[data-widget-reset]").click();
+  await page.locator('nav [data-page="home"]').click();
+  require("node:assert/strict").equal(await page.locator(".wdg").count(), wdgTotal);
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
