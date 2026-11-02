@@ -264,7 +264,7 @@ function card(item, compact = false) {
   const act = actionHTML(item, installed, job, different);
   if (compact)
     return `<article class="card app-compact"><div class="ac-row">${icon(item.id)}<div class="ac-text"><h3>${esc(item.name)}</h3><small class="pl-muted pl-num">${bytes(item.size)}${installed ? " · yüklü" : ""}</small></div>${act}</div>${prog}</article>`;
-  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${prog}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${act}</div></article>`;
+  return `<article class="card pl-appcard"><div class="pl-appcard__head">${icon(item.id)}<div style="min-width:0"><h3 class="pl-appcard__name">${esc(item.name)}</h3><span class="pl-label">${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</span></div>${installed ? `<span class="pl-badge ${installed.enabled ? "pl-badge--success" : ""}" style="margin-left:auto">${installed.enabled ? "Yüklü" : "Devre dışı"}</span>` : ""}</div><p class="pl-appcard__desc">${esc(item.description)}</p>${prog}<div class="pl-appcard__foot"><span class="pl-badge">${bytes(item.size)}</span>${act}</div></article>`;
 }
 function grid(items, compact = false) {
   return items.length
@@ -312,6 +312,42 @@ function widgetEditor() {
     `Panoda ${n} / ${L.order.length} widget var. Anahtar widget'ı ekler veya çıkarır; oklar sırayı değiştirir. Uygulama yüklenince ilgili widget genişler; uygulamalar veri akıtmaya başlayınca örnek veri gerçek veriyle değişir.`,
     rows + `<div class="button-row" style="margin-top:16px"><button class="pl-btn pl-btn--secondary" data-widget-reset>Varsayılana dön</button><button class="pl-btn pl-btn--primary" data-go="home">Panoyu gör ↗</button></div>`,
   );
+}
+let bannerOff = false,
+  sortMode = "name";
+const searchIco = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>';
+function greetHTML() {
+  const d = new Date(),
+    h = d.getHours();
+  const hello = h < 6 ? "İyi geceler" : h < 12 ? "Günaydın" : h < 18 ? "İyi günler" : "İyi akşamlar";
+  const ds = `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
+  const n = Object.keys(state.installed).length;
+  return `<div class="eyebrow" style="margin-bottom:12px">PLUGINLABS / GENEL BAKIŞ</div><header class="pl-greet hub-greet"><div><h2 class="pl-greet__title">Her şey, tek bir yerde.</h2><div class="pl-greet__sub">${hello} · ${n} paket yüklü · yerel API ${state.api.running ? "hazır" : "çevrimdışı"}</div></div><div class="pl-greet__chips"><span>${plIco('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>')}${ds}</span><span>${plIco('<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>')}Yerel çalışma alanı</span></div><button class="pl-iconbtn" style="color:inherit" data-go="activity" aria-label="İşlem geçmişi">${plIco('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>')}</button></header>`;
+}
+function modelBanner() {
+  if (bannerOff || modelReady() || state.model.running) return "";
+  return `<div class="pl-banner hub-banner" role="note">${plIco('<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M21 5h-4"/>')}<div class="pl-banner__text"><b>My Mind modeli henüz yüklü değil.</b> <span class="pl-muted">Yerel AI için modeli ve motoru yükleyin.</span></div><button class="pl-btn pl-btn--primary pl-btn--sm" data-go="mymind">Kur</button><button class="pl-iconbtn pl-iconbtn--sm" data-banner-close aria-label="Bildirimi kapat">${plIco('<path d="M18 6 6 18M6 6l12 12"/>')}</button></div>`;
+}
+const sortItems = (arr) =>
+  arr.slice().sort((a, b) =>
+    sortMode === "size"
+      ? (b.size || 0) - (a.size || 0)
+      : String(a.name).localeCompare(String(b.name), "tr"),
+  );
+function filterBar(kinds, current, attr, withView) {
+  const tags = kinds
+    .map(
+      (k) =>
+        `<button class="pl-tag${current === k ? " is-selected" : ""}" data-${attr}="${k}" aria-pressed="${current === k}">${k === "all" ? "Tümü" : esc(kindLabels[k] || k)}</button>`,
+    )
+    .join("");
+  const view = withView
+    ? plSegment("apps-view", appsView, [
+        ["grid", `${plIco('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>')}Izgara`],
+        ["list", `${plIco('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>')}Liste`],
+      ])
+    : "";
+  return `<div class="pl-row filter-bar" role="search"><div class="pl-inputwrap">${plIco(searchIco)}<input class="pl-input" type="search" data-filter-search placeholder="Filtrele" aria-label="Filtrele" value="${esc(query)}"></div>${tags}${view}<select class="pl-select" data-sort aria-label="Sırala"><option value="name"${sortMode === "name" ? " selected" : ""}>Ad (A–Z)</option><option value="size"${sortMode === "size" ? " selected" : ""}>Boyut</option></select></div>`;
 }
 let settingsTab = "gorunum";
 const settingsTabs = [
@@ -429,7 +465,12 @@ function render() {
   $("#breadcrumb").textContent = titles[page];
   document
     .querySelectorAll("nav [data-page]")
-    .forEach((b) => b.classList.toggle("active", b.dataset.page === page));
+    .forEach((b) => {
+      b.classList.toggle("active", b.dataset.page === page);
+      b.classList.toggle("is-active", b.dataset.page === page);
+      if (b.dataset.page === page) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
   const catalog = state.catalog.filter(matches),
     apps = catalog.filter((i) => i.kind === "app"),
     resources = catalog.filter((i) =>
@@ -438,7 +479,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="pl-hero onb-hero"><div class="onb-copy"><span class="pl-badge pl-badge--accent">PluginLabs Hub · ${esc(state.version || "")}</span><h1 class="pl-hero__title">Küçük model.<br><em>Büyük bir çalışma alanı.</em></h1><p class="pl-muted" style="max-width:440px;margin:0 0 18px">My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><div class="pl-row"><button class="pl-btn pl-btn--gradient pl-btn--lg" data-go="mymind">My Mind’i keşfet<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button><button class="pl-btn pl-btn--secondary pl-btn--lg" data-go="discover">Kataloğa göz at</button></div></div><div class="onb-art"><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${greetHTML()}${modelBanner()}${statusCards(true)}<section class="pl-hero onb-hero"><div class="onb-copy"><span class="pl-badge pl-badge--accent">PluginLabs Hub · ${esc(state.version || "")}</span><h1 class="pl-hero__title">Küçük model.<br><em>Büyük bir çalışma alanı.</em></h1><p class="pl-muted" style="max-width:440px;margin:0 0 18px">My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><div class="pl-row"><button class="pl-btn pl-btn--gradient pl-btn--lg" data-go="mymind">My Mind’i keşfet<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button><button class="pl-btn pl-btn--secondary pl-btn--lg" data-go="discover">Kataloğa göz at</button></div></div><div class="onb-art"><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -466,7 +507,7 @@ function render() {
       ["list", `${plIco('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>')}Liste`],
     ];
     const toolbar = all.length
-      ? `<div class="apps-toolbar">${plSegment("apps-kind", appsKind, kindOpts)}${plSegment("apps-view", appsView, viewOpts)}</div>`
+      ? filterBar(["all", ...kindsPresent], appsKind, "apps-kind", true)
       : "";
     let list;
     if (!all.length)
@@ -474,8 +515,8 @@ function render() {
     else if (!shown.length)
       list = `<div class="pl-empty"><div class="pl-empty__art">${plIco('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>')}</div><h3 class="pl-h3">Eşleşen uygulama yok</h3><p class="pl-muted" style="margin:0;max-width:340px">Aramayı veya türü değiştirin.</p></div>`;
     else if (appsView === "list")
-      list = `<div class="app-list">${shown.map(appRow).join("")}</div>`;
-    else list = grid(shown);
+      list = `<div class="app-list">${sortItems(shown).map(appRow).join("")}</div>`;
+    else list = grid(sortItems(shown));
     html =
       heading(
         "Uygulamalarım",
@@ -498,8 +539,13 @@ function render() {
           : "Gerçek sürümler, doğrulanan paketler ve cihazınızda çalışan araçlar.",
         button("＋ Kaynak paketi yükle", "importPack"),
       ) +
-      `<div class="filters">${["all", ...(page === "resources" ? ["asset", "template", "library", "plugin"] : ["app", "model", "engine", "plugin"])].map((k) => `<button class="filter ${filter === k ? "active" : ""}" data-filter="${k}">${k === "all" ? "Tümü" : kindLabels[k]}</button>`).join("")}</div>` +
-      grid(list.filter((i) => filter === "all" || i.kind === filter));
+      filterBar(
+        ["all", ...(page === "resources" ? ["asset", "template", "library", "plugin"] : ["app", "model", "engine", "plugin"])],
+        filter,
+        "filter",
+        false,
+      ) +
+      grid(sortItems(list.filter((i) => filter === "all" || i.kind === filter)));
   }
   if (page === "ideas") html = ideasPage();
   if (page === "product") html = productPage();
@@ -559,7 +605,7 @@ function render() {
         "İndirmeler, paket değişiklikleri ve API onayları. Prompt içerikleri kaydedilmez.",
       ) +
       jobsHTML() +
-      `<section class="card" style="margin-top:20px">${state.activity.map((a) => `<div class="list-row"><span class="badge">◷</span><div class="grow"><p>${esc(a.message)}</p></div><span class="time">${date(a.time)}</span></div>`).join("")}</section>`;
+      `<section class="card" style="margin-top:20px">${state.activity.length ? `<ol class="pl-timeline">${state.activity.map((a) => `<li><span class="pl-timeline__dot ${/hata|başarısız|reddedildi|iptal/i.test(a.message) ? "is-danger" : /yüklendi|kuruldu|oluşturuldu|onaylandı|tamamlandı/i.test(a.message) ? "is-success" : "is-accent"}"></span><div class="pl-timeline__title">${esc(a.message)}</div><div class="pl-timeline__meta">${date(a.time)}</div></li>`).join("")}</ol>` : "<p>Henüz etkinlik yok.</p>"}</section>`;
   if (page === "api")
     html =
       heading(
@@ -567,7 +613,7 @@ function render() {
         "Her uygulama için ayrı anahtar, belirli izinler ve görünür işlemler.",
         button("＋ İstemci oluştur", "newClient", "", "primary"),
       ) +
-      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section><div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div><section class="card">${state.clients.length ? state.clients.map((c) => `<div class="list-row"><span class="avatar">${esc(c.name.slice(0, 2).toUpperCase())}</span><div class="grow"><h3>${esc(c.name)}</h3><p>${c.scopes.map(esc).join(" · ") || "İzin verilmedi"}</p></div>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</div>`).join("") : "<p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p>"}</section><div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
+      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
       heading(
@@ -596,6 +642,22 @@ function jobsHTML() {
         .join("")}</div>`
     : '<div class="empty">Henüz bir indirme başlatılmadı.</div>';
 }
+function hudPanel() {
+  const pend = state.pending.filter((p) => p.status === "pending").length;
+  const m = (ic, v, l, tone = "") =>
+    `<div class="pl-hudmetric ${tone}"><span class="pl-hudmetric__ic">${plIco(ic)}</span><span class="pl-hudmetric__val">${v}</span><span class="pl-hudmetric__lbl">${l}</span></div>`;
+  return `<section class="hud-panel" data-pl-surface="hud" aria-label="Yerel API telemetrisi"><div class="hud-metrics">${m('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', state.clients.length, "İstemci")}${m('<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', state.providers.length, "Sağlayıcı", "pl-hudmetric--cyan")}${m('<path d="M12 9v4M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>', pend, "Bekleyen onay", pend ? "pl-hudmetric--amber" : "")}</div></section>`;
+}
+function clientsTable() {
+  if (!state.clients.length)
+    return '<section class="card"><p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p></section>';
+  return `<section class="hud-panel" data-pl-surface="hud"><table class="pl-hudtable"><thead><tr><th scope="col">İstemci</th><th scope="col">İzinler</th><th scope="col">Oluşturma</th><th scope="col">Durum</th><th scope="col"><span class="visually-hidden">İşlem</span></th></tr></thead><tbody>${state.clients
+    .map(
+      (c) =>
+        `<tr><td>${esc(c.name)}</td><td title="${esc(c.scopes.join(" · "))}">${c.scopes.length ? c.scopes.length + " izin" : "—"}</td><td>${date(c.createdAt)}</td><td><span class="pl-hudtag">Etkin</span></td><td>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</td></tr>`,
+    )
+    .join("")}</tbody></table></section>`;
+}
 function pendingHTML() {
   const pending = state.pending.filter((p) => p.status === "pending");
   const gl =
@@ -610,8 +672,22 @@ function navigate(next) {
   render();
   window.scrollTo(0, 0);
 }
+function modalize(root) {
+  const kids = [...root.children];
+  const head = kids.find((k) => k.classList.contains("modal-title"));
+  const foot = kids.length && kids[kids.length - 1].classList.contains("modal-actions") ? kids[kids.length - 1] : null;
+  const rest = kids.filter((k) => k !== head && k !== foot);
+  if (head) head.classList.add("pl-modal__head");
+  if (foot) foot.classList.add("pl-modal__foot");
+  const body = document.createElement("div");
+  body.className = "pl-modal__body";
+  rest.forEach((k) => body.append(k));
+  if (foot) root.insertBefore(body, foot);
+  else root.append(body);
+}
 function showModal(body) {
   $("#modal-content").innerHTML = body;
+  modalize($("#modal-content"));
   decorateButtons($("#modal-content"));
   modal.showModal();
 }
@@ -681,6 +757,10 @@ document.addEventListener("click", async (e) => {
   if (b.dataset.widgetReset !== undefined) {
     window.plWidgets.layout.reset();
     toast("Widget düzeni varsayılana döndü");
+    return render();
+  }
+  if (b.dataset.bannerClose !== undefined) {
+    bannerOff = true;
     return render();
   }
   if (b.dataset.appsKind) {
@@ -899,6 +979,19 @@ document.addEventListener("submit", async (e) => {
     }
   }
 });
+document.addEventListener("input", (e) => {
+  const el = e.target.closest?.("[data-filter-search]");
+  if (!el) return;
+  query = el.value;
+  const pos = el.selectionStart;
+  $("#search").value = query;
+  render();
+  const n = document.querySelector("[data-filter-search]");
+  if (n) {
+    n.focus();
+    n.setSelectionRange(pos, pos);
+  }
+});
 $("#search").addEventListener("input", (e) => {
   query = e.target.value;
   if (
@@ -1063,6 +1156,9 @@ menubar.addEventListener("keydown", (e) => {
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".menubar")) closeMenus();
 });
+document.querySelector("aside").classList.add("pl-sidebar");
+document.querySelectorAll("nav [data-page]").forEach((b) => b.classList.add("pl-navitem"));
+document.querySelectorAll("nav .nav-label").forEach((b) => b.classList.add("pl-sidebar__section", "pl-label"));
 window.plWidgets.onChange = () => render();
 window.plWidgets.onError = (m) => toast(m);
 function syncPlTheme() {
@@ -1232,33 +1328,31 @@ function ideasPage() {
         .toLocaleLowerCase("tr")
         .includes(query.toLocaleLowerCase("tr")),
   );
-  if (filter !== "all")
-    items = items.filter((i) =>
-      filter === "browser"
-        ? /Chrome|tarayıcı/i.test(i.fields.Platform)
-        : filter === "desktop"
-          ? /masaüstü|W \/ L \/ M|W\/L\/M/i.test(i.fields.Platform)
-          : /widget|balon/i.test(i.fields.Platform),
-    );
+  const base = items.slice();
+  const kindOf = (i, k) =>
+    k === "browser"
+      ? /Chrome|tarayıcı/i.test(i.fields.Platform)
+      : k === "desktop"
+        ? /masaüstü|W \/ L \/ M|W\/L\/M/i.test(i.fields.Platform)
+        : /widget|balon/i.test(i.fields.Platform);
+  if (filter !== "all") items = items.filter((i) => kindOf(i, filter));
   return (
     heading(
       "Uygulama kataloğu",
       "Uygulamaları keşfedin, ne işe yaradıklarını öğrenin ve çalışma alanınıza yükleyin.",
       `<span class="pill">${items.length} / 50 ÜRÜN</span>`,
     ) +
-    `<div class="filters">${[
-      ["all", "Tümü"],
-      ["browser", "Tarayıcı"],
-      ["desktop", "Masaüstü"],
-      ["widget", "Widget / balon"],
+    `<div class="ideas-layout"><nav class="pl-projnav ideas-nav" aria-label="Platform">${[
+      ["all", "Tümü", '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>', 1],
+      ["browser", "Tarayıcı", '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>', 2],
+      ["desktop", "Masaüstü", '<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>', 3],
+      ["widget", "Widget / balon", '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>', 5],
     ]
       .map(
-        ([id, label]) =>
-          `<button class="filter ${filter === id ? "active" : ""}" data-filter="${id}">${label}</button>`,
+        ([id, label, ic, c]) =>
+          `<button class="pl-projnav__item${filter === id ? " is-active" : ""}" data-filter="${id}" aria-pressed="${filter === id}"><span class="pl-projnav__ic" style="--c:var(--pl-viz-${c})">${plIco(ic)}</span>${label}<span class="pl-projnav__count">${id === "all" ? base.length : base.filter((i) => kindOf(i, id)).length}</span></button>`,
       )
-      .join(
-        "",
-      )}</div><div class="notice">50 ürünün tamamını yerel önizleme paketi olarak yükleyebilirsiniz. Her paket ürün kapsamı, kalıcı notlar, geliştirme listesi ve kendi ayarlarını içerir. Planlanan ana işlevlerin geliştirme durumu ürün içinde gösterilir.</div><div class="app-grid">${items.map(ideaCard).join("")}</div>`
+      .join("")}</nav><div class="ideas-main"><div class="notice">50 ürünün tamamını yerel önizleme paketi olarak yükleyebilirsiniz. Her paket ürün kapsamı, kalıcı notlar, geliştirme listesi ve kendi ayarlarını içerir. Planlanan ana işlevlerin geliştirme durumu ürün içinde gösterilir.</div><div class="app-grid ideas-grid">${items.map(ideaCard).join("")}</div></div></div>`
   );
 }
 async function showIdea(id) {
@@ -1303,16 +1397,16 @@ function extensionsPage() {
       "Tarayıcı, PluginLabs ve uygulama eklentilerini aynı tasarım içinde yönetin.",
       `<div class="button-row">${button("Bağlantı eklentisini çıkar", "exportBrowserBridge")}${button("＋ Tarayıcı bağla", "pairBrowser", "", "primary")}</div>`,
     ) +
-    `<div class="filters">${[
+    `<nav class="pl-pillnav ext-pillnav" aria-label="Eklenti türleri">${[
       ["browser", "Chrome / Opera / Tarayıcılar"],
       ["hub", "PluginLabs eklentileri"],
       ["applications", "Diğer uygulamalar"],
     ]
       .map(
         ([id, label]) =>
-          `<button class="filter ${mode === id ? "active" : ""}" data-filter="${id}">${label}</button>`,
+          `<button class="${mode === id ? "is-active" : ""}" data-filter="${id}">${label}</button>`,
       )
-      .join("")}</div>`;
+      .join("")}</nav>`;
   if (mode === "hub")
     return (
       html +
@@ -1350,7 +1444,7 @@ function extensionsPage() {
   if (!data.browsers.some((b) => b.clientId === browserSelection))
     browserSelection = data.browsers[0].clientId;
   const browser = data.browsers.find((b) => b.clientId === browserSelection);
-  html += `<div class="browser-toolbar"><label class="field"><span>Bağlı tarayıcı / profil</span><select id="browser-selection">${data.browsers.map((b) => `<option value="${b.clientId}" ${b.clientId === browserSelection ? "selected" : ""}>${esc(b.name)} · ${b.online ? "Bağlı" : "Çevrimdışı"} · ${esc(b.clientId.slice(0, 6))}</option>`).join("")}</select></label><span class="badge ${browser.online ? "online" : ""}">${browser.online ? "● Bağlı" : "○ Çevrimdışı"} · ${browser.extensions.length} eklenti · ${date(browser.lastSeen)}</span></div>`;
+  html += `<div class="browser-toolbar"><label class="field"><span>Bağlı tarayıcı / profil</span><select class="pl-select" id="browser-selection">${data.browsers.map((b) => `<option value="${b.clientId}" ${b.clientId === browserSelection ? "selected" : ""}>${esc(b.name)} · ${b.online ? "Bağlı" : "Çevrimdışı"} · ${esc(b.clientId.slice(0, 6))}</option>`).join("")}</select></label><span class="badge ${browser.online ? "online" : ""}">${browser.online ? "● Bağlı" : "○ Çevrimdışı"} · ${browser.extensions.length} eklenti · ${date(browser.lastSeen)}</span></div>`;
   const pending = data.commands
     .filter((c) => c.clientId === browserSelection)
     .slice(-5);
@@ -1397,6 +1491,12 @@ document.addEventListener("change", (e) => {
     window.plTheme.set({ [choice.name]: choice.value });
     render();
     document.querySelector(`.choice input[name="${choice.name}"]:checked`)?.focus();
+    return;
+  }
+  const so = e.target.closest?.("[data-sort]");
+  if (so) {
+    sortMode = so.value;
+    render();
     return;
   }
   const xs = e.target.closest?.("[data-ext-switch]");

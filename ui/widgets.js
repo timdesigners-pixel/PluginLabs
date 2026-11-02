@@ -90,6 +90,38 @@
     }
   });
 
+  const TRD = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], TRFULL = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+  const two = (n) => String(n).padStart(2, "0");
+  const weekStrip = () => {
+    const now = new Date(), mon = new Date(now);
+    mon.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+    return Array.from({ length: 7 }, (_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return { n: TRD[d.getDay()], d: d.getDate(), today: d.toDateString() === now.toDateString() }; });
+  };
+  const check = ico('<path d="M20 6 9 17l-5-5"/>');
+  const taskItem = (icd, title, sub, done) =>
+    `<div class="pl-taskcard__item${done ? " is-done" : ""}"><span class="pl-taskcard__ic">${ico(icd)}</span><span>${title}<small>${sub}</small></span><span class="pl-taskcard__chk">${done ? check : ""}</span></div>`;
+  const queueItem = (txt, name, sub, badge, active) =>
+    `<div class="pl-queue__item${active ? " is-active" : ""}"><span class="pl-avatar">${txt}</span><span><b>${name}</b><small>${sub}</small></span>${badge}</div>`;
+  const activityTile = (icd, name, sub, pct, badge) =>
+    `<div class="pl-activity"><span class="pl-activity__ic">${ico(icd)}</span><b>${name}</b><small>${sub}</small><div class="pl-activity__foot"><span>İlerleme</span><span class="pl-num">%${pct}</span></div><div class="pl-progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:${pct}%"></span></div>${badge}</div>`;
+  const climate = (items) => `<div class="pl-climate">${items.map(([d, t, l]) => `<span aria-label="${l}">${ico(d)}${t}</span>`).join("")}</div>`;
+  const calcCompute = (price, pesin, vade, oran) => {
+    const loan = price * (1 - pesin / 100), r = oran / 100;
+    const m = r === 0 ? loan / vade : (loan * r) / (1 - Math.pow(1 + r, -vade));
+    return { down: price * (pesin / 100), monthly: m };
+  };
+  const tl = (n) => Math.round(n).toLocaleString("tr-TR") + " ₺";
+  document.addEventListener("input", (e) => {
+    const sl = e.target.closest && e.target.closest("[data-calc]");
+    if (!sl) return;
+    const box = sl.closest(".pl-calc"), price = 4250000, vade = 120, oran = 2.79;
+    const r = calcCompute(price, Number(sl.value), vade, oran);
+    sl.setAttribute("aria-valuetext", "%" + sl.value);
+    box.querySelector("[data-pesin-lbl]").textContent = "%" + sl.value;
+    box.querySelector("[data-down]").textContent = tl(r.down);
+    box.querySelector("[data-monthly]").textContent = tl(r.monthly);
+  });
+
   const registry = [
     {
       id: "akis", title: "Veri akışı", app: "Tüm uygulamalar", appId: "", color: 1, icon: P.feed, wide: true, always: true,
@@ -109,29 +141,41 @@
     },
     {
       id: "kombin", title: "Günün kombini", app: "Gardrop", appId: "gardrop", color: 3, icon: P.shirt, wide: true,
-      render: (rich) =>
-        `<div class="wdg-outfit">${photoSlot("kombin", MANNEQUIN, "wdg-photo--portrait", "Çizim önizlemedir · kendi fotoğrafınızı ekleyin")}<div class="wdg-outfit__side"><div class="wdg-lines">${row("Üst", "Keten gömlek")}${row("Alt", "Lacivert chino")}${row("Ayakkabı", "Beyaz sneaker")}${rich ? row("Aksesuar", "Deri kemer") : ""}</div><div class="wdg-meta">${chip(2, "18° · parçalı bulutlu")}${chip(7, "Yağmur %20")}${rich ? chip(5, "Ofis günü") : ""}</div></div></div>`,
+      render: (rich) => {
+        const now = new Date();
+        const w = `<div class="wdg-weatherbox"><div class="pl-weather pl-glass"><div class="pl-weather__time"><span class="pl-weather__day">${TRFULL[now.getDay()]}</span><time class="pl-weather__clock" datetime="${now.toISOString().slice(0, 16)}">${two(now.getHours())}:${two(now.getMinutes())} <small>${two(now.getDate())}.${two(now.getMonth() + 1)}.${now.getFullYear()}</small></time></div><div class="pl-weather__temp">${ico('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>')}<b>18°</b><small>Parçalı bulutlu</small></div></div></div>`;
+        const c = climate([['<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"/>', "Yağmur %20", "Yağmur ihtimali yüzde 20"], ['<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>', "12 km/s", "Rüzgar saatte 12 kilometre"], ['<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>', "Ofis günü", "Plan: ofis günü"]]);
+        return `<div class="wdg-outfit">${photoSlot("kombin", MANNEQUIN, "wdg-photo--portrait", "Çizim önizlemedir · kendi fotoğrafınızı ekleyin")}<div class="wdg-outfit__side">${w}<div class="wdg-lines">${row("Üst", "Keten gömlek")}${row("Alt", "Lacivert chino")}${row("Ayakkabı", "Beyaz sneaker")}${rich ? row("Aksesuar", "Deri kemer") : ""}</div>${c}</div></div>`;
+      },
     },
     {
       id: "menu", title: "Günün menüsü", app: "Mutfak Atölyesi", appId: "mutfak-atolyesi", color: 6, icon: P.menu, wide: true,
       render: (rich) => {
-        const d = [["kahvalti", "Kahvaltı", "Menemen · tam buğday ekmek"], ["ogle", "Öğle", "Mercimek çorbası · fasulye"], ["aksam", "Akşam", "Fırında tavuk · bulgur pilavı"]];
-        const dish = ([k, l, n]) => {
+        const d = [["kahvalti", "Kahvaltı", "Menemen · tam buğday ekmek", "520"], ["ogle", "Öğle", "Mercimek çorbası · fasulye", "640"], ["aksam", "Akşam", "Fırında tavuk · bulgur pilavı", "690"]];
+        const dish = ([k, l, n, kc]) => {
           const url = photoOf("dish-" + k);
-          return `<div class="wdg-dish"><div class="wdg-dish__img">${url ? `<img src="${url}" alt="${l} fotoğrafı" />` : DISH[k]}${pickBtn("dish-" + k, url ? l + " fotoğrafını değiştir" : l + " için fotoğraf ekle", "wdg-pick--sm")}</div><b>${l}</b><span class="pl-muted">${n}</span>${url ? `<button class="text-button" data-photo-clear="dish-${k}">Kaldır</button>` : ""}</div>`;
+          return `<article class="pl-dish wdg-dishcard"><span class="pl-dish__img">${url ? `<img src="${url}" alt="${l} fotoğrafı" />` : DISH[k]}</span><b>${l}</b><small>${n}</small><div class="pl-dish__foot"><span class="pl-dish__price">${kc} kcal</span><button class="pl-dish__add" data-photo-pick="dish-${k}" aria-label="${l} için fotoğraf ${url ? "değiştir" : "ekle"}" title="${url ? "Fotoğrafı değiştir" : "Fotoğraf ekle"}">${camIco}</button></div>${url ? `<button class="text-button" data-photo-clear="dish-${k}">Fotoğrafı kaldır</button>` : ""}</article>`;
         };
         return `<div class="wdg-dishes">${d.map(dish).join("")}</div><div class="wdg-meta">${chip(6, "≈ 1.850 kcal")}${chip(5, "Alışveriş: 4 eksik")}${rich ? chip(4, "Atıştırmalık: yoğurt · ceviz") : ""}<small class="pl-muted">Çizimler önizlemedir · yemek fotoğrafı ekleyebilirsiniz</small></div>`;
       },
     },
     {
       id: "bugun", title: "Bugün", app: "Daily Brief Widget", appId: "daily-brief-widget", color: 7, icon: P.cal,
+      render: (rich) => {
+        const strip = `<div class="pl-daystrip" role="tablist" aria-label="Hafta">${weekStrip().map((g) => `<button role="tab" aria-selected="${g.today}" class="${g.today ? "is-active is-today" : ""}" tabindex="${g.today ? 0 : -1}">${g.n}<b>${g.d}</b></button>`).join("")}</div>`;
+        const ev = [["09:00", '<div class="pl-agenda__evt" style="--x:4%;--w:46%">Ekip toplantısı</div>'], ["12:00", '<div class="pl-agenda__evt pl-agenda__evt--soft" style="--x:20%;--w:52%">Müşteri görüşmesi</div>'], ["15:00", '<div class="pl-agenda__evt" style="--x:4%;--w:60%">Odak seansı · 2 × 25 dk</div>']].concat(rich ? [["18:30", '<div class="pl-agenda__evt pl-agenda__evt--soft" style="--x:10%;--w:40%">Spor</div>']] : []);
+        return `${strip}<div class="pl-agenda">${ev.map(([t, e]) => `<div class="pl-agenda__t">${t}</div><div class="pl-agenda__s">${e}</div>`).join("")}</div>`;
+      },
+    },
+    {
+      id: "gorevler", title: "Görevler", app: "Daily Brief Widget", appId: "daily-brief-widget", color: 2, icon: P.cal,
       render: (rich) =>
-        `<div class="wdg-lines">${row("09:30", "Ekip toplantısı")}${row("12:00", "Müşteri görüşmesi")}${row("15:00", "Odak seansı · 2 × 25 dk")}${rich ? row("18:30", "Spor") : ""}</div><div class="wdg-meta">${chip(7, "3 görev açık")}${rich ? chip(4, "1 çakışma önerisi") : ""}</div>`,
+        `<div class="pl-taskcard"><div class="pl-taskcard__head"><b>Bugünün görevleri</b><span>2/${rich ? 5 : 4}</span></div>${taskItem('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', "Kasım planını oku", "bugün · 09:30", true)}${taskItem('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>', "Ekip toplantısı", "bugün · 11:30", true)}${taskItem('<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/>', "Proje güncellemesi", "yarın · 15:00", false)}${taskItem('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/>', "Fatura kontrolü", "yarın · 17:00", false)}${rich ? taskItem('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', "Haftalık özet", "cuma · 16:00", false) : ""}</div>`,
     },
     {
       id: "finans", title: "Yaklaşan ödemeler", app: "Finansal Asistan", appId: "finansal-asistan", color: 4, icon: P.wallet,
       render: (rich) =>
-        `<div class="wdg-big pl-num" style="color:var(--pl-gold)">12.450,00 ₺</div><div class="pl-muted wdg-sub">Bu ay kalan ödeme</div><div class="wdg-lines">${row("Kira", "8.500,00 ₺", '<em>3 gün</em>')}${row("Fatura", "1.249,90 ₺", '<em>6 gün</em>')}${rich ? row("Taksit", "2.700,10 ₺", '<em>12 gün</em>') : ""}</div>`,
+        `<div class="pl-kpi"><div class="pl-row" style="justify-content:space-between"><span class="pl-label">Kasım bütçesi</span><span class="pl-badge pl-badge--warning">%82</span></div><span class="pl-kpi__value" style="font-size:22px">8.200 ₺ <span class="pl-muted" style="font-size:13px">/ 10.000 ₺</span></span><div class="pl-progress" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:82%;background:var(--pl-warning)"></span></div><span class="pl-muted">Kalan <b class="pl-num" style="color:var(--pl-gold)">1.800 ₺</b> · 3 ödeme</span></div><div class="wdg-lines">${row("Kira", "8.500,00 ₺", '<em>3 gün</em>')}${row("Fatura", "1.249,90 ₺", '<em>6 gün</em>')}${rich ? row("Taksit", "2.700,10 ₺", '<em>12 gün</em>') : ""}</div>`,
     },
     {
       id: "fiyat", title: "Fiyat düşüşleri", app: "MyWishlist", appId: "mywishlist", color: 5, icon: P.tag,
@@ -151,12 +195,34 @@
     {
       id: "tarama", title: "Kazıma görevleri", app: "PluginLabs Scrapper", appId: "pluginlabs-scrapper", color: 7, icon: P.scrape,
       render: (rich) =>
-        `<div class="wdg-lines">${row("Fiyat taraması", "%64")}</div><div class="pl-progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:64%"></span></div>${rich ? `<div class="wdg-lines" style="margin-top:10px">${row("Site rehberi", "hazır")}${row("Zamanlanmış", "yarın 08:00")}</div>` : ""}`,
+        `<div class="pl-queue" role="list" aria-label="Kazıma görevleri">${queueItem("FT", "Fiyat taraması", "148 / 230 ürün", '<span class="pl-badge pl-badge--info">%64</span>', true)}${queueItem("SR", "Site rehberi", "hazır", '<span class="pl-badge pl-badge--success">Tamam</span>')}${rich ? queueItem("ZM", "Zamanlanmış", "yarın 08:00", '<span class="pl-badge">Yarın</span>') : ""}</div><div class="pl-progress" role="progressbar" aria-label="Fiyat taraması" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:64%"></span></div>`,
     },
     {
       id: "odak", title: "Odak", app: "Focus Orbit", appId: "focus-orbit", color: 2, icon: P.focus,
       render: (rich) =>
-        `<div class="wdg-ringrow"><div class="pl-ring" style="--pl-val:72;--pl-accent:var(--pl-viz-2)" role="img" aria-label="Odak %72"><span>72</span></div><div class="wdg-lines" style="flex:1">${row("Bugün", "3 seans")}${row("Toplam", "1 sa 15 dk")}${rich ? row("Kesinti", "2") : ""}</div></div>`,
+        `<div class="wdg-tiles">${activityTile('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>', "Derin çalışma", "25 dk × 4", 72, '<span class="pl-badge pl-badge--accent">Bugün</span>')}${rich ? activityTile('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', "Mola", "5 dk × 4", 50, '<span class="pl-badge">Bugün</span>') : ""}</div>`,
+    },
+    {
+      id: "ozet", title: "Haftalık özet", app: "Tüm uygulamalar", appId: "", color: 1, icon: P.feed, always: true,
+      render: () =>
+        `<div class="pl-bigstats"><div class="pl-bigstat"><span class="pl-bigstat__val">${ico(P.code)}1.284</span><span class="pl-bigstat__lbl">Kod</span></div><div class="pl-bigstat"><span class="pl-bigstat__val">${ico(P.tag)}7</span><span class="pl-bigstat__lbl">Fiyat düşüşü</span></div><div class="pl-bigstat"><span class="pl-bigstat__val">${ico(P.focus)}12</span><span class="pl-bigstat__lbl">Odak seansı</span></div></div>`,
+    },
+    {
+      id: "kisi", title: "Takipteki kişi", app: "Mind Palace", appId: "mind-palace", color: 3, icon: P.note,
+      render: (rich) =>
+        `<div class="pl-contact"><div class="pl-contact__head"><span class="pl-contact__photo">EK</span><div style="flex:1;min-width:0"><h3 class="pl-contact__name">Elif Kaya</h3><div class="pl-row"><span class="pl-badge pl-badge--accent">Müşteri</span><span class="pl-badge">İzmir</span></div></div><div class="pl-contact__actions"><button class="pl-iconbtn pl-iconbtn--outline" aria-label="Ara">${ico('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>')}</button><button class="pl-iconbtn pl-iconbtn--outline" aria-label="E-posta">${ico('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>')}</button></div></div>${rich ? `<div class="wdg-lines" style="margin-top:12px">${row("Son görüşme", "28.10.2026")}${row("Sonraki adım", "Teklif")}</div>` : ""}</div>`,
+    },
+    {
+      id: "hesap", title: "Değerleme hesaplayıcı", app: "Finansal Asistan", appId: "finansal-asistan", color: 4, icon: P.wallet,
+      render: () => {
+        const r = calcCompute(4250000, 40, 120, 2.79);
+        return `<div class="pl-calc"><span class="pl-label">Konut kredisi · örnek</span><div class="pl-calc__grid"><div>Fiyat<b>${tl(4250000)}</b></div><div>Vade<b>120 ay</b></div><div>Aylık oran<b>%2,79</b></div></div><label class="pl-stack" style="gap:6px"><span class="pl-muted">Peşinat <b data-pesin-lbl>%40</b></span><input class="pl-slider" type="range" min="10" max="80" step="5" value="40" data-calc aria-valuetext="%40" aria-label="Peşinat oranı"></label><div class="pl-calc__result"><div><span class="pl-muted">Peşinat</span><b data-down>${tl(r.down)}</b></div><div><span class="pl-muted">Aylık tahmini</span><b style="color:var(--pl-accent)" data-monthly>${tl(r.monthly)}</b></div></div></div>`;
+      },
+    },
+    {
+      id: "ev", title: "Akıllı ev", app: "Flow Dock", appId: "flow-dock", color: 5, icon: P.feed,
+      render: (rich) =>
+        `<div class="pl-stack" style="gap:8px"><label class="pl-devtile is-on"><span class="pl-devtile__ic">${ico('<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/>')}</span><span><span class="pl-devtile__name">Aydınlatma</span><br><span class="pl-devtile__sub">Salon · %70</span></span><span class="pl-switch"><input type="checkbox" role="switch" checked aria-label="Aydınlatma"></span></label>${rich ? `<label class="pl-devtile"><span class="pl-devtile__ic">${ico('<rect x="2" y="7" width="20" height="13" rx="2"/><path d="m17 2-5 5-5-5"/>')}</span><span><span class="pl-devtile__name">Akıllı TV</span><br><span class="pl-devtile__sub">Salon · Kapalı</span></span><span class="pl-switch"><input type="checkbox" role="switch" aria-label="Akıllı TV"></span></label>` : ""}</div>${climate([['<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/>', "21°C", "İç sıcaklık 21 derece"], ['<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"/>', "%48", "Nem yüzde 48"]])}`,
     },
     {
       id: "mymind", title: "My Mind", app: "Hub", appId: "", color: 1, icon: P.mind, live: true, always: true,

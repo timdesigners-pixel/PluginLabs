@@ -1274,3 +1274,302 @@ footer.pl-statusbar {
   padding: 0 var(--pl-space-2);
   border-left: 1px solid color-mix(in srgb, var(--pl-fg-on-accent) 25%, transparent);
 }
+
+/* ==========================================================================
+   Tasarım sistemi bileşenleri (2): GreetingHeader, Banner, FilterBar, PillNav, ProjectSidebar,
+   HudMetric, HudTable, Timeline, Modal, AppCard, HubSidebar, widget bileşenleri
+   ========================================================================== */
+.hub-greet {
+  margin: 0 0 22px;
+}
+.hub-greet .eyebrow {
+  margin-bottom: 6px;
+}
+.hub-banner {
+  margin: 0 0 18px;
+}
+.hub-banner .pl-btn {
+  border: 0;
+  cursor: pointer;
+}
+.pl-iconbtn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--pl-fg-2);
+}
+.filter-bar {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 20px;
+  align-items: center;
+}
+.filter-bar .pl-inputwrap {
+  flex: 1;
+  min-width: 200px;
+}
+.filter-bar .pl-select {
+  width: 130px;
+}
+button.pl-tag {
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--pl-text-xs);
+  padding: 0 12px;
+  color: var(--pl-fg-2);
+}
+button.pl-tag:hover {
+  border-color: var(--pl-line-strong);
+}
+.pl-input,
+.pl-select {
+  font: inherit;
+  font-size: var(--pl-text-sm);
+}
+.ext-pillnav {
+  margin: 0 0 20px;
+}
+.ext-pillnav button {
+  border: 0;
+  background: transparent;
+  color: var(--pl-fg-2);
+  font: inherit;
+  font-size: var(--pl-text-sm);
+  cursor: pointer;
+}
+.ext-pillnav button.is-active {
+  background: var(--pl-fg-1);
+  color: var(--pl-bg-1);
+  font-weight: 600;
+}
+.ideas-layout {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.ideas-nav {
+  position: sticky;
+  top: 60px;
+  width: auto;
+  border-radius: var(--pl-radius-lg);
+  border: 1px solid var(--pl-line);
+}
+.ideas-nav .pl-projnav__item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  font-size: var(--pl-text-sm);
+  cursor: pointer;
+}
+.ideas-nav .pl-projnav__item.is-active {
+  background: var(--pl-accent);
+}
+.ideas-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.hud-panel {
+  margin: 0 0 18px;
+  padding: 22px 24px;
+  border-radius: var(--pl-radius-lg);
+  background: var(--pl-hud-bg, #050d17);
+  border: 1px solid var(--pl-hud-line, rgb(56 225 255 / 0.25));
+  color: var(--pl-fg-2);
+  overflow-x: auto;
+}
+.hud-metrics {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.hud-panel .pl-hudtable {
+  width: 100%;
+}
+.hud-panel .pl-btn {
+  height: var(--pl-control-sm);
+  font-size: var(--pl-text-xs);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+dialog#modal {
+  padding: 0;
+  overflow: hidden;
+}
+dialog#modal .pl-modal__head {
+  padding: 22px 24px 10px;
+  margin: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+dialog#modal .pl-modal__head h2 {
+  margin: 0;
+  font-size: var(--pl-text-xl);
+}
+dialog#modal .pl-modal__body {
+  padding: 0 24px 18px;
+  font-size: var(--pl-text-sm);
+  max-height: 68vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+dialog#modal .pl-modal__foot {
+  padding: 14px 24px;
+  margin: 0;
+  border-top: 1px solid var(--pl-line);
+  background: var(--pl-bg-0);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.pl-appcard .pl-appcard__name {
+  margin: 0;
+}
+.pl-appcard {
+  transition: border-color 0.15s;
+}
+nav button.pl-navitem {
+  position: relative;
+}
+nav button.pl-navitem.is-active::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--pl-accent);
+}
+.pl-sidebar__section.nav-label {
+  padding-left: 12px;
+}
+.wdg-weatherbox {
+  background: var(--pl-grad-ocean);
+  padding: 12px;
+  border-radius: 20px;
+  width: max-content;
+  max-width: 100%;
+}
+.wdg-dishes {
+  padding-top: 30px;
+  gap: 16px;
+}
+.wdg-dishcard {
+  min-width: 0;
+  margin-top: 46px;
+  padding: 58px 12px 12px;
+}
+.wdg-dishcard .pl-dish__img > svg,
+.wdg-dishcard .pl-dish__img > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+.wdg-dishcard small {
+  line-height: 1.4;
+}
+.wdg-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.wdg .pl-daystrip {
+  overflow-x: auto;
+}
+.wdg .pl-bigstats {
+  width: 100%;
+}
+.wdg .pl-contact__head {
+  flex-wrap: nowrap;
+}
+@media (max-width: 1150px) {
+  .ideas-layout {
+    grid-template-columns: 1fr;
+  }
+  .ideas-nav {
+    position: static;
+  }
+}
+
+/* Düzeltmeler: filtre çubuğu sıralama kutusu, API HUD boşluğu, widget içi haftalık şerit ve büyük sayılar */
+.filter-bar .pl-select {
+  width: 150px;
+  flex: none;
+  font-size: var(--pl-text-sm);
+  letter-spacing: normal;
+}
+.filter-bar .pl-inputwrap {
+  flex: 1;
+  min-width: 200px;
+}
+section.card + .hud-panel,
+.card + .hud-panel {
+  margin-top: 20px;
+}
+.hud-panel {
+  margin-bottom: 8px;
+}
+.wdg .pl-daystrip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  overflow: visible;
+}
+.wdg .pl-daystrip button {
+  width: auto;
+  min-width: 0;
+  height: 56px;
+  border-radius: 12px;
+}
+.wdg .pl-bigstats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.wdg .pl-bigstat__val {
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  gap: 4px;
+}
+.wdg .pl-bigstat__val svg {
+  width: 14px;
+  height: 14px;
+}
+.wdg .pl-bigstat__lbl {
+  font-size: var(--pl-text-2xs);
+}
+
+/* Seçim kutusu (PLC-019): Hub'ın katmansız `select { padding: 11px 12px; background: … }` kuralı pl-select'i bozuyordu. */
+select.pl-select {
+  height: var(--pl-control-md);
+  padding: 0 32px 0 var(--pl-space-3);
+  font-size: var(--pl-text-sm);
+  line-height: normal;
+  border: 1px solid var(--pl-line);
+  border-radius: var(--pl-radius-sm);
+  background-color: var(--pl-bg-3);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%237b869c' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  color: var(--pl-fg-1);
+}
+select.pl-select:hover {
+  border-color: var(--pl-line-strong);
+}
+select.pl-select:focus {
+  outline: none;
+  border-color: var(--pl-accent);
+  box-shadow: var(--pl-glow);
+}

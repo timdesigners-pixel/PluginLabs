@@ -66,7 +66,7 @@ const fs = require("node:fs/promises");
   if (!token.startsWith("plh_")) throw Error("Missing token");
   await page.getByRole("button", { name: "Tamam", exact: true }).click();
   await page
-    .getByRole("heading", { name: "UI test client", exact: true })
+    .getByRole("cell", { name: "UI test client", exact: true })
     .waitFor();
   await page.screenshot({
     path: require("node:path").resolve(__dirname, "../preview-api.png"),
