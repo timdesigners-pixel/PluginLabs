@@ -1573,3 +1573,133 @@ select.pl-select:focus {
   border-color: var(--pl-accent);
   box-shadow: var(--pl-glow);
 }
+
+/* ==========================================================================
+   Karşılama başlığı: beyaz değil, koyu gradyan hero zemini (PLC-068 hero ile aynı dil)
+   ========================================================================== */
+.pl-greet.hub-greet {
+  position: relative;
+  overflow: hidden;
+  padding: 26px 28px;
+  border: 1px solid var(--pl-line);
+  border-radius: var(--pl-radius-xl);
+  background:
+    radial-gradient(620px 240px at 88% -40%, color-mix(in srgb, var(--pl-accent) 42%, transparent), transparent),
+    radial-gradient(420px 220px at 0% 140%, color-mix(in srgb, var(--pl-brand-2, #22d3ee) 26%, transparent), transparent),
+    var(--pl-bg-1);
+  color: var(--pl-fg-1);
+}
+.hub-greet .pl-greet__title {
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--pl-fg-1);
+}
+.hub-greet .pl-greet__sub {
+  opacity: 1;
+  color: var(--pl-fg-3);
+  font-size: var(--pl-text-sm);
+  margin-top: 6px;
+}
+.hub-greet .pl-greet__chips span {
+  background: var(--pl-bg-3);
+  border: 1px solid var(--pl-line-strong);
+  color: var(--pl-fg-2);
+  border-radius: var(--pl-radius-sm);
+}
+.hub-greet .pl-iconbtn {
+  color: var(--pl-fg-2);
+  border: 1px solid var(--pl-line-strong);
+  border-radius: var(--pl-radius-sm);
+  background: var(--pl-bg-3);
+}
+.hub-greet .pl-iconbtn:hover {
+  color: var(--pl-fg-1);
+  border-color: var(--pl-fg-3);
+}
+
+/* ==========================================================================
+   Filtreler: keskin görünüm — dar köşe, net 1px çizgi, yüksek kontrastlı seçili durum
+   ========================================================================== */
+.filter-bar {
+  gap: 8px;
+}
+.filter-bar .pl-input,
+.filter-bar select.pl-select {
+  height: 36px;
+  border-radius: var(--pl-radius-sm);
+  border: 1px solid var(--pl-line-strong);
+  background-color: var(--pl-bg-2);
+  color: var(--pl-fg-1);
+  box-shadow: none;
+}
+.filter-bar .pl-input:focus,
+.filter-bar select.pl-select:focus {
+  border-color: var(--pl-accent);
+  box-shadow: 0 0 0 1px var(--pl-accent);
+}
+button.pl-tag,
+.filter-bar .pl-tag {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--pl-radius-sm);
+  border: 1px solid var(--pl-line-strong);
+  background: var(--pl-bg-2);
+  color: var(--pl-fg-2);
+  font-size: var(--pl-text-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  transition: none;
+}
+button.pl-tag:hover {
+  border-color: var(--pl-fg-3);
+  color: var(--pl-fg-1);
+  background: var(--pl-bg-3);
+}
+button.pl-tag.is-selected {
+  background: var(--pl-accent);
+  border-color: var(--pl-accent);
+  color: var(--pl-fg-on-accent);
+  font-weight: 600;
+}
+button.pl-tag:focus-visible {
+  outline: 2px solid var(--pl-accent);
+  outline-offset: 2px;
+}
+/* Segment ve hap gezinme süzgeçleri de aynı keskin dilde */
+.apps-toolbar .pl-segment,
+.ext-pillnav {
+  border-radius: var(--pl-radius-sm);
+  border: 1px solid var(--pl-line-strong);
+  background: var(--pl-bg-2);
+  padding: 3px;
+}
+.apps-toolbar .pl-segment button,
+.ext-pillnav a,
+.ext-pillnav button {
+  border-radius: 4px;
+}
+.apps-toolbar .pl-segment button.is-active,
+.ext-pillnav .is-active {
+  background: var(--pl-accent);
+  color: var(--pl-fg-on-accent);
+  box-shadow: none;
+  font-weight: 600;
+}
+.apps-toolbar .pl-segment button.is-active .pl-ico {
+  color: inherit;
+}
+
+/* API sayfası: HUD paneli ile üstündeki kart arasında her durumda boşluk */
+#content .hud-panel {
+  margin-top: 20px;
+}
+
+/* Hub'ın genel `header { height: 83px }` kuralı karşılama başlığını kırpıyordu */
+header.pl-greet.hub-greet {
+  height: auto;
+  min-height: 0;
+  justify-content: flex-start;
+}
+.hub-greet .pl-greet__title {
+  line-height: 1.2;
+}
