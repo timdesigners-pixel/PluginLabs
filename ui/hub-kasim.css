@@ -777,3 +777,8 @@ html[data-mode="light"] .card {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Genel bakış: özgün düzen korunur; yeni bölümler (durum kartları, istatistikler, Akış panosu) devamında gelir. */
+.section-split ~ .status-row {
+  margin-top: 28px;
+}
