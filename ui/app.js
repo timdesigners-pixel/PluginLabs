@@ -343,7 +343,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -351,7 +351,7 @@ function render() {
       )
       .join(
         "",
-      )}</section><section class="card api-card"><div class="eyebrow">BİRBİRİYLE ÇALIŞAN ARAÇLAR</div><h3>Bir merkez.<br>Bağlantılı bir ekosistem.</h3><p>Uygulamalarınızı izinli yerel API ile bağlayın. Kaynakları paylaşın, ortak AI motorunu kullanın.</p><div class="api-stat"><div><strong>${installed}</strong>yüklü paket</div><div><strong>${state.providers.length}</strong>bağlı sağlayıcı</div><div><strong>${state.clients.length}</strong>API istemcisi</div></div><button class="btn ghost" data-go="api">API ve bağlantıları yönet ↗</button></section></div>${statusCards(true)}${widgetsSection()}`;
+      )}</section><section class="card api-card"><div class="eyebrow">BİRBİRİYLE ÇALIŞAN ARAÇLAR</div><h3>Bir merkez.<br>Bağlantılı bir ekosistem.</h3><p>Uygulamalarınızı izinli yerel API ile bağlayın. Kaynakları paylaşın, ortak AI motorunu kullanın.</p><div class="api-stat"><div><strong>${installed}</strong>yüklü paket</div><div><strong>${state.providers.length}</strong>bağlı sağlayıcı</div><div><strong>${state.clients.length}</strong>API istemcisi</div></div><button class="btn ghost" data-go="api">API ve bağlantıları yönet ↗</button></section></div>${widgetsSection()}`;
   }
   if (page === "apps") {
     const mine = catalog.filter((i) => state.installed[i.id]);
@@ -781,6 +781,14 @@ document.addEventListener("keydown", (e) => {
 });
 const plIco = (d) =>
   `<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+function modelReady() {
+  return !!(
+    state.installed["llama-engine"]?.enabled &&
+    (state.model.source === "custom"
+      ? !!state.model.custom
+      : state.installed["mymind-lite"]?.enabled)
+  );
+}
 function statusCards(withStats) {
   const m = state.model,
     api = state.api;
@@ -792,16 +800,31 @@ function statusCards(withStats) {
         ? ["syncing", "Başlatılıyor"]
         : ["", "Kapalı"];
   const apiState = api.running ? ["online", "Hazır"] : ["error", "Çevrimdışı"];
-  const srv = `<div class="pl-card pl-row status-card" data-card="server"><span class="pl-avatar pl-avatar--accent">${plIco('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>')}</span><div class="sc-main"><b>My Mind sunucusu</b><div class="pl-muted pl-num">127.0.0.1:8765 · ${m.running ? "yanıt veriyor" : "yerel model"}</div></div><span class="pl-status ${srvState[0] ? "pl-status--" + srvState[0] : ""}">${srvState[1]}</span></div>`;
-  const con = `<div class="pl-card pl-row status-card" data-card="connection"><span class="pl-avatar pl-avatar--accent">${plIco('<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v7"/>')}</span><div class="sc-main"><b>Uygulama bağlantısı</b><div class="pl-muted pl-num">127.0.0.1:${api.port || 47632} · ${state.clients.length} istemci · ${state.providers.length} sağlayıcı</div></div><span class="pl-status ${"pl-status--" + apiState[0]}">${apiState[1]}</span></div>`;
+  const srvAction =
+    m.running || m.starting
+      ? button("Durdur", "stopModel", "", "danger")
+      : modelReady()
+        ? button("▶ Başlat", "startModel", "", "primary")
+        : `<button class="btn" data-go="mymind">Kur ↗</button>`;
+  const srv = `<div class="pl-card status-card sc-rich" data-card="server"><div class="pl-row" style="flex-wrap:nowrap;gap:14px"><span class="pl-avatar pl-avatar--accent">${plIco('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>')}</span><div class="sc-main"><b>My Mind sunucusu</b><div class="pl-muted pl-num">127.0.0.1:8765 · ${m.source === "custom" ? "özel model" : "katalog modeli"}</div></div><span class="pl-status ${srvState[0] ? "pl-status--" + srvState[0] : ""}">${srvState[1]}</span></div>${m.starting ? '<div class="pl-progress pl-progress--indeterminate pl-progress--sm" role="progressbar" aria-label="Sunucu başlatılıyor"><span></span></div>' : ""}${m.error ? `<div class="pl-callout pl-callout--danger sc-err" role="alert">${esc(m.error)}</div>` : ""}<div class="sc-foot"><div class="sc-chips"><span class="pl-badge ${modelReady() ? "pl-badge--success" : ""}">${modelReady() ? "Model hazır" : "Model yüklenmedi"}</span><span class="pl-badge">CPU</span></div>${srvAction}</div></div>`;
+  const con = `<div class="pl-card status-card sc-rich" data-card="connection"><div class="pl-row" style="flex-wrap:nowrap;gap:14px"><span class="pl-avatar pl-avatar--accent">${plIco('<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v7"/>')}</span><div class="sc-main"><b>Uygulama bağlantısı</b><div class="pl-muted pl-num">127.0.0.1:${api.port || 47632} · yalnızca bu bilgisayar</div></div><span class="pl-status pl-status--${apiState[0]}">${apiState[1]}</span></div><div class="sc-foot"><div class="sc-chips"><span class="pl-badge ${state.clients.length ? "pl-badge--info" : ""}">${state.clients.length} istemci</span><span class="pl-badge ${state.providers.length ? "pl-badge--info" : ""}">${state.providers.length} sağlayıcı</span></div><button class="btn" data-go="api">İzinler ↗</button></div></div>`;
   let html = `<div class="status-row">${srv}${con}</div>`;
   if (withStats) {
-    const active = state.jobs.filter((j) =>
+    const jobs = state.jobs.filter((j) =>
       ["queued", "downloading", "installing"].includes(j.status),
-    ).length;
-    const stat = (c, ic, lbl, val) =>
-      `<div class="pl-statcard" style="--c:var(--pl-viz-${c})"><span class="pl-statcard__ic">${plIco(ic)}</span><span class="pl-statcard__lbl">${lbl}</span><span class="pl-statcard__val">${val}</span></div>`;
-    html += `<div class="stat-row">${stat(7, '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m9 12 2 2 4-4"/>', "Yüklü paket", Object.keys(state.installed).length)}${stat(1, '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', "Bağlı sağlayıcı", state.providers.length)}${stat(3, '<path d="M15 7a4 4 0 1 1-3.5 6L4 20.5V17H1" transform="translate(2 -1)"/>', "API istemcisi", state.clients.length)}${stat(5, '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>', "Etkin indirme", active)}</div>`;
+    );
+    const total = state.catalog.length || 1,
+      inst = Object.keys(state.installed).length;
+    const jobPct = jobs.length
+      ? Math.round(
+          (jobs.reduce((a, j) => a + (j.bytes || 0), 0) /
+            (jobs.reduce((a, j) => a + (j.total || 0), 0) || 1)) *
+            100,
+        )
+      : 0;
+    const stat = (c, ic, lbl, val, cap, bar) =>
+      `<div class="pl-statcard stat-rich" style="--c:var(--pl-viz-${c})"><div class="pl-row" style="flex-wrap:nowrap;justify-content:space-between"><span class="pl-statcard__ic">${plIco(ic)}</span>${cap}</div><span class="pl-statcard__lbl">${lbl}</span><span class="pl-statcard__val">${val}</span>${bar === null ? '<div class="pl-progress pl-progress--sm" aria-hidden="true" style="visibility:hidden"><span></span></div>' : `<div class="pl-progress pl-progress--sm" role="progressbar" aria-label="${lbl}" aria-valuenow="${bar}" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:${bar}%;background:var(--c)"></span></div>`}</div>`;
+    html += `<div class="stat-row">${stat(7, '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m9 12 2 2 4-4"/>', "Yüklü paket", inst, `<span class="pl-badge">${inst} / ${total}</span>`, Math.round((inst / total) * 100))}${stat(1, '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', "Bağlı sağlayıcı", state.providers.length, `<span class="pl-badge ${state.providers.length ? "pl-badge--success" : ""}">${state.providers.length ? "canlı" : "yok"}</span>`, null)}${stat(3, '<path d="M15 7a4 4 0 1 1-3.5 6L4 20.5V17H1" transform="translate(2 -1)"/>', "API istemcisi", state.clients.length, `<span class="pl-badge ${state.clients.length ? "pl-badge--info" : ""}">${state.clients.length ? "onaylı" : "yok"}</span>`, null)}${stat(5, '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>', "Etkin indirme", jobs.length, `<span class="pl-badge ${jobs.length ? "pl-badge--warning" : ""}">${jobs.length ? "%" + jobPct : "boşta"}</span>`, jobs.length ? jobPct : 0)}</div>`;
   }
   return html;
 }

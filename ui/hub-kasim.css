@@ -782,3 +782,41 @@ html[data-mode="light"] .card {
 .section-split ~ .status-row {
   margin-top: 28px;
 }
+
+/* Giriş kartları: işlem düğmeli sunucu kartı, rozetli bağlantı kartı, ilerleme çubuklu istatistikler */
+.sc-rich {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.sc-rich .sc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sc-rich .sc-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.sc-rich .btn {
+  min-height: 28px;
+  padding: 0 12px;
+}
+.sc-rich .sc-err {
+  font-size: var(--pl-text-xs);
+}
+.stat-rich {
+  gap: 8px;
+}
+.stat-rich .pl-progress {
+  margin-top: 2px;
+}
+.stat-rich .pl-badge {
+  flex: none;
+}
+.section-split ~ .status-row {
+  margin-top: 0;
+}
+.stat-rich > .pl-row { min-height: 34px; }

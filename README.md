@@ -12,7 +12,7 @@ Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan e
 
 ![PluginLabs Hub genel bakış ekranı (0.4.14, Linux/Xvfb)](docs/screenshots/overview.png)
 
-Genel bakışın özgün düzeni korunur; durum kartları ve Akış panosu (uygulamalardan gelecek veri akışları için widget'lar) devamında yer alır. Şimdilik My Mind dışındakiler örnek veridir; uygulama yüklenince ilgili widget genişler.
+Genel bakışın girişinde durum ve istatistik kartları yer alır, özgün düzen korunur; sonunda Akış panosu (uygulamalardan gelecek veri akışları için widget'lar) gelir. Şimdilik My Mind dışındakiler örnek veridir; uygulama yüklenince ilgili widget genişler.
 
 ![Akış panosu widget'ları, örnek veri (0.4.14, Linux/Xvfb)](docs/screenshots/akis-panosu.png)
 
