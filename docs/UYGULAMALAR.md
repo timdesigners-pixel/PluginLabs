@@ -24,6 +24,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
 | Workspace Scenes (PL-026) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 |
 | Focus Orbit (PL-027) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0 |
+| Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
@@ -34,11 +35,12 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 ## Özet
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot, Workspace Scenes ve Focus Orbit Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot, Workspace Scenes, Focus Orbit ve Quick Convert Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
 - PL-026 Workspace Scenes 0.1.0 yayımlandı (01.11.2026 06:42 UTC; `pluginlabs-dagitim` workspace-scenes-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-027 Focus Orbit 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` focus-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
-- Sıradaki (Windows sürümü yok): PL-028–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
+- PL-028 Quick Convert 0.1.0 yayımlandı (01.11.2026; `pluginlabs-dagitim` quick-convert-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.9 kataloğunda (PR birleşip Hub yayımlanınca).
+- Sıradaki (Windows sürümü yok): PL-029–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -71,7 +73,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-025 | File Pilot | Windows uygulaması · **v0.1.0** (yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind anlamsal soru; dosyaları yalnız okur; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-025-file-pilot/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | PL-026 | Workspace Scenes | Windows uygulaması · **v0.1.0** (çalışma sahneleri: bağlantı/klasör/uygulama/dosya, onaylı sıralı açılış, hiçbir şey kapatılmaz, masaüstü kısayolu, MyMind önerisi; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-026-workspace-scenes/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/workspace-scenes-v0.1.0 |
 | PL-027 | Focus Orbit | Windows uygulaması · **v0.1.0** (tek görevli odak zamanlayıcısı, her zaman üstte odak balonu, mola bildirimleri, dikkat listesi (hatırlatma), kesinti kaydı, haftalık ölçüler, MyMind görev parçalama/özet; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-027-focus-orbit/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/focus-orbit-v0.1.0 |
-| PL-028 | Quick Convert | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-028 | Quick Convert | Windows uygulaması · **v0.1.0** (sürükle-bırak dönüştürücü: PNG/JPEG/WebP/GIF/BMP → PNG/JPEG/WebP, kalite/hedef KB/boyut; UTF-8/UTF-16/Windows-1254 metin kodlaması; kaynak korunur, çıktı doğrulanır; her zaman üstte bırakma kutusu; MyMind ayar önerisi; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-028-quick-convert/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | PL-029 | Screenshot Studio | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-030 | Daily Brief Widget | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-031 | Source Trail | Fikir / Hub içi önizleme (ayrı depo yok) | — |

@@ -160,6 +160,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-027-focus-orbit/app",
   },
   {
+    id: "quick-convert",
+    name: "Quick Convert",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Sürükle-bırak dosya dönüştürücü: PNG, JPEG, WebP, GIF, BMP görüntülerini PNG/JPEG/WebP'ye (kalite, hedef KB, boyut; büyütmez), metni UTF-8/UTF-16/Windows-1254'e dönüştürür. Kaynak değişmez, sonuç yeni dosyaya yazılır ve doğrulanır; boyut ve kalite gösterilir. Her zaman üstte bırakma kutusu; MyMind ile onaylı ayar önerisi.",
+    platform: "win32",
+    format: "exe",
+    file: "QuickConvert.exe",
+    size: 81528927,
+    sha256: "241d868f968a69c6f35fe44c15daffcef8702827773723e08ec5c06ae69896ed",
+    url: dist("quick-convert", "0.1.0", "QuickConvert-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-028-quick-convert/app",
+  },
+  {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
     kind: "app",
