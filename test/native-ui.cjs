@@ -80,6 +80,32 @@ const fs = require("node:fs/promises");
     path: require("node:path").resolve(__dirname, "../preview-mymind.png"),
     fullPage: true,
   });
+  // Kasım kuralları: menüde kaydırma çubuğu yok, komut paleti opak ve klavyeyle çalışır
+  const asideBar = await page.evaluate(() => {
+    const a = document.querySelector("aside");
+    const cs = getComputedStyle(a);
+    return (
+      a.offsetWidth - a.clientWidth -
+      parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth)
+    );
+  });
+  require("node:assert/strict").equal(asideBar, 0);
+  await page.keyboard.press("Control+k");
+  await page.locator("#palette[open] .pl-cmdk").waitFor();
+  const panelAlpha = await page.evaluate(() => {
+    const c = getComputedStyle(document.querySelector("#palette .pl-cmdk")).backgroundColor;
+    const m = c.match(/rgba?\(([^)]+)\)/);
+    const parts = m[1].split(/[ ,/]+/).filter(Boolean);
+    return parts.length > 3 ? parseFloat(parts[3]) : 1;
+  });
+  require("node:assert/strict").equal(panelAlpha, 1);
+  await page.keyboard.type("API ve izinler");
+  await page.screenshot({
+    path: require("node:path").resolve(__dirname, "../preview-palette.png"),
+  });
+  await page.keyboard.press("Enter");
+  await page.locator('nav [data-page="api"].active').waitFor();
+  require("node:assert/strict").equal(await page.locator("#palette[open]").count(), 0);
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",

@@ -12,6 +12,10 @@
     <script src="theme-init.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="themes.css" />
+    <link rel="stylesheet" href="pl/pl-tokens.css" />
+    <link rel="stylesheet" href="pl/pl-components.css" />
+    <link rel="stylesheet" href="pl/pl-advanced.css" />
+    <link rel="stylesheet" href="hub-kasim.css" />
   </head>
   <body>
     <aside>
@@ -79,6 +83,19 @@
     </main>
     <div id="toast" role="status" aria-live="polite"></div>
     <dialog id="modal"><div id="modal-content"></div></dialog>
+    <dialog id="palette" aria-label="Komut paleti">
+      <div data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+        <div class="pl-cmdk" role="dialog" aria-label="Komut paleti">
+          <div class="pl-cmdk__input">
+            <svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="palette-input" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-label="Komut ara" placeholder="Sayfa, uygulama veya eylem ara…" autocomplete="off" />
+            <span class="pl-kbd">Esc</span>
+          </div>
+          <div class="pl-cmdk__list" id="palette-list" role="listbox"></div>
+          <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gezin</span><span><span class="pl-kbd">↵</span> aç</span><span><span class="pl-kbd">Esc</span> kapat</span></div>
+        </div>
+      </div>
+    </dialog>
     <script src="app.js"></script>
   </body>
 </html>

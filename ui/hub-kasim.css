@@ -1,0 +1,47 @@
+/* Kasım kuralları (Notion: PluginLabs Hub › Kasım Yeni Plan › Yeni Dikkat edilecek kurallar) */
+
+/* Kural 1 — Menüde kaydırma çubuğu görünmez; tekerlek ve klavye ile kaydırma sürer. */
+aside,
+aside nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+aside::-webkit-scrollbar,
+aside nav::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Kural 7 — Komut modalı şeffaf değil: opak panel, yalnız arka plan karartılır. */
+dialog#palette {
+  width: min(600px, 92vw);
+  max-width: none;
+  padding: 0;
+  margin: 14vh auto auto;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+}
+dialog#palette::backdrop {
+  background: rgb(0 0 0 / 0.62);
+  backdrop-filter: none;
+}
+dialog#palette .pl-cmdk {
+  max-width: none;
+  background-color: var(--pl-bg-1);
+  opacity: 1;
+  backdrop-filter: none;
+}
+dialog#palette .pl-cmdk__list {
+  scrollbar-width: none;
+}
+dialog#palette .pl-cmdk__list::-webkit-scrollbar {
+  display: none;
+}
+dialog#palette .pl-cmdk__empty {
+  padding: 22px 12px;
+  text-align: center;
+  color: var(--pl-fg-3);
+  font-size: var(--pl-text-sm);
+}

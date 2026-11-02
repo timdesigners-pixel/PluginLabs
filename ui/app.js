@@ -532,6 +532,118 @@ document.addEventListener("keydown", (e) => {
     $("#search").focus();
   }
 });
+/* Komut paleti (Ctrl/⌘+K) — PluginLabs Advanced PLC-033, opak panel */
+const palette = $("#palette"),
+  paletteInput = $("#palette-input"),
+  paletteList = $("#palette-list");
+let paletteItems = [],
+  paletteIndex = 0;
+const paletteIcon = (d) =>
+  `<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+function paletteSource() {
+  const pages = Object.keys(titles)
+    .filter((k) => k !== "product")
+    .map((k) => ({
+      group: "Sayfalar",
+      label: titles[k],
+      run: () => navigate(k),
+      icon: paletteIcon('<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>'),
+    }));
+  const apps = (state?.catalog || [])
+    .filter((i) => i.kind === "app")
+    .map((i) => ({
+      group: "Uygulamalar",
+      label: i.name,
+      run: () => {
+        query = i.name;
+        $("#search").value = query;
+        page = "discover";
+        filter = "all";
+        render();
+      },
+      icon: paletteIcon('<rect x="4" y="4" width="16" height="16" rx="3"/>'),
+    }));
+  const actions = [
+    {
+      group: "Eylemler",
+      label: "Güncellemeleri denetle",
+      run: () => navigate("updates"),
+      icon: paletteIcon('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>'),
+    },
+    {
+      group: "Eylemler",
+      label: "Aramaya git",
+      run: () => $("#search").focus(),
+      icon: paletteIcon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
+    },
+  ];
+  return [...actions, ...pages, ...apps];
+}
+function paletteRender() {
+  const q = paletteInput.value.trim().toLocaleLowerCase("tr");
+  paletteItems = paletteSource()
+    .filter((i) => !q || i.label.toLocaleLowerCase("tr").includes(q))
+    .slice(0, 30);
+  paletteIndex = Math.min(paletteIndex, Math.max(paletteItems.length - 1, 0));
+  let last = "",
+    html = "";
+  paletteItems.forEach((it, n) => {
+    if (it.group !== last) {
+      html += `<div class="pl-cmdk__group pl-label" role="presentation">${esc(it.group)}</div>`;
+      last = it.group;
+    }
+    html += `<div class="pl-menuitem${n === paletteIndex ? " is-active" : ""}" role="option" id="palette-opt-${n}" data-n="${n}" aria-selected="${n === paletteIndex}">${it.icon}${esc(it.label)}${n === paletteIndex ? '<span class="pl-kbd">↵</span>' : ""}</div>`;
+  });
+  paletteList.innerHTML =
+    html || '<div class="pl-cmdk__empty">Sonuç bulunamadı.</div>';
+  paletteInput.setAttribute("aria-activedescendant", paletteItems.length ? `palette-opt-${paletteIndex}` : "");
+  paletteList.querySelector(".is-active")?.scrollIntoView({ block: "nearest" });
+}
+function openPalette() {
+  if (palette.open || modal.open) return;
+  palette.querySelector("[data-pl]").dataset.plTheme =
+    document.documentElement.dataset.mode === "light" ? "light" : "dark";
+  paletteInput.value = "";
+  paletteIndex = 0;
+  paletteRender();
+  palette.showModal();
+  paletteInput.focus();
+}
+function runPalette(n) {
+  const it = paletteItems[n];
+  if (!it) return;
+  palette.close();
+  it.run();
+}
+paletteInput.addEventListener("input", () => {
+  paletteIndex = 0;
+  paletteRender();
+});
+paletteInput.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    const len = paletteItems.length;
+    if (!len) return;
+    paletteIndex = (paletteIndex + (e.key === "ArrowDown" ? 1 : len - 1)) % len;
+    paletteRender();
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    runPalette(paletteIndex);
+  }
+});
+paletteList.addEventListener("click", (e) => {
+  const o = e.target.closest("[data-n]");
+  if (o) runPalette(Number(o.dataset.n));
+});
+palette.addEventListener("click", (e) => {
+  if (e.target === palette) palette.close();
+});
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    palette.open ? palette.close() : openPalette();
+  }
+});
 modal.addEventListener("close", () => {
   tokenOnce = null;
 });
