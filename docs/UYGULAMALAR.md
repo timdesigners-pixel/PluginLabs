@@ -22,11 +22,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Dilekçe Oluştur (PL-012) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0 |
 | Gadget Dünyası Companion (PL-013) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0 |
 | Social Saves Organizer (PL-014) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0 |
-| Desk Tidy (PL-021) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
-| Twin Finder (PL-022) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO + 10 GB ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
-| Clip Vault (PL-023) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, gerçek Windows panosuyla kayıt testi, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
-| Snap OCR (PL-024) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, paketlenmiş uygulamada OCR doğruluk ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
-| Tweakster (PL-052) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows runner'ında gerçek kayıt defteri/güç planıyla uygula-geri al testi, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
+| File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Eklenti Yöneticisi (PL-051) | **v1.1.0** (Windows kurulum/taşınabilir + Chrome eklentisi zip, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/extension-manager/releases/tag/v1.1.0 |
@@ -35,9 +31,10 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-051 (01.11.2026), PL-053 ve Hub. (PL-015–024 ve PL-052 için kayıt PR'ları #31–#45 açık.) PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-025–050 ve PL-054 (fikir; depo yok — yeni depo açılması gerekiyor). PL-052 Tweakster v0.1.0 01.11.2026'da yayımlandı.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi; File Pilot Hub 0.4.9 kataloğunda (bu PR birleşip Hub 0.4.9 yayımlanınca). PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
+- 01.11.2026 zamanlanmış görev gözlemi: PL-015–024, PL-051 ve PL-052'nin Windows release'leri GitHub'da mevcut (kayıt PR'ları #24–#46 açık). PL-025 File Pilot 0.1.0 yayımlandı (ürün deposu olmadığından kaynak PluginLabs `apps/` içinde, sürüm dosyaları `pluginlabs-dagitim` deposunda).
+- Sıradaki (Windows sürümü yok): PL-026–050 ve PL-054 (fikir; depo yok — bu oturumlar depo oluşturamıyor; PL-025 modeli kullanılabilir).
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -63,11 +60,11 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-018 | Form Flow | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/form-flow |
 | PL-019 | Compare Lens | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/compare-lens |
 | PL-020 | Page Change Radar | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/page-change-radar |
-| PL-021 | Desk Tidy | Windows uygulaması · **v0.1.0** (gerekçeli klasör düzenleme, taşıma planı önizlemesi, günlük ve geri al, MyMind kategori önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/desk-tidy/releases/tag/v0.1.0 |
-| PL-022 | Twin Finder | Windows uygulaması · **v0.1.0** (birebir kopya: boyut → SHA-256 → bayt bayt doğrulama, gerekçeli tutulacak kopya, bağımlılık koruması, karantina ve geri alma, MyMind önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
-| PL-023 | Clip Vault | Windows uygulaması · **v0.1.0** (tepside pano geçmişi: kısayolla arama, sabitlenmiş parçalar, düz metin kopyalama, uygulama hariç tutma, DPAPI ile şifreli yerel geçmiş, MyMind ile düzenleme; imzasız önizleme) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
-| PL-024 | Snap OCR | Windows uygulaması · **v0.1.0** (kısayolla ekran bölgesi seçme, cihazda çevrimdışı Türkçe/İngilizce OCR, kaynak görüntüye satır kutusuyla geri bağlantı, DPAPI ile şifreli geçmiş, MyMind ile OCR düzeltme/çeviri; imzasız önizleme) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
-| PL-025 | File Pilot | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-021 | Desk Tidy | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/desk-tidy |
+| PL-022 | Twin Finder | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/twin-finder |
+| PL-023 | Clip Vault | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/clip-vault |
+| PL-024 | Snap OCR | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/snap-ocr |
+| PL-025 | File Pilot | Windows uygulaması · **v0.1.0** (yerel dosya arama: ad/içerik/etiket, Türkçe duyarsız, eşleşen bölüm önizlemesi, benzer belge, MyMind anlamsal soru; dosyaları yalnız okur; imzasız önizleme). Kaynak PluginLabs `apps/03-…/PL-025-file-pilot/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | PL-026 | Workspace Scenes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-027 | Focus Orbit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-028 | Quick Convert | Fikir / Hub içi önizleme (ayrı depo yok) | — |

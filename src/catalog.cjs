@@ -109,6 +109,23 @@ const catalog = [
     repo: "timdesigners-pixel/flow-dock",
   },
   {
+    id: "file-pilot",
+    name: "File Pilot",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Seçtiğiniz klasörlerde yerel dosya arama: ad, içerik ve etiket; Türkçe ek/aksan duyarsız, satır numaralı eşleşen bölüm, benzer belge; MyMind ile onaylı anlamsal soru. Dosyaları yalnız okur.",
+    platform: "win32",
+    format: "exe",
+    file: "FilePilot.exe",
+    size: 81528392,
+    sha256: "7eb6e2ce829356582f0a6c5b800d50536dcd59128f9595f091ff12b0c2398a68",
+    url: dist("file-pilot", "0.1.0", "FilePilot-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-025-file-pilot/app",
+  },
+  {
     id: "mutfak-atolyesi",
     name: "Mutfak Atölyesi",
     kind: "app",
