@@ -45,3 +45,42 @@ dialog#palette .pl-cmdk__empty {
   color: var(--pl-fg-3);
   font-size: var(--pl-text-sm);
 }
+
+/* Menü simgeleri — düz (3B olmayan), çift tonlu, öğe başına renk. Satır geometrisi korunur. */
+nav button > .nav-ico {
+  --ni: #94a3b8;
+  --ni-2: #cbd5e1;
+  width: 28px;
+  height: 28px;
+  margin: -4px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ni) 16%, transparent);
+  color: var(--ni);
+  font-size: 0;
+  line-height: 0;
+}
+nav button > .nav-ico svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  overflow: visible;
+}
+nav .nav-ico .f { fill: var(--ni); fill-opacity: 0.22; stroke: none; }
+nav .nav-ico .s { fill: none; stroke: var(--ni); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+nav .nav-ico .a { fill: var(--ni-2); stroke: none; }
+nav .nav-ico [data-x] { stroke: none; }
+nav .nav-ico[data-ni="home"] { --ni: #60a5fa; --ni-2: #93c5fd; }
+nav .nav-ico[data-ni="apps"] { --ni: #7c6cff; --ni-2: #a99dff; }
+nav .nav-ico[data-ni="extensions"] { --ni: #f472b6; --ni-2: #f9a8d4; }
+nav .nav-ico[data-ni="ideas"] { --ni: #fbbf24; --ni-2: #fde68a; }
+nav .nav-ico[data-ni="discover"] { --ni: #22d3ee; --ni-2: #a5f3fc; }
+nav .nav-ico[data-ni="resources"] { --ni: #fb923c; --ni-2: #fdba74; }
+nav .nav-ico[data-ni="mymind"] { --ni: #f5c451; --ni-2: #fde68a; }
+nav .nav-ico[data-ni="updates"] { --ni: #34d399; --ni-2: #6ee7b7; }
+nav .nav-ico[data-ni="activity"] { --ni: #a3e635; --ni-2: #d9f99d; }
+nav .nav-ico[data-ni="api"] { --ni: #f87171; --ni-2: #fca5a5; }
+nav .nav-ico[data-ni="settings"] { --ni: #94a3b8; --ni-2: #cbd5e1; }
+nav button.active > .nav-ico { background: color-mix(in srgb, var(--ni) 26%, transparent); }
