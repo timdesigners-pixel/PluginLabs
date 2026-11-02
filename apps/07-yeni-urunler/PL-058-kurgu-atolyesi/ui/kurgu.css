@@ -267,8 +267,12 @@
 @keyframes pl-kurgu-in { from { opacity: 0; transform: translateY(8px); } }
 
 /* ---------- Dar ekran (≤ 900 px): tek sütun ---------- */
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .pl-kurgu-tools { gap: 2px; }
+  /* Önizleme dar kalınca ilerleme çubuğu kendi satırına geçer, düğmeler kesilmez */
+  .pl-kurgu-ctrl { flex-wrap: wrap; gap: 6px; }
+  .pl-kurgu-scrubwrap { order: -1; flex-basis: 100%; }
+  .pl-kurgu-ctrl > .pl-kurgu-pill:last-child { margin-left: auto; }
 }
 @media (max-width: 900px) {
   .pl-kurgu-stage { padding: 8px; place-items: start center; }
