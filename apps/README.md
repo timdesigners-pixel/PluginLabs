@@ -93,6 +93,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | --- | --- | --- | --- | --- | --- |
 | PL-054 | [MyWishlist](07-yeni-urunler/PL-054-mywishlist/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 | PL-055 | [Gardrop](07-yeni-urunler/PL-055-gardrop/README.md) | W · Chrome | v0.1.0 · Windows + Chrome eklentisi | P1 · M | [gardrop](https://github.com/timdesigners-pixel/gardrop) |
+| PL-056 | [The Ultimate Upscaler](07-yeni-urunler/PL-056-ultimate-upscaler/README.md) | W · Chrome | v0.1.0 · Windows + Chrome eklentisi | P1 · M | [ultimate-upscaler](https://github.com/timdesigners-pixel/ultimate-upscaler) |
 
 ---
 Oluşturma: 29.10.2026

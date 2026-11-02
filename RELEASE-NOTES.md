@@ -1,7 +1,8 @@
-PluginLabs Hub 0.4.10 — Gardrop 0.1.0 kataloğa eklendi.
+PluginLabs Hub 0.4.10 — Gardrop 0.1.0 ve The Ultimate Upscaler 0.1.0 kataloğa eklendi.
 
 - Katalog: Gardrop 0.1.0 (PL-055; dijital gardırop: parçalar, kombinler, “Bugün ne giysem?”, giyim günlüğü, analiz, istek listesi, MyMind ile onaylı kombin önerisi; Chrome eklentisi aynı sürümde). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
-- Tasarım sistemi: `gardrop` ürün aksanı (`#e879f9`) kanonik kaynağa ve iki skill kopyasına eklendi.
+- Katalog: The Ultimate Upscaler 0.1.0 (PL-056; cihazda görsel büyütme: Otomatik/Fotoğraf/Çizim/Piksel/Yumuşak profilleri, önce/sonra karşılaştırma, toplu sıra, MyMind ile yalnız ölçümlerle onaylı ayar önerisi; Chrome eklentisi sağ tık ile aynı sürümde). SHA-256 ve boyut dağıtım deposundaki dosyayla doğrulandı.
+- Tasarım sistemi: `gardrop` (`#e879f9`) ve `upscaler` (`#38bdf8`) ürün aksanları kanonik kaynağa ve iki skill kopyasına eklendi.
 - Hub'ın kendi davranışı değişmedi.
 
 İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Electron ve paketleme zincirindeki güvenlik bulguları (issue #3) açıktır.

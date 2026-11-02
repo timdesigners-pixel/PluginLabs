@@ -130,6 +130,22 @@ const catalog = [
     repo: "timdesigners-pixel/gardrop",
   },
   {
+    id: "ultimate-upscaler",
+    name: "The Ultimate Upscaler",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Cihazda görsel büyütme: fotoğraf, çizim/logo ve piksel sanatı profilleri, önce/sonra karşılaştırma, toplu sıra; Chrome eklentisiyle web'deki görsele sağ tıklayıp büyüt. Görseller buluta gitmez (WebView2 gerekir).",
+    platform: "win32",
+    format: "exe",
+    file: "UltimateUpscaler.exe",
+    size: 6521344,
+    sha256: "e37bf45da3e55973a6b5a1f17cf1eb524211fcec044f29a4b64819f684c71e85",
+    url: dist("ultimate-upscaler", "0.1.0", "UltimateUpscaler-0.1.0-portable.exe"),
+    distAsset: "^UltimateUpscaler-[0-9.]+-portable\.exe$",
+    repo: "timdesigners-pixel/ultimate-upscaler",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",
