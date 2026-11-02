@@ -981,7 +981,13 @@
         "sistem tepsisi"
       ],
       "summary": "Pano geçmişini cihazda saklar; kopyalanan metinleri aramayı ve yeniden kullanmayı sağlar.",
-      "repo": null,
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "clip-vault",
+        "url": "https://github.com/timdesigners-pixel/clip-vault",
+        "verified": true,
+        "note": "Depo planlama içeriğiyle mevcuttu (31.10.2026 doğrulandı) · 31.10.2026: 0.1.0 Windows uygulaması (clip-vault#2, release v0.1.0)"
+      },
       "appPath": "apps/03-masaustu-dosya-araclari-ve-widgetlar/PL-023-clip-vault",
       "codexProject": {
         "name": "PL-023 · Clip Vault",
