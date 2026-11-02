@@ -650,11 +650,11 @@
       "ad": "MyWishlist",
       "platform": "Eklenti"
     },
-    "gardrop": {
+    "tork": {
       "$type": "color",
-      "$value": "#e879f9",
-      "ad": "Gardrop",
-      "platform": "Masaüstü / Eklenti"
+      "$value": "#facc15",
+      "ad": "Tork",
+      "platform": "Masaüstü"
     }
   }
 }

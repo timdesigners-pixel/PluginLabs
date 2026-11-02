@@ -2196,6 +2196,47 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": null
+    },
+    {
+      "id": "PL-057",
+      "number": 57,
+      "slug": "tork",
+      "name": "Tork",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 geliştirmede · Windows masaüstü (Tauri 2 / Rust) + tork-cli",
+      "priority": "P2",
+      "effort": "M",
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust); ölçüm motoru ve tork-cli Linux’ta da derlenir",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "komut satırı aracı"
+      ],
+      "summary": "Sistem benchmark’ı: CPU (tek/çok çekirdek), bellek ve disk testleriyle puan verir; ölçüm geçmişi, önce/sonra karşılaştırması, JSON/CSV dışa aktarma ve MyMind ile darboğaz yorumu.",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "tork",
+        "url": "https://github.com/timdesigners-pixel/tork",
+        "verified": false,
+        "note": "Yerel depo hazır; GitHub deposu kullanıcı onayıyla açılacak (01.11.2026)"
+      },
+      "appPath": "apps/07-yeni-urunler/PL-057-tork",
+      "codexProject": {
+        "name": "PL-057 · Tork",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": "https://app.notion.com/p/40b8aa13d8f981d7b221f34a525ed045"
     }
   ]
 }
