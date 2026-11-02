@@ -10,7 +10,7 @@
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3), widget |
-| Geliştirme deposu | [timdesigners-pixel/youtube-shelf](https://github.com/timdesigners-pixel/youtube-shelf) · Windows sürümü [v0.1.1](https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1) (31.10.2026) |
+| Geliştirme deposu | [timdesigners-pixel/youtube-shelf](https://github.com/timdesigners-pixel/youtube-shelf) · Windows release [v0.1.1](https://github.com/timdesigners-pixel/youtube-shelf/releases/tag/v0.1.1) |
 | Codex projesi | `PL-015 · YouTube Shelf` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743) |
 
