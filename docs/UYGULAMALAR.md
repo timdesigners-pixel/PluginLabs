@@ -26,6 +26,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Twin Finder (PL-022) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO + 10 GB ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/twin-finder/releases/tag/v0.1.0 |
 | Clip Vault (PL-023) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, gerçek Windows panosuyla kayıt testi, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/clip-vault/releases/tag/v0.1.0 |
 | Snap OCR (PL-024) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, paketlenmiş uygulamada OCR doğruluk ölçümü, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/snap-ocr/releases/tag/v0.1.0 |
+| Tweakster (PL-052) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows runner'ında gerçek kayıt defteri/güç planıyla uygula-geri al testi, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
 | PluginLabs Hub | v0.3.0 (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.3.0 |
 | Extension Manager (PL-051) | kaynaktan; Chrome'da "paketlenmemiş eklenti yükle" (Windows uygulaması değil) | https://github.com/timdesigners-pixel/extension-manager |
@@ -34,9 +35,9 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-021–024, PL-053 ve Hub (PL-015–020'nin release kayıtları açık PR #24–#34'te). PL-004–014 ve PL-021–024 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
+- Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-021–024, PL-052, PL-053 ve Hub (PL-015–020'nin release kayıtları açık PR #24–#34'te). PL-004–014 ve PL-021–024 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-025–050 ve PL-054 (fikir; depo yok), PL-052 Tweakster (yalnız plan).
+- Sıradaki (Windows sürümü yok): PL-025–050 ve PL-054 (fikir; depo yok — yeni depo açılması gerekiyor). PL-052 Tweakster v0.1.0 01.11.2026'da yayımlandı.
 
 ## Tüm liste (PL-001 … PL-054)
 
@@ -93,7 +94,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-049 | Invoice Inbox | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-050 | Decision Board | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-051 | Extension Manager / Eklenti Yöneticisi | Chrome eklentisi kaynak kodu (11 dosya, v1.0.0), release yok | https://github.com/timdesigners-pixel/extension-manager |
-| PL-052 | Tweakster | Yalnız plan (depoda kod yok) | https://github.com/timdesigners-pixel/tweakster |
+| PL-052 | Tweakster | Windows uygulaması · **v0.1.0** (PC hızlandırma: başlangıç programları, 8 geri alınabilir HKCU ince ayarı, güç planı, karantinalı temizlik, geçmiş/geri al, değişiklik öncesi geri yükleme noktası, MyMind önerisi; imzasız önizleme) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.4.1** (GitHub release; Hub kataloğunda) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
 | PL-054 | MyWishlist | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-055 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.0 |

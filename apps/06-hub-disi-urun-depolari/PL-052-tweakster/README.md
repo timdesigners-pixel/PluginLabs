@@ -6,7 +6,7 @@
 | --- | --- |
 | Kimlik | `PL-052` · `tweakster` |
 | Kategori | 06 · Bağımsız ürün depoları — PL-051–053 |
-| Durum | Depo 28.10.2026’da açıldı; kod henüz yok (tweakster README) |
+| Durum | 01.11.2026: **0.1.0 Windows uygulaması** yayımlandı — [release v0.1.0](https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0) (imzasız önizleme) |
 | Hedef platformlar | Windows |
 | Dağıtım biçimi | masaüstü uygulaması |
 | Geliştirme deposu | [timdesigners-pixel/tweakster](https://github.com/timdesigners-pixel/tweakster) |
@@ -30,6 +30,15 @@
 ### MVP ve temel akış
 
 Kaynak: kullanıcı beyanı (28.10.2026) — “Tweakster (PC hızlandırma uygulaması)”. Ayrıntılı özellik listesi henüz tanımlanmadı; kod yazıldıkça tweakster deposundan tamamlanacak.
+
+### 0.1.0 (01.11.2026, Claude Code — depo kodundan)
+
+- Genel bakış: işlemci, bellek, disk, başlangıç, temizlenebilir alan, güç planı; yerel kurallarla gerekçeli öneriler.
+- Başlangıç programları: Run anahtarları (kullanıcı, tüm kullanıcılar 64/32 bit) ve Başlangıç klasörü; Görev Yöneticisi yöntemiyle (StartupApproved) aç/kapa, komut silinmez; güvenlik/sürücü öğeleri "Kapatmayın".
+- 8 geri alınabilir HKCU ince ayarı (önce → sonra önizleme), güç planı geçişi, %TEMP%/çökme dökümü/hata raporu temizliği (karantina, geri al, kalıcı boşalt).
+- Geçmiş ve geri al; değişiklik öncesi Windows geri yükleme noktası (UAC yalnız o adımda) + Tweakster'ın kendi geri alma kaydı.
+- MyMind (Hub üzerinden): yalnız sayısal özetle öncelikli öneri; onaylı, doğrulanmış, kendiliğinden uygulanmaz.
+- Doğrulama: 13 birim testi; Windows runner'ında gerçek HKCU kayıt defteri, StartupApproved ve güç planıyla uygula → doğrula → geri al duman testi. Geri yükleme noktası/UAC CI'da taklit; hız artışı ölçülmedi.
 
 ## Teknik bağımlılık ve sınırlar
 
