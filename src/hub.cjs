@@ -6,8 +6,15 @@ const fs = require("node:fs/promises"),
   crypto = require("node:crypto"),
   http = require("node:http"),
   { EventEmitter } = require("node:events"),
-  { spawn } = require("node:child_process");
+  { spawn } = require("node:child_process"),
+  { Transform } = require("node:stream"),
+  { pipeline } = require("node:stream/promises");
 const { catalog: defaults, DIST } = require("./catalog.cjs");
+// Özel (kapalı) My Mind modeli: kullanıcının içe aktardığı GGUF dosyası. Katalog dışıdır,
+// internetten indirilmez; Hub onu aynı `mymind-lite` API adıyla sunar.
+const CUSTOM_MODEL_MIN = 1024 * 1024,
+  CUSTOM_MODEL_MAX = 8 * 1024 ** 3,
+  MODEL_SOURCES = ["catalog", "custom"];
 const digest = (s) => crypto.createHash("sha256").update(s).digest("hex");
 const idPattern = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const scopes = [
@@ -225,6 +232,8 @@ class Hub extends EventEmitter {
       };
       await this.save();
     }
+    if (!MODEL_SOURCES.includes(this.state.settings.modelSource))
+      this.state.settings.modelSource = "catalog";
     this.catalog.push(...(this.state.customCatalog || []));
     this.log("Merkez hazır");
     return this;
@@ -286,6 +295,8 @@ class Hub extends EventEmitter {
         running: !!this.model?.healthy,
         starting: !!this.model && !this.model.healthy,
         error: this.modelError || null,
+        source: this.state.settings.modelSource,
+        custom: this.state.customModel || null,
       },
       api: { port: this.port || null, running: !!this.server },
       settings: publicSettings,
@@ -768,12 +779,117 @@ class Hub extends EventEmitter {
     }
     return null;
   }
+  customModelPath() {
+    return path.join(this.root, "models", "mymind-ozel", "mymind.gguf");
+  }
+  async importModel(file, options = {}) {
+    if (this.closed) fail("Merkez kapanıyor", 503);
+    if (typeof file !== "string" || !path.isAbsolute(file))
+      fail("Geçersiz model dosyası");
+    if (path.extname(file).toLowerCase() !== ".gguf")
+      fail("Yalnızca .gguf model dosyaları içe aktarılabilir");
+    const expected =
+      options.sha256 == null ? null : String(options.sha256).toLowerCase();
+    if (expected !== null && !/^[0-9a-f]{64}$/.test(expected))
+      fail("Geçersiz SHA-256");
+    const name =
+      boundedText(
+        options.name || path.basename(file, path.extname(file)),
+        80,
+      ).trim() || "Özel model";
+    const stat = await fs.stat(file).catch(() => null);
+    if (!stat?.isFile()) fail("Model dosyası bulunamadı");
+    if (stat.size < CUSTOM_MODEL_MIN || stat.size > CUSTOM_MODEL_MAX)
+      fail("Model dosyası 1 MB ile 8 GB arasında olmalı");
+    const dir = path.dirname(this.customModelPath());
+    await fs.mkdir(dir, { recursive: true });
+    const tmp = path.join(dir, `.ice-aktarim-${crypto.randomUUID()}`),
+      hash = crypto.createHash("sha256");
+    let size = 0,
+      head = Buffer.alloc(0);
+    try {
+      await pipeline(
+        fss.createReadStream(file),
+        new Transform({
+          transform(chunk, _encoding, done) {
+            if (head.length < 4)
+              head = Buffer.concat([head, chunk.subarray(0, 4 - head.length)]);
+            size += chunk.length;
+            if (size > CUSTOM_MODEL_MAX)
+              return done(new Error("Model dosyası 8 GB sınırını aştı"));
+            hash.update(chunk);
+            done(null, chunk);
+          },
+        }),
+        fss.createWriteStream(tmp, { mode: 0o600 }),
+      );
+      if (head.toString("latin1") !== "GGUF")
+        fail("Dosya GGUF biçiminde değil");
+      if (size !== stat.size) fail("Dosya içe aktarılırken değişti");
+      const sha256 = hash.digest("hex");
+      if (expected && sha256 !== expected)
+        fail("SHA-256 eşleşmiyor; dosya bozuk veya farklı bir model");
+      // Çalışan sunucu dosyayı açık tutar; yalnız özel model kullanılıyorsa durdurulur.
+      if (this.model && this.state.settings.modelSource === "custom")
+        await this.stopModel();
+      await fs.rename(tmp, this.customModelPath());
+      this.state.customModel = {
+        name,
+        size,
+        sha256,
+        verified: !!expected,
+        imported: new Date().toISOString(),
+      };
+      await this.save();
+      this.log(`Özel My Mind modeli içe aktarıldı: ${name}`);
+      return this.state.customModel;
+    } finally {
+      await fs.rm(tmp, { force: true });
+    }
+  }
+  async setModelSource(source) {
+    if (!MODEL_SOURCES.includes(source)) fail("Geçersiz model kaynağı");
+    if (source === "custom" && !this.state.customModel)
+      fail("Önce özel bir model içe aktarın");
+    if (source === this.state.settings.modelSource) return source;
+    if (this.model) await this.stopModel();
+    this.state.settings.modelSource = source;
+    await this.save();
+    this.log(
+      source === "custom"
+        ? "My Mind özel modeli kullanacak"
+        : "My Mind katalog modelini kullanacak",
+    );
+    return source;
+  }
+  async removeCustomModel() {
+    if (!this.state.customModel) return;
+    if (this.model && this.state.settings.modelSource === "custom")
+      await this.stopModel();
+    await fs.rm(this.customModelPath(), { force: true });
+    this.state.customModel = null;
+    this.state.settings.modelSource = "catalog";
+    await this.save();
+    this.log("Özel My Mind modeli kaldırıldı");
+  }
+  async modelFile() {
+    if (this.state.settings.modelSource !== "custom") {
+      const model = this.installed("mymind-lite");
+      if (!model.enabled) fail("Motor ve modeli etkinleştirin");
+      return path.join(this.folder("mymind-lite", model.version), model.file);
+    }
+    const custom = this.state.customModel;
+    if (!custom) fail("Özel model içe aktarılmadı");
+    const stat = await fs.stat(this.customModelPath()).catch(() => null);
+    if (!stat || stat.size !== custom.size)
+      fail("Özel model dosyası eksik veya değişmiş; yeniden içe aktarın");
+    return this.customModelPath();
+  }
   async startModel() {
     if (this.model) fail("Model zaten çalışıyor veya başlatılıyor", 409);
-    const engine = this.installed("llama-engine"),
-      model = this.installed("mymind-lite");
-    if (!engine.enabled || !model.enabled)
-      fail("Motor ve modeli etkinleştirin");
+    const engine = this.installed("llama-engine");
+    if (!engine.enabled) fail("Motor ve modeli etkinleştirin");
+    const modelPath = await this.modelFile();
     const binary = await this.findFile(
       path.join(this.folder("llama-engine", engine.version), "content"),
       process.platform === "win32" ? "llama-server.exe" : "llama-server",
@@ -786,7 +902,7 @@ class Hub extends EventEmitter {
     this.modelError = null;
     const args = [
       "--model",
-      path.join(this.folder("mymind-lite", model.version), model.file),
+      modelPath,
       "--host",
       "127.0.0.1",
       "--port",
@@ -896,6 +1012,15 @@ class Hub extends EventEmitter {
     const tokens = body.max_tokens ?? 256;
     if (!Number.isInteger(tokens) || tokens < 1 || tokens > 512)
       fail("Çıktı sınırı 1–512");
+    // İstemcinin sıcaklığı korunur: Leo gibi karar veren istemciler 0 ile kararlı çıktı ister.
+    const temperature = body.temperature ?? 0.4;
+    if (
+      typeof temperature !== "number" ||
+      !Number.isFinite(temperature) ||
+      temperature < 0 ||
+      temperature > 1
+    )
+      fail("Sıcaklık 0–1 olmalı");
     this.aiActive = true;
     try {
       const result = await limitedJSON(
@@ -909,7 +1034,7 @@ class Hub extends EventEmitter {
             model: "mymind-lite",
             messages,
             max_tokens: tokens,
-            temperature: 0.4,
+            temperature,
             stream: false,
             chat_template_kwargs: { enable_thinking: false },
           }),

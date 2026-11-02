@@ -79,6 +79,14 @@ const date = (s) =>
     hour: "2-digit",
     minute: "2-digit",
   });
+const customModelCard = () => {
+  const m = state.model.custom,
+    active = state.model.source === "custom";
+  const body = m
+    ? `<p style="margin:10px 0 14px">${esc(m.name)} · ${bytes(m.size)}</p><div class="code">SHA-256: ${esc(m.sha256)}<br>${m.verified ? "Doğrulandı: SHA256SUMS dosyasıyla eşleşti" : "SHA256SUMS bulunamadı; dosyanın kaynağından emin olun"}<br>İçe aktarma: ${esc(new Date(m.imported).toLocaleString("tr-TR"))}</div><div class="button-row" style="margin-top:16px">${active ? button("Katalog modeline dön", "useCatalogModel") : button("Özel modeli kullan", "useCustomModel", "", "primary")}${button("Başka model içe aktar", "importModel")}${button("Kaldır", "removeCustomModel", "", "danger")}</div>`
+    : `<p style="margin:10px 0 18px">Kendi eğittiğiniz MyMind modelini (GGUF) bu bilgisayardan içe aktarın. Dosya internetten indirilmez; uygulamalar onu aynı My Mind API'siyle kullanır.</p><div class="button-row">${button("GGUF içe aktar", "importModel", "", "primary")}</div>`;
+  return `<section class="card" style="margin-top:20px"><div class="row-heading" style="margin-top:0"><h2>Özel MyMind modeli</h2>${m ? `<span class="badge ${active ? "online" : ""}">${active ? '<i class="status-dot"></i>Kullanılıyor' : "Hazır"}</span>` : ""}</div>${body}<div class="notice">Aynı klasörde SHA256SUMS varsa dosya onunla doğrulanır. Model kaynağı değişince çalışan sunucu durdurulur.</div></section>`;
+};
 const button = (text, action, id = "", style = "") =>
   `<button class="btn ${style}" data-action="${action}" data-id="${esc(id)}" ${busy.has(action + id) ? "disabled" : ""}>${busy.has(action + id) ? "İşleniyor…" : text}</button>`;
 const icon = (id) =>
@@ -209,8 +217,10 @@ function render() {
   if (page === "extensions") html = extensionsPage();
   if (page === "mymind") {
     const ready =
-      state.installed["mymind-lite"]?.enabled &&
-      state.installed["llama-engine"]?.enabled;
+      state.installed["llama-engine"]?.enabled &&
+      (state.model.source === "custom"
+        ? !!state.model.custom
+        : state.installed["mymind-lite"]?.enabled);
     html =
       heading(
         "My Mind. Sizin cihazınızda.",
@@ -222,7 +232,7 @@ function render() {
         .map(card)
         .join(
           "",
-        )}</div><div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="btn primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
+        )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="btn primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
   }
   if (page === "updates")
     html =
@@ -392,6 +402,28 @@ document.addEventListener("click", async (e) => {
       await call("startModel");
       toast("My Mind hazır");
     } else if (action === "stopModel") await call("stopModel");
+    else if (action === "importModel") {
+      const model = await call("importModel");
+      if (model)
+        toast(
+          model.verified
+            ? "Model içe aktarıldı ve SHA-256 doğrulandı"
+            : "Model içe aktarıldı (SHA256SUMS yoktu)",
+        );
+    } else if (action === "useCustomModel" || action === "useCatalogModel") {
+      await call(
+        "setModelSource",
+        action === "useCustomModel" ? "custom" : "catalog",
+      );
+      toast(
+        action === "useCustomModel"
+          ? "My Mind özel modeli kullanacak; sunucuyu yeniden başlatın"
+          : "My Mind katalog modelini kullanacak",
+      );
+    } else if (action === "removeCustomModel") {
+      await call("removeCustomModel");
+      toast("Özel model kaldırıldı");
+    }
     else if (
       [
         "cancel",
