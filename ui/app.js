@@ -59,6 +59,8 @@ const scopeLabels = {
   "mymind.chat": "My Mind ile metin işle",
   "providers.register": "Uygulama işlevlerini kaydet",
   "actions.invoke": "Sağlayıcı işlemlerini çağır",
+  "channels.publish": "Kendi kanallarına veri yayınla (canlı widget)",
+  "channels.read": "Kanalları oku ve canlı akışı dinle (köprü)",
 };
 const esc = (s) =>
   String(s ?? "").replace(
@@ -568,7 +570,7 @@ function render() {
         .map((i) => card(i))
         .join(
           "",
-        )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="pl-btn pl-btn--primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
+        )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="pl-btn pl-btn--primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div><div class="row-heading"><h2>Uygulamalar için hazır görevler (${(state.mymindTasks || []).length})</h2></div>${mymindTasksHTML()}`;
   }
   if (page === "updates")
     html =
@@ -613,7 +615,7 @@ function render() {
         "Her uygulama için ayrı anahtar, belirli izinler ve görünür işlemler.",
         button("＋ İstemci oluştur", "newClient", "", "primary"),
       ) +
-      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
+      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>Kanallar ve köprüler (${(state.channels || []).length})</h2></div>${channelsHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
       heading(
@@ -648,13 +650,36 @@ function hudPanel() {
     `<div class="pl-hudmetric ${tone}"><span class="pl-hudmetric__ic">${plIco(ic)}</span><span class="pl-hudmetric__val">${v}</span><span class="pl-hudmetric__lbl">${l}</span></div>`;
   return `<section class="hud-panel" data-pl-surface="hud" aria-label="Yerel API telemetrisi"><div class="hud-metrics">${m('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', state.clients.length, "İstemci")}${m('<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', state.providers.length, "Sağlayıcı", "pl-hudmetric--cyan")}${m('<path d="M12 9v4M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>', pend, "Bekleyen onay", pend ? "pl-hudmetric--amber" : "")}</div></section>`;
 }
+function mymindTasksHTML() {
+  const tasks = state.mymindTasks || [];
+  const names = { "mind-palace": "Mind Palace", "leo-helper": "Leo Helper", mywishlist: "MyWishlist", "ultimate-scrapper": "Ultimate Scrapper", "pluginlabs-hub": "Hub", "gardrop-asistani": "Gardrop", "mutfak-atolyesi": "Mutfak Atölyesi", "finansal-asistan": "Finansal Asistan" };
+  return `<section class="card"><p class="pl-muted">Uygulamalar <code>POST /v1/mymind/run</code> ile bu görevleri çağırır. Girdi yalnızca veri olarak işlenir, çıktı doğrulanır ve her şey yerel modelde kalır. Gerekli izin: “My Mind ile metin işle”.</p><div class="pl-stack" style="gap:8px">${tasks
+    .map(
+      (t) =>
+        `<div class="list-row"><div class="grow"><h3>${esc(t.title)} <small class="pl-muted pl-num">${esc(t.id)}</small></h3><p>${t.apps.map((a) => esc(names[a] || a)).join(" · ")}</p></div><span class="pl-badge">${t.output === "text" ? "Metin" : "JSON"}</span></div>`,
+    )
+    .join("")}</div></section>`;
+}
+function channelsHTML() {
+  const list = state.channels || [];
+  const help =
+    '<p class="pl-muted">Uygulamalar <code>POST /v1/channels/&lt;ad-alanı&gt;.&lt;konu&gt;</code> ile veri yayınlar; Genel bakış widget’ları bu veriyi canlı gösterir. Başka bir uygulama yalnızca yayıncının paylaştığı kanalı okuyabilir (<code>GET /v1/stream</code>). Veriler yalnızca bellekte tutulur.</p>';
+  if (!list.length)
+    return `<section class="card">${help}<div class="empty">Henüz yayın yapan uygulama yok. Anahtar oluştururken “Kendi kanallarına veri yayınla” iznini seçin.</div></section>`;
+  return `<section class="hud-panel" data-pl-surface="hud">${help}<table class="pl-hudtable"><thead><tr><th scope="col">Kanal</th><th scope="col">Yayıncı</th><th scope="col">Paylaşım</th><th scope="col">Güncelleme</th><th scope="col"><span class="visually-hidden">İşlem</span></th></tr></thead><tbody>${list
+    .map(
+      (c) =>
+        `<tr><td class="pl-num">${esc(c.channel)}</td><td>${esc(c.owner)}</td><td>${c.share.length ? esc(c.share.join(", ")) : "Yalnızca Hub"}</td><td class="pl-num">${date(new Date(c.updatedAt).toISOString())} · #${c.seq}</td><td>${button("Kapat", "closeChannel", c.channel, "danger")}</td></tr>`,
+    )
+    .join("")}</tbody></table></section>`;
+}
 function clientsTable() {
   if (!state.clients.length)
     return '<section class="card"><p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p></section>';
   return `<section class="hud-panel" data-pl-surface="hud"><table class="pl-hudtable"><thead><tr><th scope="col">İstemci</th><th scope="col">İzinler</th><th scope="col">Oluşturma</th><th scope="col">Durum</th><th scope="col"><span class="visually-hidden">İşlem</span></th></tr></thead><tbody>${state.clients
     .map(
       (c) =>
-        `<tr><td>${esc(c.name)}</td><td title="${esc(c.scopes.join(" · "))}">${c.scopes.length ? c.scopes.length + " izin" : "—"}</td><td>${date(c.createdAt)}</td><td><span class="pl-hudtag">Etkin</span></td><td>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</td></tr>`,
+        `<tr><td>${esc(c.name)}<br><small class="pl-muted pl-num">${esc(c.namespace || "")}</small></td><td title="${esc(c.scopes.join(" · "))}">${c.scopes.length ? c.scopes.length + " izin" : "—"}</td><td>${date(c.createdAt)}</td><td><span class="pl-hudtag">Etkin</span></td><td>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</td></tr>`,
     )
     .join("")}</tbody></table></section>`;
 }
@@ -825,7 +850,7 @@ document.addEventListener("click", async (e) => {
   if (action === "installAppExtension") return installAppExtension();
   if (action === "newClient") {
     showModal(
-      `<div class="modal-title"><h2>Uygulama erişimi oluştur</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><form id="client-form"><label class="field"><span>Uygulama adı</span><input class="text" name="name" maxlength="80" placeholder="Örn. Mind Palace adaptörü" required></label><h3>İzinler</h3><div class="scope-grid">${Object.entries(
+      `<div class="modal-title"><h2>Uygulama erişimi oluştur</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><form id="client-form"><label class="field"><span>Uygulama adı</span><input class="text" name="name" maxlength="80" placeholder="Örn. Mind Palace adaptörü" required></label><label class="field"><span>Kanal ad alanı <small class="pl-muted">(isteğe bağlı · örn. mind-palace)</small></span><input class="text" name="namespace" maxlength="40" pattern="[a-z0-9][a-z0-9\\-]{1,39}" placeholder="Boş bırakılırsa addan üretilir"></label><h3>İzinler</h3><div class="scope-grid">${Object.entries(
         scopeLabels,
       )
         .map(
@@ -898,6 +923,7 @@ document.addEventListener("click", async (e) => {
         "launch",
         "rollback",
         "revokeClient",
+        "closeChannel",
         "exportResource",
         "openSource",
       ].includes(action)
@@ -941,6 +967,7 @@ document.addEventListener("submit", async (e) => {
           "createClient",
           data.get("name"),
           data.getAll("scope"),
+          String(data.get("namespace") || "").trim() || undefined,
         );
       tokenOnce = created.token;
       $("#modal-content").innerHTML =
