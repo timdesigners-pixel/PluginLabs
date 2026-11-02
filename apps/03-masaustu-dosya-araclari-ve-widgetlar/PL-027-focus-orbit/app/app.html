@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus Orbit</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="fo" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar fo-side" aria-label="Ana menü">
+    <div class="fo-brand" aria-label="PluginLabs Apps">
+      <span class="fo-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="fo-apps">APPS</span>
+    </div>
+    <div class="fo-product">
+      <span class="pl-applogo" aria-hidden="true">FO</span>
+      <div class="fo-product__text"><b>Focus Orbit</b><span>Odak balonu</span></div>
+      <span class="fo-product__no pl-num" aria-label="Sıra numarası 27">27</span>
+    </div>
+    <div class="fo-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem fo-navbtn" type="button" data-nav="focus" role="tab">Odak</button>
+      <button class="pl-navitem fo-navbtn" type="button" data-nav="sites" role="tab">Dikkat listesi<span class="pl-badge" id="sitesCount">0</span></button>
+      <button class="pl-navitem fo-navbtn" type="button" data-nav="history" role="tab">Seans kayıtları<span class="pl-badge" id="historyCount">0</span></button>
+      <button class="pl-navitem fo-navbtn" type="button" data-nav="settings" role="tab">Ayarlar ve yedek</button>
+    </div>
+    <div class="fo-mini" id="sideTimer" aria-live="off"></div>
+    <div class="fo-side__foot">
+      <button class="pl-navitem fo-navbtn" type="button" id="bubbleBtn"><span>Odak balonu</span><span class="pl-badge" id="bubbleState">Gizli</span></button>
+      <button class="pl-navitem fo-navbtn" type="button" id="openMymind"><span class="fo-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="fo-main">
+    <div class="fo-view fo-focus" id="view-focus">
+      <section class="fo-col" aria-label="Görev">
+        <div class="fo-card">
+          <div class="pl-field"><label class="pl-field__label" for="taskTitle">Bu seansın tek görevi</label>
+            <input class="pl-input fo-task" id="taskTitle" maxlength="120" autocomplete="off" placeholder="ör. Tez 3. bölüm: yöntem kısmının ilk taslağı"></div>
+          <div class="fo-bar">
+            <h3 class="fo-sub">Adımlar <span class="pl-badge" id="stepCount">0/0</span></h3>
+            <span class="fo-grow"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="splitBtn"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile parçala</button>
+          </div>
+          <ul class="fo-steps" id="steps"></ul>
+          <form class="fo-bar" id="stepForm"><input class="pl-input fo-grow" id="stepInput" maxlength="140" autocomplete="off" placeholder="Adım ekle ve Enter'a basın" aria-label="Yeni adım"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="submit">Ekle</button></form>
+          <div class="fo-ai" id="aiSteps" hidden></div>
+        </div>
+        <div class="fo-card" id="weekCard" aria-label="Bu hafta"></div>
+      </section>
+      <section class="fo-col fo-col--timer" aria-label="Zamanlayıcı">
+        <div class="fo-card fo-timer">
+          <div class="fo-phase" id="phase">Hazır</div>
+          <div class="fo-ring" id="ring">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="fo-ring__bg" cx="100" cy="100" r="88"/><circle class="fo-ring__fg" id="ringFg" cx="100" cy="100" r="88" pathLength="1000"/></svg>
+            <div class="fo-ring__in"><b class="fo-time pl-num" id="time" role="timer" aria-live="off">25:00</b><span id="timeSub" class="pl-muted">odak</span></div>
+          </div>
+          <div class="fo-nowtask" id="nowTask"></div>
+          <div class="fo-ctrls" id="ctrls"></div>
+          <div class="fo-presets" id="presets" aria-label="Hazır süreler"></div>
+        </div>
+        <div class="fo-card fo-avoid" id="avoidCard"></div>
+      </section>
+    </div>
+
+    <div class="fo-view fo-panels" id="view-sites" hidden>
+      <section class="fo-panel">
+        <div class="fo-panel__head"><h2 class="pl-h3">Dikkat listesi</h2></div>
+        <p class="pl-muted fo-small">Odak seansında uzak durmak istediğiniz siteler. Açık olanlar seans boyunca zamanlayıcının altında hatırlatılır ve "Dağıldım" kaydında seçilebilir. 0.1.0 siteleri <b>engellemez</b> (Chrome eklentisiyle gelecek); işletim sistemi düzeyinde hiçbir şeyi kapatmaz.</p>
+        <form class="fo-bar" id="siteForm"><input class="pl-input fo-grow" id="siteInput" maxlength="600" autocomplete="off" placeholder="youtube.com, x.com, instagram.com" aria-label="Site ekle"><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit">Ekle</button></form>
+        <ul class="fo-sites" id="sites"></ul>
+      </section>
+      <section class="fo-panel">
+        <div class="fo-panel__head"><h2 class="pl-h3">En çok dikkat dağıtanlar</h2></div>
+        <p class="pl-muted fo-small">Yalnız sizin "Dağıldım" ile bildirdiğiniz kesintilerden; ekran ya da tarayıcı izlenmez.</p>
+        <ul class="fo-top" id="topSites"></ul>
+      </section>
+    </div>
+
+    <div class="fo-view fo-history" id="view-history" hidden>
+      <div class="fo-panel__head"><h2 class="pl-h3">Seans kayıtları</h2><span class="pl-muted fo-small" id="historyInfo"></span></div>
+      <div class="fo-sessions" id="sessions"></div>
+    </div>
+
+    <div class="fo-view fo-panels" id="view-settings" hidden>
+      <section class="fo-panel">
+        <div class="fo-panel__head"><h2 class="pl-h3">Süreler</h2></div>
+        <div class="fo-grid2">
+          <div class="pl-field"><label class="pl-field__label" for="setFocus">Odak (dk)</label><input class="pl-input" id="setFocus" type="number" min="1" max="180"></div>
+          <div class="pl-field"><label class="pl-field__label" for="setBreak">Mola (dk)</label><input class="pl-input" id="setBreak" type="number" min="1" max="60"></div>
+          <div class="pl-field"><label class="pl-field__label" for="setLong">Uzun mola (dk)</label><input class="pl-input" id="setLong" type="number" min="1" max="90"></div>
+          <div class="pl-field"><label class="pl-field__label" for="setEvery">Kaç odakta bir uzun mola (0: hiç)</label><input class="pl-input" id="setEvery" type="number" min="0" max="12"></div>
+          <div class="pl-field"><label class="pl-field__label" for="setGoal">Haftalık hedef (tamamlanan seans)</label><input class="pl-input" id="setGoal" type="number" min="1" max="50"></div>
+        </div>
+      </section>
+      <section class="fo-panel">
+        <div class="fo-panel__head"><h2 class="pl-h3">Davranış</h2></div>
+        <label class="fo-check"><input type="checkbox" id="setAutoBreak"> Odak bitince molayı kendiliğinden başlat</label>
+        <label class="fo-check"><input type="checkbox" id="setBubble"> Seans başlayınca odak balonunu göster</label>
+        <label class="fo-check"><input type="checkbox" id="setNotify"> Masaüstü bildirimi göster (odak ve mola bitişi)</label>
+        <label class="fo-check"><input type="checkbox" id="setMotion"> Hareketi azalt (halka animasyonu ve geçişler kapalı; sistem ayarı da izlenir)</label>
+        <div class="fo-panel__head"><h2 class="pl-h3">Yedek</h2></div>
+        <p class="pl-muted fo-small">Kayıtlar bu bilgisayarda tutulur. JSON yedek; içe aktarılan seanslar mevcutlara eklenir (hiçbiri silinmez).</p>
+        <div class="fo-bar"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportBtn">Dışa aktar (.json)</button><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="importBtn">İçe aktar</button></div>
+      </section>
+      <section class="fo-panel fo-panel--wide">
+        <div class="fo-panel__head"><h2 class="pl-h3">Gizlilik ve sınırlar</h2></div>
+        <ul class="fo-list" id="privacy"></ul>
+      </section>
+    </div>
+    <footer class="fo-foot pl-muted" id="foot">Kayıtlar bu bilgisayarda, Windows kasasıyla (DPAPI) şifreli tutulur. Focus Orbit ekranı izlemez, hiçbir uygulamayı ya da sekmeyi kapatmaz.</footer>
+  </main>
+
+  <dialog class="pl-modal fo-dialog" id="intDialog" aria-labelledby="intTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="intTitle">Dikkatim dağıldı</h2><p class="pl-muted fo-tight">Kayıt yalnız sizin bildiriminizle tutulur; seans sürmeye devam eder. Haftalık "kesinti / seans" ölçüsüne girer.</p></div></div>
+    <div class="pl-modal__body fo-stack">
+      <div class="fo-chips" id="intSites" role="radiogroup" aria-label="Nerede?"></div>
+      <div class="pl-field"><label class="pl-field__label" for="intNote">Kısa not (isteğe bağlı)</label><input class="pl-input" id="intNote" maxlength="80" autocomplete="off" placeholder="ör. telefon bildirimi"></div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="intCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="intOk">Kaydet ve odağa dön</button></div>
+  </dialog>
+
+  <dialog class="pl-modal fo-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon fo-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted fo-tight">Görev parçalama ve seans sonu özeti bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılır. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body fo-stack">
+      <ol class="fo-list">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted fo-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="fo-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="fo-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
