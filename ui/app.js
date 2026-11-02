@@ -113,6 +113,8 @@ async function refresh(renderPage = true) {
     ["queued", "downloading", "installing"].includes(j.status),
   ).length;
   $("#update-count").textContent = active || "";
+  renderTicker();
+  updateMenuServer();
   if (renderPage && changed) render();
 }
 function matches(item) {
@@ -180,7 +182,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -227,6 +229,7 @@ function render() {
         "Yerel model kurulumu, sunucu yönetimi ve uygulamalar için ortak AI erişimi.",
         `<span class="pill">${state.model.running ? "● SUNUCU HAZIR" : state.model.starting ? "BAŞLATILIYOR" : "SUNUCU KAPALI"}</span>`,
       ) +
+      statusCards(false) +
       `<div class="notice">My Mind Lite, Qwen3 0.6B açık modelini llama.cpp ile çalıştırır. İndirmeler internet gerektirir; metin analizi yerel sunucuda yapılır. İlk sürüm CPU kullanır.</div><div class="model-grid">${catalog
         .filter((i) => ["mymind-lite", "llama-engine"].includes(i.id))
         .map(card)
@@ -347,6 +350,14 @@ document.addEventListener("click", async (e) => {
   if (!action) return;
   if (action === "closeModal") return closeModal();
   if (action === "openPalette") return openPalette();
+  if (action === "showShortcuts")
+    return showModal(
+      `<div class="modal-title"><h2>Klavye kısayolları</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><dl class="pl-kv"><dt>Komut paleti</dt><dd><span class="pl-kbd">Ctrl</span> <span class="pl-kbd">K</span></dd><dt>Aramaya git</dt><dd><span class="pl-kbd">/</span></dd><dt>Menüleri gezin</dt><dd><span class="pl-kbd">←</span> <span class="pl-kbd">→</span> <span class="pl-kbd">↓</span></dd><dt>Kapat</dt><dd><span class="pl-kbd">Esc</span></dd></dl><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
+    );
+  if (action === "showAbout")
+    return showModal(
+      `<div class="modal-title"><h2>PluginLabs Hub</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Uygulama, eklenti ve kaynak merkezi. Verileriniz bu cihazda saklanır; yerel API yalnızca 127.0.0.1 üzerinde dinler.</p><div class="notice">Arayüz: PluginLabs Advanced tasarım sistemi.</div><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
+    );
   if (action === "goPro")
     return showModal(
       `<div class="modal-title"><h2>PluginLabs Pro</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Pro planı henüz yayında değil. Hesap, ücretli mağaza ve bulut eşitleme planlandı; şu an Hub tamamen yerel çalışır ve hiçbir veri hesaba bağlanmaz.</p><div class="notice">Pro yayına girdiğinde bu düğme plan seçimini açacak.</div><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
@@ -537,6 +548,126 @@ document.addEventListener("keydown", (e) => {
     $("#search").focus();
   }
 });
+const plIco = (d) =>
+  `<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+function statusCards(withStats) {
+  const m = state.model,
+    api = state.api;
+  const srvState = m.error
+    ? ["error", "Hata"]
+    : m.running
+      ? ["online", "Çalışıyor"]
+      : m.starting
+        ? ["syncing", "Başlatılıyor"]
+        : ["", "Kapalı"];
+  const apiState = api.running ? ["online", "Hazır"] : ["error", "Çevrimdışı"];
+  const srv = `<div class="pl-card pl-row status-card" data-card="server"><span class="pl-avatar pl-avatar--accent">${plIco('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>')}</span><div class="sc-main"><b>My Mind sunucusu</b><div class="pl-muted pl-num">127.0.0.1:8765 · ${m.running ? "yanıt veriyor" : "yerel model"}</div></div><span class="pl-status ${srvState[0] ? "pl-status--" + srvState[0] : ""}">${srvState[1]}</span></div>`;
+  const con = `<div class="pl-card pl-row status-card" data-card="connection"><span class="pl-avatar pl-avatar--accent">${plIco('<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v7"/>')}</span><div class="sc-main"><b>Uygulama bağlantısı</b><div class="pl-muted pl-num">127.0.0.1:${api.port || 47632} · ${state.clients.length} istemci · ${state.providers.length} sağlayıcı</div></div><span class="pl-status ${"pl-status--" + apiState[0]}">${apiState[1]}</span></div>`;
+  let html = `<div class="status-row">${srv}${con}</div>`;
+  if (withStats) {
+    const active = state.jobs.filter((j) =>
+      ["queued", "downloading", "installing"].includes(j.status),
+    ).length;
+    const stat = (c, ic, lbl, val) =>
+      `<div class="pl-statcard" style="--c:var(--pl-viz-${c})"><span class="pl-statcard__ic">${plIco(ic)}</span><span class="pl-statcard__lbl">${lbl}</span><span class="pl-statcard__val">${val}</span></div>`;
+    html += `<div class="stat-row">${stat(7, '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m9 12 2 2 4-4"/>', "Yüklü paket", Object.keys(state.installed).length)}${stat(1, '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', "Bağlı sağlayıcı", state.providers.length)}${stat(3, '<path d="M15 7a4 4 0 1 1-3.5 6L4 20.5V17H1" transform="translate(2 -1)"/>', "API istemcisi", state.clients.length)}${stat(5, '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>', "Etkin indirme", active)}</div>`;
+  }
+  return html;
+}
+let tickerKey = "";
+function renderTicker() {
+  const track = $("#ticker-track");
+  if (!track || !state) return;
+  const items = [];
+  items.push(
+    state.api.running
+      ? `Yerel API <b>127.0.0.1:${state.api.port}</b> hazır`
+      : "Yerel API <b>çevrimdışı</b>",
+  );
+  items.push(
+    `My Mind sunucusu <b>${state.model.running ? "çalışıyor" : state.model.starting ? "başlıyor" : "kapalı"}</b>`,
+  );
+  items.push(`Yüklü paket <b>${Object.keys(state.installed).length}</b>`);
+  items.push(
+    `Sağlayıcı <b>${state.providers.length}</b> · İstemci <b>${state.clients.length}</b>`,
+  );
+  state.jobs
+    .filter((j) => ["queued", "downloading", "installing"].includes(j.status))
+    .slice(0, 2)
+    .forEach((j) =>
+      items.push(
+        `İşlem <b>${esc(j.item)}</b> ${j.total ? "%" + Math.min(100, Math.round((j.bytes / j.total) * 100)) : "sürüyor"}`,
+      ),
+    );
+  state.activity
+    .slice(0, 3)
+    .forEach((a) => items.push(`${esc(date(a.time))} <b>${esc(a.message)}</b>`));
+  const html = items.map((t) => `<span>${t}</span>`).join("");
+  if (html === tickerKey) return;
+  tickerKey = html;
+  track.innerHTML = html + html;
+  track.style.setProperty("--ticker-dur", Math.max(24, items.length * 7) + "s");
+}
+function updateMenuServer() {
+  const el = $("#mb-server");
+  if (!el || !state) return;
+  const running = state.model.running || state.model.starting;
+  el.outerHTML = `<button id="mb-server" class="pl-menuitem" role="menuitem" data-action="${running ? "stopModel" : "startModel"}">${running ? "My Mind sunucusunu durdur" : "My Mind sunucusunu başlat"}</button>`;
+}
+const menubar = $(".menubar");
+function closeMenus(focusBtn) {
+  menubar.querySelectorAll(".mb-drop").forEach((d) => (d.hidden = true));
+  menubar.querySelectorAll(".mb-btn").forEach((b) => {
+    b.setAttribute("aria-expanded", "false");
+    if (focusBtn && b === focusBtn) b.focus();
+  });
+}
+function openMenu(btn) {
+  closeMenus();
+  btn.setAttribute("aria-expanded", "true");
+  const d = btn.nextElementSibling;
+  d.hidden = false;
+}
+menubar.addEventListener("click", (e) => {
+  const b = e.target.closest(".mb-btn");
+  if (b) {
+    const open = b.getAttribute("aria-expanded") === "true";
+    open ? closeMenus() : openMenu(b);
+    return;
+  }
+  const it = e.target.closest(".pl-menuitem");
+  if (!it) return;
+  if (it.dataset.setPalette) window.plTheme.set({ palette: it.dataset.setPalette });
+  if (it.dataset.setMode) window.plTheme.set({ mode: it.dataset.setMode });
+  if (it.dataset.setPalette || it.dataset.setMode) render();
+  closeMenus();
+});
+menubar.addEventListener("mouseover", (e) => {
+  const b = e.target.closest(".mb-btn");
+  if (b && menubar.querySelector('.mb-btn[aria-expanded="true"]') && b.getAttribute("aria-expanded") !== "true") openMenu(b);
+});
+menubar.addEventListener("keydown", (e) => {
+  const btns = [...menubar.querySelectorAll(".mb-btn")];
+  const cur = document.activeElement.closest(".mb-menu")?.querySelector(".mb-btn");
+  if (e.key === "Escape") return closeMenus(cur);
+  if (!cur) return;
+  const i = btns.indexOf(cur);
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    e.preventDefault();
+    const n = btns[(i + (e.key === "ArrowRight" ? 1 : btns.length - 1)) % btns.length];
+    n.focus();
+    if (menubar.querySelector('.mb-btn[aria-expanded="true"]')) openMenu(n);
+  } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    if (cur.getAttribute("aria-expanded") !== "true") openMenu(cur);
+    const items = [...cur.nextElementSibling.querySelectorAll(".pl-menuitem")];
+    const at = items.indexOf(document.activeElement);
+    items[(at + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length]?.focus();
+  }
+});
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menubar")) closeMenus();
+});
 function syncPlTheme() {
   const m = document.documentElement.dataset.mode === "light" ? "light" : "dark";
   document.querySelectorAll("[data-pl]").forEach((e) => (e.dataset.plTheme = m));
@@ -615,8 +746,6 @@ function paletteRender() {
 }
 function openPalette() {
   if (palette.open || modal.open) return;
-  palette.querySelector("[data-pl]").dataset.plTheme =
-    document.documentElement.dataset.mode === "light" ? "light" : "dark";
   paletteInput.value = "";
   paletteIndex = 0;
   paletteRender();

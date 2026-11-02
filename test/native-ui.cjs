@@ -106,6 +106,19 @@ const fs = require("node:fs/promises");
   await page.keyboard.press("Enter");
   await page.locator('nav [data-page="api"].active').waitFor();
   require("node:assert/strict").equal(await page.locator("#palette[open]").count(), 0);
+  // Advanced kabuğu: üst menü, kayan akış bandı, durum kartları
+  await page.getByRole("menuitem", { name: "Dosya" }).click();
+  await page.getByRole("menuitem", { name: /Veri klasörünü aç/ }).waitFor();
+  await page.keyboard.press("Escape");
+  require("node:assert/strict").equal(await page.locator(".mb-drop:not([hidden])").count(), 0);
+  await page.locator("#ticker-track span").first().waitFor({ state: "attached" });
+  require("node:assert/strict").ok((await page.locator("#ticker-track span").count()) >= 8);
+  await page.locator('nav [data-page="home"]').click();
+  await page.locator('[data-card="server"]').waitFor();
+  await page.locator('[data-card="connection"]').waitFor();
+  await page.getByRole("button", { name: /Pro'ya geç/ }).click();
+  await page.locator("#modal[open]").waitFor();
+  await page.getByRole("button", { name: "Tamam" }).click();
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",
