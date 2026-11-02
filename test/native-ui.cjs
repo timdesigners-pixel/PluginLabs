@@ -37,7 +37,7 @@ const fs = require("node:fs/promises");
     .filter({
       has: page.getByRole("heading", { name: "Graphite", exact: true }),
     })
-    .getByRole("button", { name: "＋ Yükle" })
+    .getByRole("button", { name: "Yükle", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Yönet", exact: true })
@@ -53,7 +53,7 @@ const fs = require("node:fs/promises");
     .getByRole("button", { name: "Devre dışı bırak", exact: true })
     .click();
   await page.locator('nav [data-page="api"]').click();
-  await page.getByRole("button", { name: "＋ İstemci oluştur" }).click();
+  await page.getByRole("button", { name: "İstemci oluştur", exact: true }).click();
   await page.locator('input[name="name"]').fill("UI test client");
   await page.locator('input[value="resources.read"]').check();
   await page
@@ -66,7 +66,7 @@ const fs = require("node:fs/promises");
   if (!token.startsWith("plh_")) throw Error("Missing token");
   await page.getByRole("button", { name: "Tamam", exact: true }).click();
   await page
-    .getByRole("heading", { name: "UI test client", exact: true })
+    .getByRole("cell", { name: "UI test client", exact: true })
     .waitFor();
   await page.screenshot({
     path: require("node:path").resolve(__dirname, "../preview-api.png"),
@@ -153,6 +153,35 @@ const fs = require("node:fs/promises");
   await page.locator("[data-widget-reset]").click();
   await page.locator('nav [data-page="home"]').click();
   require("node:assert/strict").equal(await page.locator(".wdg").count(), wdgTotal);
+  // Üst çerçeve menüsü, sayfa geçişinde en üstten açılma, bölünmüş Yükle düğmesi, fotoğraf alanı
+  await page.locator('nav [data-page="home"]').click();
+  const mb = await page.evaluate(() => {
+    const r = document.querySelector(".menubar").getBoundingClientRect();
+    return { top: r.top, left: r.left, w: r.width, iw: document.documentElement.clientWidth };
+  });
+  require("node:assert/strict").equal(mb.top, 0);
+  require("node:assert/strict").equal(mb.left, 0);
+  require("node:assert/strict").ok(mb.w >= mb.iw - 1);
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.locator('nav [data-page="settings"]').click();
+  require("node:assert/strict").equal(await page.evaluate(() => window.scrollY), 0);
+  await page.locator('nav [data-page="home"]').click();
+  const firstCard = page.locator(".app-compact").first();
+  await firstCard.getByRole("button", { name: "Yükle", exact: true }).waitFor();
+  await firstCard.locator("[data-split-toggle]").click();
+  await page.getByRole("menuitem", { name: "Detaylı bilgi" }).first().click();
+  await page.locator("#modal[open] .pl-kv").waitFor();
+  await page.getByRole("button", { name: "Kapat", exact: true }).last().click();
+  const png = require("node:path").join(data, "foto.png");
+  require("node:fs").writeFileSync(png, Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==", "base64"));
+  const [chooser] = await Promise.all([
+    page.waitForEvent("filechooser"),
+    page.locator('[data-photo-pick="kombin"]').click(),
+  ]);
+  await chooser.setFiles(png);
+  await page.locator('.wdg-photo[data-slot="kombin"] img').waitFor();
+  await page.locator('[data-photo-clear="kombin"]').click();
+  await page.getByRole("img", { name: "Kombin çizimi" }).waitFor();
   require("node:assert/strict").deepEqual(errors, []);
   console.log(
     "PASS: native Electron UI, resource install/settings/toggle, API client creation, model page",

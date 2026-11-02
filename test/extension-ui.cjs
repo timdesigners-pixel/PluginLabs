@@ -62,7 +62,7 @@ const { _electron: electron } = require(
       .getByRole("heading", { name: "Eklentileriniz. Ortak bir merkez." })
       .waitFor();
     await page.screenshot({ path: path.join(root, "preview-extensions.png") });
-    await page.getByRole("button", { name: "＋ Tarayıcı bağla" }).click();
+    await page.getByRole("button", { name: "Tarayıcı bağla", exact: true }).click();
     await page.locator("[name=browser]").selectOption("Opera");
     await page.locator("[name=extensionId]").fill("a".repeat(32));
     await page
@@ -104,8 +104,9 @@ const { _electron: electron } = require(
     await page
       .getByRole("heading", { name: "Fixture extension", exact: true })
       .waitFor();
+    await page.screenshot({ path: require("node:path").resolve(__dirname, "../preview-extensions.png") });
     await page
-      .getByRole("button", { name: "Devre dışı bırak", exact: true })
+      .getByRole("switch", { name: "Fixture extension", exact: true })
       .click();
     await page
       .getByRole("button", { name: "İsteği gönder", exact: true })

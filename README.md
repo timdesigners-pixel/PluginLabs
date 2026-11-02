@@ -16,6 +16,10 @@ Genel bakışın girişinde durum ve istatistik kartları yer alır, özgün dü
 
 ![Akış panosu widget'ları, örnek veri (0.4.14, Linux/Xvfb)](docs/screenshots/akis-panosu.png)
 
+Çalışma alanınız için: yalnızca logo, ad, boyut ve bölünmüş “Yükle” düğmesi (▾ menüsünde Detaylı bilgi).
+
+![Çalışma alanınız için kartları ve bölünmüş düğme menüsü (0.4.15, Linux/Xvfb)](docs/screenshots/calisma-alani-kartlari.png)
+
 Widget düzenleyici (Ayarlar › Widget'lar): widget ekle/çıkar, sırayı değiştir, varsayılana dön.
 
 ![Ayarlar › Widget düzenleyici (0.4.14, Linux/Xvfb)](docs/screenshots/ayarlar-widgetlar.png)

@@ -87,10 +87,67 @@ const customModelCard = () => {
     : `<p style="margin:10px 0 18px">Kendi eğittiğiniz MyMind modelini (GGUF) bu bilgisayardan içe aktarın. Dosya internetten indirilmez; uygulamalar onu aynı My Mind API'siyle kullanır.</p><div class="button-row">${button("GGUF içe aktar", "importModel", "", "primary")}</div>`;
   return `<section class="card" style="margin-top:20px"><div class="row-heading" style="margin-top:0"><h2>Özel MyMind modeli</h2>${m ? `<span class="badge ${active ? "online" : ""}">${active ? '<i class="status-dot"></i>Kullanılıyor' : "Hazır"}</span>` : ""}</div>${body}<div class="notice">Aynı klasörde SHA256SUMS varsa dosya onunla doğrulanır. Model kaynağı değişince çalışan sunucu durdurulur.</div></section>`;
 };
+const btnIcons = {
+  plus: '<path d="M5 12h14M12 5v14"/>',
+  refresh: '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+  play: '<path d="M7 4v16l13-8z"/>',
+  ext: '<path d="M7 17 17 7M8 7h9v9"/>',
+};
+const svgIco = (d) =>
+  `<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+function decorateButtons(root) {
+  root.querySelectorAll("button.pl-btn").forEach((b) => {
+    const first = b.firstChild,
+      last = b.lastChild;
+    if (first && first.nodeType === 3) {
+      const t = first.textContent;
+      const m = [["＋ ", "plus"], ["↻ ", "refresh"], ["▶ ", "play"]].find(([k]) => t.startsWith(k));
+      if (m) {
+        first.textContent = t.slice(m[0].length);
+        b.insertAdjacentHTML("afterbegin", svgIco(btnIcons[m[1]]));
+      }
+    }
+    if (last && last.nodeType === 3 && /\s?↗$/.test(last.textContent)) {
+      last.textContent = last.textContent.replace(/\s?↗$/, "");
+      b.insertAdjacentHTML("beforeend", svgIco(btnIcons.ext));
+    }
+  });
+}
+const plBtnClass = (style = "") =>
+  "pl-btn " +
+  ({ primary: "pl-btn--primary", danger: "pl-btn--danger", ghost: "pl-btn--ghost" }[style] ||
+    "pl-btn--secondary");
 const button = (text, action, id = "", style = "") =>
-  `<button class="btn ${style}" data-action="${action}" data-id="${esc(id)}" ${busy.has(action + id) ? "disabled" : ""}>${busy.has(action + id) ? "İşleniyor…" : text}</button>`;
-const icon = (id) =>
-  `<span class="app-icon ${esc(id)}">${icons[id] || "▧"}</span>`;
+  `<button class="${plBtnClass(style)}" data-action="${action}" data-id="${esc(id)}" ${busy.has(action + id) ? "disabled" : ""}>${busy.has(action + id) ? "İşleniyor…" : text}</button>`;
+const logoMap = {
+  "mind-palace": ["mindpalace", "MP"],
+  "leo-helper": ["leo", "LH"],
+  "pluginlabs-scrapper": ["scrapper", "US"],
+  mywishlist: ["wishlist", "MW"],
+  "mymind-ai": ["mymind", "MM"],
+  "mymind-lite": ["mymind", "ML"],
+  "llama-engine": ["mymind", "LE"],
+  "mutfak-atolyesi": ["mutfak", "MA"],
+  "flow-dock": ["flowdock", "FD"],
+};
+function logoInitials(name) {
+  const w = String(name || "?").replace(/[^\p{L}\p{N} ]/gu, "").split(/\s+/).filter(Boolean);
+  const t = w.length > 1 ? w[0][0] + w[1][0] : (w[0] || "?").slice(0, 2);
+  return t.toLocaleUpperCase("tr");
+}
+function logoFor(id, name) {
+  const m = logoMap[id];
+  const txt = m ? m[1] : logoInitials(name || id);
+  let h = 0;
+  for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const attr = m
+    ? `data-pl-product="${m[0]}"`
+    : `style="--pl-accent:var(--pl-viz-${(h % 8) + 1})"`;
+  return `<span class="pl-applogo" ${attr} aria-hidden="true">${esc(txt)}</span>`;
+}
+function icon(id) {
+  return logoFor(id, state?.catalog?.find((i) => i.id === id)?.name);
+}
 const heading = (title, desc, action = "") =>
   `<div class="page-heading"><div><div class="eyebrow">PLUGINLABS / ${esc(titles[page])}</div><h1>${title}</h1><p>${desc}</p></div>${action}</div>`;
 function toast(text) {
@@ -161,7 +218,39 @@ function appRow(item) {
           : "";
   return `<article class="pl-card pl-row app-row">${icon(item.id)}<div class="sc-main"><b>${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec.version)}</span></div></div>${status}<div class="button-row">${primary}${button("Yönet", "manage", item.id)}</div></article>`;
 }
-function card(item) {
+const dlIco =
+  '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>';
+const chevIco =
+  '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+function actionHTML(item, installed, job, different) {
+  if (job) return button("İptal", "cancel", job.id);
+  const b = (action, label, ic = "") =>
+    `<button class="pl-btn pl-btn--primary pl-btn--sm" data-action="${action}" data-id="${esc(item.id)}" ${busy.has(action + item.id) ? "disabled" : ""}>${ic}${label}</button>`;
+  const main = !installed
+    ? b("install", "Yükle", dlIco)
+    : different
+      ? b("install", "Güncelle", dlIco)
+      : item.kind === "app"
+        ? b("launch", "Aç ↗")
+        : item.kind === "preview"
+          ? b("openProduct", "Aç ↗")
+          : b("manage", "Yönet");
+  const mi = (action, label) =>
+    `<button class="pl-menuitem" role="menuitem" data-action="${action}" data-id="${esc(item.id)}">${label}</button>`;
+  const menu = [
+    mi("info", "Detaylı bilgi"),
+    installed ? mi("manage", "Ayarlar ve paket bilgisi") : "",
+    item.repo || item.source ? mi("openSource", "Kaynağı gör ↗") : "",
+  ].join("");
+  return `<div class="pl-split app-split">${main}<button class="pl-btn pl-btn--primary pl-btn--sm" data-split-toggle aria-haspopup="menu" aria-expanded="false" aria-label="${esc(item.name)} için diğer seçenekler">${chevIco}</button><div class="pl-menu split-menu" role="menu" aria-label="${esc(item.name)}" hidden>${menu}</div></div>`;
+}
+function closeSplitMenus() {
+  document.querySelectorAll(".split-menu").forEach((m) => (m.hidden = true));
+  document
+    .querySelectorAll("[data-split-toggle]")
+    .forEach((t) => t.setAttribute("aria-expanded", "false"));
+}
+function card(item, compact = false) {
   const installed = state.installed[item.id],
     job = state.jobs.find(
       (j) =>
@@ -169,11 +258,17 @@ function card(item) {
         ["queued", "downloading", "installing"].includes(j.status),
     );
   const different = installed && verNewer(item.version, installed.version);
-  return `<article class="card"><div class="card-top">${icon(item.id)}<div><h3>${esc(item.name)}</h3><small>${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</small></div></div><p>${esc(item.description)}</p>${job ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>` : ""}<div class="card-bottom"><span class="badge ${installed?.enabled ? "online" : ""}">${installed ? `<i class="status-dot"></i>${installed.enabled ? "Yüklü" : "Devre dışı"}` : bytes(item.size)}</span>${job ? button("İptal", "cancel", job.id) : !installed ? button("＋ Yükle", "install", item.id) : different ? button("Güncelle", "install", item.id, "primary") : item.kind === "app" ? button("Aç ↗", "launch", item.id) : item.kind === "preview" ? button("Aç ↗", "openProduct", item.id) : button("Yönet", "manage", item.id)}</div>${installed ? `<div class="detail-actions"><button class="text-button" data-action="manage" data-id="${item.id}">Ayarlar ve paket bilgisi</button></div>` : ""}</article>`;
+  const prog = job
+    ? `<div class="progress"><span style="width:${Math.min(100, (job.bytes / (job.total || 1)) * 100)}%"></span></div><div class="subtle">${bytes(job.bytes)} / ${bytes(job.total)}</div>`
+    : "";
+  const act = actionHTML(item, installed, job, different);
+  if (compact)
+    return `<article class="card app-compact"><div class="ac-row">${icon(item.id)}<div class="ac-text"><h3>${esc(item.name)}</h3><small class="pl-muted pl-num">${bytes(item.size)}${installed ? " · yüklü" : ""}</small></div>${act}</div>${prog}</article>`;
+  return `<article class="card pl-appcard"><div class="pl-appcard__head">${icon(item.id)}<div style="min-width:0"><h3 class="pl-appcard__name">${esc(item.name)}</h3><span class="pl-label">${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</span></div>${installed ? `<span class="pl-badge ${installed.enabled ? "pl-badge--success" : ""}" style="margin-left:auto">${installed.enabled ? "Yüklü" : "Devre dışı"}</span>` : ""}</div><p class="pl-appcard__desc">${esc(item.description)}</p>${prog}<div class="pl-appcard__foot"><span class="pl-badge">${bytes(item.size)}</span>${act}</div></article>`;
 }
-function grid(items) {
+function grid(items, compact = false) {
   return items.length
-    ? `<div class="app-grid">${items.map(card).join("")}</div>`
+    ? `<div class="app-grid${compact ? " compact" : ""}">${items.map((i) => card(i, compact)).join("")}</div>`
     : '<div class="empty"><span>⌕</span>Bu görünümde henüz içerik yok.<br>Katalogdan paket yükleyebilir veya aramayı değiştirebilirsiniz.</div>';
 }
 const paletteChoices = [
@@ -198,7 +293,7 @@ function widgetsSection() {
   const body = shown.length
     ? `<div class="wdg-grid">${shown.map((id) => window.plWidgets.render(id, state)).join("")}</div>`
     : `<div class="pl-empty"><div class="pl-empty__art">${plIco('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17 14v7M14 17.5h7"/>')}</div><h3 class="pl-h3">Panoda widget yok</h3><p class="pl-muted" style="margin:0 0 8px;max-width:340px">Ayarlar › Widget'lar bölümünden istediğiniz widget'ları ekleyin.</p><button class="pl-btn pl-btn--primary pl-btn--sm" data-widget-edit>Widget ekle</button></div>`;
-  return `<div class="row-heading wdg-heading"><h2>Akış panosu</h2><div class="button-row"><span class="pl-badge">Örnek veri</span><button class="btn" data-widget-edit>＋ Widget ekle / düzenle</button></div></div>${body}`;
+  return `<div class="row-heading wdg-heading"><h2>Akış panosu</h2><div class="button-row"><span class="pl-badge">Örnek veri</span><button class="pl-btn pl-btn--secondary" data-widget-edit>＋ Widget ekle / düzenle</button></div></div>${body}`;
 }
 function widgetEditor() {
   const L = window.plWidgets.layout.get();
@@ -208,15 +303,51 @@ function widgetEditor() {
       const w = reg[id],
         on = !L.hidden.includes(id),
         inst = w.appId && state.installed[w.appId];
-      return `<div class="pl-setting wdg-edit-row" data-w="${id}"><span class="wdg-ic" style="--c:var(--pl-viz-${w.color})">${plIco(w.icon)}</span><div class="pl-setting__text"><b>${w.title}</b><span class="pl-muted">${w.app}${w.live ? " · canlı veri" : inst ? " · yüklü, genişletilmiş" : w.appId ? " · yüklü değil (örnek veri)" : " · örnek veri"}</span></div><div class="wdg-edit-actions"><button class="btn ghost" data-widget-move="up" data-id="${id}" aria-label="${w.title} yukarı taşı" ${i === 0 ? "disabled" : ""}>↑</button><button class="btn ghost" data-widget-move="down" data-id="${id}" aria-label="${w.title} aşağı taşı" ${i === L.order.length - 1 ? "disabled" : ""}>↓</button><label class="pl-switch"><input type="checkbox" role="switch" data-widget-toggle="${id}" aria-label="${w.title} panoda göster" ${on ? "checked" : ""}></label></div></div>`;
+      return `<div class="pl-setting wdg-edit-row" data-w="${id}"><span class="wdg-ic" style="--c:var(--pl-viz-${w.color})">${plIco(w.icon)}</span><div class="pl-setting__text"><b>${w.title}</b><span class="pl-muted">${w.app}${w.live ? " · canlı veri" : inst ? " · yüklü, genişletilmiş" : w.appId ? " · yüklü değil (örnek veri)" : " · örnek veri"}</span></div><div class="wdg-edit-actions"><button class="pl-btn pl-btn--ghost" data-widget-move="up" data-id="${id}" aria-label="${w.title} yukarı taşı" ${i === 0 ? "disabled" : ""}>↑</button><button class="pl-btn pl-btn--ghost" data-widget-move="down" data-id="${id}" aria-label="${w.title} aşağı taşı" ${i === L.order.length - 1 ? "disabled" : ""}>↓</button><label class="pl-switch"><input type="checkbox" role="switch" data-widget-toggle="${id}" aria-label="${w.title} panoda göster" ${on ? "checked" : ""}></label></div></div>`;
     })
     .join("");
   const n = L.order.length - L.hidden.length;
   return settingsCard(
     "Genel bakış widget'ları",
     `Panoda ${n} / ${L.order.length} widget var. Anahtar widget'ı ekler veya çıkarır; oklar sırayı değiştirir. Uygulama yüklenince ilgili widget genişler; uygulamalar veri akıtmaya başlayınca örnek veri gerçek veriyle değişir.`,
-    rows + `<div class="button-row" style="margin-top:16px"><button class="btn" data-widget-reset>Varsayılana dön</button><button class="btn primary" data-go="home">Panoyu gör ↗</button></div>`,
+    rows + `<div class="button-row" style="margin-top:16px"><button class="pl-btn pl-btn--secondary" data-widget-reset>Varsayılana dön</button><button class="pl-btn pl-btn--primary" data-go="home">Panoyu gör ↗</button></div>`,
   );
+}
+let bannerOff = false,
+  sortMode = "name";
+const searchIco = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>';
+function greetHTML() {
+  const d = new Date(),
+    h = d.getHours();
+  const hello = h < 6 ? "İyi geceler" : h < 12 ? "Günaydın" : h < 18 ? "İyi günler" : "İyi akşamlar";
+  const ds = `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
+  const n = Object.keys(state.installed).length;
+  return `<div class="eyebrow" style="margin-bottom:12px">PLUGINLABS / GENEL BAKIŞ</div><header class="pl-greet hub-greet"><div><h2 class="pl-greet__title">Her şey, tek bir yerde.</h2><div class="pl-greet__sub">${hello} · ${n} paket yüklü · yerel API ${state.api.running ? "hazır" : "çevrimdışı"}</div></div><div class="pl-greet__chips"><span>${plIco('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>')}${ds}</span><span>${plIco('<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>')}Yerel çalışma alanı</span></div><button class="pl-iconbtn" style="color:inherit" data-go="activity" aria-label="İşlem geçmişi">${plIco('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>')}</button></header>`;
+}
+function modelBanner() {
+  if (bannerOff || modelReady() || state.model.running) return "";
+  return `<div class="pl-banner hub-banner" role="note">${plIco('<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M21 5h-4"/>')}<div class="pl-banner__text"><b>My Mind modeli henüz yüklü değil.</b> <span class="pl-muted">Yerel AI için modeli ve motoru yükleyin.</span></div><button class="pl-btn pl-btn--primary pl-btn--sm" data-go="mymind">Kur</button><button class="pl-iconbtn pl-iconbtn--sm" data-banner-close aria-label="Bildirimi kapat">${plIco('<path d="M18 6 6 18M6 6l12 12"/>')}</button></div>`;
+}
+const sortItems = (arr) =>
+  arr.slice().sort((a, b) =>
+    sortMode === "size"
+      ? (b.size || 0) - (a.size || 0)
+      : String(a.name).localeCompare(String(b.name), "tr"),
+  );
+function filterBar(kinds, current, attr, withView) {
+  const tags = kinds
+    .map(
+      (k) =>
+        `<button class="pl-tag${current === k ? " is-selected" : ""}" data-${attr}="${k}" aria-pressed="${current === k}">${k === "all" ? "Tümü" : esc(kindLabels[k] || k)}</button>`,
+    )
+    .join("");
+  const view = withView
+    ? plSegment("apps-view", appsView, [
+        ["grid", `${plIco('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>')}Izgara`],
+        ["list", `${plIco('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>')}Liste`],
+      ])
+    : "";
+  return `<div class="pl-row filter-bar" role="search"><div class="pl-inputwrap">${plIco(searchIco)}<input class="pl-input" type="search" data-filter-search placeholder="Filtrele" aria-label="Filtrele" value="${esc(query)}"></div>${tags}${view}<select class="pl-select" data-sort aria-label="Sırala"><option value="name"${sortMode === "name" ? " selected" : ""}>Ad (A–Z)</option><option value="size"${sortMode === "size" ? " selected" : ""}>Boyut</option></select></div>`;
 }
 let settingsTab = "gorunum";
 const settingsTabs = [
@@ -298,7 +429,7 @@ function settingsHTML() {
           ["My Mind bağlamı", `<span class="pl-num">${state.settings?.modelContext || 4096} token</span>`],
           ["Model kaynağı", state.model.source === "custom" ? "Özel model" : "Katalog"],
         ]) +
-          `<div class="button-row" style="margin-top:16px"><button class="btn primary" data-go="api">API ve izinleri yönet ↗</button>${button("Yeni istemci", "newClient")}</div>`,
+          `<div class="button-row" style="margin-top:16px"><button class="pl-btn pl-btn--primary" data-go="api">API ve izinleri yönet ↗</button>${button("Yeni istemci", "newClient")}</div>`,
       );
   else if (settingsTab === "kisayol")
     body = settingsCard(
@@ -334,7 +465,12 @@ function render() {
   $("#breadcrumb").textContent = titles[page];
   document
     .querySelectorAll("nav [data-page]")
-    .forEach((b) => b.classList.toggle("active", b.dataset.page === page));
+    .forEach((b) => {
+      b.classList.toggle("active", b.dataset.page === page);
+      b.classList.toggle("is-active", b.dataset.page === page);
+      if (b.dataset.page === page) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
   const catalog = state.catalog.filter(matches),
     apps = catalog.filter((i) => i.kind === "app"),
     resources = catalog.filter((i) =>
@@ -343,7 +479,7 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${heading("Her şey, tek bir yerde.", "Uygulamalarınız, yaratıcı kaynaklarınız ve yerel yapay zekânız.", `<span class="pill">KİŞİSEL ÇALIŞMA ALANI</span>`)}${statusCards(true)}<section class="hero"><div class="hero-copy"><div class="eyebrow">TANIŞTIRALIM · MY MIND</div><h2>Küçük model.<br>Büyük bir çalışma alanı.</h2><p>My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><button class="btn primary" data-go="mymind">My Mind’i keşfet <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")])}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${greetHTML()}${modelBanner()}${statusCards(true)}<section class="pl-hero onb-hero"><div class="onb-copy"><span class="pl-badge pl-badge--accent">PluginLabs Hub · ${esc(state.version || "")}</span><h1 class="pl-hero__title">Küçük model.<br><em>Büyük bir çalışma alanı.</em></h1><p class="pl-muted" style="max-width:440px;margin:0 0 18px">My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><div class="pl-row"><button class="pl-btn pl-btn--gradient pl-btn--lg" data-go="mymind">My Mind’i keşfet<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button><button class="pl-btn pl-btn--secondary pl-btn--lg" data-go="discover">Kataloğa göz at</button></div></div><div class="onb-art"><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
@@ -351,7 +487,7 @@ function render() {
       )
       .join(
         "",
-      )}</section><section class="card api-card"><div class="eyebrow">BİRBİRİYLE ÇALIŞAN ARAÇLAR</div><h3>Bir merkez.<br>Bağlantılı bir ekosistem.</h3><p>Uygulamalarınızı izinli yerel API ile bağlayın. Kaynakları paylaşın, ortak AI motorunu kullanın.</p><div class="api-stat"><div><strong>${installed}</strong>yüklü paket</div><div><strong>${state.providers.length}</strong>bağlı sağlayıcı</div><div><strong>${state.clients.length}</strong>API istemcisi</div></div><button class="btn ghost" data-go="api">API ve bağlantıları yönet ↗</button></section></div>${widgetsSection()}`;
+      )}</section><section class="card api-card"><div class="eyebrow">BİRBİRİYLE ÇALIŞAN ARAÇLAR</div><h3>Bir merkez.<br>Bağlantılı bir ekosistem.</h3><p>Uygulamalarınızı izinli yerel API ile bağlayın. Kaynakları paylaşın, ortak AI motorunu kullanın.</p><div class="api-stat"><div><strong>${installed}</strong>yüklü paket</div><div><strong>${state.providers.length}</strong>bağlı sağlayıcı</div><div><strong>${state.clients.length}</strong>API istemcisi</div></div><button class="pl-btn pl-btn--ghost" data-go="api">API ve bağlantıları yönet ↗</button></section></div>${widgetsSection()}`;
   }
   if (page === "apps") {
     const mine = catalog.filter((i) => state.installed[i.id]);
@@ -371,7 +507,7 @@ function render() {
       ["list", `${plIco('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>')}Liste`],
     ];
     const toolbar = all.length
-      ? `<div class="apps-toolbar">${plSegment("apps-kind", appsKind, kindOpts)}${plSegment("apps-view", appsView, viewOpts)}</div>`
+      ? filterBar(["all", ...kindsPresent], appsKind, "apps-kind", true)
       : "";
     let list;
     if (!all.length)
@@ -379,13 +515,13 @@ function render() {
     else if (!shown.length)
       list = `<div class="pl-empty"><div class="pl-empty__art">${plIco('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>')}</div><h3 class="pl-h3">Eşleşen uygulama yok</h3><p class="pl-muted" style="margin:0;max-width:340px">Aramayı veya türü değiştirin.</p></div>`;
     else if (appsView === "list")
-      list = `<div class="app-list">${shown.map(appRow).join("")}</div>`;
-    else list = grid(shown);
+      list = `<div class="app-list">${sortItems(shown).map(appRow).join("")}</div>`;
+    else list = grid(sortItems(shown));
     html =
       heading(
         "Uygulamalarım",
         "Bu merkez üzerinden yüklediğiniz uygulamaları ve eklentileri yönetin.",
-        `<div class="button-row"><button class="btn" data-go="ideas">Uygulama kataloğu · 50 ürün</button><button class="btn primary" data-go="discover">＋ Uygulama ekle</button></div>`,
+        `<div class="button-row"><button class="pl-btn pl-btn--secondary" data-go="ideas">Uygulama kataloğu · 50 ürün</button><button class="pl-btn pl-btn--primary" data-go="discover">＋ Uygulama ekle</button></div>`,
       ) +
       stats +
       toolbar +
@@ -403,8 +539,13 @@ function render() {
           : "Gerçek sürümler, doğrulanan paketler ve cihazınızda çalışan araçlar.",
         button("＋ Kaynak paketi yükle", "importPack"),
       ) +
-      `<div class="filters">${["all", ...(page === "resources" ? ["asset", "template", "library", "plugin"] : ["app", "model", "engine", "plugin"])].map((k) => `<button class="filter ${filter === k ? "active" : ""}" data-filter="${k}">${k === "all" ? "Tümü" : kindLabels[k]}</button>`).join("")}</div>` +
-      grid(list.filter((i) => filter === "all" || i.kind === filter));
+      filterBar(
+        ["all", ...(page === "resources" ? ["asset", "template", "library", "plugin"] : ["app", "model", "engine", "plugin"])],
+        filter,
+        "filter",
+        false,
+      ) +
+      grid(sortItems(list.filter((i) => filter === "all" || i.kind === filter)));
   }
   if (page === "ideas") html = ideasPage();
   if (page === "product") html = productPage();
@@ -424,10 +565,10 @@ function render() {
       statusCards(false) +
       `<div class="notice">My Mind Lite, Qwen3 0.6B açık modelini llama.cpp ile çalıştırır. İndirmeler internet gerektirir; metin analizi yerel sunucuda yapılır. İlk sürüm CPU kullanır.</div><div class="model-grid">${catalog
         .filter((i) => ["mymind-lite", "llama-engine"].includes(i.id))
-        .map(card)
+        .map((i) => card(i))
         .join(
           "",
-        )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="btn primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
+        )}</div>${customModelCard()}<div class="two-col"><section class="card"><h2>Yerel model sunucusu</h2><p style="margin:13px 0 20px">Motor: 127.0.0.1:8765<br>Uygulama API’si: 127.0.0.1:${state.api.port || 47632}/v1<br>Bağlam: 4096 token · Çıktı: en fazla 512 token</p>${state.model.error ? `<p class="error">${esc(state.model.error)}</p>` : ""}<div class="button-row">${state.model.running || state.model.starting ? button("Sunucuyu durdur", "stopModel", "", "danger") : ready ? button("▶ Sunucuyu başlat", "startModel", "", "primary") : '<span class="subtle">Başlatmak için model ve motoru yükleyip etkinleştirin.</span>'}</div><div class="notice">LM Studio ve mevcut PluginLabs AI paketleri bu sürümde doğrudan yönetilmiyor. Bu merkez kendi kurduğu motoru yönetir.</div></section><section class="card"><h2>Hızlı deneme</h2><p style="margin:10px 0 18px">Bir metin girin; My Mind yerel olarak yanıtlasın.</p><form id="chat-form"><label class="field"><span>Mesajınız</span><textarea name="prompt" maxlength="10000" required placeholder="Bu metni üç kısa maddede özetle…"></textarea></label><button class="pl-btn pl-btn--primary" ${!state.model.running || busy.has("chat") ? "disabled" : ""}>${busy.has("chat") ? "Yanıt hazırlanıyor…" : "My Mind’e gönder ↗"}</button></form>${chatResult ? `<div class="chat-output">${esc(chatResult)}</div>` : ""}</section></div>`;
   }
   if (page === "updates")
     html =
@@ -437,7 +578,23 @@ function render() {
         button("↻ Güncellemeleri denetle", "checkUpdates"),
       ) +
       (updateResults.length
-        ? `<section class="card">${updateResults.map((r) => `<div class="list-row">${icon(r.id)}<div class="grow"><h3>${esc(state.catalog.find((i) => i.id === r.id)?.name)}</h3><p>${r.error ? esc(r.error) : r.available ? `Yeni sürüm: ${esc(r.version)}${r.ready ? " · Doğrulanmış indirmeye hazır" : " · Doğrulanmış dosya özeti eksik"}` : `En son yayımlanan sürüm: ${esc(r.version)}`}</p></div>${r.ready ? button("Yükle", "install", r.id) : ""}</div>`).join("")}</section>`
+        ? `<div class="upd-list">${updateResults.map((r) => {
+            const it = state.catalog.find((i) => i.id === r.id),
+              cur = state.installed[r.id]?.version;
+            const badge = r.error
+              ? '<span class="pl-badge pl-badge--danger">Hata</span>'
+              : r.available
+                ? '<span class="pl-badge pl-badge--warning">Güncelleme</span>'
+                : '<span class="pl-badge pl-badge--success">Güncel</span>';
+            const msg = r.error
+              ? esc(r.error)
+              : r.available
+                ? r.ready
+                  ? "Doğrulanmış indirmeye hazır"
+                  : "Doğrulanmış dosya özeti eksik"
+                : "En son yayımlanan sürüm kurulu";
+            return `<div class="pl-card pl-stack" data-card="update"><div class="pl-row" style="flex-wrap:nowrap">${logoFor(r.id, it?.name)}<div style="flex:1;min-width:0"><b style="color:var(--pl-fg-1)">${esc(it?.name)}</b><div class="pl-num pl-muted">${cur ? esc(cur) + " → " : ""}<span style="color:var(--pl-fg-1)">${esc(r.version)}</span></div></div>${badge}</div><div class="pl-muted">${msg}</div>${r.ready ? `<div class="pl-row" style="justify-content:flex-end"><button class="pl-btn pl-btn--primary pl-btn--sm" data-action="install" data-id="${esc(r.id)}">${dlIco}${cur ? "Güncelle" : "Yükle"}</button></div>` : ""}</div>`;
+          }).join("")}</div>`
         : '<div class="empty"><span>↻</span>Henüz güncelleme denetimi yapılmadı.</div>') +
       `<div class="row-heading"><h2>İndirmeler</h2></div>` +
       jobsHTML();
@@ -448,7 +605,7 @@ function render() {
         "İndirmeler, paket değişiklikleri ve API onayları. Prompt içerikleri kaydedilmez.",
       ) +
       jobsHTML() +
-      `<section class="card" style="margin-top:20px">${state.activity.map((a) => `<div class="list-row"><span class="badge">◷</span><div class="grow"><p>${esc(a.message)}</p></div><span class="time">${date(a.time)}</span></div>`).join("")}</section>`;
+      `<section class="card" style="margin-top:20px">${state.activity.length ? `<ol class="pl-timeline">${state.activity.map((a) => `<li><span class="pl-timeline__dot ${/hata|başarısız|reddedildi|iptal/i.test(a.message) ? "is-danger" : /yüklendi|kuruldu|oluşturuldu|onaylandı|tamamlandı/i.test(a.message) ? "is-success" : "is-accent"}"></span><div class="pl-timeline__title">${esc(a.message)}</div><div class="pl-timeline__meta">${date(a.time)}</div></li>`).join("")}</ol>` : "<p>Henüz etkinlik yok.</p>"}</section>`;
   if (page === "api")
     html =
       heading(
@@ -456,7 +613,7 @@ function render() {
         "Her uygulama için ayrı anahtar, belirli izinler ve görünür işlemler.",
         button("＋ İstemci oluştur", "newClient", "", "primary"),
       ) +
-      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section><div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div><section class="card">${state.clients.length ? state.clients.map((c) => `<div class="list-row"><span class="avatar">${esc(c.name.slice(0, 2).toUpperCase())}</span><div class="grow"><h3>${esc(c.name)}</h3><p>${c.scopes.map(esc).join(" · ") || "İzin verilmedi"}</p></div>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</div>`).join("") : "<p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p>"}</section><div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
+      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
       heading(
@@ -465,33 +622,73 @@ function render() {
         `<span class="pl-badge pl-badge--accent">v${esc(state.version || "")}</span>`,
       ) + settingsHTML();
   content.innerHTML = html;
+  decorateButtons(content);
 }
 function jobsHTML() {
+  const label = { queued: "Sırada", downloading: "İndiriliyor", installing: "Kuruluyor", complete: "Tamamlandı", failed: "Başarısız", cancelled: "İptal edildi" };
+  const tone = { complete: "success", failed: "danger", cancelled: "", queued: "info", downloading: "info", installing: "info" };
   return state.jobs.length
-    ? `<section class="card">${state.jobs
+    ? `<div class="pl-stack job-list" style="gap:8px">${state.jobs
         .slice()
         .reverse()
-        .map(
-          (j) =>
-            `<div class="list-row"><div class="grow"><h3>${esc(j.name)}</h3><p>${{ queued: "Sırada", downloading: "İndiriliyor", installing: "Kuruluyor", complete: "Tamamlandı", failed: "Başarısız", cancelled: "İptal edildi" }[j.status]}${j.error ? " · " + esc(j.error) : ""}</p>${["downloading", "installing"].includes(j.status) ? `<div class="progress"><span style="width:${Math.min(100, (j.bytes / (j.total || 1)) * 100)}%"></span></div><span class="subtle">${bytes(j.bytes)} / ${bytes(j.total)}</span>` : ""}</div>${["queued", "downloading", "installing"].includes(j.status) ? button("İptal", "cancel", j.id) : '<span class="time">' + date(j.time) + "</span>"}</div>`,
-        )
-        .join("")}</section>`
+        .map((j) => {
+          const act = ["queued", "downloading", "installing"].includes(j.status);
+          const pct = Math.min(100, ((j.bytes || 0) / (j.total || 1)) * 100);
+          const right = act
+            ? `<button class="pl-btn pl-btn--secondary pl-btn--sm" data-action="cancel" data-id="${esc(j.id)}">İptal</button>`
+            : `<span class="time">${date(j.time)}</span>`;
+          return `<div class="pl-installrow" data-job="${esc(j.id)}">${logoFor(j.item || j.name, j.name)}<div class="pl-installrow__main"><div class="pl-installrow__top">${esc(j.name)}${["downloading", "installing"].includes(j.status) ? `<span class="pl-num pl-muted">${bytes(j.bytes)} / ${bytes(j.total)}</span>` : `<span class="pl-badge ${tone[j.status] ? "pl-badge--" + tone[j.status] : ""}">${label[j.status]}</span>`}</div>${["downloading", "installing"].includes(j.status) ? `<div class="pl-progress" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:${pct}%"></span></div>` : ""}${j.error ? `<div class="pl-muted" style="font-size:var(--pl-text-xs)">${esc(j.error)}</div>` : ""}</div>${right}</div>`;
+        })
+        .join("")}</div>`
     : '<div class="empty">Henüz bir indirme başlatılmadı.</div>';
+}
+function hudPanel() {
+  const pend = state.pending.filter((p) => p.status === "pending").length;
+  const m = (ic, v, l, tone = "") =>
+    `<div class="pl-hudmetric ${tone}"><span class="pl-hudmetric__ic">${plIco(ic)}</span><span class="pl-hudmetric__val">${v}</span><span class="pl-hudmetric__lbl">${l}</span></div>`;
+  return `<section class="hud-panel" data-pl-surface="hud" aria-label="Yerel API telemetrisi"><div class="hud-metrics">${m('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', state.clients.length, "İstemci")}${m('<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.5 15.4 7.5M8.6 13.5l6.8 3"/>', state.providers.length, "Sağlayıcı", "pl-hudmetric--cyan")}${m('<path d="M12 9v4M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>', pend, "Bekleyen onay", pend ? "pl-hudmetric--amber" : "")}</div></section>`;
+}
+function clientsTable() {
+  if (!state.clients.length)
+    return '<section class="card"><p>Henüz istemci yok. SDK kullanan uygulamanız için anahtar oluşturun.</p></section>';
+  return `<section class="hud-panel" data-pl-surface="hud"><table class="pl-hudtable"><thead><tr><th scope="col">İstemci</th><th scope="col">İzinler</th><th scope="col">Oluşturma</th><th scope="col">Durum</th><th scope="col"><span class="visually-hidden">İşlem</span></th></tr></thead><tbody>${state.clients
+    .map(
+      (c) =>
+        `<tr><td>${esc(c.name)}</td><td title="${esc(c.scopes.join(" · "))}">${c.scopes.length ? c.scopes.length + " izin" : "—"}</td><td>${date(c.createdAt)}</td><td><span class="pl-hudtag">Etkin</span></td><td>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</td></tr>`,
+    )
+    .join("")}</tbody></table></section>`;
 }
 function pendingHTML() {
   const pending = state.pending.filter((p) => p.status === "pending");
+  const gl =
+    '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
   return pending.length
-    ? `<section class="card">${pending.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.label)}</h3><p>${esc(p.clientName)} · ${date(p.createdAt)}</p></div>${button("Reddet", "reject", p.id, "ghost")}${button("Onayla", "approve", p.id, "primary")}</div>`).join("")}</section>`
+    ? `<div class="perm-list">${pending.map((p) => `<div class="pl-perm" data-card="permission"><div class="pl-row">${logoFor(p.clientName, p.clientName)}<b style="color:var(--pl-fg-1)">${esc(p.clientName)} şunu yapmak istiyor:</b></div><ul><li>${gl}${esc(p.label)}</li><li><span class="pl-muted pl-num">${date(p.createdAt)}</span></li></ul><div class="pl-row" style="justify-content:flex-end"><button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="reject" data-id="${esc(p.id)}">Reddet</button><button class="pl-btn pl-btn--primary pl-btn--sm" data-action="approve" data-id="${esc(p.id)}">İzin ver</button></div></div>`).join("")}</div>`
     : '<div class="empty">Bekleyen onay yok.</div>';
 }
 function navigate(next) {
   page = next;
   filter = "all";
   render();
-  content.scrollIntoView({ block: "start" });
+  window.scrollTo(0, 0);
+}
+function modalize(root) {
+  const kids = [...root.children];
+  const head = kids.find((k) => k.classList.contains("modal-title"));
+  const foot = kids.length && kids[kids.length - 1].classList.contains("modal-actions") ? kids[kids.length - 1] : null;
+  const rest = kids.filter((k) => k !== head && k !== foot);
+  if (head) head.classList.add("pl-modal__head");
+  if (foot) foot.classList.add("pl-modal__foot");
+  const body = document.createElement("div");
+  body.className = "pl-modal__body";
+  rest.forEach((k) => body.append(k));
+  if (foot) root.insertBefore(body, foot);
+  else root.append(body);
 }
 function showModal(body) {
   $("#modal-content").innerHTML = body;
+  modalize($("#modal-content"));
+  decorateButtons($("#modal-content"));
   modal.showModal();
 }
 function closeModal() {
@@ -511,7 +708,7 @@ function manage(id) {
     )
     .join("");
   showModal(
-    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="btn primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
+    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
   );
 }
 async function run(action, id, fn) {
@@ -531,8 +728,20 @@ async function run(action, id, fn) {
   }
 }
 document.addEventListener("click", async (e) => {
+  if (!e.target.closest(".app-split")) closeSplitMenus();
   const b = e.target.closest("button,[data-go]");
   if (!b || b.disabled) return;
+  if (b.dataset.splitToggle !== undefined) {
+    const m = b.parentElement.querySelector(".split-menu"),
+      was = !m.hidden;
+    closeSplitMenus();
+    if (!was) {
+      m.hidden = false;
+      b.setAttribute("aria-expanded", "true");
+    }
+    return;
+  }
+  if (b.closest(".split-menu")) closeSplitMenus();
   if (b.dataset.page) return navigate(b.dataset.page);
   if (b.dataset.go) return navigate(b.dataset.go);
   if (b.dataset.widgetEdit !== undefined) {
@@ -548,6 +757,10 @@ document.addEventListener("click", async (e) => {
   if (b.dataset.widgetReset !== undefined) {
     window.plWidgets.layout.reset();
     toast("Widget düzeni varsayılana döndü");
+    return render();
+  }
+  if (b.dataset.bannerClose !== undefined) {
+    bannerOff = true;
     return render();
   }
   if (b.dataset.appsKind) {
@@ -581,6 +794,14 @@ document.addEventListener("click", async (e) => {
   if (!action) return;
   if (action === "closeModal") return closeModal();
   if (action === "openPalette") return openPalette();
+  if (action === "info") {
+    const item = state.catalog.find((i) => i.id === id);
+    if (!item) return;
+    const rec = state.installed[id];
+    return showModal(
+      `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="pl-row" style="flex-wrap:nowrap;gap:14px;margin-bottom:14px">${icon(id)}<div style="min-width:0"><b style="color:var(--pl-fg-1)">${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec?.version || item.version)}</span></div></div>${rec ? '<span class="pl-badge pl-badge--success" style="margin-left:auto">Yüklü</span>' : ""}</div><p>${esc(item.description)}</p>${plKv([["Tür", esc(kindLabels[item.kind] || item.kind)], ["Sürüm", `<span class="pl-num">${esc(item.version)}</span>`], ["Boyut", `<span class="pl-num">${bytes(item.size)}</span>`], ["SHA-256", item.sha256 ? `<span class="pl-num" style="word-break:break-all;font-size:11px">${esc(item.sha256)}</span>` : "—"]])}<div class="modal-actions">${rec ? button("Ayarlar", "manage", id) : ""}${button("Kapat", "closeModal", "", "primary")}</div>`,
+    );
+  }
   if (action === "showShortcuts")
     return showModal(
       `<div class="modal-title"><h2>Klavye kısayolları</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><dl class="pl-kv"><dt>Komut paleti</dt><dd><span class="pl-kbd">Ctrl</span> <span class="pl-kbd">K</span></dd><dt>Aramaya git</dt><dd><span class="pl-kbd">/</span></dd><dt>Menüleri gezin</dt><dd><span class="pl-kbd">←</span> <span class="pl-kbd">→</span> <span class="pl-kbd">↓</span></dd><dt>Kapat</dt><dd><span class="pl-kbd">Esc</span></dd></dl><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
@@ -613,7 +834,7 @@ document.addEventListener("click", async (e) => {
         )
         .join(
           "",
-        )}</div><div class="modal-actions"><button class="btn primary">Anahtar oluştur</button></div></form>`,
+        )}</div><div class="modal-actions"><button class="pl-btn pl-btn--primary">Anahtar oluştur</button></div></form>`,
     );
     return;
   }
@@ -758,6 +979,19 @@ document.addEventListener("submit", async (e) => {
     }
   }
 });
+document.addEventListener("input", (e) => {
+  const el = e.target.closest?.("[data-filter-search]");
+  if (!el) return;
+  query = el.value;
+  const pos = el.selectionStart;
+  $("#search").value = query;
+  render();
+  const n = document.querySelector("[data-filter-search]");
+  if (n) {
+    n.focus();
+    n.setSelectionRange(pos, pos);
+  }
+});
 $("#search").addEventListener("input", (e) => {
   query = e.target.value;
   if (
@@ -805,9 +1039,9 @@ function statusCards(withStats) {
       ? button("Durdur", "stopModel", "", "danger")
       : modelReady()
         ? button("▶ Başlat", "startModel", "", "primary")
-        : `<button class="btn" data-go="mymind">Kur ↗</button>`;
+        : `<button class="pl-btn pl-btn--secondary" data-go="mymind">Kur ↗</button>`;
   const srv = `<div class="pl-card status-card sc-rich" data-card="server"><div class="pl-row" style="flex-wrap:nowrap;gap:14px"><span class="pl-avatar pl-avatar--accent">${plIco('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>')}</span><div class="sc-main"><b>My Mind sunucusu</b><div class="pl-muted pl-num">127.0.0.1:8765 · ${m.source === "custom" ? "özel model" : "katalog modeli"}</div></div><span class="pl-status ${srvState[0] ? "pl-status--" + srvState[0] : ""}">${srvState[1]}</span></div>${m.starting ? '<div class="pl-progress pl-progress--indeterminate pl-progress--sm" role="progressbar" aria-label="Sunucu başlatılıyor"><span></span></div>' : ""}${m.error ? `<div class="pl-callout pl-callout--danger sc-err" role="alert">${esc(m.error)}</div>` : ""}<div class="sc-foot"><div class="sc-chips"><span class="pl-badge ${modelReady() ? "pl-badge--success" : ""}">${modelReady() ? "Model hazır" : "Model yüklenmedi"}</span><span class="pl-badge">CPU</span></div>${srvAction}</div></div>`;
-  const con = `<div class="pl-card status-card sc-rich" data-card="connection"><div class="pl-row" style="flex-wrap:nowrap;gap:14px"><span class="pl-avatar pl-avatar--accent">${plIco('<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v7"/>')}</span><div class="sc-main"><b>Uygulama bağlantısı</b><div class="pl-muted pl-num">127.0.0.1:${api.port || 47632} · yalnızca bu bilgisayar</div></div><span class="pl-status pl-status--${apiState[0]}">${apiState[1]}</span></div><div class="sc-foot"><div class="sc-chips"><span class="pl-badge ${state.clients.length ? "pl-badge--info" : ""}">${state.clients.length} istemci</span><span class="pl-badge ${state.providers.length ? "pl-badge--info" : ""}">${state.providers.length} sağlayıcı</span></div><button class="btn" data-go="api">İzinler ↗</button></div></div>`;
+  const con = `<div class="pl-card status-card sc-rich" data-card="connection"><div class="pl-row" style="flex-wrap:nowrap;gap:14px"><span class="pl-avatar pl-avatar--accent">${plIco('<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v7"/>')}</span><div class="sc-main"><b>Uygulama bağlantısı</b><div class="pl-muted pl-num">127.0.0.1:${api.port || 47632} · yalnızca bu bilgisayar</div></div><span class="pl-status pl-status--${apiState[0]}">${apiState[1]}</span></div><div class="sc-foot"><div class="sc-chips"><span class="pl-badge ${state.clients.length ? "pl-badge--info" : ""}">${state.clients.length} istemci</span><span class="pl-badge ${state.providers.length ? "pl-badge--info" : ""}">${state.providers.length} sağlayıcı</span></div><button class="pl-btn pl-btn--secondary" data-go="api">İzinler ↗</button></div></div>`;
   let html = `<div class="status-row">${srv}${con}</div>`;
   if (withStats) {
     const jobs = state.jobs.filter((j) =>
@@ -922,6 +1156,11 @@ menubar.addEventListener("keydown", (e) => {
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".menubar")) closeMenus();
 });
+document.querySelector("aside").classList.add("pl-sidebar");
+document.querySelectorAll("nav [data-page]").forEach((b) => b.classList.add("pl-navitem"));
+document.querySelectorAll("nav .nav-label").forEach((b) => b.classList.add("pl-sidebar__section", "pl-label"));
+window.plWidgets.onChange = () => render();
+window.plWidgets.onError = (m) => toast(m);
 function syncPlTheme() {
   const m = document.documentElement.dataset.mode === "light" ? "light" : "dark";
   document.querySelectorAll("[data-pl]").forEach((e) => (e.dataset.plTheme = m));
@@ -1079,7 +1318,7 @@ function ideaCard(item) {
         j.item === id &&
         ["queued", "downloading", "installing"].includes(j.status),
     );
-  return `<article class="card idea-card"><div class="card-top"><span class="app-icon">${item.id.startsWith("PL-04") ? "⌘" : "◇"}</span><div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button("＋ Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
+  return `<article class="card idea-card"><div class="card-top">${logoFor(item.id, item.name)}<div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button(dlIco + "Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
 }
 function ideasPage() {
   let items = state.ideas.filter(
@@ -1089,33 +1328,31 @@ function ideasPage() {
         .toLocaleLowerCase("tr")
         .includes(query.toLocaleLowerCase("tr")),
   );
-  if (filter !== "all")
-    items = items.filter((i) =>
-      filter === "browser"
-        ? /Chrome|tarayıcı/i.test(i.fields.Platform)
-        : filter === "desktop"
-          ? /masaüstü|W \/ L \/ M|W\/L\/M/i.test(i.fields.Platform)
-          : /widget|balon/i.test(i.fields.Platform),
-    );
+  const base = items.slice();
+  const kindOf = (i, k) =>
+    k === "browser"
+      ? /Chrome|tarayıcı/i.test(i.fields.Platform)
+      : k === "desktop"
+        ? /masaüstü|W \/ L \/ M|W\/L\/M/i.test(i.fields.Platform)
+        : /widget|balon/i.test(i.fields.Platform);
+  if (filter !== "all") items = items.filter((i) => kindOf(i, filter));
   return (
     heading(
       "Uygulama kataloğu",
       "Uygulamaları keşfedin, ne işe yaradıklarını öğrenin ve çalışma alanınıza yükleyin.",
       `<span class="pill">${items.length} / 50 ÜRÜN</span>`,
     ) +
-    `<div class="filters">${[
-      ["all", "Tümü"],
-      ["browser", "Tarayıcı"],
-      ["desktop", "Masaüstü"],
-      ["widget", "Widget / balon"],
+    `<div class="ideas-layout"><nav class="pl-projnav ideas-nav" aria-label="Platform">${[
+      ["all", "Tümü", '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>', 1],
+      ["browser", "Tarayıcı", '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>', 2],
+      ["desktop", "Masaüstü", '<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>', 3],
+      ["widget", "Widget / balon", '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>', 5],
     ]
       .map(
-        ([id, label]) =>
-          `<button class="filter ${filter === id ? "active" : ""}" data-filter="${id}">${label}</button>`,
+        ([id, label, ic, c]) =>
+          `<button class="pl-projnav__item${filter === id ? " is-active" : ""}" data-filter="${id}" aria-pressed="${filter === id}"><span class="pl-projnav__ic" style="--c:var(--pl-viz-${c})">${plIco(ic)}</span>${label}<span class="pl-projnav__count">${id === "all" ? base.length : base.filter((i) => kindOf(i, id)).length}</span></button>`,
       )
-      .join(
-        "",
-      )}</div><div class="notice">50 ürünün tamamını yerel önizleme paketi olarak yükleyebilirsiniz. Her paket ürün kapsamı, kalıcı notlar, geliştirme listesi ve kendi ayarlarını içerir. Planlanan ana işlevlerin geliştirme durumu ürün içinde gösterilir.</div><div class="app-grid">${items.map(ideaCard).join("")}</div>`
+      .join("")}</nav><div class="ideas-main"><div class="notice">50 ürünün tamamını yerel önizleme paketi olarak yükleyebilirsiniz. Her paket ürün kapsamı, kalıcı notlar, geliştirme listesi ve kendi ayarlarını içerir. Planlanan ana işlevlerin geliştirme durumu ürün içinde gösterilir.</div><div class="app-grid ideas-grid">${items.map(ideaCard).join("")}</div></div></div>`
   );
 }
 async function showIdea(id) {
@@ -1132,11 +1369,22 @@ async function showIdea(id) {
         .map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`)
         .join(
           "",
-        )}</div><details><summary>Ayrıntılı ürün kapsamı</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="btn" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal", "", "primary")}</div>`,
+        )}</div><details><summary>Ayrıntılı ürün kapsamı</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="pl-btn pl-btn--secondary" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal", "", "primary")}</div>`,
     );
   } catch (e) {
     toast(e.message);
   }
+}
+const dotsIco =
+  '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>';
+function extRow(i, browser) {
+  const isBridge = i.id === browser.bridgeId,
+    nPerm = i.permissions.length + i.hostPermissions.length,
+    canToggle = browser.online && i.mayDisable && !isBridge;
+  const mi = (op, label, dis, cls = "") =>
+    `<button class="pl-menuitem ${cls}" role="menuitem" data-action="confirmBrowser" data-id="${esc(i.id)}" data-operation="${op}" ${dis ? "disabled" : ""}>${label}</button>`;
+  const more = `<div class="app-split ext-more"><button class="pl-iconbtn pl-iconbtn--sm" data-split-toggle aria-haspopup="menu" aria-expanded="false" aria-label="${esc(i.name)} seçenekleri">${dotsIco}</button><div class="pl-menu split-menu" role="menu" hidden>${mi("options", "Ayarlar", !browser.online)}${mi("uninstall", "Kaldır", !canToggle, "pl-menuitem--danger")}</div></div>`;
+  return `<div class="ext-item"><div class="pl-listrow ${i.enabled ? "" : "is-disabled"}">${logoFor(i.id, i.name)}<div class="pl-listrow__main"><h3 class="pl-listrow__title">${esc(i.name)}${isBridge ? ' <span class="pl-badge pl-badge--accent">Hub bağlantısı</span>' : ""}</h3><div class="pl-listrow__sub">${esc(browser.name)} · v${esc(i.version)} · ${nPerm} izin${i.enabled ? "" : " · devre dışı"}</div></div><label class="pl-switch"><input type="checkbox" role="switch" aria-label="${esc(i.name)}" ${i.enabled ? "checked" : ""} ${canToggle ? "" : "disabled"} data-ext-switch data-id="${esc(i.id)}" data-operation="${i.enabled ? "disable" : "enable"}"></label>${more}</div>${i.description ? `<p class="ext-desc pl-muted">${esc(i.description)}</p>` : ""}${isBridge ? '<p class="ext-desc pl-muted">Bağlantı eklentisini tarayıcınızdan yönetin.</p>' : ""}<details class="extension-permissions"><summary>İzinler ve eklenti kimliği</summary><div class="code">${esc(i.id)}<br>${[...i.permissions, ...i.hostPermissions].map(esc).join("<br>") || "Ek izin bildirilmedi"}</div></details></div>`;
 }
 function extensionsPage() {
   const mode = ["browser", "hub", "applications"].includes(filter)
@@ -1149,16 +1397,16 @@ function extensionsPage() {
       "Tarayıcı, PluginLabs ve uygulama eklentilerini aynı tasarım içinde yönetin.",
       `<div class="button-row">${button("Bağlantı eklentisini çıkar", "exportBrowserBridge")}${button("＋ Tarayıcı bağla", "pairBrowser", "", "primary")}</div>`,
     ) +
-    `<div class="filters">${[
+    `<nav class="pl-pillnav ext-pillnav" aria-label="Eklenti türleri">${[
       ["browser", "Chrome / Opera / Tarayıcılar"],
       ["hub", "PluginLabs eklentileri"],
       ["applications", "Diğer uygulamalar"],
     ]
       .map(
         ([id, label]) =>
-          `<button class="filter ${mode === id ? "active" : ""}" data-filter="${id}">${label}</button>`,
+          `<button class="${mode === id ? "is-active" : ""}" data-filter="${id}">${label}</button>`,
       )
-      .join("")}</div>`;
+      .join("")}</nav>`;
   if (mode === "hub")
     return (
       html +
@@ -1180,7 +1428,7 @@ function extensionsPage() {
             )
             .map(
               (i) =>
-                `<div class="list-row"><span class="app-icon">⌘</span><div class="grow"><h3>${esc(i.id)}</h3><p>v${esc(i.version)}</p></div><button class="btn" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="update">Güncelle</button><button class="btn danger" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="uninstall">Kaldır</button></div>`,
+                `<div class="list-row"><span class="pl-applogo" style="--pl-accent:var(--pl-viz-7)" aria-hidden="true">${logoInitials(i.id)}</span><div class="grow"><h3>${esc(i.id)}</h3><p>v${esc(i.version)}</p></div><button class="pl-btn pl-btn--secondary" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="update">Güncelle</button><button class="pl-btn pl-btn--danger" data-action="confirmAppExtension" data-id="${esc(i.id)}" data-operation="uninstall">Kaldır</button></div>`,
             )
             .join("")
         : '<div class="empty">Henüz uygulama eklenti envanteri yok.</div>'
@@ -1196,30 +1444,25 @@ function extensionsPage() {
   if (!data.browsers.some((b) => b.clientId === browserSelection))
     browserSelection = data.browsers[0].clientId;
   const browser = data.browsers.find((b) => b.clientId === browserSelection);
-  html += `<div class="browser-toolbar"><label class="field"><span>Bağlı tarayıcı / profil</span><select id="browser-selection">${data.browsers.map((b) => `<option value="${b.clientId}" ${b.clientId === browserSelection ? "selected" : ""}>${esc(b.name)} · ${b.online ? "Bağlı" : "Çevrimdışı"} · ${esc(b.clientId.slice(0, 6))}</option>`).join("")}</select></label><span class="badge ${browser.online ? "online" : ""}">${browser.online ? "● Bağlı" : "○ Çevrimdışı"} · ${browser.extensions.length} eklenti · ${date(browser.lastSeen)}</span></div>`;
+  html += `<div class="browser-toolbar"><label class="field"><span>Bağlı tarayıcı / profil</span><select class="pl-select" id="browser-selection">${data.browsers.map((b) => `<option value="${b.clientId}" ${b.clientId === browserSelection ? "selected" : ""}>${esc(b.name)} · ${b.online ? "Bağlı" : "Çevrimdışı"} · ${esc(b.clientId.slice(0, 6))}</option>`).join("")}</select></label><span class="badge ${browser.online ? "online" : ""}">${browser.online ? "● Bağlı" : "○ Çevrimdışı"} · ${browser.extensions.length} eklenti · ${date(browser.lastSeen)}</span></div>`;
   const pending = data.commands
     .filter((c) => c.clientId === browserSelection)
     .slice(-5);
   if (pending.length)
     html += `<section class="card extension-jobs">${pending.map((c) => `<div class="list-row"><div class="grow"><h3>${esc(c.extensionName)} · ${esc({ enable: "Etkinleştir", disable: "Devre dışı bırak", uninstall: "Kaldır", options: "Ayarlar" }[c.action])}</h3><p>${esc({ pending: "Bağlantı eklentisine gönderiliyor", "awaiting-confirmation": "Tarayıcıdaki PluginLabs panelinde onayınızı bekliyor", complete: "Tamamlandı", failed: "Başarısız", expired: "Süresi doldu" }[c.status])}${c.error ? " · " + esc(c.error) : ""}</p></div></div>`).join("")}</section>`;
-  html += `<div class="app-grid">${browser.extensions
-    .filter(
+  html += `<div class="pl-card ext-list">${browser.extensions.filter(
       (i) =>
         !query ||
         `${i.name} ${i.id}`
           .toLocaleLowerCase("tr")
           .includes(query.toLocaleLowerCase("tr")),
     )
-    .map(
-      (i) =>
-        `<article class="card"><div class="card-top"><span class="app-icon">◇</span><div><h3>${esc(i.name)}</h3><small>${esc(browser.name)} · v${esc(i.version)}</small></div></div><p>${esc(i.description)}</p><span class="badge ${i.enabled ? "online" : ""}">${i.enabled ? "● Etkin" : "○ Devre dışı"}${i.id === browser.bridgeId ? " · Hub bağlantısı" : ""}</span><details class="extension-permissions"><summary>İzinler ve eklenti kimliği</summary><div class="code">${esc(i.id)}<br>${[...i.permissions, ...i.hostPermissions].map(esc).join("<br>") || "Ek izin bildirilmedi"}</div></details><div class="button-row">${i.id === browser.bridgeId ? '<span class="subtle">Bağlantı eklentisini tarayıcınızdan yönetin.</span>' : `<button class="btn" data-action="confirmBrowser" data-id="${i.id}" data-operation="${i.enabled ? "disable" : "enable"}" ${!browser.online || !i.mayDisable ? "disabled" : ""}>${i.enabled ? "Devre dışı bırak" : "Etkinleştir"}</button><button class="btn ghost" data-action="confirmBrowser" data-id="${i.id}" data-operation="options" ${!browser.online ? "disabled" : ""}>Ayarlar</button><button class="btn danger" data-action="confirmBrowser" data-id="${i.id}" data-operation="uninstall" ${!browser.online || !i.mayDisable ? "disabled" : ""}>Kaldır</button>`}</div></article>`,
-    )
-    .join("")}</div>`;
+    .map((i) => extRow(i, browser)).join("")}</div>`;
   return html;
 }
 function pairBrowser() {
   showModal(
-    `<div class="modal-title"><h2>Tarayıcı bağlantısı</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Önce bağlantı eklentisini tarayıcınıza yükleyin. Açılan paneldeki 32 harfli eklenti kimliğini aşağıya girin. Her profil için ayrı bağlantı oluşturun.</p><form id="browser-form"><label class="field"><span>Tarayıcı</span><select name="browser">${["Chrome", "Opera", "Edge", "Brave", "Chromium"].map((n) => `<option>${n}</option>`).join("")}</select></label><label class="field"><span>PluginLabs Browser Bridge eklenti kimliği</span><input class="text" name="extensionId" pattern="[a-p]{32}" minlength="32" maxlength="32" required placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></label><div class="modal-actions"><button class="btn primary">Bağlantı anahtarı oluştur</button></div></form>`,
+    `<div class="modal-title"><h2>Tarayıcı bağlantısı</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Önce bağlantı eklentisini tarayıcınıza yükleyin. Açılan paneldeki 32 harfli eklenti kimliğini aşağıya girin. Her profil için ayrı bağlantı oluşturun.</p><form id="browser-form"><label class="field"><span>Tarayıcı</span><select name="browser">${["Chrome", "Opera", "Edge", "Brave", "Chromium"].map((n) => `<option>${n}</option>`).join("")}</select></label><label class="field"><span>PluginLabs Browser Bridge eklenti kimliği</span><input class="text" name="extensionId" pattern="[a-p]{32}" minlength="32" maxlength="32" required placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></label><div class="modal-actions"><button class="pl-btn pl-btn--primary">Bağlantı anahtarı oluştur</button></div></form>`,
   );
 }
 function confirmBrowser(id, operation) {
@@ -1229,17 +1472,17 @@ function confirmBrowser(id, operation) {
     i = b?.extensions.find((i) => i.id === id);
   if (!i) return;
   showModal(
-    `<div class="modal-title"><h2>${esc(i.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(b.name)} için “${esc({ enable: "Etkinleştir", disable: "Devre dışı bırak", uninstall: "Kaldır", options: "Ayarları aç" }[operation])}” isteği gönderilecek. Tarayıcıdaki PluginLabs panelinden onaylayın. Kaldırma, eklentinin kendi verilerini de silebilir.</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="btn ${operation === "uninstall" ? "danger" : "primary"}" data-action="browserAction" data-id="${id}" data-operation="${esc(operation)}">İsteği gönder</button></div>`,
+    `<div class="modal-title"><h2>${esc(i.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(b.name)} için “${esc({ enable: "Etkinleştir", disable: "Devre dışı bırak", uninstall: "Kaldır", options: "Ayarları aç" }[operation])}” isteği gönderilecek. Tarayıcıdaki PluginLabs panelinden onaylayın. Kaldırma, eklentinin kendi verilerini de silebilir.</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="browserAction" data-id="${id}" data-operation="${esc(operation)}">İsteği gönder</button></div>`,
   );
 }
 function confirmAppExtension(id, operation) {
   showModal(
-    `<div class="modal-title"><h2>Uygulama eklentisi</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(id)}: ${operation === "uninstall" ? "Eklenti uygulamanın kendi yöneticisiyle kaldırılacak." : "Uygulamanın eklenti kaynağındaki güncel sürüm kurulacak."}</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="btn ${operation === "uninstall" ? "danger" : "primary"}" data-action="appExtensionAction" data-id="${esc(id)}" data-operation="${esc(operation)}">${operation === "uninstall" ? "Kaldır" : "Güncelle"}</button></div>`,
+    `<div class="modal-title"><h2>Uygulama eklentisi</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(id)}: ${operation === "uninstall" ? "Eklenti uygulamanın kendi yöneticisiyle kaldırılacak." : "Uygulamanın eklenti kaynağındaki güncel sürüm kurulacak."}</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="appExtensionAction" data-id="${esc(id)}" data-operation="${esc(operation)}">${operation === "uninstall" ? "Kaldır" : "Güncelle"}</button></div>`,
   );
 }
 function installAppExtension() {
   showModal(
-    `<div class="modal-title"><h2>Uygulama eklentisi kur</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Uygulamanın eklenti kaynağından paket indirip kurar. Yayımcıyı ve paketi doğrulayın.</p><form id="app-extension-form"><label class="field"><span>Eklenti kimliği</span><input class="text" name="extension" required pattern="[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+" placeholder="yayimci.eklenti"></label><div class="modal-actions"><button class="btn primary">İndir ve kur</button></div></form>`,
+    `<div class="modal-title"><h2>Uygulama eklentisi kur</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Uygulamanın eklenti kaynağından paket indirip kurar. Yayımcıyı ve paketi doğrulayın.</p><form id="app-extension-form"><label class="field"><span>Eklenti kimliği</span><input class="text" name="extension" required pattern="[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+" placeholder="yayimci.eklenti"></label><div class="modal-actions"><button class="pl-btn pl-btn--primary">İndir ve kur</button></div></form>`,
   );
 }
 document.addEventListener("change", (e) => {
@@ -1248,6 +1491,25 @@ document.addEventListener("change", (e) => {
     window.plTheme.set({ [choice.name]: choice.value });
     render();
     document.querySelector(`.choice input[name="${choice.name}"]:checked`)?.focus();
+    return;
+  }
+  const so = e.target.closest?.("[data-sort]");
+  if (so) {
+    sortMode = so.value;
+    render();
+    return;
+  }
+  const xs = e.target.closest?.("[data-ext-switch]");
+  if (xs) {
+    xs.checked = !xs.checked;
+    const t = document.createElement("button");
+    t.hidden = true;
+    t.dataset.action = "confirmBrowser";
+    t.dataset.id = xs.dataset.id;
+    t.dataset.operation = xs.dataset.operation;
+    document.body.append(t);
+    t.click();
+    t.remove();
     return;
   }
   const wt = e.target.closest?.("[data-widget-toggle]");
@@ -1350,7 +1612,7 @@ function productPage() {
             )
             .join("")}`
         : ""
-    }<button class="btn primary">Notları ve listeyi kaydet</button><p class="subtle" style="margin-top:12px">${workspace.updatedAt ? "Son kayıt: " + date(workspace.updatedAt) : "Notlarınız bu cihazda saklanır."}</p></form></section></div>`
+    }<button class="pl-btn pl-btn--primary">Notları ve listeyi kaydet</button><p class="subtle" style="margin-top:12px">${workspace.updatedAt ? "Son kayıt: " + date(workspace.updatedAt) : "Notlarınız bu cihazda saklanır."}</p></form></section></div>`
   );
 }
 document.addEventListener("submit", async (e) => {
