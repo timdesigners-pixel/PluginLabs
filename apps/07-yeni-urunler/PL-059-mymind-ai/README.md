@@ -1,10 +1,10 @@
-# PL-055 · MyMind AI
+# PL-059 · MyMind AI
 
 > PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.
 
 | Alan | Değer |
 | --- | --- |
-| Kimlik | `PL-055` · `mymind-ai` |
+| Kimlik | `PL-059` · `mymind-ai` (03.11.2026’ya kadar yanlışlıkla `PL-055`; PL-055 Gardrop’undur) |
 | Kategori | 07 · Yeni ürünler — PL-054+ |
 | Durum | v0.1.0 · Windows uygulaması (Rust + Tauri 2) + Chrome MV3 eklentisi |
 | Hedef platformlar | Windows, Chrome |
@@ -45,7 +45,7 @@ Sağlayıcı seç (Hub anahtarı Windows kasasında; LM Studio/Ollama yalnız lo
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
-- Dal adı: `codex/PL-055-<konu>` veya `claude/PL-055-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
+- Dal adı: `codex/PL-059-<konu>` veya `claude/PL-059-<konu>` (eski `…/PL-055-…` dalları adlarıyla korunur); iki ajan aynı dalda aynı anda çalışmaz.
 - İşe başlamadan önce [AKTIF-ISLER.md](../../../docs/ortak-calisma/AKTIF-ISLER.md) tablosuna satır eklenir; iş bitince devir notu yazılır.
 - Kurallar: [AGENTS.md](../../../AGENTS.md) (her iki ajan için ortak), protokol: [AI-ORTAK-CALISMA.md](../../../docs/ortak-calisma/AI-ORTAK-CALISMA.md).
 

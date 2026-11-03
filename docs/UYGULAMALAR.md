@@ -47,7 +47,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
 - Sıradaki (Windows sürümü yok): PL-015–024 (yalnız plan), PL-025–050 (fikir; depo yok).
 
-## Tüm liste (PL-001 … PL-055)
+## Tüm liste (PL-001 … PL-059)
 
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
@@ -104,6 +104,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-051 | Extension Manager / Eklenti Yöneticisi | Windows uygulaması + Chrome eklentisi · **v1.1.0** (kurulum + taşınabilir exe + Chrome zip, SHA256, BUILD-INFO; imzasız önizleme) | https://github.com/timdesigners-pixel/extension-manager/releases/tag/v1.1.0 |
 | PL-052 | Tweakster | Windows uygulaması · **v0.1.0** (kurulum + taşınabilir exe, SHA256, BUILD-INFO, Windows ekran görüntüleri; imzasız önizleme) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.4.1** (GitHub release; Hub kataloğunda) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
-| PL-055 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.0 |
+| PL-055 | Gardrop | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (dijital gardırop, kombin, “Bugün ne giysem?”) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.1.0 |
 | PL-054 | MyWishlist | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (istek listeleri, fiyat takibi, çok sitede arama ve karşılaştırma, MyMind ile ekleme, görselden tanıma; imzasız önizleme) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
 | PL-058 | Kurgu Atölyesi | Arayüz prototipi (PluginLabs Advanced, PLA-095); masaüstü kabuğu, depo ve yayın yok | — |
+| PL-059 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.0 |

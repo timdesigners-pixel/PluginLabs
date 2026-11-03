@@ -2312,6 +2312,41 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": null
+    },
+    {
+      "id": "PL-059",
+      "number": 59,
+      "slug": "mymind-ai",
+      "name": "MyMind AI",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 · Windows masaüstü (Rust + Tauri 2) + Chrome eklentisi (MV3)",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": true,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust) + Chrome eklentisi",
+      "formFactors": [
+        "masaüstü uygulaması",
+        "Chrome eklentisi (Manifest V3)"
+      ],
+      "summary": "PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.",
+      "repo": "timdesigners-pixel/mymind-ai",
+      "appPath": "apps/07-yeni-urunler/PL-059-mymind-ai",
+      "codexProject": {
+        "name": "PL-059 · MyMind AI",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }
