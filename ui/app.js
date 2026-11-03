@@ -117,10 +117,13 @@ function decorateButtons(root) {
 }
 const plBtnClass = (style = "") =>
   "pl-btn " +
-  ({ primary: "pl-btn--primary", danger: "pl-btn--danger", ghost: "pl-btn--ghost" }[style] ||
+  ({ primary: "pl-btn--primary", danger: "pl-btn--danger", ghost: "pl-btn--ghost", gradient: "pl-btn--gradient" }[style] ||
     "pl-btn--secondary");
-const button = (text, action, id = "", style = "") =>
-  `<button class="${plBtnClass(style)}" data-action="${action}" data-id="${esc(id)}" ${busy.has(action + id) ? "disabled" : ""}>${busy.has(action + id) ? "İşleniyor…" : text}</button>`;
+// Meşgul düğme PLC-001 yükleme durumuna geçer: etiket genişliği korunur, yerine döner simge çıkar.
+const button = (text, action, id = "", style = "") => {
+  const isBusy = busy.has(action + id);
+  return `<button class="${plBtnClass(style)}${isBusy ? " is-loading" : ""}" data-action="${action}" data-id="${esc(id)}" ${isBusy ? 'disabled aria-busy="true"' : ""}>${text}</button>`;
+};
 const logoMap = {
   "mind-palace": ["mindpalace", "MP"],
   "leo-helper": ["leo", "LH"],
@@ -210,7 +213,7 @@ function appRow(item) {
         ? '<span class="pl-status pl-status--online">Etkin</span>'
         : '<span class="pl-status">Devre dışı</span>';
   const primary = job
-    ? button("İptal", "cancel", job.id)
+    ? button("İptal", "cancel", job.id, "ghost")
     : different
       ? button("Güncelle", "install", item.id, "primary")
       : item.kind === "app"
@@ -225,7 +228,7 @@ const dlIco =
 const chevIco =
   '<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 function actionHTML(item, installed, job, different) {
-  if (job) return button("İptal", "cancel", job.id);
+  if (job) return button("İptal", "cancel", job.id, "ghost");
   const b = (action, label, ic = "") =>
     `<button class="pl-btn pl-btn--primary pl-btn--sm" data-action="${action}" data-id="${esc(item.id)}" ${busy.has(action + item.id) ? "disabled" : ""}>${ic}${label}</button>`;
   const main = !installed
@@ -481,11 +484,11 @@ function render() {
   let html = "";
   if (page === "home") {
     const installed = Object.keys(state.installed).length;
-    html = `${greetHTML()}${modelBanner()}${statusCards(true)}<section class="pl-hero onb-hero"><div class="onb-copy"><span class="pl-badge pl-badge--accent">PluginLabs Hub · ${esc(state.version || "")}</span><h1 class="pl-hero__title">Küçük model.<br><em>Büyük bir çalışma alanı.</em></h1><p class="pl-muted" style="max-width:440px;margin:0 0 18px">My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><div class="pl-row"><button class="pl-btn pl-btn--gradient pl-btn--lg" data-go="mymind">My Mind’i keşfet<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button><button class="pl-btn pl-btn--secondary pl-btn--lg" data-go="discover">Kataloğa göz at</button></div></div><div class="onb-art"><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="text-button" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="text-button" data-go="resources">Tümünü gör ↗</button></div>${resources
+    html = `${greetHTML()}${modelBanner()}${statusCards(true)}<section class="pl-hero onb-hero"><div class="onb-copy"><span class="pl-badge pl-badge--accent">PluginLabs Hub · ${esc(state.version || "")}</span><h1 class="pl-hero__title">Küçük model.<br><em>Büyük bir çalışma alanı.</em></h1><p class="pl-muted" style="max-width:440px;margin:0 0 18px">My Mind’i cihazınıza yükleyin. Metinleri özetleyin, fikirlerinizi düzenleyin ve uygulamalarınıza yerel AI ekleyin.</p><div class="pl-row"><button class="pl-btn pl-btn--gradient pl-btn--lg" data-go="mymind">My Mind’i keşfet<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button><button class="pl-btn pl-btn--secondary pl-btn--lg" data-go="discover">Kataloğa göz at</button></div></div><div class="onb-art"><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><span class="ai-symbol">✳</span><span class="float-chip top">ON-DEVICE INTELLIGENCE</span><span class="float-chip">● Yerel sunucu · Kontrol sizde</span></div></div></section><div class="row-heading"><h2>Çalışma alanınız için</h2><button class="pl-btn pl-btn--ghost pl-btn--sm" data-go="discover">Tüm uygulamalar ↗</button></div>${grid([...apps, ...catalog.filter((i) => i.id === "mymind-lite")], true)}<div class="section-split"><section class="card"><div class="row-heading" style="margin-top:0"><h2>Kaynak kütüphanesi</h2><button class="pl-btn pl-btn--ghost pl-btn--sm" data-go="resources">Tümünü gör ↗</button></div>${resources
       .slice(0, 3)
       .map(
         (i) =>
-          `<div class="resource-mini">${icon(i.id)}<div><h3>${esc(i.name)}</h3><p>${kindLabels[i.kind]} · ${state.installed[i.id] ? "Yüklü" : "Kataloğa dahil"}</p></div><button class="text-button" data-action="${state.installed[i.id] ? "manage" : "install"}" data-id="${i.id}">${state.installed[i.id] ? "Yönet" : "＋"}</button></div>`,
+          `<div class="resource-mini">${icon(i.id)}<div><h3>${esc(i.name)}</h3><p>${kindLabels[i.kind]} · ${state.installed[i.id] ? "Yüklü" : "Kataloğa dahil"}</p></div><button class="pl-btn pl-btn--secondary pl-btn--sm" data-action="${state.installed[i.id] ? "manage" : "install"}" data-id="${i.id}">${state.installed[i.id] ? "Yönet" : "＋ Ekle"}</button></div>`,
       )
       .join(
         "",
@@ -637,7 +640,7 @@ function jobsHTML() {
           const act = ["queued", "downloading", "installing"].includes(j.status);
           const pct = Math.min(100, ((j.bytes || 0) / (j.total || 1)) * 100);
           const right = act
-            ? `<button class="pl-btn pl-btn--secondary pl-btn--sm" data-action="cancel" data-id="${esc(j.id)}">İptal</button>`
+            ? `<button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="cancel" data-id="${esc(j.id)}">İptal</button>`
             : `<span class="time">${date(j.time)}</span>`;
           return `<div class="pl-installrow" data-job="${esc(j.id)}">${logoFor(j.item || j.name, j.name)}<div class="pl-installrow__main"><div class="pl-installrow__top">${esc(j.name)}${["downloading", "installing"].includes(j.status) ? `<span class="pl-num pl-muted">${bytes(j.bytes)} / ${bytes(j.total)}</span>` : `<span class="pl-badge ${tone[j.status] ? "pl-badge--" + tone[j.status] : ""}">${label[j.status]}</span>`}</div>${["downloading", "installing"].includes(j.status) ? `<div class="pl-progress" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><span style="--pl-val:${pct}%"></span></div>` : ""}${j.error ? `<div class="pl-muted" style="font-size:var(--pl-text-xs)">${esc(j.error)}</div>` : ""}</div>${right}</div>`;
         })
@@ -824,7 +827,7 @@ document.addEventListener("click", async (e) => {
     if (!item) return;
     const rec = state.installed[id];
     return showModal(
-      `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="pl-row" style="flex-wrap:nowrap;gap:14px;margin-bottom:14px">${icon(id)}<div style="min-width:0"><b style="color:var(--pl-fg-1)">${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec?.version || item.version)}</span></div></div>${rec ? '<span class="pl-badge pl-badge--success" style="margin-left:auto">Yüklü</span>' : ""}</div><p>${esc(item.description)}</p>${plKv([["Tür", esc(kindLabels[item.kind] || item.kind)], ["Sürüm", `<span class="pl-num">${esc(item.version)}</span>`], ["Boyut", `<span class="pl-num">${bytes(item.size)}</span>`], ["SHA-256", item.sha256 ? `<span class="pl-num" style="word-break:break-all;font-size:11px">${esc(item.sha256)}</span>` : "—"]])}<div class="modal-actions">${rec ? button("Ayarlar", "manage", id) : ""}${button("Kapat", "closeModal", "", "primary")}</div>`,
+      `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><div class="pl-row" style="flex-wrap:nowrap;gap:14px;margin-bottom:14px">${icon(id)}<div style="min-width:0"><b style="color:var(--pl-fg-1)">${esc(item.name)}</b><div class="pl-muted">${esc(kindLabels[item.kind] || item.kind)} · <span class="pl-num">v${esc(rec?.version || item.version)}</span></div></div>${rec ? '<span class="pl-badge pl-badge--success" style="margin-left:auto">Yüklü</span>' : ""}</div><p>${esc(item.description)}</p>${plKv([["Tür", esc(kindLabels[item.kind] || item.kind)], ["Sürüm", `<span class="pl-num">${esc(item.version)}</span>`], ["Boyut", `<span class="pl-num">${bytes(item.size)}</span>`], ["SHA-256", item.sha256 ? `<span class="pl-num" style="word-break:break-all;font-size:11px">${esc(item.sha256)}</span>` : "—"]])}<div class="modal-actions">${rec ? button("Ayarlar", "manage", id) : ""}${button("Kapat", "closeModal")}</div>`,
     );
   }
   if (action === "showShortcuts")
@@ -865,7 +868,7 @@ document.addEventListener("click", async (e) => {
   }
   if (action === "confirmRemove") {
     showModal(
-      `<div class="modal-title"><h2>Paketi kaldır</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(state.installed[id].name)} ve merkezdeki paket ayarları kaldırılacak. Uygulamanın kendi kullanıcı verileri korunur.</p><div class="modal-actions">${button("Vazgeç", "closeModal")}${button("Kaldır", "remove", id, "danger")}</div>`,
+      `<div class="modal-title"><h2>Paketi kaldır</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(state.installed[id].name)} ve merkezdeki paket ayarları kaldırılacak. Uygulamanın kendi kullanıcı verileri korunur.</p><div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}${button("Kaldır", "remove", id, "danger")}</div>`,
     );
     return;
   }
@@ -1345,7 +1348,7 @@ function ideaCard(item) {
         j.item === id &&
         ["queued", "downloading", "installing"].includes(j.status),
     );
-  return `<article class="card idea-card"><div class="card-top">${logoFor(item.id, item.name)}<div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? button("Yükleniyor…", "cancel", job.id) : installed ? button("Aç ↗", "openProduct", id, "primary") : button(dlIco + "Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
+  return `<article class="card idea-card"><div class="card-top">${logoFor(item.id, item.name)}<div><h3>${esc(item.name)}</h3><small>${esc(item.id)} · v0.2.0</small></div></div><p>${esc(item.description)}</p><div class="idea-platform">${esc(item.fields.Platform)}</div><div class="card-bottom"><span class="badge ${installed ? "online" : ""}">${installed ? "● Yüklü · Önizleme" : "Kurulabilir önizleme"}</span>${job ? `<button class="pl-btn pl-btn--secondary" data-action="cancel" data-id="${esc(job.id)}" title="Yüklemeyi iptal et"><span class="pl-spinner pl-spinner--btn" aria-hidden="true"></span>Yükleniyor…</button>` : installed ? button("Aç ↗", "openProduct", id, "primary") : button(dlIco + "Yükle", "install", id, "primary")}</div><div class="detail-actions">${button("Kapsamı gör", "idea", item.id)}${installed ? button("Paket ayarları", "manage", id) : ""}</div></article>`;
 }
 function ideasPage() {
   let items = state.ideas.filter(
@@ -1396,7 +1399,7 @@ async function showIdea(id) {
         .map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`)
         .join(
           "",
-        )}</div><details><summary>Ayrıntılı ürün kapsamı</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="pl-btn pl-btn--secondary" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal", "", "primary")}</div>`,
+        )}</div><details><summary>Ayrıntılı ürün kapsamı</summary><pre class="spec-text">${esc(plain)}</pre></details><div class="code">Kaynak: ${esc(i.source)}</div><div class="modal-actions"><button class="pl-btn pl-btn--secondary" data-action="copyIdeaSource" data-id="${i.id}">Kaynak bağlantısını kopyala</button>${button("Kapat", "closeModal")}</div>`,
     );
   } catch (e) {
     toast(e.message);
@@ -1499,12 +1502,12 @@ function confirmBrowser(id, operation) {
     i = b?.extensions.find((i) => i.id === id);
   if (!i) return;
   showModal(
-    `<div class="modal-title"><h2>${esc(i.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(b.name)} için “${esc({ enable: "Etkinleştir", disable: "Devre dışı bırak", uninstall: "Kaldır", options: "Ayarları aç" }[operation])}” isteği gönderilecek. Tarayıcıdaki PluginLabs panelinden onaylayın. Kaldırma, eklentinin kendi verilerini de silebilir.</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="browserAction" data-id="${id}" data-operation="${esc(operation)}">İsteği gönder</button></div>`,
+    `<div class="modal-title"><h2>${esc(i.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(b.name)} için “${esc({ enable: "Etkinleştir", disable: "Devre dışı bırak", uninstall: "Kaldır", options: "Ayarları aç" }[operation])}” isteği gönderilecek. Tarayıcıdaki PluginLabs panelinden onaylayın. Kaldırma, eklentinin kendi verilerini de silebilir.</p><div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="browserAction" data-id="${id}" data-operation="${esc(operation)}">İsteği gönder</button></div>`,
   );
 }
 function confirmAppExtension(id, operation) {
   showModal(
-    `<div class="modal-title"><h2>Uygulama eklentisi</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(id)}: ${operation === "uninstall" ? "Eklenti uygulamanın kendi yöneticisiyle kaldırılacak." : "Uygulamanın eklenti kaynağındaki güncel sürüm kurulacak."}</p><div class="modal-actions">${button("Vazgeç", "closeModal")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="appExtensionAction" data-id="${esc(id)}" data-operation="${esc(operation)}">${operation === "uninstall" ? "Kaldır" : "Güncelle"}</button></div>`,
+    `<div class="modal-title"><h2>Uygulama eklentisi</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(id)}: ${operation === "uninstall" ? "Eklenti uygulamanın kendi yöneticisiyle kaldırılacak." : "Uygulamanın eklenti kaynağındaki güncel sürüm kurulacak."}</p><div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}<button class="pl-btn ${operation === "uninstall" ? "pl-btn--danger" : "pl-btn--primary"}" data-action="appExtensionAction" data-id="${esc(id)}" data-operation="${esc(operation)}">${operation === "uninstall" ? "Kaldır" : "Güncelle"}</button></div>`,
   );
 }
 function installAppExtension() {
