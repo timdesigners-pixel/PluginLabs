@@ -2278,6 +2278,40 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": "https://app.notion.com/p/40b8aa13d8f981d7b221f34a525ed045"
+    },
+    {
+      "id": "PL-058",
+      "number": 58,
+      "slug": "kurgu-atolyesi",
+      "name": "Kurgu Atölyesi",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "Arayüz prototipi (03.11.2026) · PluginLabs Advanced, PLA-095 tabanlı; masaüstü kabuğu, kurgu motoru ve yayın yok",
+      "priority": "P1",
+      "effort": "L",
+      "platforms": {
+        "windows": true,
+        "linux": true,
+        "macos": true,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "W / L / M masaüstü (hedef)",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Proje videolarını tek ekranda kurgulayan video düzenleyici: önizleme, metin/efekt/video/ses izli zaman çizelgesi, renk düzeltme, ortak çalışma imleçleri ve MyMind ile metin, görsel, avatar üretimi.",
+      "repo": null,
+      "appPath": "apps/07-yeni-urunler/PL-058-kurgu-atolyesi",
+      "codexProject": {
+        "name": "PL-058 · Kurgu Atölyesi",
+        "primaryFolder": "ürün klasörü (yerel)",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }
