@@ -20,6 +20,10 @@ Genel bakışın girişinde durum ve istatistik kartları yer alır, özgün dü
 
 ![Akış panosu widget'ları, örnek veri (0.4.14, Linux/Xvfb)](docs/screenshots/akis-panosu.png)
 
+Günün kombini ve Günün menüsü widget'ları uygulamayla gelen örnek görselleri gösterir (Gemini ile üretildi); kendi fotoğrafınızı ekleyebilirsiniz.
+
+![Günün kombini ve Günün menüsü örnek görselleri (0.4.18, Windows 11, yerel Electron)](docs/screenshots/widget-gorselleri.png)
+
 Çalışma alanınız için: yalnızca logo, ad, boyut ve bölünmüş “Yükle” düğmesi (▾ menüsünde Detaylı bilgi).
 
 ![Çalışma alanınız için kartları ve bölünmüş düğme menüsü (0.4.15, Linux/Xvfb)](docs/screenshots/calisma-alani-kartlari.png)

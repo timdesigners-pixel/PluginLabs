@@ -43,7 +43,9 @@
   const camIco = ico('<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/>');
   const pickBtn = (k, label, cls = "") =>
     `<button class="wdg-pick ${cls}" data-photo-pick="${k}" aria-label="${label}" title="${label}">${camIco}</button>`;
-  // Örnek çizimler: gerçek fotoğraf değildir; kullanıcı kendi fotoğrafını ekleyince yerini ona bırakır.
+  // Örnek görseller (Gemini ile üretildi, ui/img/): gerçek kullanıcı fotoğrafı değildir; kullanıcı kendi fotoğrafını ekleyince yerini ona bırakır.
+  const SAMPLE = (file, alt) => `<img src="img/${file}.webp" alt="${alt}" decoding="async" />`;
+  // Eski çizimler (SVG) yedek olarak korunur.
   const DISH = {
     kahvalti:
       '<svg viewBox="0 0 100 100" role="img" aria-label="Menemen çizimi"><defs><radialGradient id="dg1" cx=".4" cy=".35"><stop offset="0" stop-color="#f08a4b"/><stop offset="1" stop-color="#c9432a"/></radialGradient></defs><circle cx="50" cy="50" r="49" fill="#2b2f3a"/><circle cx="50" cy="50" r="44" fill="#f2ece0"/><circle cx="50" cy="50" r="37" fill="#e6dccb"/><path d="M24 52c0-14 12-24 26-24s26 10 26 24-12 20-26 20-26-6-26-20z" fill="url(#dg1)"/><path d="M34 46c4-6 12-8 18-4 5 3 4 9-2 11-7 2-18 1-16-7z" fill="#f6c945"/><path d="M52 56c5-4 13-2 14 3 1 5-6 7-12 6-5-1-6-6-2-9z" fill="#f9d96a"/><g fill="#5a8a3c"><circle cx="30" cy="58" r="2.2"/><circle cx="64" cy="40" r="2"/><circle cx="46" cy="36" r="1.8"/><circle cx="70" cy="56" r="2"/></g><path d="M20 78c8 6 20 9 30 9 14 0 24-5 30-12" stroke="#d6c7ac" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/></svg>',
@@ -163,7 +165,7 @@
         const now = new Date();
         const w = `<div class="wdg-weatherbox"><div class="pl-weather pl-glass"><div class="pl-weather__time"><span class="pl-weather__day">${TRFULL[now.getDay()]}</span><time class="pl-weather__clock" datetime="${now.toISOString().slice(0, 16)}">${two(now.getHours())}:${two(now.getMinutes())} <small>${two(now.getDate())}.${two(now.getMonth() + 1)}.${now.getFullYear()}</small></time></div><div class="pl-weather__temp">${ico('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>')}<b>18°</b><small>Parçalı bulutlu</small></div></div></div>`;
         const c = climate([['<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"/>', "Yağmur %20", "Yağmur ihtimali yüzde 20"], ['<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>', "12 km/s", "Rüzgar saatte 12 kilometre"], ['<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>', "Ofis günü", "Plan: ofis günü"]]);
-        return `<div class="wdg-outfit">${photoSlot("kombin", MANNEQUIN, "wdg-photo--portrait", "Çizim önizlemedir · kendi fotoğrafınızı ekleyin")}<div class="wdg-outfit__side">${w}<div class="wdg-lines">${row("Üst", "Keten gömlek")}${row("Alt", "Lacivert chino")}${row("Ayakkabı", "Beyaz sneaker")}${rich ? row("Aksesuar", "Deri kemer") : ""}</div>${c}</div></div>`;
+        return `<div class="wdg-outfit">${photoSlot("kombin", SAMPLE("kombin", "Örnek kombin: keten gömlek, lacivert chino, beyaz sneaker, deri kemer"), "wdg-photo--portrait", "Örnek görsel (AI ile üretildi) · kendi fotoğrafınızı ekleyin")}<div class="wdg-outfit__side">${w}<div class="wdg-lines">${row("Üst", "Keten gömlek")}${row("Alt", "Lacivert chino")}${row("Ayakkabı", "Beyaz sneaker")}${rich ? row("Aksesuar", "Deri kemer") : ""}</div>${c}</div></div>`;
       },
     },
     {
@@ -172,9 +174,9 @@
         const d = [["kahvalti", "Kahvaltı", "Menemen · tam buğday ekmek", "520"], ["ogle", "Öğle", "Mercimek çorbası · fasulye", "640"], ["aksam", "Akşam", "Fırında tavuk · bulgur pilavı", "690"]];
         const dish = ([k, l, n, kc]) => {
           const url = photoOf("dish-" + k);
-          return `<article class="pl-dish wdg-dishcard"><span class="pl-dish__img">${url ? `<img src="${url}" alt="${l} fotoğrafı" />` : DISH[k]}</span><b>${l}</b><small>${n}</small><div class="pl-dish__foot"><span class="pl-dish__price">${kc} kcal</span><button class="pl-dish__add" data-photo-pick="dish-${k}" aria-label="${l} için fotoğraf ${url ? "değiştir" : "ekle"}" title="${url ? "Fotoğrafı değiştir" : "Fotoğraf ekle"}">${camIco}</button></div>${url ? `<button class="text-button" data-photo-clear="dish-${k}">Fotoğrafı kaldır</button>` : ""}</article>`;
+          return `<article class="pl-dish wdg-dishcard"><span class="pl-dish__img">${url ? `<img src="${url}" alt="${l} fotoğrafı" />` : SAMPLE("dish-" + k, `${l} örnek görseli: ${n}`)}</span><b>${l}</b><small>${n}</small><div class="pl-dish__foot"><span class="pl-dish__price">${kc} kcal</span><button class="pl-dish__add" data-photo-pick="dish-${k}" aria-label="${l} için fotoğraf ${url ? "değiştir" : "ekle"}" title="${url ? "Fotoğrafı değiştir" : "Fotoğraf ekle"}">${camIco}</button></div>${url ? `<button class="text-button" data-photo-clear="dish-${k}">Fotoğrafı kaldır</button>` : ""}</article>`;
         };
-        return `<div class="wdg-dishes">${d.map(dish).join("")}</div><div class="wdg-meta">${chip(6, "≈ 1.850 kcal")}${chip(5, "Alışveriş: 4 eksik")}${rich ? chip(4, "Atıştırmalık: yoğurt · ceviz") : ""}<small class="pl-muted">Çizimler önizlemedir · yemek fotoğrafı ekleyebilirsiniz</small></div>`;
+        return `<div class="wdg-dishes">${d.map(dish).join("")}</div><div class="wdg-meta">${chip(6, "≈ 1.850 kcal")}${chip(5, "Alışveriş: 4 eksik")}${rich ? chip(4, "Atıştırmalık: yoğurt · ceviz") : ""}<small class="pl-muted">Örnek görseller (AI ile üretildi) · yemek fotoğrafı ekleyebilirsiniz</small></div>`;
       },
     },
     {
