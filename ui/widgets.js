@@ -18,6 +18,7 @@
     scrape: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3M8 11h6M11 8v6"/>',
     focus: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".5"/>',
     mind: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
   };
   const logo = (code, txt) =>
     `<span class="pl-applogo pl-applogo--sm" ${code ? `data-pl-product="${code}"` : ""} style="width:22px;height:22px;font-size:9px">${txt}</span>`;
@@ -155,6 +156,16 @@
           ["", "FO", 2, "25 dk odak seansı tamamlandı", "5 sa"],
         ].slice(0, rich ? 8 : 5);
         return `<div class="wdg-feed">${f.map(([c, t, col, m, ti]) => `<div class="wdg-feedrow" style="--c:var(--pl-viz-${col})">${logo(c, t)}<span class="wdg-msg">${m}</span><span class="pl-muted pl-num">${ti}</span></div>`).join("")}</div>`;
+      },
+    },
+    {
+      id: "hava", title: "Hava durumu", app: "Hub", appId: "", color: 2, icon: P.sun, full: true,
+      render: (rich) => {
+        const hours = [["Şimdi", 21, 1], ["13:00", 22, 1], ["14:00", 23, 1], ["15:00", 22, 2], ["16:00", 20, 2], ["17:00", 18, 3]];
+        const week = [["Bugün", "Güneşli", "23° / 14°", 1], ["Çarşamba", "Bulutlu", "20° / 13°", 2], ["Perşembe", "Yağmurlu", "17° / 12°", 3], ["Cuma", "Sağanak", "16° / 11°", 3], ["Cumartesi", "Bulutlu", "18° / 12°", 2], ["Pazar", "Güneşli", "21° / 13°", 1], ["Pazartesi", "Güneşli", "22° / 14°", 1]];
+        const dot = (k) => `<i class="wdg-wx__dot wdg-wx__dot--${k}" aria-hidden="true"></i>`;
+        const now = new Date();
+        return `<div class="wdg-wx"><div class="wdg-wx__main"><div class="wdg-wx__now"><div><h4>İzmir</h4><span class="pl-muted">${TRFULL[now.getDay()]} · Güneşli</span></div><div class="wdg-wx__temp"><b class="pl-num">21°</b>${ico(P.sun)}</div></div><div class="wdg-wx__hours">${hours.map(([h, t, k]) => `<div>${h}${dot(k)}<b class="pl-num">${t}°</b></div>`).join("")}</div><div class="wdg-wx__stats"><div>Rüzgâr<b>12 km/s</b><small>KB yönünde</small></div><div>Nem<b>%54</b><small>Çiy noktası 11°</small></div><div>UV endeksi<b>3</b><small>Orta</small></div></div></div><div class="wdg-wx__week"><b>7 günlük tahmin</b>${week.map(([d, s, t, k]) => `<div><span>${d}</span>${dot(k)}<span class="pl-muted">${s}</span><b class="pl-num">${t}</b></div>`).join("")}</div></div>`;
       },
     },
     {
@@ -336,7 +347,7 @@
       : isLive
       ? '<span class="pl-badge pl-badge--success">Canlı</span>'
       : `<span class="pl-badge">Örnek veri</span>${installed ? '<span class="pl-badge pl-badge--success">Yüklü</span>' : ""}`;
-    return `<section class="card wdg${w.wide || installed ? " is-wide" : ""}" data-w="${w.id}" style="--c:var(--pl-viz-${w.color})"><header class="wdg-head"><span class="wdg-ic">${ico(w.icon)}</span><div class="wdg-title"><h3>${w.title}</h3><small class="pl-muted">${w.app}</small></div><div class="wdg-badges">${badges}</div></header><div class="wdg-body">${w.render(rich, st)}</div></section>`;
+    return `<section class="card wdg${w.full ? " is-full" : w.wide || installed ? " is-wide" : ""}" data-w="${w.id}" style="--c:var(--pl-viz-${w.color})"><header class="wdg-head"><span class="wdg-ic">${ico(w.icon)}</span><div class="wdg-title"><h3>${w.title}</h3><small class="pl-muted">${w.app}</small></div><div class="wdg-badges">${badges}</div></header><div class="wdg-body">${w.render(rich, st)}</div></section>`;
   }
 
   window.plWidgets = { registry, layout, render };

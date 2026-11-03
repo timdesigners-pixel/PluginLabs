@@ -584,6 +584,106 @@ html[data-mode="light"] .card {
 .wdg.is-wide {
   grid-column: span 2;
 }
+.wdg.is-full {
+  grid-column: 1 / -1;
+}
+.wdg-wx {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 18px;
+}
+.wdg-wx__main {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+.wdg-wx__now {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wdg-wx__now h4 {
+  margin: 0;
+  font-size: 20px;
+}
+.wdg-wx__temp {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.wdg-wx__temp b {
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+}
+.wdg-wx__temp svg {
+  width: 44px;
+  height: 44px;
+  color: var(--pl-viz-4);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+.wdg-wx__hours {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--pl-fg, #fff) 5%, transparent);
+  text-align: center;
+}
+.wdg-wx__hours b {
+  display: block;
+}
+.wdg-wx__dot {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 6px auto;
+  border-radius: 50%;
+}
+.wdg-wx__dot--1 { background: var(--pl-viz-4); }
+.wdg-wx__dot--2 { background: color-mix(in srgb, var(--pl-fg, #fff) 70%, transparent); }
+.wdg-wx__dot--3 { background: var(--pl-viz-1); }
+.wdg-wx__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.wdg-wx__stats div {
+  padding: 10px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--pl-fg, #fff) 5%, transparent);
+}
+.wdg-wx__stats b {
+  display: block;
+  font-size: 15px;
+}
+.wdg-wx__week {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.wdg-wx__week > div {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--pl-fg, #fff) 8%, transparent);
+}
+.wdg-wx__week .wdg-wx__dot {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .wdg-wx {
+    grid-template-columns: 1fr;
+  }
+}
 .wdg-head {
   display: flex;
   align-items: center;
