@@ -1275,6 +1275,44 @@ footer.pl-statusbar {
   border-left: 1px solid color-mix(in srgb, var(--pl-fg-on-accent) 25%, transparent);
 }
 
+/* PLC-001 eksikleri: gradient hover, varyanta göre yükleme durumu, düğme içi spinner (PLC-012) */
+.pl-btn--gradient:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.pl-btn--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pl-danger) 24%, transparent);
+}
+.pl-btn.is-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+.pl-btn.is-loading:disabled {
+  opacity: 1;
+  cursor: progress;
+}
+.pl-btn.is-loading .pl-ico {
+  visibility: hidden;
+}
+.pl-btn.is-loading::after {
+  border-color: var(--pl-fg-1);
+  border-right-color: transparent;
+}
+.pl-btn--primary.is-loading::after,
+.pl-btn--gradient.is-loading::after {
+  border-color: var(--pl-fg-on-accent);
+  border-right-color: transparent;
+}
+.pl-btn--danger.is-loading::after {
+  border-color: var(--pl-danger);
+  border-right-color: transparent;
+}
+.pl-btn .pl-spinner--btn {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
 /* ==========================================================================
    Tasarım sistemi bileşenleri (2): GreetingHeader, Banner, FilterBar, PillNav, ProjectSidebar,
    HudMetric, HudTable, Timeline, Modal, AppCard, HubSidebar, widget bileşenleri

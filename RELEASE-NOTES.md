@@ -1,3 +1,15 @@
+PluginLabs Hub 0.4.17 — PluginLabs Advanced düğme varyantları (PLC-001 … 004) Hub genelinde tutarlı kullanılıyor.
+
+- İkincil (secondary) düğme: asıl eylem olmayan kapatma düğmeleri (uygulama ve ürün bilgisi pencerelerinde “Kapat”) artık ikincil; Genel bakış › Kaynak kütüphanesi satırlarında “＋ Ekle” / “Yönet” ikincil küçük düğme (önceden çıplak metin bağlantısıydı).
+- Hayalet (ghost) düğme: “Vazgeç” (paketi kaldır, tarayıcı ve uygulama eklentisi pencereleri) ve süren işlerin “İptal” düğmeleri; Genel bakış’taki “Tüm uygulamalar” ve “Tümünü gör” bağlantıları ghost küçük düğme.
+- Yükleme durumu: işlem sürerken düğme “İşleniyor…” yazısı yerine PLC-001 yükleme durumuna geçer (etiket genişliği korunur, varyant rengine uygun döner simge, aria-busy). Katalog kartında süren yükleme döner simgeli ikincil düğmeyle gösterilir; tıklayınca iptal eder.
+- Gradient düğme: üst çubuktaki “Pro’ya geç” ve karşılama alanındaki “My Mind’ı keşfet” korunur; gradient ve tehlike (danger) düğmelerine üzerine gelme durumu eklendi.
+- Birincil, bölünmüş (Yükle ▾), segment ve simge düğmeleri değişmedi.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
 PluginLabs Hub 0.4.16 — Kanal API'si (canlı veri akışı ve uygulamalar arası köprü) ve My Mind hazır görevleri.
 
 - Kanallar: uygulamalar `POST /v1/channels/<ad-alanı>.<konu>` ile veri yayınlar; Genel bakış widget'ları (kodlar, fiyat düşüşleri, notlar, kazıma görevleri, yaklaşan ödemeler, veri akışı) “Canlı · <uygulama>” rozetiyle gerçek veriyi gösterir; süre dolunca örnek veriye döner. Yayın izni kendi ad alanıyla sınırlıdır; veri boyut, derinlik, süre ve hız sınırlıdır; yalnızca bellekte tutulur.

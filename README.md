@@ -10,7 +10,11 @@ Aşağıdaki ekranlar v0.2.1 uygulamasından alınmıştır. Fontlar, uygulama a
 
 Uygulamalara, kaynak kütüphanesine ve yerel My Mind yönetimine tek ekrandan erişim.
 
-![PluginLabs Hub genel bakış ekranı (0.4.14, Linux/Xvfb)](docs/screenshots/overview.png)
+![PluginLabs Hub genel bakış ekranı (0.4.17, Windows 11, yerel Electron)](docs/screenshots/overview.png)
+
+Düğmeler PluginLabs Advanced varyantlarıyla: gradient + ikincil (karşılama), bölünmüş birincil “Yükle”, ghost “Tüm uygulamalar / Tümünü gör”, ikincil küçük “＋ Ekle”.
+
+![Düğme varyantları, genel bakış kesiti (0.4.17, Windows 11, yerel Electron)](docs/screenshots/dugme-varyantlari.png)
 
 Genel bakışın girişinde durum ve istatistik kartları yer alır, özgün düzen korunur; sonunda Akış panosu (uygulamalardan gelecek veri akışları için widget'lar) gelir. Şimdilik My Mind dışındakiler örnek veridir; uygulama yüklenince ilgili widget genişler.
 
@@ -24,7 +28,7 @@ Widget düzenleyici (Ayarlar › Widget'lar): widget ekle/çıkar, sırayı değ
 
 ![Ayarlar › Widget düzenleyici (0.4.14, Linux/Xvfb)](docs/screenshots/ayarlar-widgetlar.png)
 
-Önceki genel bakış görüntüsü (0.4.13, tarihsel): `docs/screenshots/onceki/overview-0.4.13.png`.
+Önceki genel bakış görüntüleri (tarihsel): `docs/screenshots/onceki/overview-0.4.14.png`, `docs/screenshots/onceki/overview-0.4.13.png`.
 
 ### Uygulama kataloğu
 
