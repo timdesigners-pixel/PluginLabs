@@ -1,3 +1,14 @@
+PluginLabs Hub 0.4.18 — Genel bakış widget'larına örnek görseller.
+
+- Günün kombini (Gardrop) ve Günün menüsü (Mutfak Atölyesi: kahvaltı, öğle, akşam) widget'larında SVG çizimlerin yerine örnek fotoğraf görselleri. Görseller Google Gemini ile üretildi, uygulamayla birlikte gelir (`ui/img/`, WebP, toplam ~70 KB) ve internetten yüklenmez.
+- Altyazılar “Örnek görsel (AI ile üretildi)” olarak işaretlendi. Kendi fotoğrafınızı eklemek, değiştirmek ve kaldırmak eskisi gibi çalışır; fotoğrafı kaldırınca örnek görsel geri gelir.
+- Arayüz testi örnek görselin gerçekten yüklendiğini de denetler (`naturalWidth > 0`; CSP `img-src 'self'` korunur).
+- Eski SVG çizimler kodda yedek olarak duruyor.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir. Windows DPI ve klavye kabulü ayrıca yapılmamıştır.
+
+---
+
 PluginLabs Hub 0.4.17 — PluginLabs Advanced düğme varyantları (PLC-001 … 004) Hub genelinde tutarlı kullanılıyor.
 
 - İkincil (secondary) düğme: asıl eylem olmayan kapatma düğmeleri (uygulama ve ürün bilgisi pencerelerinde “Kapat”) artık ikincil; Genel bakış › Kaynak kütüphanesi satırlarında “＋ Ekle” / “Yönet” ikincil küçük düğme (önceden çıplak metin bağlantısıydı).
