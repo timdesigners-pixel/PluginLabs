@@ -106,3 +106,4 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.4.1** (GitHub release; Hub kataloğunda) | https://github.com/timdesigners-pixel/mutfak-atolyesi |
 | PL-055 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.0 |
 | PL-054 | MyWishlist | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (istek listeleri, fiyat takibi, çok sitede arama ve karşılaştırma, MyMind ile ekleme, görselden tanıma; imzasız önizleme) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
+| PL-058 | Kurgu Atölyesi | Arayüz prototipi (PluginLabs Advanced, PLA-095); masaüstü kabuğu, depo ve yayın yok | — |

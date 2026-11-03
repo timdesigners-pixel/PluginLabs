@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kurgu Atölyesi — PluginLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<!-- PluginLabs Advanced: sıra sabit -->
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="pl/pl-advanced.css">
+<link rel="stylesheet" href="kurgu.css">
+</head>
+<body>
+<div data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr" class="pl-kurgu-stage">
+
+<!-- Ortak SVG ikon sembolleri (Lucide, MIT) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+  <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M4.04 4.69a.5.5 0 0 1 .65-.65l16 6.5a.5.5 0 0 1-.06.95l-6.13 1.58a2 2 0 0 0-1.43 1.43l-1.58 6.13a.5.5 0 0 1-.95.06z"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+  <symbol id="i-shapes" viewBox="0 0 24 24"><path d="M8.3 10a.7.7 0 0 1-.63-1.08L11.4 3a.7.7 0 0 1 1.2-.04L16.3 8.9a.7.7 0 0 1-.57 1.1Z"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></symbol>
+  <symbol id="i-fx" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+  <symbol id="i-volx" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+  <symbol id="i-rew" viewBox="0 0 24 24"><path d="m11 19-9-7 9-7z"/><path d="m22 19-9-7 9-7z"/></symbol>
+  <symbol id="i-ffw" viewBox="0 0 24 24"><path d="m13 19 9-7-9-7z"/><path d="m2 19 9-7-9-7z"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></symbol>
+  <symbol id="i-tune" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-videox" viewBox="0 0 24 24"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.25-3.06a.5.5 0 0 1 .75.43v8.2"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eyex" viewBox="0 0 24 24"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.4 10.4 0 0 1 12 5c7 0 10 7 10 7a13 13 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M21 5h-4"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></symbol>
+  <symbol id="i-gentext" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M7 11h10"/></symbol>
+  <symbol id="i-genimg" viewBox="0 0 24 24"><path d="M16 5h6M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/><circle cx="9" cy="9" r="2"/></symbol>
+  <symbol id="i-genava" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-blend" viewBox="0 0 24 24"><circle cx="9" cy="9" r="6.5"/><circle cx="15" cy="15" r="6.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-export" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-cmd" viewBox="0 0 24 24"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></symbol>
+</svg>
+
+<div class="pl-kurgu-app" id="app">
+
+  <!-- ============ ÜST ARAÇ ÇUBUĞU ============ -->
+  <header class="pl-kurgu-top">
+    <div class="pl-kurgu-top__l">
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="back"><svg class="pl-ico"><use href="#i-chev-l"/></svg>Geri</button>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="undo" aria-label="Geri al (Ctrl+Z)" title="Geri al · Ctrl+Z"><svg class="pl-ico"><use href="#i-undo"/></svg></button>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="redo" aria-label="Yinele (Ctrl+Y)" title="Yinele · Ctrl+Y"><svg class="pl-ico"><use href="#i-redo"/></svg></button>
+    </div>
+
+    <div class="pl-kurgu-tools" role="toolbar" aria-label="Araçlar">
+      <button class="pl-kurgu-tool is-active" data-tool="sec" aria-pressed="true" title="Seç · V"><svg class="pl-ico"><use href="#i-pointer"/></svg><svg class="pl-ico pl-kurgu-tool__chev"><use href="#i-chev-d"/></svg><span class="pl-kurgu-sr">Seç</span></button>
+      <button class="pl-kurgu-tool" data-tool="metin" aria-pressed="false" title="Metin · T"><svg class="pl-ico"><use href="#i-type"/></svg><svg class="pl-ico pl-kurgu-tool__chev"><use href="#i-chev-d"/></svg><span class="pl-kurgu-sr">Metin</span></button>
+      <button class="pl-kurgu-tool" data-tool="sekil" aria-pressed="false" title="Şekil · S"><svg class="pl-ico"><use href="#i-shapes"/></svg><svg class="pl-ico pl-kurgu-tool__chev"><use href="#i-chev-d"/></svg><span class="pl-kurgu-sr">Şekil</span></button>
+      <button class="pl-kurgu-tool" data-tool="gorsel" aria-pressed="false" title="Görsel · G"><svg class="pl-ico"><use href="#i-image"/></svg><svg class="pl-ico pl-kurgu-tool__chev"><use href="#i-chev-d"/></svg><span class="pl-kurgu-sr">Görsel</span></button>
+      <button class="pl-kurgu-tool" data-tool="efekt" aria-pressed="false" title="Efekt · E"><svg class="pl-ico"><use href="#i-fx"/></svg><svg class="pl-ico pl-kurgu-tool__chev"><use href="#i-chev-d"/></svg><span class="pl-kurgu-sr">Efekt</span></button>
+    </div>
+
+    <div class="pl-kurgu-top__r">
+      <div class="pl-kurgu-collab" title="Çevrimiçi: Ece, Mert">
+        <div class="pl-avatars" aria-label="Çevrimiçi ortak çalışanlar: Ece, Mert">
+          <span class="pl-avatar pl-avatar--sm pl-kurgu-face" style="--c:var(--pl-viz-1)">EC</span>
+          <span class="pl-avatar pl-avatar--sm pl-kurgu-face" style="--c:var(--pl-viz-3)">MT</span>
+        </div>
+      </div>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="present" aria-label="Önizlemeyi oynat"><svg class="pl-ico"><use href="#i-play"/></svg></button>
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="export">Dışa aktar</button>
+    </div>
+  </header>
+
+  <!-- ============ ANA IZGARA ============ -->
+  <main class="pl-kurgu-grid">
+
+    <!-- Sol: Proje videosu kitaplığı -->
+    <section class="pl-kurgu-panel pl-kurgu-lib" aria-labelledby="lib-h">
+      <h2 id="lib-h" class="pl-kurgu-lib__title">Proje Videosu</h2>
+      <div class="pl-kurgu-lib__search">
+        <label class="pl-inputwrap" style="flex:1">
+          <svg class="pl-ico"><use href="#i-search"/></svg>
+          <input class="pl-input" id="lib-q" type="search" placeholder="Ara" aria-label="Videolarda ara">
+        </label>
+        <button class="pl-iconbtn pl-iconbtn--outline" id="lib-filter" aria-label="Süzgeç" aria-pressed="false"><svg class="pl-ico"><use href="#i-filter"/></svg></button>
+      </div>
+      <ul class="pl-kurgu-vlist" id="lib-list" role="listbox" aria-label="Proje videoları"></ul>
+      <p class="pl-kurgu-empty" id="lib-empty" hidden>Eşleşen video yok. Aramayı temizle.</p>
+    </section>
+
+    <!-- Orta: Önizleme monitörü -->
+    <section class="pl-kurgu-preview" aria-label="Önizleme">
+      <svg class="pl-kurgu-scene" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Önizleme karesi: su altında süzülen pembe denizanaları ve ortada büyük, fırfırlı bir denizanası">
+        <defs>
+          <linearGradient id="sc-bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="pl-kurgu-st pl-kurgu-st--top"/>
+            <stop offset=".55" class="pl-kurgu-st pl-kurgu-st--mid"/>
+            <stop offset="1" class="pl-kurgu-st pl-kurgu-st--deep"/>
+          </linearGradient>
+          <radialGradient id="sc-glow" cx=".5" cy=".18" r=".6">
+            <stop offset="0" class="pl-kurgu-st pl-kurgu-st--glow"/>
+            <stop offset="1" class="pl-kurgu-st pl-kurgu-st--none"/>
+          </radialGradient>
+          <radialGradient id="sc-dome" cx=".45" cy=".35" r=".7">
+            <stop offset="0" class="pl-kurgu-st pl-kurgu-st--domehi"/>
+            <stop offset="1" class="pl-kurgu-st pl-kurgu-st--dome"/>
+          </radialGradient>
+          <filter id="sc-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4"/></filter>
+          <filter id="sc-far" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+          <g id="jelly">
+            <path class="pl-kurgu-jf__tent" d="M-22 4c-4 22 8 36-2 62M-10 6c4 26-6 40 4 70M2 6c-3 24 7 36-1 64M14 6c5 22-6 38 3 60M24 4c2 18-5 30 0 46"/>
+            <path class="pl-kurgu-jf__dome" d="M-34 4C-36-30 36-30 34 4c-6 6-14 3-17 0-4 4-10 4-14 0-4 4-10 4-14 0-4 3-11 6-23 0z"/>
+            <path class="pl-kurgu-jf__rib" d="M-18-8c4-10 12-14 22-14M-4 2c-2-10 4-18 14-20"/>
+          </g>
+        </defs>
+        <rect width="800" height="560" fill="url(#sc-bg)"/>
+        <rect width="800" height="560" fill="url(#sc-glow)"/>
+        <g class="pl-kurgu-rays"><path d="M330 0 260 560h40L370 0z"/><path d="M430 0l40 560h60L470 0z"/><path d="M560 0l120 560h30L590 0z"/><path d="M180 0 80 560h24L200 0z"/></g>
+        <g id="sc-drift">
+          <g filter="url(#sc-far)" opacity=".55">
+            <use href="#jelly" transform="translate(120 90) scale(.9)"/>
+            <use href="#jelly" transform="translate(700 60) scale(.8)"/>
+            <use href="#jelly" transform="translate(610 250) scale(.7)"/>
+            <use href="#jelly" transform="translate(60 330) scale(.8)"/>
+          </g>
+          <g filter="url(#sc-soft)" opacity=".85">
+            <use href="#jelly" transform="translate(250 160) scale(1.1)"/>
+            <use href="#jelly" transform="translate(560 120) scale(1)"/>
+            <use href="#jelly" transform="translate(720 380) scale(1.2)"/>
+            <use href="#jelly" transform="translate(150 470) scale(1)"/>
+          </g>
+          <use href="#jelly" transform="translate(70 200) scale(1.4)"/>
+          <use href="#jelly" transform="translate(360 300) scale(1.1)"/>
+          <use href="#jelly" transform="translate(760 220) scale(1.3)"/>
+          <use href="#jelly" transform="translate(430 470) scale(1.4)"/>
+          <use href="#jelly" transform="translate(650 470) scale(.9)"/>
+        </g>
+        <!-- Kahraman: fırfırlı büyük denizanası -->
+        <g class="pl-kurgu-queen" transform="translate(470 270)">
+          <path class="pl-kurgu-jf__tent pl-kurgu-jf__tent--long" d="M-80 40c-20 60 30 90 0 170M-40 50c10 70-30 90 10 160M0 50c-10 60 25 100-5 170M40 50c15 60-20 100 15 160M80 40c10 50-30 80 5 150"/>
+          <g class="pl-kurgu-frill">
+            <circle cx="-120" cy="40" r="46"/><circle cx="-70" cy="70" r="54"/><circle cx="-10" cy="84" r="58"/><circle cx="55" cy="74" r="56"/><circle cx="115" cy="44" r="48"/>
+            <circle cx="-96" cy="-10" r="44"/><circle cx="96" cy="-12" r="44"/><circle cx="-40" cy="20" r="50"/><circle cx="40" cy="22" r="50"/>
+          </g>
+          <path d="M-120 10C-120-110 120-110 120 10c-20 18-40 4-60 10-20 12-40 12-60 0-20 12-40 12-60 0-20-6-40 8-60-10z" fill="url(#sc-dome)"/>
+          <g class="pl-kurgu-frill__lines"><path d="M-150 60c30 20 60-10 90 10s60-10 90 10 60-10 90 10"/><path d="M-130 100c30 20 60-10 90 10s60-10 90 10 60-10 70 0"/><path d="M-100-40c40-50 160-50 200 0"/></g>
+        </g>
+      </svg>
+
+      <div class="pl-kurgu-ctrl">
+        <div class="pl-kurgu-pill pl-glass">
+          <button class="pl-kurgu-pbtn" id="pv-play" aria-label="Oynat (Boşluk)"><svg class="pl-ico"><use href="#i-play"/></svg></button>
+          <span class="pl-kurgu-time pl-num" id="pv-time" aria-live="off">00:31<small>/01:40</small></span>
+          <button class="pl-kurgu-pbtn" id="pv-mute" aria-label="Sesi kapat (M)" aria-pressed="false"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+        </div>
+        <div class="pl-kurgu-pill pl-glass">
+          <button class="pl-kurgu-pbtn" id="pv-loop" aria-label="Döngü" aria-pressed="false"><svg class="pl-ico"><use href="#i-repeat"/></svg></button>
+          <button class="pl-kurgu-pbtn" id="pv-rew" aria-label="5 sn geri (J)"><svg class="pl-ico"><use href="#i-rew"/></svg></button>
+          <button class="pl-kurgu-pbtn" id="pv-ffw" aria-label="5 sn ileri (L)"><svg class="pl-ico"><use href="#i-ffw"/></svg></button>
+        </div>
+        <div class="pl-kurgu-pill pl-glass pl-kurgu-scrubwrap">
+          <div class="pl-kurgu-scrub" id="pv-scrub" role="slider" tabindex="0" aria-label="Oynatma konumu" aria-valuemin="0" aria-valuemax="100" aria-valuenow="31" aria-valuetext="00:31 / 01:40">
+            <div class="pl-kurgu-scrub__fill" id="pv-fill"></div>
+            <div class="pl-kurgu-scrub__ticks" id="pv-ticks" aria-hidden="true"></div>
+            <div class="pl-kurgu-scrub__knob" id="pv-knob" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="pl-kurgu-pill pl-glass">
+          <button class="pl-kurgu-pbtn" id="pv-full" aria-label="Tam ekran (F)"><svg class="pl-ico"><use href="#i-scan"/></svg></button>
+          <button class="pl-kurgu-pbtn" id="pv-tune" aria-label="Önizleme ayarları"><svg class="pl-ico"><use href="#i-tune"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sağ: Denetçi + MyMind asistanı -->
+    <aside class="pl-kurgu-side" aria-label="Denetçi">
+      <div class="pl-kurgu-panel pl-kurgu-side__tabs">
+        <div class="pl-segment pl-kurgu-seg" role="tablist" aria-label="Denetçi bölümü">
+          <button class="is-active" role="tab" aria-selected="true" data-insp="video">Video</button>
+          <button role="tab" aria-selected="false" data-insp="anim">Animasyon</button>
+          <button role="tab" aria-selected="false" data-insp="track">Takip</button>
+        </div>
+        <div class="pl-kurgu-cursor pl-kurgu-cursor--ece" style="--c:var(--pl-viz-1)" aria-hidden="true">
+          <svg viewBox="0 0 20 20" class="pl-kurgu-cursor__arrow"><path d="M2 1l6.5 17 2.3-7 7-2.5z"/></svg>
+          <span class="pl-kurgu-cursor__tag"><span class="pl-kurgu-face pl-kurgu-face--xs" style="--c:var(--pl-viz-1)">E</span>Ece</span>
+        </div>
+      </div>
+
+      <div class="pl-kurgu-insp" id="insp-video">
+        <!-- Müzik / Ses düzeyi -->
+        <section class="pl-kurgu-panel pl-kurgu-vol" aria-labelledby="vol-h">
+          <span class="pl-kurgu-eyebrow">Müzik</span>
+          <div class="pl-kurgu-vol__row">
+            <h3 id="vol-h" class="pl-kurgu-h3">Ses düzeyi</h3>
+            <output class="pl-kurgu-big pl-num" id="vol-out" for="vol">%75</output>
+          </div>
+          <div class="pl-kurgu-slider">
+            <input class="pl-slider" id="vol" type="range" min="0" max="100" value="75" style="--pl-val:75%" aria-labelledby="vol-h" aria-valuetext="%75">
+          </div>
+          <div class="pl-kurgu-vol__row">
+            <button class="pl-kurgu-select" id="music-pick" aria-haspopup="listbox" aria-expanded="false"><span id="music-name">Ders Odak Lo-Fi Kayıt.wav</span><svg class="pl-ico"><use href="#i-chev-d"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" id="music-mute" aria-label="Müziği sustur" aria-pressed="true"><svg class="pl-ico"><use href="#i-volx"/></svg></button>
+          </div>
+          <ul class="pl-kurgu-menu" id="music-menu" role="listbox" aria-label="Müzik parçası" hidden>
+            <li role="option" aria-selected="true">Ders Odak Lo-Fi Kayıt.wav</li>
+            <li role="option" aria-selected="false">Gece Atölyesi Ambiyans.wav</li>
+            <li role="option" aria-selected="false">Hafif Piyano Altlık.mp3</li>
+          </ul>
+        </section>
+
+        <!-- Medya / Arka plan -->
+        <section class="pl-kurgu-panel pl-kurgu-bg" aria-labelledby="bg-h">
+          <span class="pl-kurgu-eyebrow">Medya</span>
+          <h3 id="bg-h" class="pl-kurgu-h3 pl-kurgu-h3--lg">Arka plan</h3>
+          <div class="pl-tabs pl-kurgu-tabs" role="tablist" aria-label="Renk düzeltme">
+            <button class="pl-tab is-active" role="tab" aria-selected="true" data-cc="curves">Eğriler</button>
+            <button class="pl-tab" role="tab" aria-selected="false" data-cc="hsl">HSL</button>
+            <button class="pl-tab" role="tab" aria-selected="false" data-cc="wheel">Renk çarkı</button>
+            <button class="pl-tab" role="tab" aria-selected="false" data-cc="basic">Temel</button>
+          </div>
+          <div class="pl-kurgu-cc" data-ccpane="curves">
+            <svg class="pl-kurgu-curve" id="curve" viewBox="0 0 200 110" preserveAspectRatio="none" role="img" aria-label="Eğriler: parlaklık eğrisi gölgelerde düşük, orta tonlarda yükseliyor; sarı kanal hafif ters eğimli. Ayrıntı aşağıdaki tabloda.">
+              <defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" class="pl-kurgu-hatch"/></pattern></defs>
+              <g class="pl-kurgu-curve__grid"><path d="M0 27.5h200M0 55h200M0 82.5h200M50 0v110M100 0v110M150 0v110"/></g>
+              <path class="pl-kurgu-curve__diag" d="M0 110 200 0"/>
+              <path id="curve-area" class="pl-kurgu-curve__area" d=""/>
+              <path id="curve-y" class="pl-kurgu-curve__y" d=""/>
+              <path id="curve-l" class="pl-kurgu-curve__l" d=""/>
+              <line id="curve-mark" class="pl-kurgu-curve__mark" x1="120" x2="120" y1="0" y2="110"/>
+              <circle id="curve-dot" class="pl-kurgu-curve__dot" cx="120" cy="30" r="3.2"/>
+            </svg>
+            <table class="pl-kurgu-sr"><caption>Eğri noktaları</caption><tr><th>Giriş</th><th>Çıkış</th></tr><tr><td>%0</td><td>%8</td></tr><tr><td>%40</td><td>%30</td></tr><tr><td>%60</td><td>%73</td></tr><tr><td>%100</td><td>%84</td></tr></table>
+          </div>
+          <div class="pl-kurgu-cc" data-ccpane="hsl" hidden>
+            <label class="pl-kurgu-prop">Ton<input class="pl-slider" type="range" value="52" style="--pl-val:52%"></label>
+            <label class="pl-kurgu-prop">Doygunluk<input class="pl-slider" type="range" value="64" style="--pl-val:64%"></label>
+            <label class="pl-kurgu-prop">Parlaklık<input class="pl-slider" type="range" value="46" style="--pl-val:46%"></label>
+          </div>
+          <div class="pl-kurgu-cc" data-ccpane="wheel" hidden>
+            <div class="pl-kurgu-wheels">
+              <div class="pl-kurgu-wheel" role="img" aria-label="Gölgeler: nötr"><i style="--x:50%;--y:50%"></i><span>Gölge</span></div>
+              <div class="pl-kurgu-wheel" role="img" aria-label="Orta tonlar: hafif pembe"><i style="--x:62%;--y:40%"></i><span>Orta</span></div>
+              <div class="pl-kurgu-wheel" role="img" aria-label="Işıklar: hafif camgöbeği"><i style="--x:40%;--y:58%"></i><span>Işık</span></div>
+            </div>
+          </div>
+          <div class="pl-kurgu-cc" data-ccpane="basic" hidden>
+            <label class="pl-kurgu-prop">Pozlama<input class="pl-slider" type="range" value="50" style="--pl-val:50%"></label>
+            <label class="pl-kurgu-prop">Kontrast<input class="pl-slider" type="range" value="58" style="--pl-val:58%"></label>
+            <label class="pl-kurgu-prop">Sıcaklık<input class="pl-slider" type="range" value="44" style="--pl-val:44%"></label>
+          </div>
+        </section>
+      </div>
+
+      <div class="pl-kurgu-insp" id="insp-anim" hidden>
+        <section class="pl-kurgu-panel">
+          <span class="pl-kurgu-eyebrow">Seçili klip</span>
+          <h3 class="pl-kurgu-h3 pl-kurgu-h3--lg">Animasyon</h3>
+          <label class="pl-kurgu-prop">Giriş süresi<input class="pl-slider" type="range" value="30" style="--pl-val:30%"></label>
+          <label class="pl-kurgu-prop">Çıkış süresi<input class="pl-slider" type="range" value="20" style="--pl-val:20%"></label>
+          <div class="pl-row" style="gap:6px"><span class="pl-chip pl-chip--accent">Belirme</span><span class="pl-chip">Kayma</span><span class="pl-chip">Yakınlaşma</span></div>
+        </section>
+      </div>
+      <div class="pl-kurgu-insp" id="insp-track" hidden>
+        <section class="pl-kurgu-panel">
+          <span class="pl-kurgu-eyebrow">Hareket takibi</span>
+          <h3 class="pl-kurgu-h3 pl-kurgu-h3--lg">Takip</h3>
+          <p class="pl-muted">Önizlemede bir nesne seç; takip noktası her karede izlenir.</p>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm pl-btn--block" data-act="track">Takibi başlat</button>
+        </section>
+      </div>
+
+      <!-- MyMind asistanı -->
+      <section class="pl-kurgu-panel pl-kurgu-ai" aria-labelledby="ai-h">
+        <div class="pl-kurgu-ai__head">
+          <span class="pl-kurgu-ai__ava" aria-hidden="true"><svg class="pl-ico"><use href="#i-spark"/></svg></span>
+          <span class="pl-badge pl-badge--pro" lang="en">MyMind</span>
+          <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="ai-open" aria-label="Asistanı ayrı pencerede aç"><svg class="pl-ico"><use href="#i-open"/></svg></button>
+        </div>
+        <div class="pl-kurgu-ai__body" id="ai-body">
+          <h3 id="ai-h" class="pl-kurgu-ai__hello">Merhaba Mert!<br>Nasıl yardımcı olabilirim?</h3>
+        </div>
+        <div class="pl-kurgu-ai__acts">
+          <button class="pl-kurgu-aiact" data-ai="text"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-gentext"/></svg></span><span><b>Metin üret</b><small>Otomatik olarak özgün metin oluştur.</small></span></button>
+          <button class="pl-kurgu-aiact" data-ai="image"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-genimg"/></svg></span><span><b>Görsel üret</b><small>Projen için görseller oluştur</small></span></button>
+          <button class="pl-kurgu-aiact" data-ai="avatar"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-genava"/></svg></span><span><b>Avatar üret</b><small>Videoların için bir avatar oluştur</small></span></button>
+        </div>
+        <form class="pl-kurgu-ai__form" id="ai-form">
+          <input class="pl-input" id="ai-in" placeholder="Yazmaya başla" aria-label="MyMind'a yaz" autocomplete="off">
+          <button class="pl-iconbtn pl-iconbtn--outline" type="button" id="ai-mic" aria-label="Sesle yaz" aria-pressed="false"><svg class="pl-ico"><use href="#i-mic"/></svg></button>
+        </form>
+      </section>
+    </aside>
+
+    <!-- Alt: Zaman çizelgesi -->
+    <div class="pl-kurgu-panel pl-kurgu-tc" title="Toplam süre"><span class="pl-num" id="tl-total">00:01:40</span></div>
+    <div class="pl-kurgu-panel pl-kurgu-ruler" id="tl-ruler" role="slider" tabindex="0" aria-label="Zaman cetveli — tıklayarak konuma git" aria-valuemin="0" aria-valuemax="100" aria-valuenow="31"></div>
+
+    <div class="pl-kurgu-panel pl-kurgu-heads" role="group" aria-label="İz denetimleri">
+      <div class="pl-kurgu-head" data-track="t1">
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="lock" aria-pressed="false" aria-label="Metin izini kilitle"><svg class="pl-ico"><use href="#i-unlock"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="solo" aria-pressed="true" aria-label="Metin izinin videosunu gizle"><svg class="pl-ico"><use href="#i-videox"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye" aria-pressed="true" aria-label="Metin izini gizle"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+      </div>
+      <div class="pl-kurgu-head" data-track="t2">
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="solo" aria-pressed="true" aria-label="Video izinin kaynağını kapat"><svg class="pl-ico"><use href="#i-videox"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="mute" aria-pressed="false" aria-label="Video izinin sesini kapat"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye" aria-pressed="true" aria-label="Video izini gizle"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+      </div>
+      <div class="pl-kurgu-head" data-track="t3">
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="lock" aria-pressed="false" aria-label="Ses izini kilitle"><svg class="pl-ico"><use href="#i-unlock"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="mute" aria-pressed="false" aria-label="Ses izini sustur"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+        <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye" aria-pressed="true" aria-label="Ses izini gizle"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+      </div>
+    </div>
+
+    <div class="pl-kurgu-panel pl-kurgu-tracks" id="tl-tracks" role="grid" aria-label="Zaman çizelgesi: metin/efekt, video ve ses izleri">
+      <svg class="pl-kurgu-links" id="tl-links" aria-hidden="true"></svg>
+      <div class="pl-kurgu-lane" data-lane="t1"></div>
+      <div class="pl-kurgu-lane" data-lane="t2"></div>
+      <div class="pl-kurgu-lane" data-lane="t3"></div>
+      <span class="pl-kurgu-ph" id="tl-ph" aria-hidden="true"></span>
+      <div class="pl-kurgu-cursor pl-kurgu-cursor--mert" id="cur-mert" style="--c:var(--pl-viz-3)" aria-hidden="true">
+        <svg viewBox="0 0 20 20" class="pl-kurgu-cursor__arrow"><path d="M2 1l6.5 17 2.3-7 7-2.5z"/></svg>
+        <span class="pl-kurgu-cursor__tag"><span class="pl-kurgu-face pl-kurgu-face--xs" style="--c:var(--pl-viz-3)">M</span>Mert</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Komut paleti (PLC-033) -->
+<dialog class="pl-kurgu-dialog" id="cmdk" aria-label="Komut paleti">
+  <div class="pl-cmdk">
+    <div class="pl-cmdk__input"><svg class="pl-ico pl-ico--20"><use href="#i-search"/></svg><input id="cmdk-q" placeholder="Komut veya video ara…" aria-label="Komut ara"><span class="pl-kbd">Esc</span></div>
+    <div class="pl-cmdk__list" id="cmdk-list" role="listbox"></div>
+    <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gezin</span><span><span class="pl-kbd">↵</span> çalıştır</span><span><span class="pl-kbd">Ctrl</span><span class="pl-kbd">K</span> aç/kapat</span></div>
+  </div>
+</dialog>
+
+<div class="pl-kurgu-toasts" id="toasts" role="status" aria-live="polite"></div>
+</div>
+<script src="kurgu.js"></script>
+</body>
+</html>
