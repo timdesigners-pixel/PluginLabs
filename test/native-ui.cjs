@@ -181,7 +181,11 @@ const fs = require("node:fs/promises");
   await chooser.setFiles(png);
   await page.locator('.wdg-photo[data-slot="kombin"] img').waitFor();
   await page.locator('[data-photo-clear="kombin"]').click();
-  await page.getByRole("img", { name: "Kombin çizimi" }).waitFor();
+  // Fotoğraf kaldırılınca örnek görsel (ui/img) geri gelir ve gerçekten yüklenir (CSP img-src self)
+  await page.locator('.wdg-photo[data-slot="kombin"] img[src="img/kombin.webp"]').waitFor();
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('img[src^="img/"]')].every((i) => i.complete && i.naturalWidth > 0),
+  );
   // Canlı veri: bir uygulama kanala yayın yapınca widget örnek veriden canlıya geçer
   const created = await page.evaluate(() =>
     window.pluginlabs.call("createClient", "Leo Helper", ["channels.publish"], "leo-helper"),
