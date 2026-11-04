@@ -1,0 +1,12 @@
+{
+  "name": "pluginlabs-kurgu-rust-studio",
+  "version": "0.3.0",
+  "private": true,
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "test": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "test:ui": "node scripts/preview-check.cjs"
+  },
+  "devDependencies": {"@tauri-apps/cli": "2.10.1"}
+}

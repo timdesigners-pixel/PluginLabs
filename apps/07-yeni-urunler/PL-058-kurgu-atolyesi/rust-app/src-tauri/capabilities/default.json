@@ -1,0 +1,1 @@
+{"identifier":"local-studio","description":"Yalnız paketlenmiş main WebView; dosya ve ağ eylemleri doğrulanan Rust komutlarında.","windows":["main"],"permissions":["core:default"]}
