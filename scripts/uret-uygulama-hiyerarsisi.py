@@ -55,7 +55,7 @@ REPOLAR = {
     'PL-052': ('tweakster', True, 'Codex projesi PL-052 · Tweakster (29.10.2026 doğrulandı)'),
     'PL-053': ('mutfak-atolyesi', True, 'Codex proje adı: “PL -053· Mutfak Atölyesi”'),
     'PL-054': ('mywishlist', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
-    'PL-055': ('mymind-ai', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
+    'PL-059': ('mymind-ai', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
 }
 
 EK = [
@@ -122,7 +122,7 @@ EK = [
         },
     },
     {
-        'id': 'PL-055', 'name': 'MyMind AI',
+        'id': 'PL-059', 'name': 'MyMind AI',
         'category': KATEGORILER[6][2], 'source': None,
         'description': 'PluginLabs ailesinin ortak yerel yapay zekâ uygulaması: bilgisayardaki küçük dil modelini (Hub MyMind Lite, LM Studio, Ollama) tek pencerede kullanır, ürünlerin MyMind ihtiyaçlarını doğrulanmış görev şablonlarıyla karşılar; Chrome eklentisi ve diğer ürünler onaylı yerel köprüyle bağlanır.',
         'fields': {
@@ -138,7 +138,7 @@ EK = [
 
 TR = str.maketrans({'ı': 'i', 'İ': 'i', 'ş': 's', 'Ş': 's', 'ğ': 'g', 'Ğ': 'g', 'ü': 'u', 'Ü': 'u',
                     'ö': 'o', 'Ö': 'o', 'ç': 'c', 'Ç': 'c', '’': '', "'": ''})
-SLUG_OZEL = {'PL-054': 'mywishlist', 'PL-055': 'mymind-ai', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
+SLUG_OZEL = {'PL-054': 'mywishlist', 'PL-059': 'mymind-ai', 'PL-010': '1001-designs-pin-to-component', 'PL-051': 'extension-manager', 'PL-003': 'mind-palace-plugin-hub'}
 
 
 def slugify(id_, name):
