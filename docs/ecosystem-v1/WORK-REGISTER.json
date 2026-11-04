@@ -125,6 +125,28 @@
         "Screenshots, SHA256, BUILD-INFO",
         "Separate human release approval"
       ]
+    },
+    {
+      "id": "PL-058-HUB-030",
+      "status": "in-progress",
+      "repo": "timdesigners-pixel/PluginLabs",
+      "ownerChat": "01a1a405-b36f-7220-b334-bc989ca1c1ed",
+      "branch": "codex/PL-058-hub-release",
+      "baseSha": "5724235604c11f4f8859f74104a1b9fd8008f3bd",
+      "sourceNotion": "https://app.notion.com/p/40d8aa13d8f980569c47ddaf88ddaaa4",
+      "acceptance": [
+        "Published Kurgu 0.3.0 public portable artifact verified by byte count and SHA-256",
+        "Catalog describes Rust/Tauri UI preview without claiming planned processing features",
+        "Hub tests, real Windows screenshots, reviewed PR and versioned Windows release with SHA256 and BUILD-INFO"
+      ],
+      "dependency": "Product owner must publish kurgu-atolyesi-v0.3.0 and provide final source commit and asset manifest; Flow Dock is optional and must not delay Kurgu",
+      "evidence": {
+        "checkedAt": "2026-11-05",
+        "hubVersion": "0.4.18",
+        "productPr": "https://github.com/timdesigners-pixel/PluginLabs/pull/79",
+        "distributionPublished": false
+      },
+      "nextStep": "Verify published product manifest before editing src/catalog.cjs; recheck main version before version bump"
     }
   ]
 }
