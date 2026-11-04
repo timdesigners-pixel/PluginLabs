@@ -1,99 +1,60 @@
-# PL-058 · Kurgu Atölyesi
+# PL-058 · Kurgu Atölyesi 0.2.0
 
-> Proje videolarını tek ekranda kurgulayan video düzenleyici: önizleme, metin/efekt/video/ses izli zaman çizelgesi, renk düzeltme, ortak çalışma imleçleri ve MyMind ile metin, görsel, avatar üretimi.
+Gerçek medya işleme için Windows masaüstü önizlemesi. Mevcut Dribbble referansının ana yerleşimi ve PluginLabs Advanced (PLA-095) yüzeyi korunarak yerel FFmpeg hattı bağlandı. Tam ürün kabulü henüz tamamlanmadı.
 
-| Alan | Değer |
-| --- | --- |
-| Kimlik | `PL-058` · `kurgu-atolyesi` |
-| Kategori | 07 · Yeni ürünler — PL-054+ |
-| Durum | Arayüz prototipi (03.11.2026) · masaüstü kabuğu, kurgu motoru ve yayın yok |
-| Öncelik / efor | P1 · L |
-| Hedef platformlar | Windows, Linux, macOS (masaüstü) |
-| Dağıtım biçimi | masaüstü uygulaması (hedef) |
-| Geliştirme deposu | Henüz yok — arayüz bu klasörde (`ui/`); ayrı depo kullanıcı onayıyla açılır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
-| Codex projesi | `PL-058 · Kurgu Atölyesi` (önerilen ad; henüz oluşturulmadı) |
-| Notion kaynağı | Yok — kart açılmadı (kullanıcı isteği, 03.11.2026) |
-| Tasarım | PluginLabs Advanced · PLA-095 Video Kurgu Stüdyosu şablonu · `data-pl-product="hub"` |
+Kaynak iş: [Notion · KA-01–KA-07](https://app.notion.com/p/40d8aa13d8f980569c47ddaf88ddaaa4). Gardrop PL-055, Kurgu Atölyesi PL-058, MyMind AI PL-059'dur.
 
-## Ekran görüntüleri
+## Gerçek ekranlar
 
-Gerçek tarayıcı çıktısı (Microsoft Edge headless, Windows 11, 03.11.2026, `ui/index.html`):
+04.11.2026, Windows 11 x64: görünmeyen gerçek Electron penceresi. Görüntüdeki renkler FFmpeg ile üretilmiş test videosudur; uygulamanın render ettiği altyazı dahil gerçek video karesidir.
 
-![Kurgu Atölyesi — masaüstü 1440×900](docs/ekran-1440x900.png)
+![Gerçek Electron uygulaması](docs/studio-electron.png)
 
-<details><summary>Dar ekran (820 px, tek sütun)</summary>
+[1440 px headless Edge](docs/studio-1440.png) · [820 px](docs/studio-820.png). Önceki 03.11 prototip görüntüleri tarihsel olup mevcut motorun kanıtı değildir; eski README `_arsiv/04.11.2026/` altında saklıdır.
 
-![Kurgu Atölyesi — 820 px](docs/ekran-dar-820.png)
+## Çalışan akış
 
-</details>
+1. **Medya / LUT ekle** ile video, ses veya `.cube` içe aktar. Kaynak değiştirilmez; uygulamanın proje alanına kopyalanır. Dosya sınırı 1 GB.
+2. Zaman çizelgesinden klip seç. Konum, kaynak girişi, süre, katman, ses ve kararma süresini düzenle; **Değişiklikleri uygula**. **Klibi kes** mevcut klibi ikiye ayırır. Undo/redo vardır.
+3. Altyazı metni ve zamanını ekle. LUT seçimi klibe uygulanır. Üst video katmanı, alttaki katmanın üstüne bindirilir; boş alan siyahtır.
+4. **Önizlemeyi üret** tüm düzenlemelerin 640×360 CPU sonucunu üretir. Kaynağa doğrudan bakmak LUT uygulanmış çıktı değildir; önizleme etiketi bunu ayırır. Aynı FFmpeg grafiği 1920×1080 dışa aktarımda kullanılır.
+5. **Proxy üret**, seçili kaynak video için 360p kopya üretir. Sonraki kaynak önizlemeleri proxy'yi kullanır; dışa aktarım orijinal medyayı kullanır. Bu sürümde bir kaynak/proje render'ı en fazla 60 dakikadır.
+6. **Dışa aktar** → render kuyruğu → **MP4 indir**. Kuyruk sıralıdır; ilerleme ve iptal desteklenir. Otomatik kayıt klipleri, altyazıları, medya kataloğunu ve biten işleri geri yükler. Yarım kalan işler yeniden açılışta anlaşılır hata gösterir.
 
-## Ne işe yarar
+Proje JSON'u indir/aç aynı uygulama veri alanındaki medya kimliklerini taşır; taşınabilir medya paketi değildir. Başka bilgisayarda medya da taşınmadan açılması desteklenmez. Kaynaklar ve render çıktıları uygulama veri alanında tutulur; otomatik silinmez.
 
-**Kullanıcı ve problem:** Eğitim, tanıtım ve sosyal medya videolarını hazırlayan; kliplerini, altyazı/metin katmanlarını, müziği ve renk ayarını farklı araçlar arasında dolaştırmak zorunda kalan içerik üreticileri.
+## Çalıştırma ve paket
 
-**Kısa tanım (kullanıcı isteği, 03.11.2026):** Referans tasarımdaki (Dribbble, video düzenleme ekranı) tüm öğe ve komponentleri, aynı yerleşimle, PluginLabs Advanced tasarım sistemiyle sunan PluginLabs video düzenleme uygulaması. Planlanan ürünler arasında video düzenleyici bulunmadığı için yeni ürün olarak eklendi (PL-023 Clip Vault bir pano yöneticisidir).
+Gerekli: Node 24; PATH'te **FFmpeg ve FFprobe** (Windows'ta 9.0.2 ile test edildi). Alternatif `KURGU_FFMPEG` / `KURGU_FFPROBE` tam yolları. Paketler bu araçları içermez; son kullanıcı dağıtımı için codec lisansı/sağlayıcı paketi incelemesi gereklidir.
 
-## Arayüz — referanstaki öğelerin karşılıkları
-
-| Bölge | Referanstaki öğe | Bu ekrandaki karşılığı | Komponent |
-| --- | --- | --- | --- |
-| Üst çubuk | Back · Undo · Redo | Geri · Geri al · Yinele (gerçek geçmiş yığını, Ctrl+Z / Ctrl+Y) | PLC `pl-btn`, `pl-iconbtn` |
-| Üst çubuk | Seç / Metin / Şekil / Görsel / Efekt araçları (açılır oklu) | Aynı beş araç; V, T, S, G, E kısayolları | `pl-kurgu-tool` |
-| Üst çubuk | İki ortak çalışan avatarı · Oynat · Export | Ece, Mert avatarları · Önizlemeyi oynat · Dışa aktar | PLC-010 `pl-avatars` |
-| Sol | Project Video · Search · Filter · süreli kapaklı video listesi | Proje Videosu · Ara · Süzgeç (5 dk altı) · 6 video | PLA-065 türevi |
-| Orta | Önizleme + alt oynatma çubuğu (duraklat, süre, sessiz, döngü, geri/ileri sar, segmentli ilerleme, tam ekran, ayar) | Aynı düzen; sürüklenebilir konum çubuğu, klip sınırı işaretleri | PLA-064, `pl-glass` |
-| Sağ | Video / Animation / Tracking sekmeleri + “Jane” imleci | Video / Animasyon / Takip + “Ece” imleci | PLC-003 `pl-segment` |
-| Sağ | Music · Volume 75% · segmentli kaydırıcı · parça seçici · sessiz | Müzik · Ses düzeyi %75 · parça menüsü · sustur | PLC-023 `pl-slider` |
-| Sağ | Media · Background · Curves / HSL / Color Wheel / Basic · taralı eğri grafiği | Medya · Arka plan · Eğriler / HSL / Renk çarkı / Temel; eğri sürüklenerek düzenlenir, metin tablosu var | PLC-030 `pl-tabs` |
-| Sağ | Asistan: “Hi Mike! How can I help you?” · Generate Text / Images / Avatar · Start typing + mikrofon | MyMind: “Merhaba Mert!” · Metin / Görsel / Avatar üret · Yazmaya başla + mikrofon | PLC-060/061, MyMind rozeti |
-| Alt | 00:01:40 kutusu · noktalı zaman cetveli | Toplam süre · her 5 sn etiket, arada nokta; tıklayınca konuma gider | PLA-063 türevi |
-| Alt | İz başlıkları (kilit, video/ses, göz) | 3 iz × 3 düğme, gerçek kilit/gizle/sustur durumu | `pl-iconbtn` |
-| Alt | Metin ve efekt klipleri, bağlantı çizgileri, film şeridi klipleri, seçili klip (beyaz çerçeve), dalga formlu ses klipleri, “Mike” imleci | Aynısı; çizgiler klip konumundan hesaplanır, dalga formu oynatmayla dolar, “Mert” imleci | PLA-063, PLA-067 |
-
-Referansta olmayan, tasarım sisteminin zorunlu kıldığı eklemeler: Ctrl/⌘+K komut paleti (PLC-033), oynatma kafası (PLA-063), toast + “Geri al”, AI yanıtlarında “MyMind” rozeti ve kaynak satırı, dar ekran düzeni.
-
-## Klavye
-
-| Tuş | Eylem |
-| --- | --- |
-| Boşluk · K | Oynat/duraklat · duraklat |
-| J · L | 5 sn geri · ileri |
-| ← → (Shift ile 5 sn) | 1 sn geri · ileri |
-| Home | Başa git |
-| M · F | Sesi kapat · tam ekran |
-| V T S G E | Araç seçimi |
-| Ctrl+Z · Ctrl+Y · Ctrl+E · Ctrl+K | Geri al · yinele · dışa aktar · komut paleti |
-
-## Çalıştırma
-
-```bash
-python -m http.server 5755 --bind 127.0.0.1 --directory apps/07-yeni-urunler/PL-058-kurgu-atolyesi/ui
+```powershell
+node src/server.cjs
+# http://127.0.0.1:5758
 ```
 
-Ardından `http://127.0.0.1:5755/` adresini aç. Claude Code masaüstünde `.claude/launch.json` içindeki `kurgu-atolyesi` yapılandırması aynı sunucuyu başlatır.
+Electron için mevcut aile araç zinciriyle `electron .` kullanılır. Bu ürün ek npm runtime paketi kullanmaz. `dist/` içinde Windows kurulum ve taşınabilir exe, SHA256SUMS.txt, BUILD-INFO.json ve ekranlar hazırlanır; binary'ler git'e girmez. Paketler imzasız önizlemedir; otomatik yayın/kurulum yapılmadı.
 
-## Dosyalar
+`KURGU_HUB_TOKEN` yalnız backend ortamından okunur. `KURGU_HUB_URL` yalnız HTTP loopback kabul eder. MyMind formundaki açık onayla yalnız yazılan metin `/v1/chat/completions` üzerinden Hub'a gider; video/proje bilgisi gönderilmez. Hub yetkilendirmesi olmadan özellik hata verir. **Canlı Hub/model kabulü yapılmadı**; AI maske, avatar veya görsel üretimi varmış gibi gösterilmez.
 
-| Yol | İçerik |
-| --- | --- |
-| `ui/index.html` | Ekran (tek sayfa) |
-| `ui/kurgu.css` | Yalnız bu ekrana özgü yerleşim, `pl-kurgu-` önekli, `@layer pl`, sabit renk yok |
-| `ui/kurgu.js` | Durum + çizim: oynatma, zaman çizelgesi, iz durumu, eğri, MyMind paneli, komut paleti, geri al/yinele |
-| `ui/pl/` | `design-system/pluginlabs-advanced/assets/` kopyası (pl-tokens → pl-components → pl-advanced); değiştirilmez |
-| `docs/` | Ekran görüntüleri |
+## Kapsam ve kabul
 
-## Bilinen sınırlar (dürüst durum)
+| İş | Kanıt / açık sınır |
+|---|---|
+| KA-01 | Gerçek import, proje modeli, atomik otomatik kayıt, FFmpeg export; test edildi |
+| KA-02 | Katman, sayısal trim/konum, kesme, ses miksleme, kararma ve altyazı; sürükleme/ripple ve klipler arası çapraz geçiş açık |
+| KA-03 | .cube doğrulama ve render; renk değiştiren LUT ile önizleme/1080p çıktı piksel karşılaştırması geçti |
+| KA-04 | Açık: segmentasyon modeli, takip ve elle maske düzeltmesi henüz yok |
+| KA-05 | Gerçek kaynak proxy ve seri render kuyruğu; GPU hızlandırma açık |
+| KA-06 | Advanced arayüz ve onaylı Hub metin köprüsü; canlı Hub testi ve tam orijinal sağ panel bileşenlerinin işlevsel uyarlaması açık |
+| KA-07 | [Düğüm/SDK şartnamesi](docs/KA-07-PRD.md) hazır; düğüm motoru sonraki faz |
 
-- **Gerçek video işleme yok.** Önizleme bir SVG sahne, kapaklar ve film şeridi kareleri tasarım sistemi yer tutucularıdır (referanstaki fotoğraflar telifli olduğu için kopyalanmadı). Dışa aktarma yalnız bildirim gösterir.
-- **MyMind bağlı değil.** Asistan yanıtları yerel önizleme yanıtlarıdır ve öyle etiketlenir; gerçek bağlantı Hub üzerinden, onaylı ve veri azaltılmış olmalıdır (MUST HAVE #6).
-- **Ortak çalışma imleçleri durağandır** (Ece, Mert); canlı eşleme yok.
-- Masaüstü kabuğu (Tauri/Electron), Windows kurulum + taşınabilir exe, Hub kataloğu ve README dışındaki MUST HAVE maddeleri henüz karşılanmadı.
-- Yeni ürün aksanı tanımlanmadı; geçici olarak Hub aksanı (`hub`, Iris) kullanılıyor. Kalıcı aksan için tasarım sistemine `data-pl-product="kurgu"` eklenmesi gerekir (opt-in, onay bekliyor).
-- Uygulamaya özgü parçalar (ortak çalışma imleci, eğri düzenleyici, film şeridi klibi) şimdilik `pl-kurgu-` önekiyle bu klasörde; sisteme komponent olarak alınmaları onay bekliyor.
+## Test kanıtı
 
-## Sonraki adımlar
+- `node --test test/engine.test.cjs`: 3/3; gerçek 1080p/ses/süre, LUT renk eşleşmesi, proxy, kayıt, token/origin/path/range kontrolleri.
+- `node test/ui.cjs`: headless Edge'de import → kes → altyazı → render → oynat → yeniden aç; Ctrl+K, 820/1440 px; konsol hatası yok.
+- `node test/native.cjs`: gizli gerçek Windows Electron uygulaması; paketlenmiş exe ile de çalıştırıldı.
+- Hub `npm test`: 33/33. Hub'ın kendi renderer dosyaları değişmedi; ürün UI testi yukarıdaki ayrı testtir.
 
-1. Masaüstü kabuğu ve gerçek medya hattı (dosya içe aktarma, kare önizleme, FFmpeg ile dışa aktarma).
-2. Ayrı depo, Windows release (kurulum + taşınabilir + SHA256 + BUILD-INFO) ve Hub kataloğu.
-3. MyMind Hub entegrasyonu (onaylı istek, kaynaklı yanıt).
-4. Notion kartı ve Codex projesi.
+Kurulum sihirbazı, DPI/ekran okuyucu, Linux/macOS, gerçek Hub modeli ve GPU render test edilmedi. Elektron sürümü mevcut aile araç zincirinden 33.2.1 olarak kullanıldı; güvenlik yükseltmesi bu işin kapsamında yapılmadı. Yerel paket son kullanıcı yayını değildir.
+
+Hub ortak dosyaları yerine [Hub teslim belgesi](docs/HUB-HANDOFF.md) hazırlandı. Ürün bağımsız deposu, logo/ikon paketi, Hub'dan kurulum, dağıtım ve Hub sürüm yayını açık. [Devir notu](DEVIR.md) kalan işleri ayrıntılandırır.

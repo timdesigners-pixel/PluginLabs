@@ -1,0 +1,15 @@
+{
+  "platform": "win32",
+  "checkedAt": "2026-11-04T07:37:18.858Z",
+  "engine": "FFmpeg",
+  "checks": [
+    "import",
+    "split",
+    "subtitles",
+    "render",
+    "frame",
+    "restore",
+    "command-palette"
+  ],
+  "errors": []
+}

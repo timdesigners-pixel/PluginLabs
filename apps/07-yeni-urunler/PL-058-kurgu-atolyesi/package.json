@@ -1,0 +1,22 @@
+{
+  "name": "pluginlabs-kurgu-atolyesi",
+  "version": "0.2.0",
+  "private": true,
+  "description": "PluginLabs PL-058 yerel video kurgu stüdyosu",
+  "main": "desktop/main.cjs",
+  "author": "PluginLabs",
+  "license": "MIT",
+  "scripts": {
+    "serve": "node src/server.cjs",
+    "test": "node --test test/*.test.cjs"
+  },
+  "build": {
+    "appId": "com.pluginlabs.kurgu",
+    "productName": "Kurgu Atölyesi",
+    "files": ["src/**", "desktop/**", "ui/**", "package.json"],
+    "directories": {"output": "dist"},
+    "win": {"target": ["nsis", "portable"]},
+    "nsis": {"oneClick": false, "allowToChangeInstallationDirectory": true, "artifactName": "Kurgu-Atolyesi-${version}-${arch}-setup.${ext}"},
+    "portable": {"artifactName": "Kurgu-Atolyesi-${version}-${arch}-portable.${ext}"}
+  }
+}
