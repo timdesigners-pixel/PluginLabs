@@ -22,7 +22,7 @@
   const voice=$('#ws-audio');if(voice){const d=document.createElement('div');d.className='pl-omni-summary';d.textContent='Gösterilen LUFS, true peak ve kanal seviyeleri örnek değerlerdir.';voice.append(d);}
   $$('[data-cmd]').forEach(e=>{e.setAttribute('role','button');e.tabIndex=0;});
   const observer=new MutationObserver(()=>{$$('#cmdk-list [data-cmd]').forEach(e=>{e.setAttribute('role','button');e.tabIndex=0;e.onkeydown=k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();e.click();}};});});if($('#cmdk-list'))observer.observe($('#cmdk-list'),{childList:true});
-  let chip=$('.pl-omni-previewlabel');if(chip&&window.__TAURI__)window.__TAURI__.core.invoke('snapshot').then(()=>{chip.textContent='RUST · ARAYÜZ ÖNİZLEMESİ';}).catch(()=>{});
+  let chip=$('.pl-omni-previewlabel');if(chip&&window.__TAURI__)window.__TAURI__.core.invoke('snapshot').then(s=>{chip.textContent='RUST · ARAYÜZ ÖNİZLEMESİ';if(s.recovery?.message){const recovery=document.createElement('div');recovery.className='pl-omni-plan';recovery.id='pl-recovery';recovery.setAttribute('role','alert');recovery.textContent=s.recovery.message+' ('+(s.recovery.missingMedia?.length||0)+' medya)';$('.pl-omni-brandbar').after(recovery);}}).catch(()=>{});
   // Disabled rendering is intentional in this visual proposal.
   $('#start-rust-render-btn')?.setAttribute('aria-description','Yalnız tasarım önizlemesi; çıktı dosyası üretilmez.');
 })();
