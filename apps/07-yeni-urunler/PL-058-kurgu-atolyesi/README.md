@@ -1,5 +1,7 @@
 # PL-058 · Kurgu Atölyesi 0.2.0
 
+> **Yeni görsel aday — 04.11.2026:** [Rust / OMNI Studio 0.3.0 arayüz önizlemesi](rust-app/README.md). Kullanıcının son HTML referanslarına göre altı çalışma alanı; gerçek Rust/Tauri ekranları ve sınırları bu belgede. Aşağıdaki 0.2.0 motoru korunur; yeni arayüzün tüm ileri işlevlerinin uygulanmış olduğu anlamına gelmez.
+
 Gerçek medya işleme için Windows masaüstü önizlemesi. Mevcut Dribbble referansının ana yerleşimi ve PluginLabs Advanced (PLA-095) yüzeyi korunarak yerel FFmpeg hattı bağlandı. Tam ürün kabulü henüz tamamlanmadı.
 
 Kaynak iş: [Notion · KA-01–KA-07](https://app.notion.com/p/40d8aa13d8f980569c47ddaf88ddaaa4). Gardrop PL-055, Kurgu Atölyesi PL-058, MyMind AI PL-059'dur.

@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kurgu Atölyesi · OMNI Studio / PluginLabs Advanced</title>
+
+
+
+<link rel="stylesheet" href="pl/pl-tokens.css"><link rel="stylesheet" href="pl/pl-components.css"><link rel="stylesheet" href="pl/pl-advanced.css"><link rel="stylesheet" href="omni-reference.css"><link rel="stylesheet" href="omni.css">
+</head>
+<body>
+<div data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr" class="pl-kurgu-stage">
+
+<!-- Ortak SVG İkon Sembolleri -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+  <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M4.04 4.69a.5.5 0 0 1 .65-.65l16 6.5a.5.5 0 0 1-.06.95l-6.13 1.58a2 2 0 0 0-1.43 1.43l-1.58 6.13a.5.5 0 0 1-.95.06z"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+  <symbol id="i-shapes" viewBox="0 0 24 24"><path d="M8.3 10a.7.7 0 0 1-.63-1.08L11.4 3a.7.7 0 0 1 1.2-.04L16.3 8.9a.7.7 0 0 1-.57 1.1Z"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></symbol>
+  <symbol id="i-fx" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></symbol>
+  <symbol id="i-nodes" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/><path d="M8.7 7.4 15.3 10.6"/><path d="M8.7 16.6 15.3 13.4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+  <symbol id="i-volx" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+  <symbol id="i-rew" viewBox="0 0 24 24"><path d="m11 19-9-7 9-7z"/><path d="m22 19-9-7 9-7z"/></symbol>
+  <symbol id="i-ffw" viewBox="0 0 24 24"><path d="m13 19 9-7-9-7z"/><path d="m2 19 9-7-9-7z"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></symbol>
+  <symbol id="i-tune" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-videox" viewBox="0 0 24 24"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.25-3.06a.5.5 0 0 1 .75.43v8.2"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eyex" viewBox="0 0 24 24"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.4 10.4 0 0 1 12 5c7 0 10 7 10 7a13 13 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M21 5h-4"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></symbol>
+  <symbol id="i-gentext" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M7 11h10"/></symbol>
+  <symbol id="i-genimg" viewBox="0 0 24 24"><path d="M16 5h6M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/><circle cx="9" cy="9" r="2"/></symbol>
+  <symbol id="i-genava" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-blend" viewBox="0 0 24 24"><circle cx="9" cy="9" r="6.5"/><circle cx="15" cy="15" r="6.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-export" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></symbol>
+</svg>
+
+<div class="pl-kurgu-app"><header class="pl-omni-brandbar"><div class="pl-omni-brand"><span class="pl-omni-mark">pl</span><strong>PluginLabs</strong><span class="pl-chip">APPS</span></div><div class="pl-omni-product"><span class="pl-omni-productmark">KA</span><div><strong>Kurgu Atölyesi</strong><small>OMNI Studio · Yaratıcı üretim ortamı</small></div><span class="pl-omni-index">058</span></div><div class="pl-omni-project"><strong>DERİNLİK — Ana kompozisyon</strong><span>3840 × 2160 · 24 FPS · Tasarım örneği</span></div><button class="pl-btn pl-btn--secondary pl-btn--sm" id="preview-command">Komut çalıştır <kbd>Ctrl K</kbd></button><span class="pl-omni-previewlabel">ARAYÜZ ÖNİZLEMESİ</span></header>
+
+  <!-- ============ ÜST ARAÇ ÇUBUĞU ============ -->
+  <header class="pl-kurgu-top">
+    <div class="pl-kurgu-top__l">
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="back"><svg class="pl-ico"><use href="#i-chev-l"/></svg>Geri</button>
+      <span class="pl-badge pl-badge--pro">PLA-095 · Kurgu Atölyesi</span>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="undo" title="Geri al"><svg class="pl-ico"><use href="#i-undo"/></svg></button>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="redo" title="Yinele"><svg class="pl-ico"><use href="#i-redo"/></svg></button>
+    </div>
+
+    <div class="pl-kurgu-tools" role="toolbar" aria-label="Araçlar">
+      <button class="pl-kurgu-tool is-active" data-tool="sec" aria-pressed="true"><svg class="pl-ico"><use href="#i-pointer"/></svg><span>Seç</span></button>
+      <button class="pl-kurgu-tool" data-tool="jilet" aria-pressed="false"><svg class="pl-ico"><use href="#i-scissors"/></svg><span>Jilet</span></button>
+      <button class="pl-kurgu-tool" data-tool="metin" aria-pressed="false"><svg class="pl-ico"><use href="#i-type"/></svg><span>Metin</span></button>
+      <button class="pl-kurgu-tool" data-tool="sekil" aria-pressed="false"><svg class="pl-ico"><use href="#i-shapes"/></svg><span>Şekil</span></button>
+      <button class="pl-kurgu-tool" data-tool="efekt" aria-pressed="false"><svg class="pl-ico"><use href="#i-fx"/></svg><span>Efekt</span></button>
+    </div>
+
+    <div class="pl-kurgu-top__r">
+      <div class="pl-avatars" title="Çevrimiçi: Ece, Mert">
+        <span class="pl-avatar pl-kurgu-face" style="--pl-c:var(--pl-viz-1)">EC</span>
+        <span class="pl-avatar pl-kurgu-face" style="--pl-c:var(--pl-viz-3)">MT</span>
+      </div>
+      <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" data-act="present" aria-label="Önizlemeyi oynat"><svg class="pl-ico"><use href="#i-play"/></svg></button>
+      <button class="pl-btn pl-btn--primary pl-btn--sm" data-preview-workspace="deliver"><svg class="pl-ico"><use href="#i-export"/></svg>Dışa aktar</button>
+    </div>
+  </header>
+
+  <!-- ============ 6 ÇALIŞMA ALANI KONTEYNERİ ============ -->
+  <div class="pl-ws-container">
+
+    <!-- =======================================================================
+         SEKME 1: KURGU ATÖLYESİ (Premiere & Resolve Edit + MyMind)
+         ======================================================================= -->
+    <main id="ws-edit" class="pl-ws-page">
+      <div class="pl-edit-grid">
+        <!-- Sol: Proje Videosu Kitaplığı -->
+        <section class="pl-panel pl-kurgu-lib" aria-labelledby="lib-h">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <h2 id="lib-h" style="margin:0;font-size:var(--pl-text-lg);font-weight:600;color:var(--pl-fg-1)">Proje Videosu</h2>
+            <button class="pl-chip pl-chip--accent" id="btn-add-media">+ Medya</button>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <label class="pl-inputwrap" style="flex:1">
+              <svg class="pl-ico"><use href="#i-search"/></svg>
+              <input class="pl-input" id="lib-q" type="search" placeholder="Ara">
+            </label>
+            <button class="pl-iconbtn pl-iconbtn--outline" id="lib-filter" aria-pressed="false" title="5 dk altı videolar"><svg class="pl-ico"><use href="#i-filter"/></svg></button>
+          </div>
+          <ul class="pl-kurgu-vlist" id="lib-list" role="listbox"></ul>
+        </section>
+
+        <!-- Orta: Su Altı Biyolüminesans Denizanası Önizleme Monitörü -->
+        <section class="pl-kurgu-preview" id="edit-preview-box">
+          <svg class="pl-kurgu-scene" id="main-scene-svg" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="sc-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" class="pl-kurgu-st pl-kurgu-st--top"/>
+                <stop offset=".55" class="pl-kurgu-st pl-kurgu-st--mid"/>
+                <stop offset="1" class="pl-kurgu-st pl-kurgu-st--deep"/>
+              </linearGradient>
+              <radialGradient id="sc-glow" cx=".5" cy=".18" r=".6">
+                <stop offset="0" class="pl-kurgu-st pl-kurgu-st--glow"/>
+                <stop offset="1" class="pl-kurgu-st pl-kurgu-st--none"/>
+              </radialGradient>
+              <radialGradient id="sc-dome" cx=".45" cy=".35" r=".7">
+                <stop offset="0" class="pl-kurgu-st pl-kurgu-st--domehi"/>
+                <stop offset="1" class="pl-kurgu-st pl-kurgu-st--dome"/>
+              </radialGradient>
+              <filter id="sc-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4"/></filter>
+              <filter id="sc-far" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+              <g id="jelly">
+                <path class="pl-kurgu-jf__tent" style="fill:none;stroke:color-mix(in srgb,var(--pl-viz-7) 40%,var(--pl-on-media));stroke-width:1.6;opacity:.55" d="M-22 4c-4 22 8 36-2 62M-10 6c4 26-6 40 4 70M2 6c-3 24 7 36-1 64M14 6c5 22-6 38 3 60M24 4c2 18-5 30 0 46"/>
+                <path class="pl-kurgu-jf__dome" style="fill:color-mix(in srgb,var(--pl-viz-7) 48%,var(--pl-on-media));opacity:.9" d="M-34 4C-36-30 36-30 34 4c-6 6-14 3-17 0-4 4-10 4-14 0-4 4-10 4-14 0-4 3-11 6-23 0z"/>
+                <path class="pl-kurgu-jf__rib" style="fill:none;stroke:var(--pl-on-media);stroke-width:1.4;opacity:.6" d="M-18-8c4-10 12-14 22-14M-4 2c-2-10 4-18 14-20"/>
+              </g>
+            </defs>
+            <rect width="800" height="560" fill="url(#sc-bg)"/>
+            <rect width="800" height="560" fill="url(#sc-glow)"/>
+            <g class="pl-kurgu-rays"><path d="M330 0 260 560h40L370 0z"/><path d="M430 0l40 560h60L470 0z"/><path d="M560 0l120 560h30L590 0z"/><path d="M180 0 80 560h24L200 0z"/></g>
+            <g id="sc-drift">
+              <g filter="url(#sc-far)" opacity=".55">
+                <use href="#jelly" transform="translate(120 90) scale(.9)"/>
+                <use href="#jelly" transform="translate(700 60) scale(.8)"/>
+                <use href="#jelly" transform="translate(610 250) scale(.7)"/>
+                <use href="#jelly" transform="translate(60 330) scale(.8)"/>
+              </g>
+              <g filter="url(#sc-soft)" opacity=".85">
+                <use href="#jelly" transform="translate(250 160) scale(1.1)"/>
+                <use href="#jelly" transform="translate(560 120) scale(1)"/>
+                <use href="#jelly" transform="translate(720 380) scale(1.2)"/>
+                <use href="#jelly" transform="translate(150 470) scale(1)"/>
+              </g>
+              <use href="#jelly" transform="translate(70 200) scale(1.4)"/>
+              <use href="#jelly" transform="translate(360 300) scale(1.1)"/>
+              <use href="#jelly" transform="translate(760 220) scale(1.3)"/>
+              <use href="#jelly" transform="translate(430 470) scale(1.4)"/>
+            </g>
+            <g class="pl-kurgu-queen" transform="translate(470 270)">
+              <path class="pl-kurgu-jf__tent pl-kurgu-jf__tent--long" d="M-80 40c-20 60 30 90 0 170M-40 50c10 70-30 90 10 160M0 50c-10 60 25 100-5 170M40 50c15 60-20 100 15 160M80 40c10 50-30 80 5 150"/>
+              <g class="pl-kurgu-frill">
+                <circle cx="-120" cy="40" r="46"/><circle cx="-70" cy="70" r="54"/><circle cx="-10" cy="84" r="58"/><circle cx="55" cy="74" r="56"/><circle cx="115" cy="44" r="48"/>
+                <circle cx="-96" cy="-10" r="44"/><circle cx="96" cy="-12" r="44"/><circle cx="-40" cy="20" r="50"/><circle cx="40" cy="22" r="50"/>
+              </g>
+              <path d="M-120 10C-120-110 120-110 120 10c-20 18-40 4-60 10-20 12-40 12-60 0-20 12-40 12-60 0-20-6-40 8-60-10z" fill="url(#sc-dome)"/>
+              <g class="pl-kurgu-frill__lines"><path d="M-150 60c30 20 60-10 90 10s60-10 90 10 60-10 90 10"/><path d="M-130 100c30 20 60-10 90 10s60-10 90 10 60-10 70 0"/><path d="M-100-40c40-50 160-50 200 0"/></g>
+            </g>
+            <g id="ae-title-overlay" transform="translate(48 435)">
+              <rect x="-14" y="-34" width="420" height="52" rx="14" fill="rgba(18, 21, 30, 0.5)" stroke="rgba(255,255,255,0.18)"/>
+              <text id="ae-svg-text" x="4" y="-2" fill="#ffffff" font-family="Inter, sans-serif" font-size="17" font-weight="600">DERİNLİK — Işığın izinde</text>
+            </g>
+          </svg>
+
+          <!-- Önizleme Üst Bilgi Hapı -->
+          <div style="position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:3;pointer-events:none">
+            <div class="pl-kurgu-pill pl-glass" style="height:32px;padding:0 12px;font-size:11.5px;gap:7px">
+              <span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-5)"></span>
+              <span id="preview-clip-name">Denizanası_sahnesi.mp4</span>
+            </div>
+            <div class="pl-kurgu-pill pl-glass" style="height:32px;padding:0 12px;font-size:11px;font-family:var(--pl-font-mono)">
+              3840×2160 · Örnek kompozisyon
+            </div>
+          </div>
+
+          <div class="pl-kurgu-ctrl">
+            <div class="pl-kurgu-pill pl-glass">
+              <button class="pl-kurgu-pbtn" id="pv-play" aria-label="Oynat"><svg class="pl-ico"><use href="#i-play"/></svg></button>
+              <span class="pl-kurgu-time pl-num" id="pv-time">00:31<small>/01:40</small></span>
+              <button class="pl-kurgu-pbtn" id="pv-mute" aria-pressed="false"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+            </div>
+            <div class="pl-kurgu-pill pl-glass">
+              <button class="pl-kurgu-pbtn" id="pv-loop" aria-pressed="false"><svg class="pl-ico"><use href="#i-repeat"/></svg></button>
+              <button class="pl-kurgu-pbtn" id="pv-rew"><svg class="pl-ico"><use href="#i-rew"/></svg></button>
+              <button class="pl-kurgu-pbtn" id="pv-ffw"><svg class="pl-ico"><use href="#i-ffw"/></svg></button>
+            </div>
+            <div class="pl-kurgu-pill pl-glass pl-kurgu-scrubwrap">
+              <div class="pl-kurgu-scrub" id="pv-scrub" role="slider" tabindex="0">
+                <div class="pl-kurgu-scrub__fill" id="pv-fill"></div>
+                <div class="pl-kurgu-scrub__ticks" id="pv-ticks"></div>
+                <div class="pl-kurgu-scrub__knob" id="pv-knob"></div>
+              </div>
+            </div>
+            <div class="pl-kurgu-pill pl-glass">
+              <button class="pl-kurgu-pbtn" id="pv-full"><svg class="pl-ico"><use href="#i-scan"/></svg></button>
+              <button class="pl-kurgu-pbtn" id="pv-tune"><svg class="pl-ico"><use href="#i-tune"/></svg></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sağ: Denetçi + MyMind Asistanı -->
+        <aside class="pl-kurgu-side">
+          <div class="pl-panel" style="padding:4px;flex:none">
+            <div class="pl-segment" style="width:100%">
+              <button class="is-active" style="flex:1" data-insp="video">Video</button>
+              <button style="flex:1" data-insp="anim">Animasyon</button>
+              <button style="flex:1" data-insp="track">Takip</button>
+            </div>
+            <div class="pl-kurgu-cursor" style="--pl-c:var(--pl-viz-1);left:20px;top:26px">
+              <svg viewBox="0 0 20 20" class="pl-kurgu-cursor__arrow"><path d="M2 1l6.5 17 2.3-7 7-2.5z"/></svg>
+              <span class="pl-kurgu-cursor__tag"><span class="pl-kurgu-face pl-kurgu-face--xs" style="--pl-c:var(--pl-viz-1)">E</span>Ece</span>
+            </div>
+          </div>
+
+          <div id="insp-video" style="display:flex;flex-direction:column;gap:8px;flex:none">
+            <section class="pl-panel" style="padding:10px 12px;gap:6px;flex:none">
+              <span class="pl-eyebrow">Müzik</span>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <h3 style="margin:0;font-size:15px;color:var(--pl-fg-1)">Ses düzeyi</h3>
+                <output class="pl-num" id="vol-out" style="font-size:20px;font-weight:600;color:var(--pl-fg-1)">%75</output>
+              </div>
+              <input class="pl-slider" id="vol" type="range" min="0" max="100" value="75" style="--pl-val:75%">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--pl-fg-2)">
+                <span>Ders Odak Lo-Fi Kayıt.wav</span>
+                <button class="pl-iconbtn pl-iconbtn--sm" id="music-mute" aria-pressed="true"><svg class="pl-ico"><use href="#i-volx"/></svg></button>
+              </div>
+            </section>
+
+            <section class="pl-panel" style="padding:10px 12px 0;gap:6px;flex:none">
+              <span class="pl-eyebrow">Medya</span>
+              <h3 style="margin:0;font-size:15px;color:var(--pl-fg-1)">Arka plan</h3>
+              <div class="pl-row" style="gap:4px">
+                <button class="pl-chip pl-chip--accent" data-cc="curves">Eğriler</button>
+                <button class="pl-chip" data-cc="wheel">Renk çarkı</button>
+                <button class="pl-chip" data-cc="hsl">HSL</button>
+              </div>
+              <div data-ccpane="curves">
+                <svg class="pl-kurgu-curve" id="curve" viewBox="0 0 200 110" preserveAspectRatio="none">
+                  <defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" class="pl-kurgu-hatch"/></pattern></defs>
+                  <g class="pl-kurgu-curve__grid"><path d="M0 27.5h200M0 55h200M0 82.5h200M50 0v110M100 0v110M150 0v110"/></g>
+                  <path class="pl-kurgu-curve__diag" d="M0 110 200 0"/>
+                  <path id="curve-area" class="pl-kurgu-curve__area" d=""/>
+                  <path id="curve-y" class="pl-kurgu-curve__y" d=""/>
+                  <path id="curve-l" class="pl-kurgu-curve__l" d=""/>
+                  <line id="curve-mark" class="pl-kurgu-curve__mark" x1="120" x2="120" y1="0" y2="110"/>
+                  <circle id="curve-dot" class="pl-kurgu-curve__dot" cx="120" cy="30" r="3.5"/>
+                </svg>
+              </div>
+              <div data-ccpane="wheel" hidden>
+                <div class="pl-kurgu-wheels">
+                  <div class="pl-kurgu-wheel"><i style="--pl-x:50%;--pl-y:50%"></i><span>Gölge</span></div>
+                  <div class="pl-kurgu-wheel"><i style="--pl-x:62%;--pl-y:40%"></i><span>Orta</span></div>
+                  <div class="pl-kurgu-wheel"><i style="--pl-x:40%;--pl-y:58%"></i><span>Işık</span></div>
+                </div>
+              </div>
+              <div data-ccpane="hsl" hidden style="padding-bottom:12px;display:grid;gap:6px">
+                <label style="font-size:11px;display:grid;gap:4px">Ton<input class="pl-slider" id="hsl-hue" type="range" min="-60" max="60" value="0"></label>
+                <label style="font-size:11px;display:grid;gap:4px">Doygunluk<input class="pl-slider" id="hsl-sat" type="range" min="40" max="180" value="108"></label>
+              </div>
+            </section>
+          </div>
+
+          <div id="insp-anim" hidden style="flex:none">
+            <section class="pl-panel" style="padding:12px;gap:8px">
+              <span class="pl-eyebrow">Seçili klip</span>
+              <h3 style="margin:0;font-size:15px;color:var(--pl-fg-1)">Animasyon</h3>
+              <label style="font-size:11.5px;display:grid;gap:4px">Giriş süresi<input class="pl-slider" type="range" value="30" style="--pl-val:30%"></label>
+              <label style="font-size:11.5px;display:grid;gap:4px">Çıkış süresi<input class="pl-slider" type="range" value="20" style="--pl-val:20%"></label>
+              <div class="pl-row"><span class="pl-chip pl-chip--accent">Belirme</span><span class="pl-chip">Kayma</span><span class="pl-chip">Yakınlaşma</span></div>
+            </section>
+          </div>
+
+          <div id="insp-track" hidden style="flex:none">
+            <section class="pl-panel" style="padding:12px;gap:8px">
+              <span class="pl-eyebrow">Hareket takibi</span>
+              <h3 style="margin:0;font-size:15px;color:var(--pl-fg-1)">Takip</h3>
+              <p class="pl-muted">Önizlemede bir nesne seç; takip noktası her karede izlenir.</p>
+              <button class="pl-btn pl-btn--secondary pl-btn--sm" data-preview-workspace="fusion">Fusion AI Düğüm Editörüne Git</button>
+            </section>
+          </div>
+
+          <!-- MyMind Asistanı -->
+          <section class="pl-panel pl-kurgu-ai">
+            <div class="pl-kurgu-ai__head">
+              <span class="pl-kurgu-ai__ava"><svg class="pl-ico"><use href="#i-spark"/></svg></span>
+              <span class="pl-badge pl-badge--pro">MyMind</span>
+              <button class="pl-iconbtn pl-iconbtn--outline pl-iconbtn--sm" style="margin-left:auto"><svg class="pl-ico"><use href="#i-open"/></svg></button>
+            </div>
+            <div class="pl-kurgu-ai__body" id="ai-body">
+              <h3 class="pl-kurgu-ai__hello">Yaratıcı asistan<br>MyMind · Bağlantı bekliyor</h3>
+            </div>
+            <div style="display:grid;gap:5px">
+              <button class="pl-kurgu-aiact" data-ai="text"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-gentext"/></svg></span><span><b>Metin üret</b><small>Otomatik özgün metin oluştur.</small></span></button>
+              <button class="pl-kurgu-aiact" data-ai="image"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-genimg"/></svg></span><span><b>Görsel üret</b><small>Projen için görseller oluştur</small></span></button>
+              <button class="pl-kurgu-aiact" data-ai="avatar"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-genava"/></svg></span><span><b>Avatar üret</b><small>Videoların için avatar oluştur</small></span></button>
+            </div>
+            <form style="display:flex;gap:6px" id="ai-form">
+              <input class="pl-input" id="ai-in" placeholder="Yazmaya başla" autocomplete="off">
+              <button class="pl-iconbtn pl-iconbtn--outline" type="button"><svg class="pl-ico"><use href="#i-mic"/></svg></button>
+            </form>
+          </section>
+        </aside>
+
+        <!-- Alt: Zaman Çizelgesi -->
+        <div class="pl-panel pl-kurgu-tc"><span class="pl-num" id="tl-total">00:01:40</span></div>
+        <div class="pl-panel pl-kurgu-ruler" id="tl-ruler" role="slider" tabindex="0"></div>
+        <div class="pl-panel pl-kurgu-heads">
+          <div class="pl-kurgu-head" data-track="t1">
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="lock"><svg class="pl-ico"><use href="#i-unlock"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="solo"><svg class="pl-ico"><use href="#i-videox"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="pl-kurgu-head" data-track="t2">
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="solo"><svg class="pl-ico"><use href="#i-videox"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="mute"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="pl-kurgu-head" data-track="t3">
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="lock"><svg class="pl-ico"><use href="#i-unlock"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="mute"><svg class="pl-ico"><use href="#i-vol"/></svg></button>
+            <button class="pl-iconbtn pl-iconbtn--sm" data-tog="eye"><svg class="pl-ico"><use href="#i-eye"/></svg></button>
+          </div>
+        </div>
+        <div class="pl-panel pl-kurgu-tracks" id="tl-tracks">
+          <svg class="pl-kurgu-links" id="tl-links"></svg>
+          <div class="pl-kurgu-lane" data-lane="t1"></div>
+          <div class="pl-kurgu-lane" data-lane="t2"></div>
+          <div class="pl-kurgu-lane" data-lane="t3"></div>
+          <span class="pl-kurgu-ph" id="tl-ph"></span>
+          <div class="pl-kurgu-cursor" id="cur-mert" style="--pl-c:var(--pl-viz-3)">
+            <svg viewBox="0 0 20 20" class="pl-kurgu-cursor__arrow"><path d="M2 1l6.5 17 2.3-7 7-2.5z"/></svg>
+            <span class="pl-kurgu-cursor__tag"><span class="pl-kurgu-face pl-kurgu-face--xs" style="--pl-c:var(--pl-viz-3)">M</span>Mert</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- =======================================================================
+         SEKME 2: YAPAY ZEKÂ KARAKTER STÜDYOSU — DÜĞÜM EDİTÖRÜ (Fusion DAG)
+         (DaVinci Fusion + ONNX AI Rig + Mini Önizlemeli Düğümler + Spline Editör)
+         ======================================================================= -->
+    <main id="ws-fusion" class="pl-ws-page" hidden>
+      <!-- Üst: Sol Media Pool & OpenFX | Orta Çift Monitör (3D Rig + Final Sahne) | Sağ Inspector -->
+      <div style="height:47%;display:grid;grid-template-columns:235px 1fr 1fr 280px;gap:8px;min-height:0">
+        <!-- Sol: Fusion Araç & OpenFX Kütüphanesi -->
+        <aside class="pl-panel" style="padding:10px;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-eyebrow">OpenFX & AI Nodes</span>
+            <span class="pl-badge pl-badge--soft">PLA-095</span>
+          </div>
+          <div style="display:grid;gap:5px;overflow-y:auto;padding-right:2px">
+            <button class="pl-kurgu-aiact"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-genava"/></svg></span><span><b>AI Pose Estimator</b><small>OpenPose 3D Rig · ONNX</small></span></button>
+            <button class="pl-kurgu-aiact"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-spark"/></svg></span><span><b>Neural Face & LipSync</b><small>Viseme Ses Eşleme</small></span></button>
+            <button class="pl-kurgu-aiact"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-fx"/></svg></span><span><b>Fusion DeltaKeyer</b><small>Spill & Clean Plate</small></span></button>
+            <button class="pl-kurgu-aiact"><span class="pl-kurgu-aiact__ico"><svg class="pl-ico"><use href="#i-blend"/></svg></span><span><b>PLA-095 Optical Flow</b><small>WGPU Hareket Vektörü</small></span></button>
+          </div>
+        </aside>
+
+        <!-- Monitör A: 3D Karakter Rig + Kamera Frustum & Eksenler -->
+        <section class="pl-panel" style="background:var(--pl-bg-2)">
+          <div class="pl-panel__head" style="padding:7px 12px">
+            <span class="pl-panel__title" style="font-size:12px"><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-1)"></span>Viewer 1 · 3D AI Rig & OpenPose Mesh</span>
+            <div class="pl-row" style="font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3)">
+              <span>Cam: 35mm</span><span>·</span><span style="color:var(--pl-viz-5)">Örnek rig</span>
+            </div>
+          </div>
+          <div style="flex:1;position:relative;overflow:hidden;background:var(--pl-bg-1)">
+            <canvas id="fusion-rig-canvas" style="width:100%;height:100%;display:block"></canvas>
+            <div style="position:absolute;bottom:8px;left:10px;right:10px;display:flex;justify-content:space-between;font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3);pointer-events:none">
+              <span>X: +12.4  Y: -04.1  Z: +118.0</span>
+              <span>İskelet: örnek veri</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Monitör B: Birleştirilmiş Biyolüminesans Sahne + Alpha Wipe -->
+        <section class="pl-panel" style="background:var(--pl-bg-2)">
+          <div class="pl-panel__head" style="padding:7px 12px">
+            <span class="pl-panel__title" style="font-size:12px"><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-5)"></span>Viewer 2 · MediaOut1 (ACEScg Composite)</span>
+            <span class="pl-badge pl-badge--pro" style="font-size:9.5px">32-Bit Float</span>
+          </div>
+          <div style="flex:1;position:relative;overflow:hidden">
+            <svg class="pl-kurgu-scene" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice">
+              <rect width="800" height="560" fill="url(#sc-bg)"/>
+              <rect width="800" height="560" fill="url(#sc-glow)"/>
+              <g class="pl-kurgu-rays"><path d="M330 0 260 560h40L370 0z"/><path d="M430 0l40 560h60L470 0z"/></g>
+              <use href="#jelly" transform="translate(150 200) scale(1.3)"/>
+              <use href="#jelly" transform="translate(650 180) scale(1.1)"/>
+              <g class="pl-kurgu-queen" transform="translate(470 280) scale(0.75)">
+                <path d="M-120 10C-120-110 120-110 120 10c-20 18-40 4-60 10-20 12-40 12-60 0-20 12-40 12-60 0-20-6-40 8-60-10z" fill="url(#sc-dome)"/>
+              </g>
+              <!-- Kamera Takip Hedef Çerçevesi -->
+              <g transform="translate(330 130)">
+                <rect x="0" y="0" width="160" height="220" rx="8" fill="none" stroke="var(--pl-viz-5)" stroke-width="1.5" stroke-dasharray="6 4"/>
+                <circle cx="80" cy="70" r="4" fill="var(--pl-viz-1)"/>
+                <text x="6" y="-6" fill="var(--pl-viz-5)" font-family="JetBrains Mono" font-size="11">TRACK_ID: KAELEN_01 (örnek)</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- Sağ: Profesyonel Düğüm Parametre Denetçisi -->
+        <aside class="pl-panel" style="padding:10px 12px;gap:8px;overflow-y:auto">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-eyebrow">Inspector · Node</span>
+            <span class="pl-badge pl-badge--pro">ONNX · PLAN</span>
+          </div>
+          <h3 id="fusion-insp-title" style="margin:0;font-size:14px;color:var(--pl-fg-1)">01 · AI_Character_Core</h3>
+          <div style="display:grid;gap:6px;background:var(--pl-bg-2);padding:8px;border-radius:var(--pl-radius-md);border:1px solid var(--pl-line)">
+            <label style="font-size:10.5px;color:var(--pl-fg-3)">Prompt & Karakter Kimliği
+              <textarea class="pl-input" style="height:44px;padding:6px;margin-top:3px;font-size:11px">Biyolüminesans okyanus kaşifi, yumuşak sinematik aydınlatma, ACES</textarea>
+            </label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-family:var(--pl-font-mono);font-size:10.5px">
+              <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Seed: <b style="color:var(--pl-viz-3)">8492014</b></div>
+              <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">CFG: <b style="color:var(--pl-viz-5)">7.5</b></div>
+            </div>
+          </div>
+          <label style="font-size:11px;display:grid;gap:3px">İskelet Omuz Açısı (<span id="rig-angle-lbl" style="color:var(--pl-viz-3);font-family:var(--pl-font-mono)">15°</span>)
+            <input class="pl-slider" id="rig-angle-slider" type="range" min="-45" max="45" value="15" style="--pl-val:65%">
+          </label>
+          <label style="font-size:11px;display:grid;gap:3px">Viseme Dudak Yumuşatma (<span style="font-family:var(--pl-font-mono)">%82</span>)
+            <input class="pl-slider" type="range" min="0" max="100" value="82" style="--pl-val:82%">
+          </label>
+          <label style="font-size:11px;display:grid;gap:3px">Derinlik Alanı (Z-Depth Bokeh)
+            <input class="pl-slider" type="range" min="0" max="100" value="44" style="--pl-val:44%">
+          </label>
+        </aside>
+      </div>
+
+      <!-- Alt: DaVinci Resolve Tarzı Küçük Resimli (Thumbnail) Düğüm Ağacı + Mini Radar -->
+      <section class="pl-panel pl-node-grid-bg" id="fusion-graph-box" style="flex:1;position:relative;overflow:hidden">
+        <!-- Düğüm Araç Çubuğu -->
+        <div style="position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:4;pointer-events:none">
+          <div class="pl-kurgu-pill pl-glass" style="height:32px;padding:0 10px;gap:8px;pointer-events:auto">
+            <span class="pl-badge pl-badge--pro" style="font-size:10px">DAG Flow</span>
+            <span style="font-size:11px;font-family:var(--pl-font-mono);color:var(--pl-fg-2)">Topolojik Sıra: [01 → 02 → 03 → 04 → 05]</span>
+          </div>
+          <div class="pl-kurgu-pill pl-glass" style="height:32px;padding:0 10px;gap:8px;font-size:11px;font-family:var(--pl-font-mono);pointer-events:auto">
+            <span style="color:var(--pl-viz-4)">● Sarı: Arka Plan</span>
+            <span style="color:var(--pl-viz-5)">● Yeşil: Ön Plan</span>
+            <span style="color:var(--pl-viz-3)">● Mavi: Alfa Maske</span>
+          </div>
+        </div>
+
+        <svg id="fusion-svg-lines" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1"></svg>
+
+        <div id="fusion-nodes-layer" style="position:absolute;inset:0;z-index:2">
+          <!-- Node 01 -->
+          <div class="pl-fusion-node is-selected" style="left:45px;top:56px">
+            <span class="pl-fusion-port pl-fusion-port--out"></span>
+            <div class="pl-fusion-node__thumb">
+              <div class="pl-kurgu-art pl-kurgu-art--6" style="width:100%;height:100%"></div>
+              <span class="pl-fusion-node__badge">01 · MediaIn</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>AI_Character_Core</span><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-1)"></span>
+            </div>
+            <div style="font-size:10px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">CyberKaelen_v4.onnx</div>
+          </div>
+
+          <!-- Node 02 -->
+          <div class="pl-fusion-node" style="left:45px;top:174px">
+            <span class="pl-fusion-port pl-fusion-port--out"></span>
+            <div class="pl-fusion-node__thumb">
+              <div class="pl-kurgu-art pl-kurgu-art--scene" style="width:100%;height:100%"></div>
+              <span class="pl-fusion-node__badge">02 · Plate</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>Biyo_Denizanasi_BG</span><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-3)"></span>
+            </div>
+            <div style="font-size:10px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">4K ACEScct Plate</div>
+          </div>
+
+          <!-- Node 03 -->
+          <div class="pl-fusion-node" style="left:295px;top:62px">
+            <span class="pl-fusion-port pl-fusion-port--in"></span>
+            <span class="pl-fusion-port pl-fusion-port--out"></span>
+            <div class="pl-fusion-node__thumb">
+              <div class="pl-kurgu-art pl-kurgu-art--1" style="width:100%;height:100%"></div>
+              <span class="pl-fusion-node__badge">03 · Pose3D</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>ControlNet_Rig</span><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-6)"></span>
+            </div>
+            <div style="font-size:10px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">18 Joints + LipSync</div>
+          </div>
+
+          <!-- Node 04 -->
+          <div class="pl-fusion-node" style="left:545px;top:114px">
+            <span class="pl-fusion-port pl-fusion-port--in"></span>
+            <span class="pl-fusion-port pl-fusion-port--out"></span>
+            <div class="pl-fusion-node__thumb">
+              <div class="pl-kurgu-art pl-kurgu-art--5" style="width:100%;height:100%"></div>
+              <span class="pl-fusion-node__badge">04 · Merge</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>DeepGlow_Merge</span><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-4)"></span>
+            </div>
+            <div style="font-size:10px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">Blend: Screen · HDR</div>
+          </div>
+
+          <!-- Node 05 -->
+          <div class="pl-fusion-node" style="left:795px;top:114px">
+            <span class="pl-fusion-port pl-fusion-port--in"></span>
+            <div class="pl-fusion-node__thumb">
+              <div class="pl-kurgu-art pl-kurgu-art--scene" style="width:100%;height:100%"></div>
+              <span class="pl-fusion-node__badge">05 · Out</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>MediaOut_Master</span><span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-5)"></span>
+            </div>
+            <div style="font-size:10px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">ACEScg 32-Bit Out</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =======================================================================
+         SEKME 3: HAREKETLİ GRAFİK (After Effects Katman, Dope Sheet & Bezier Grafik)
+         ======================================================================= -->
+    <main id="ws-ae" class="pl-ws-page" hidden>
+      <!-- Üst: Sol Effect Controls | Orta 3D Kamera Viewport | Sağ Essential Graphics -->
+      <div style="height:52%;display:grid;grid-template-columns:280px 1fr 270px;gap:8px;min-height:0">
+        <aside class="pl-panel" style="padding:10px 12px;gap:8px;overflow-y:auto">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-eyebrow">Effect Controls</span>
+            <span class="pl-badge pl-badge--pro">FX Stack</span>
+          </div>
+          <h3 style="margin:0;font-size:14px;color:var(--pl-fg-1)">01 · Başlık_Tipografi_3D</h3>
+          <div class="pl-panel" style="background:var(--pl-bg-2);padding:9px;gap:6px;flex:none">
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;color:var(--pl-fg-1)">
+              <span>fx · PLA-095 Optical Glow</span><span style="color:var(--pl-viz-5);font-family:var(--pl-font-mono)">GPU</span>
+            </div>
+            <label style="font-size:10.5px;display:grid;gap:3px">Threshold (%62)<input class="pl-slider" type="range" value="62" style="--pl-val:62%"></label>
+            <label style="font-size:10.5px;display:grid;gap:3px">Radius (84.0 px)<input class="pl-slider" type="range" value="75" style="--pl-val:75%"></label>
+            <label style="font-size:10.5px;display:grid;gap:3px">Chromatic Aberration<input class="pl-slider" type="range" value="38" style="--pl-val:38%"></label>
+          </div>
+          <div class="pl-panel" style="background:var(--pl-bg-2);padding:9px;gap:5px;flex:none">
+            <span class="pl-eyebrow">Rust Rhai Expression Motoru</span>
+            <code style="font-family:var(--pl-font-mono);font-size:10.5px;color:var(--pl-viz-5);background:var(--pl-bg-0);padding:7px;border-radius:6px;line-height:1.4">posterizeTime(24);<br>wiggle(1.5, 14.0) + inertiaBounce(t)</code>
+          </div>
+        </aside>
+
+        <!-- Orta: AE 3D Kompozisyon Görünümü + Bezier Hareket Yolu -->
+        <section class="pl-panel" style="background:var(--pl-bg-2);position:relative;overflow:hidden">
+          <div class="pl-panel__head" style="padding:7px 12px">
+            <span class="pl-panel__title" style="font-size:12px">Comp · Kurgu_Atolyesi_Intro (3840×2160 · 23.976 fps)</span>
+            <div class="pl-row" style="gap:6px">
+              <span class="pl-badge pl-badge--soft">Active Camera (35mm)</span>
+              <span class="pl-badge pl-badge--pro">3D Draft</span>
+            </div>
+          </div>
+          <div style="flex:1;position:relative">
+            <svg class="pl-kurgu-scene" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice">
+              <rect width="800" height="560" fill="url(#sc-bg)"/>
+              <rect width="800" height="560" fill="url(#sc-glow)"/>
+              <!-- 3D Perspektif Izgarası -->
+              <g stroke="rgba(139,124,255,0.16)" stroke-width="1">
+                <line x1="0" y1="440" x2="800" y2="440"/><line x1="0" y1="500" x2="800" y2="500"/>
+                <line x1="400" y1="280" x2="80" y2="560"/><line x1="400" y1="280" x2="280" y2="560"/>
+                <line x1="400" y1="280" x2="520" y2="560"/><line x1="400" y1="280" x2="720" y2="560"/>
+              </g>
+              <use href="#jelly" transform="translate(200 240) scale(1.3)"/>
+              <use href="#jelly" transform="translate(610 210) scale(1.2)"/>
+              <!-- Hareket Yolu (Motion Path) -->
+              <path d="M 140 360 C 260 160, 520 160, 650 320" fill="none" stroke="var(--pl-viz-3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+              <circle cx="140" cy="360" r="4" fill="var(--pl-viz-3)"/><circle cx="650" cy="320" r="4" fill="var(--pl-viz-3)"/>
+              <!-- 3D Gizmo ve Seçili Katman Çerçevesi -->
+              <g transform="translate(180 195)">
+                <rect x="0" y="0" width="440" height="110" rx="16" fill="rgba(18,21,30,0.58)" stroke="var(--pl-accent)" stroke-width="1.8"/>
+                <circle cx="0" cy="0" r="4.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+                <circle cx="440" cy="0" r="4.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+                <circle cx="0" cy="110" r="4.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+                <circle cx="440" cy="110" r="4.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+                <!-- X/Y/Z 3D Eksen Okları -->
+                <line x1="220" y1="55" x2="275" y2="55" stroke="#ff5e7e" stroke-width="2.5"/>
+                <line x1="220" y1="55" x2="220" y2="5" stroke="#34d399" stroke-width="2.5"/>
+                <circle cx="220" cy="55" r="4" fill="#38bdf8"/>
+                <text x="220" y="64" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">KURGU ATÖLYESİ · PLA-095</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- Sağ: Essential Graphics & 3D Dönüşüm Sayısal Kutuları -->
+        <aside class="pl-panel" style="padding:10px 12px;gap:8px">
+          <span class="pl-eyebrow">3D Transform & Camera</span>
+          <h3 style="margin:0;font-size:14px;color:var(--pl-fg-1)">Uzaysal Koordinatlar</h3>
+          <div style="display:grid;gap:6px;font-size:11px">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--pl-bg-2);padding:6px 8px;border-radius:8px">
+              <span style="color:var(--pl-fg-3)">Anchor Point</span>
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-viz-3)">1920.0, 1080.0, 0.0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--pl-bg-2);padding:6px 8px;border-radius:8px">
+              <span style="color:var(--pl-fg-3)">Position (X,Y,Z)</span>
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-viz-3)">1920.0, 984.5, -140.0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--pl-bg-2);padding:6px 8px;border-radius:8px">
+              <span style="color:var(--pl-fg-3)">Scale</span>
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-viz-5)">100.0%, 100.0%, 100%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--pl-bg-2);padding:6px 8px;border-radius:8px">
+              <span style="color:var(--pl-fg-3)">Orientation</span>
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-viz-4)">0x +0.0°, +4.2°, 0.0°</span>
+            </div>
+          </div>
+          <span class="pl-eyebrow" style="margin-top:4px">Motion Blur & Blending</span>
+          <div class="pl-row">
+            <span class="pl-chip pl-chip--accent">Shutter: 180°</span>
+            <span class="pl-chip">Samples: 32</span>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Alt: Sol Profesyonel AE Katman/Dope Sheet Tablosu + Sağ Cubic Bezier Hız Grafik Editörü -->
+      <div style="flex:1;display:grid;grid-template-columns:1.15fr 1fr;gap:8px;min-height:0">
+        <section class="pl-panel">
+          <div class="pl-panel__head" style="padding:6px 10px;font-size:10.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">
+            <span>#  KATMAN ADI</span>
+            <span>MOD / ANAHTAR KARELER (DOPE SHEET)</span>
+          </div>
+          <div style="flex:1;overflow-y:auto">
+            <div class="pl-ae-row" style="background:color-mix(in srgb, var(--pl-brand) 10.0%, transparent)">
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-accent)">01</span>
+              <span style="font-weight:600;color:var(--pl-fg-1)">T · Başlık_Tipografi_3D</span>
+              <span class="pl-badge pl-badge--soft" style="font-size:9px">3D · MB</span>
+              <span style="font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3)">Screen</span>
+              <div style="position:relative;height:100%;background:color-mix(in srgb, var(--pl-brand) 18.0%, transparent);border-radius:4px">
+                <span class="pl-ae-kf" style="left:14%"></span>
+                <span class="pl-ae-kf" style="left:48%"></span>
+                <span class="pl-ae-kf" style="left:82%"></span>
+              </div>
+            </div>
+            <div class="pl-ae-row">
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-fg-3)">02</span>
+              <span style="color:var(--pl-fg-1)">✦ · Biyolüminesans_Partikül</span>
+              <span class="pl-badge pl-badge--soft" style="font-size:9px">3D · FX</span>
+              <span style="font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3)">Add</span>
+              <div style="position:relative;height:100%;background:color-mix(in srgb, var(--pl-brand-2) 16.0%, transparent);border-radius:4px">
+                <span class="pl-ae-kf" style="left:22%"></span>
+                <span class="pl-ae-kf" style="left:68%"></span>
+              </div>
+            </div>
+            <div class="pl-ae-row">
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-fg-3)">03</span>
+              <span style="color:var(--pl-fg-1)">◐ · ACES_Grade_Adjustment</span>
+              <span class="pl-badge pl-badge--soft" style="font-size:9px">ADJ</span>
+              <span style="font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3)">Normal</span>
+              <div style="position:relative;height:100%;background:color-mix(in srgb, var(--pl-viz-3) 16.0%, transparent);border-radius:4px">
+                <span class="pl-ae-kf" style="left:35%"></span>
+              </div>
+            </div>
+            <div class="pl-ae-row">
+              <span style="font-family:var(--pl-font-mono);color:var(--pl-fg-3)">04</span>
+              <span style="color:var(--pl-fg-1)">▶ · Denizanası_Sahnesi.mp4</span>
+              <span class="pl-badge pl-badge--soft" style="font-size:9px">RAW</span>
+              <span style="font-family:var(--pl-font-mono);font-size:10px;color:var(--pl-fg-3)">Normal</span>
+              <div style="position:relative;height:100%;background:color-mix(in srgb, var(--pl-success) 15.0%, transparent);border-radius:4px"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pl-panel" style="padding:10px 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span class="pl-panel__title" style="font-size:12px">Value & Speed Graph Editor (Sarı Teğet Kolunu Sürükleyin)</span>
+            <span class="pl-badge pl-badge--soft" style="font-family:var(--pl-font-mono)">Influence: 78.4%</span>
+          </div>
+          <svg id="ae-bezier-svg" viewBox="0 0 600 150" style="width:100%;flex:1;background:var(--pl-bg-0);border-radius:var(--pl-radius-md);cursor:pointer;border:1px solid var(--pl-line)">
+            <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+              <line x1="0" y1="37" x2="600" y2="37"/><line x1="0" y1="75" x2="600" y2="75"/><line x1="0" y1="112" x2="600" y2="112"/>
+              <line x1="150" y1="0" x2="150" y2="150"/><line x1="300" y1="0" x2="300" y2="150"/><line x1="450" y1="0" x2="450" y2="150"/>
+            </g>
+            <path d="M 60 125 C 200 125, 360 25, 540 25 L 540 150 L 60 150 Z" fill="rgba(139,124,255,0.1)"/>
+            <path id="ae-bezier-curve" d="M 60 125 C 200 125, 360 25, 540 25" fill="none" stroke="var(--pl-accent)" stroke-width="3"/>
+            <line id="ae-handle-line" x1="60" y1="125" x2="210" y2="115" stroke="var(--pl-viz-4)" stroke-width="2"/>
+            <circle cx="60" cy="125" r="5.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+            <circle cx="540" cy="25" r="5.5" fill="#fff" stroke="var(--pl-accent)" stroke-width="2"/>
+            <circle id="ae-handle-dot" cx="210" cy="115" r="7" fill="var(--pl-viz-4)" style="cursor:grab"/>
+          </svg>
+        </section>
+      </div>
+    </main>
+
+    <!-- =======================================================================
+         SEKME 4: RENK LABORATUVARI (DaVinci Resolve 4 Katmanlı Tam Yerleşim)
+         1. Üst: Gallery/LUTs | Referans Monitör | Color Node Pipeline
+         2. Orta: Timecode & Codec Filmstrip Thumbnail Şeridi
+         3. Alt: Hollow Ring Primaries Wheels (YRGB) | Custom Curves & Histogram | RGB Parade Scopes
+         ======================================================================= -->
+    <main id="ws-color" class="pl-ws-page" hidden>
+      <!-- 1. ÜST BÖLÜM: Sol LUT Gallery | Orta Önizleme Monitörü | Sağ Renk Düğüm Hattı -->
+      <div style="height:41%;display:grid;grid-template-columns:220px 1fr 290px;gap:8px;min-height:0">
+        <!-- Sol: LUTs & Gallery Stills -->
+        <aside class="pl-panel" style="padding:10px;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-eyebrow">3D LUTs & Stills</span>
+            <span class="pl-badge pl-badge--soft">.cube</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow-y:auto">
+            <button class="pl-kurgu-vcard" style="aspect-ratio:16/10">
+              <span class="pl-kurgu-art pl-kurgu-art--scene"></span>
+              <span class="pl-kurgu-cap" style="font-size:9.5px">ACES Rec.709</span>
+            </button>
+            <button class="pl-kurgu-vcard" style="aspect-ratio:16/10">
+              <span class="pl-kurgu-art pl-kurgu-art--5"></span>
+              <span class="pl-kurgu-cap" style="font-size:9.5px">Teal & Orange</span>
+            </button>
+            <button class="pl-kurgu-vcard" style="aspect-ratio:16/10">
+              <span class="pl-kurgu-art pl-kurgu-art--1"></span>
+              <span class="pl-kurgu-cap" style="font-size:9.5px">Kodak 2383</span>
+            </button>
+            <button class="pl-kurgu-vcard" style="aspect-ratio:16/10">
+              <span class="pl-kurgu-art pl-kurgu-art--4"></span>
+              <span class="pl-kurgu-cap" style="font-size:9.5px">Cyber Neon</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Orta: ACEScct Referans Monitörü -->
+        <section class="pl-panel" style="background:var(--pl-bg-2);position:relative;overflow:hidden">
+          <div class="pl-panel__head" style="padding:6px 12px">
+            <span class="pl-panel__title" style="font-size:12px">Denizanası_Sahnesi.mp4 · ACEScct 32-Bit Float</span>
+            <span class="pl-badge pl-badge--pro" id="resolve-active-lut">LUT: ACES Rec.709</span>
+          </div>
+          <div style="flex:1;position:relative">
+            <svg class="pl-kurgu-scene" id="resolve-scene-svg" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice">
+              <rect width="800" height="560" fill="url(#sc-bg)"/>
+              <rect width="800" height="560" fill="url(#sc-glow)"/>
+              <g class="pl-kurgu-rays"><path d="M330 0 260 560h40L370 0z"/><path d="M430 0l40 560h60L470 0z"/></g>
+              <use href="#jelly" transform="translate(200 220) scale(1.4)"/>
+              <use href="#jelly" transform="translate(550 250) scale(1.5)"/>
+              <g class="pl-kurgu-queen" transform="translate(420 270) scale(0.85)">
+                <path d="M-120 10C-120-110 120-110 120 10c-20 18-40 4-60 10-20 12-40 12-60 0-20 12-40 12-60 0-20-6-40 8-60-10z" fill="url(#sc-dome)"/>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- Sağ: DaVinci Serial + Parallel Color Node Graph -->
+        <aside class="pl-panel pl-node-grid-bg" style="padding:10px;position:relative">
+          <div style="display:flex;justify-content:space-between;align-items:center;z-index:2">
+            <span class="pl-eyebrow">Color Node Pipeline</span>
+            <span class="pl-badge pl-badge--soft">4 Serial Nodes</span>
+          </div>
+          <svg viewBox="0 0 260 170" style="width:100%;flex:1">
+            <path d="M 15 85 H 55 M 115 85 C 130 85, 130 45, 145 45 M 115 85 C 130 85, 130 125, 145 125 M 205 45 C 220 45, 220 85, 235 85 M 205 125 C 220 125, 220 85, 235 85" stroke="var(--pl-viz-5)" stroke-width="2" fill="none"/>
+            <rect x="55" y="65" width="60" height="40" rx="6" fill="#181c28" stroke="var(--pl-viz-4)" stroke-width="2"/>
+            <text x="85" y="89" text-anchor="middle" fill="#fff" font-size="10" font-family="JetBrains Mono">01 Prim</text>
+            <rect x="145" y="25" width="60" height="40" rx="6" fill="#181c28" stroke="var(--pl-viz-3)" stroke-width="1.5"/>
+            <text x="175" y="49" text-anchor="middle" fill="#fff" font-size="10" font-family="JetBrains Mono">02 Glow</text>
+            <rect x="145" y="105" width="60" height="40" rx="6" fill="#181c28" stroke="var(--pl-viz-1)" stroke-width="1.5"/>
+            <text x="175" y="129" text-anchor="middle" fill="#fff" font-size="10" font-family="JetBrains Mono">03 Skin</text>
+            <circle cx="235" cy="85" r="7" fill="var(--pl-viz-5)"/>
+          </svg>
+        </aside>
+      </div>
+
+      <!-- 2. ORTA BÖLÜM: DaVinci Resolve Zaman Kodu & Kodek Film Şeridi (Thumbnail Strip) -->
+      <div class="pl-pro-strip">
+        <div class="pl-pro-thumb is-active"><div class="pl-kurgu-art pl-kurgu-art--scene" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>01</span><span>00:00:08:12</span></div><div class="pl-pro-thumb__codec">Blackmagic RAW</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--1" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>02</span><span>00:00:14:04</span></div><div class="pl-pro-thumb__codec">ProRes 4444 XQ</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--2" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>03</span><span>00:00:19:18</span></div><div class="pl-pro-thumb__codec">ProRes 4444 XQ</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--3" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>04</span><span>00:00:26:00</span></div><div class="pl-pro-thumb__codec">ACES EXR 16-Bit</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--4" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>05</span><span>00:00:31:22</span></div><div class="pl-pro-thumb__codec">Blackmagic RAW</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--5" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>06</span><span>00:00:38:10</span></div><div class="pl-pro-thumb__codec">H.265 10-Bit 4:2:2</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--6" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>07</span><span>00:00:45:06</span></div><div class="pl-pro-thumb__codec">ProRes 422 HQ</div></div>
+        <div class="pl-pro-thumb"><div class="pl-kurgu-art pl-kurgu-art--scene" style="height:100%"></div><div class="pl-pro-thumb__tc"><span>08</span><span>00:00:52:19</span></div><div class="pl-pro-thumb__codec">Blackmagic RAW</div></div>
+      </div>
+
+      <!-- 3. ALT BÖLÜM: Sol Primaries Hollow Wheels | Orta Custom Curves & Histogram | Sağ RGB Parade Scopes -->
+      <div style="flex:1;display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:8px;min-height:0">
+        <!-- Sol: 4 İçi Koyu Halka Renk Çarkı + Master Jog + YRGB Sayısal + Alt Parametre Çubuğu -->
+        <section class="pl-panel" style="padding:10px;justify-content:space-between">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-panel__title" style="font-size:12px">Primaries Wheels · Lift / Gamma / Gain / Offset</span>
+            <span class="pl-badge pl-badge--soft" style="font-family:var(--pl-font-mono)">ACES AP1</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px">
+            <div class="pl-pro-wheel-card">
+              <div class="pl-pro-wheel-head"><span>Lift</span><span>↺</span></div>
+              <div class="pl-pro-ring"><i style="--pl-x:50%;--pl-y:50%"></i></div>
+              <div class="pl-pro-master-jog"></div>
+              <div class="pl-pro-yrgb"><span style="color:var(--pl-bg-1)">0.00</span><span style="color:var(--pl-danger)">0.00</span><span style="color:var(--pl-success)">0.00</span><span style="color:var(--pl-brand-2)">0.00</span></div>
+            </div>
+            <div class="pl-pro-wheel-card">
+              <div class="pl-pro-wheel-head"><span>Gamma</span><span>↺</span></div>
+              <div class="pl-pro-ring"><i style="--pl-x:56%;--pl-y:44%"></i></div>
+              <div class="pl-pro-master-jog"></div>
+              <div class="pl-pro-yrgb"><span style="color:var(--pl-bg-1)">0.02</span><span style="color:var(--pl-danger)">0.04</span><span style="color:var(--pl-success)">0.00</span><span style="color:var(--pl-brand-2)">-0.02</span></div>
+            </div>
+            <div class="pl-pro-wheel-card">
+              <div class="pl-pro-wheel-head"><span>Gain</span><span>↺</span></div>
+              <div class="pl-pro-ring"><i style="--pl-x:44%;--pl-y:56%"></i></div>
+              <div class="pl-pro-master-jog"></div>
+              <div class="pl-pro-yrgb"><span style="color:var(--pl-bg-1)">1.00</span><span style="color:var(--pl-danger)">0.98</span><span style="color:var(--pl-success)">1.04</span><span style="color:var(--pl-brand-2)">1.08</span></div>
+            </div>
+            <div class="pl-pro-wheel-card">
+              <div class="pl-pro-wheel-head"><span>Offset</span><span>↺</span></div>
+              <div class="pl-pro-ring"><i style="--pl-x:50%;--pl-y:50%"></i></div>
+              <div class="pl-pro-master-jog"></div>
+              <div class="pl-pro-yrgb"><span style="color:var(--pl-bg-1)">25.0</span><span style="color:var(--pl-danger)">25.0</span><span style="color:var(--pl-success)">25.0</span><span style="color:var(--pl-brand-2)">25.0</span></div>
+            </div>
+          </div>
+          <!-- Alt Sayısal Bar: Contrast, Pivot, Sat, Hue, Lum Mix -->
+          <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:6px;padding-top:4px;border-top:1px solid var(--pl-line);font-family:var(--pl-font-mono);font-size:10px">
+            <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Contrast <b style="color:var(--pl-bg-1)">1.040</b></div>
+            <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Pivot <b style="color:var(--pl-bg-1)">0.435</b></div>
+            <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Sat <b style="color:var(--pl-viz-3)">54.00</b></div>
+            <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Hue <b style="color:var(--pl-bg-1)">50.00</b></div>
+            <div style="background:var(--pl-bg-0);padding:4px 6px;border-radius:6px">Lum Mix <b style="color:var(--pl-viz-5)">100.0</b></div>
+          </div>
+        </section>
+
+        <!-- Orta: DaVinci Custom YRGB Curves + Arka Plan Histogram -->
+        <section class="pl-panel" style="padding:10px;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-panel__title" style="font-size:12px">Custom Curves · YRGB</span>
+            <div class="pl-row" style="gap:4px">
+              <span class="pl-badge pl-badge--soft" style="color:var(--pl-bg-1)">Y</span>
+              <span class="pl-badge pl-badge--soft" style="color:var(--pl-danger)">R</span>
+              <span class="pl-badge pl-badge--soft" style="color:var(--pl-success)">G</span>
+              <span class="pl-badge pl-badge--soft" style="color:var(--pl-brand-2)">B</span>
+            </div>
+          </div>
+          <svg viewBox="0 0 320 180" style="width:100%;flex:1;background:var(--pl-bg-0);border-radius:var(--pl-radius-md);border:1px solid var(--pl-line)">
+            <!-- Histogram Silüeti -->
+            <path d="M 0 180 L 20 155 L 55 120 L 95 75 L 130 95 L 165 40 L 205 60 L 245 110 L 285 145 L 320 180 Z" fill="rgba(255,255,255,0.08)"/>
+            <path d="M 0 180 L 40 140 L 90 110 L 145 55 L 195 30 L 240 85 L 320 180 Z" fill="rgba(255,94,126,0.16)"/>
+            <!-- RGB Eğrileri -->
+            <line x1="0" y1="180" x2="320" y2="0" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3 3"/>
+            <path d="M 0 180 C 90 150, 210 35, 320 0" fill="none" stroke="#38bdf8" stroke-width="1.6"/>
+            <path d="M 0 180 C 110 135, 200 50, 320 0" fill="none" stroke="#ffffff" stroke-width="2.2"/>
+            <circle cx="115" cy="118" r="4.5" fill="#12151e" stroke="#fff" stroke-width="2"/>
+            <circle cx="215" cy="52" r="4.5" fill="#12151e" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </section>
+
+        <!-- Sağ: Yüksek Yoğunluklu RGB Parade & Vectorscope Skopları -->
+        <section class="pl-panel" style="padding:10px;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-panel__title" style="font-size:12px">Scopes · 10-Bit IRE Parade & Vector</span>
+            <span class="pl-badge pl-badge--soft" style="font-family:var(--pl-font-mono)">0–1023 IRE</span>
+          </div>
+          <div style="flex:1;display:grid;grid-template-columns:1.35fr 1fr;gap:6px;min-height:0">
+            <div style="background:var(--pl-bg-0);border-radius:var(--pl-radius-md);padding:6px;position:relative;border:1px solid var(--pl-line)">
+              <canvas id="scope-parade" style="width:100%;height:100%;display:block"></canvas>
+            </div>
+            <div style="background:var(--pl-bg-0);border-radius:var(--pl-radius-md);padding:6px;position:relative;border:1px solid var(--pl-line)">
+              <canvas id="scope-vector" style="width:100%;height:100%;display:block"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- =======================================================================
+         SEKME 5: SES MİKSERİ (Ses Konsolu Konsol + 6-Bant EQ + EBU R128 Loudness)
+         ======================================================================= -->
+    <main id="ws-audio" class="pl-ws-page" hidden>
+      <div style="flex:1;display:grid;grid-template-columns:1.35fr 1fr;gap:8px;min-height:0">
+        <!-- Sol: Ses Konsolu Kanal Şeritleri (Insert FX, Pan, Motorlu Fader, Çift LED Meter, Solo/Mute) -->
+        <section class="pl-panel" style="padding:12px;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="pl-panel__title">Ses Konsolu Audio Console · Ses Konsolu · DSP bağlantısı planlandı</span>
+            <span class="pl-badge pl-badge--pro">48kHz · 32-Bit Float DSP</span>
+          </div>
+          <div style="flex:1;display:grid;grid-template-columns:repeat(5, 1fr);gap:8px;min-height:0">
+            <!-- Kanal Şablonları JS ile de canlandırılır -->
+            <div class="pl-panel" style="background:var(--pl-bg-2);padding:10px;align-items:center;justify-content:space-between">
+              <div style="width:100%;text-align:center;border-bottom:1px solid var(--pl-line);padding-bottom:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pl-viz-3)">A1 · VOX</span>
+                <div style="font-size:9.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">Bus 1 · Mono</div>
+              </div>
+              <div style="width:100%;display:grid;gap:3px">
+                <span class="pl-chip pl-chip--accent" style="justify-content:center;font-size:9.5px;padding:2px 6px">ONNX DeNoise</span>
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">SSL Comp</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div class="pl-fader-track"><div class="pl-fader-cap" style="top:28%"></div></div>
+                <div class="pl-meter-led" data-meter="82"></div>
+              </div>
+              <div style="display:flex;gap:4px;width:100%">
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">M</button>
+                <button class="pl-btn pl-btn--primary pl-btn--sm" style="flex:1;height:24px;padding:0">S</button>
+              </div>
+              <span class="pl-num" style="font-family:var(--pl-font-mono);font-size:12px;font-weight:700;color:var(--pl-fg-1)">-1.2 dB</span>
+            </div>
+
+            <div class="pl-panel" style="background:var(--pl-bg-2);padding:10px;align-items:center;justify-content:space-between">
+              <div style="width:100%;text-align:center;border-bottom:1px solid var(--pl-line);padding-bottom:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pl-viz-1)">A2 · LO-FI</span>
+                <div style="font-size:9.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">Bus 1 · Stereo</div>
+              </div>
+              <div style="width:100%;display:grid;gap:3px">
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Ducking AI</span>
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Stereo Width</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div class="pl-fader-track"><div class="pl-fader-cap" style="top:44%"></div></div>
+                <div class="pl-meter-led" data-meter="64"></div>
+              </div>
+              <div style="display:flex;gap:4px;width:100%">
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">M</button>
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">S</button>
+              </div>
+              <span class="pl-num" style="font-family:var(--pl-font-mono);font-size:12px;font-weight:700;color:var(--pl-fg-1)">-6.4 dB</span>
+            </div>
+
+            <div class="pl-panel" style="background:var(--pl-bg-2);padding:10px;align-items:center;justify-content:space-between">
+              <div style="width:100%;text-align:center;border-bottom:1px solid var(--pl-line);padding-bottom:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pl-viz-6)">A3 · AMBIENT</span>
+                <div style="font-size:9.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">Atmos 7.1.4</div>
+              </div>
+              <div style="width:100%;display:grid;gap:3px">
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Shimmer Verb</span>
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Sub Harmonic</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div class="pl-fader-track"><div class="pl-fader-cap" style="top:38%"></div></div>
+                <div class="pl-meter-led" data-meter="70"></div>
+              </div>
+              <div style="display:flex;gap:4px;width:100%">
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">M</button>
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">S</button>
+              </div>
+              <span class="pl-num" style="font-family:var(--pl-font-mono);font-size:12px;font-weight:700;color:var(--pl-fg-1)">-4.0 dB</span>
+            </div>
+
+            <div class="pl-panel" style="background:var(--pl-bg-2);padding:10px;align-items:center;justify-content:space-between">
+              <div style="width:100%;text-align:center;border-bottom:1px solid var(--pl-line);padding-bottom:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pl-viz-4)">A4 · FOLEY</span>
+                <div style="font-size:9.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">Bus 2 · Stereo</div>
+              </div>
+              <div style="width:100%;display:grid;gap:3px">
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Transient</span>
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">Room IR</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div class="pl-fader-track"><div class="pl-fader-cap" style="top:52%"></div></div>
+                <div class="pl-meter-led" data-meter="52"></div>
+              </div>
+              <div style="display:flex;gap:4px;width:100%">
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">M</button>
+                <button class="pl-btn pl-btn--secondary pl-btn--sm" style="flex:1;height:24px;padding:0">S</button>
+              </div>
+              <span class="pl-num" style="font-family:var(--pl-font-mono);font-size:12px;font-weight:700;color:var(--pl-fg-1)">-8.5 dB</span>
+            </div>
+
+            <div class="pl-panel" style="background:var(--pl-bg-2);border-color:var(--pl-accent-line);padding:10px;align-items:center;justify-content:space-between">
+              <div style="width:100%;text-align:center;border-bottom:1px solid var(--pl-line);padding-bottom:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pl-viz-5)">M1 · MASTER</span>
+                <div style="font-size:9.5px;color:var(--pl-fg-3);font-family:var(--pl-font-mono)">TruePeak Out</div>
+              </div>
+              <div style="width:100%;display:grid;gap:3px">
+                <span class="pl-badge pl-badge--pro" style="justify-content:center">Brickwall -1dB</span>
+                <span class="pl-chip" style="justify-content:center;font-size:9.5px;padding:2px 6px">EBU R128</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div class="pl-fader-track"><div class="pl-fader-cap" style="top:18%"></div></div>
+                <div class="pl-meter-led" data-meter="88"></div>
+              </div>
+              <span class="pl-num" style="font-family:var(--pl-font-mono);font-size:14px;font-weight:700;color:var(--pl-viz-5)">-0.1 dB</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sağ: 6-Bant Parametrik FFT EQ + Loudness Radar Telemetrisi -->
+        <div style="display:flex;flex-direction:column;gap:8px;min-height:0">
+          <section class="pl-panel" style="flex:1.2;padding:12px;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="pl-panel__title" style="font-size:13px">6-Band Parametric EQ & Real-Time FFT Analyzer</span>
+              <span class="pl-badge pl-badge--soft" style="font-family:var(--pl-font-mono)">20Hz – 20kHz</span>
+            </div>
+            <svg viewBox="0 0 420 165" style="width:100%;flex:1;background:var(--pl-bg-0);border-radius:var(--pl-radius-md);border:1px solid var(--pl-line)">
+              <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+                <line x1="0" y1="40" x2="420" y2="40"/><line x1="0" y1="82" x2="420" y2="82"/><line x1="0" y1="124" x2="420" y2="124"/>
+                <line x1="70" y1="0" x2="70" y2="165"/><line x1="160" y1="0" x2="160" y2="165"/><line x1="260" y1="0" x2="260" y2="165"/><line x1="350" y1="0" x2="350" y2="165"/>
+              </g>
+              <path d="M 0 150 L 30 120 L 70 95 L 120 110 L 160 55 L 220 75 L 280 50 L 340 65 L 420 90 L 420 165 L 0 165 Z" fill="rgba(52,211,153,0.14)"/>
+              <path d="M 0 130 Q 45 85, 95 85 T 180 52 T 290 68 T 420 45" fill="none" stroke="var(--pl-viz-5)" stroke-width="2.5"/>
+              <circle cx="95" cy="85" r="5.5" fill="#12151e" stroke="var(--pl-viz-3)" stroke-width="2"/>
+              <circle cx="180" cy="52" r="5.5" fill="#12151e" stroke="var(--pl-viz-5)" stroke-width="2"/>
+              <circle cx="290" cy="68" r="5.5" fill="#12151e" stroke="var(--pl-viz-4)" stroke-width="2"/>
+              <circle cx="370" cy="50" r="5.5" fill="#12151e" stroke="var(--pl-viz-1)" stroke-width="2"/>
+            </svg>
+          </section>
+
+          <section class="pl-panel" style="flex:0.8;padding:12px;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="pl-panel__title" style="font-size:13px">Loudness Metering · EBU R128 / ITU-R BS.1770-4</span>
+              <span class="pl-badge pl-badge--pro">Örnek ölçüm</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;flex:1;align-items:center">
+              <div style="background:var(--pl-bg-2);padding:10px;border-radius:var(--pl-radius-md);text-align:center">
+                <div class="pl-eyebrow">INTEGRATED</div>
+                <div style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-5);margin-top:4px">-14.0</div>
+                <div style="font-size:10px;color:var(--pl-fg-3)">LUFS (YouTube/Spotify)</div>
+              </div>
+              <div style="background:var(--pl-bg-2);padding:10px;border-radius:var(--pl-radius-md);text-align:center">
+                <div class="pl-eyebrow">SHORT-TERM</div>
+                <div style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-3);margin-top:4px">-12.4</div>
+                <div style="font-size:10px;color:var(--pl-fg-3)">LUFS (3 sn)</div>
+              </div>
+              <div style="background:var(--pl-bg-2);padding:10px;border-radius:var(--pl-radius-md);text-align:center">
+                <div class="pl-eyebrow">LRA RANGE</div>
+                <div style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-4);margin-top:4px">5.8</div>
+                <div style="font-size:10px;color:var(--pl-fg-3)">LU Dinamik</div>
+              </div>
+              <div style="background:var(--pl-bg-2);padding:10px;border-radius:var(--pl-radius-md);text-align:center">
+                <div class="pl-eyebrow">TRUE PEAK</div>
+                <div style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-1);margin-top:4px">-1.0</div>
+                <div style="font-size:10px;color:var(--pl-fg-3)">dBTP Max</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- =======================================================================
+         SEKME 6: DIŞA AKTAR & RUST ÇEKİRDEK TELEMETRİSİ (Deliver)
+         ======================================================================= -->
+    <main id="ws-deliver" class="pl-ws-page" hidden>
+      <div style="flex:1;display:grid;grid-template-columns:360px 1fr;gap:8px;min-height:0">
+        <!-- Sol: Profesyonel Kodek Preset Kartları & Format Ayarları -->
+        <section class="pl-panel" style="padding:14px;gap:10px">
+          <span class="pl-eyebrow">Render Settings · Deliver</span>
+          <h3 style="margin:0;font-size:15px;color:var(--pl-fg-1)">Master Çıktı Profilleri</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <button class="pl-kurgu-aiact" style="border-color:var(--pl-accent-line);background:var(--pl-accent-soft)"><span><b>ProRes 4444 XQ</b><small>12-Bit + Alpha</small></span></button>
+            <button class="pl-kurgu-aiact"><span><b>H.265 10-Bit</b><small>4:2:2 NVENC</small></span></button>
+            <button class="pl-kurgu-aiact"><span><b>IMF Cinema</b><small>DCI 4K J2K</small></span></button>
+            <button class="pl-kurgu-aiact"><span><b>ACES OpenEXR</b><small>16-Bit Half Float</small></span></button>
+          </div>
+          <label style="font-size:11.5px;display:grid;gap:4px">Çözünürlük & Renk Uzayı
+            <input class="pl-input" value="3840 × 2160 DCI · ACEScct AP1 · 23.976 fps">
+          </label>
+          <label style="font-size:11.5px;display:grid;gap:4px">Ses Çıktı Veriyolu
+            <input class="pl-input" value="Linear PCM 24-Bit · 48kHz · -14.0 LUFS Normalized">
+          </label>
+          <button class="pl-btn pl-btn--primary" style="margin-top:auto;height:38px" id="start-rust-render-btn">
+            <svg class="pl-ico"><use href="#i-export"/></svg>Render ayarlarını incele
+          </button>
+        </section>
+
+        <!-- Sağ: WGPU Donanım Telemetri Kartları + Render Kuyruğu + Sistem Konsolu -->
+        <div style="display:flex;flex-direction:column;gap:8px;min-height:0">
+          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;flex:none">
+            <div class="pl-panel" style="padding:10px 12px;background:var(--pl-bg-2)">
+              <span class="pl-eyebrow">WGPU COMPUTE</span>
+              <span style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-5);margin-top:2px">— FPS</span>
+              <span style="font-size:10px;color:var(--pl-fg-3)">Ölçüm bağlı değil</span>
+            </div>
+            <div class="pl-panel" style="padding:10px 12px;background:var(--pl-bg-2)">
+              <span class="pl-eyebrow">VRAM HAVUZU</span>
+              <span style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-3);margin-top:2px">— / — GB</span>
+              <span style="font-size:10px;color:var(--pl-fg-3)">Telemetri planlandı</span>
+            </div>
+            <div class="pl-panel" style="padding:10px 12px;background:var(--pl-bg-2)">
+              <span class="pl-eyebrow">ONNX TENSORRT</span>
+              <span style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-1);margin-top:2px">Bağlı değil</span>
+              <span style="font-size:10px;color:var(--pl-fg-3)">AI Rig & LipSync</span>
+            </div>
+            <div class="pl-panel" style="padding:10px 12px;background:var(--pl-bg-2)">
+              <span class="pl-eyebrow">RAYON THREADS</span>
+              <span style="font:700 20px var(--pl-font-mono);color:var(--pl-viz-4);margin-top:2px">— iş parçacığı</span>
+              <span style="font-size:10px;color:var(--pl-fg-3)">DAG Kahn Çözücü</span>
+            </div>
+          </div>
+
+          <section class="pl-panel" style="flex:1;padding:14px;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="pl-panel__title">Render Queue & Rust Sistem Telemetrisi</span>
+              <span class="pl-badge pl-badge--pro" id="render-pct-badge">TASARIM ÖRNEĞİ</span>
+            </div>
+            <div class="pl-panel" style="background:var(--pl-bg-2);padding:12px;gap:6px;flex:none">
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--pl-fg-1)">
+                <span>Job #01 · Kurgu_Atolyesi_Denizanasi_Master.mov (ProRes 4444 XQ)</span>
+                <span style="font-family:var(--pl-font-mono);color:var(--pl-viz-5)" id="render-bar-txt">Henüz iş oluşturulmadı</span>
+              </div>
+              <div style="height:7px;background:var(--pl-bg-0);border-radius:99px;overflow:hidden">
+                <div id="render-bar-fill" style="height:100%;width:0%;background:var(--pl-grad-sunset);transition:width 150ms"></div>
+              </div>
+            </div>
+            <pre style="flex:1;margin:0;padding:12px;background:var(--pl-bg-0);border-radius:var(--pl-radius-md);border:1px solid var(--pl-line);font-family:var(--pl-font-mono);font-size:11px;color:var(--pl-fg-2);overflow-y:auto;line-height:1.55">[ÖNİZLEME] Bu alanlar arayüz taslağıdır; donanım ölçümü veya render işi çalışmıyor.
+[RUST] Tauri masaüstü kabuğu.
+[PLAN] GPU/ONNX, ACES, profesyonel kodekler ve ses ölçümleri sonraki uygulama aşamasında.</pre>
+          </section>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ============ ALT 6 ÇALIŞMA ALANI GEÇİŞ ÇUBUĞU (Önceki Yerleşim + Yeni Yumuşak Bileşenler) ============ -->
+  <footer class="pl-ws-switcher">
+    <div class="pl-row" style="font-size:11px;color:var(--pl-fg-3)">
+      <span class="pl-fusion-dot" style="--pl-c:var(--pl-viz-5)"></span>
+      <span>Örnek proje · İşleme kapalı</span>
+    </div>
+
+    <nav class="pl-ws-tabs" aria-label="Çalışma Alanları">
+      <button class="pl-ws-tab is-active" data-ws="edit"><svg class="pl-ico"><use href="#i-video"/></svg><span>Kurgu</span></button>
+      <button class="pl-ws-tab" data-ws="fusion"><svg class="pl-ico"><use href="#i-nodes"/></svg><span>Düğüm & Karakter</span></button>
+      <button class="pl-ws-tab" data-ws="ae"><svg class="pl-ico"><use href="#i-spark"/></svg><span>Hareket</span></button>
+      <button class="pl-ws-tab" data-ws="color"><svg class="pl-ico"><use href="#i-fx"/></svg><span>Renk</span></button>
+      <button class="pl-ws-tab" data-ws="audio"><svg class="pl-ico"><use href="#i-vol"/></svg><span>5. Ses (Ses Konsolu)</span></button>
+      <button class="pl-ws-tab" data-ws="deliver"><svg class="pl-ico"><use href="#i-export"/></svg><span>Teslim</span></button>
+    </nav>
+
+    <div class="pl-row" style="font-size:11px;font-family:var(--pl-font-mono);color:var(--pl-fg-3)">
+      <span>Ctrl+K Komutlar</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Komut Paleti (Ctrl+K) -->
+<dialog class="pl-kurgu-dialog" id="cmdk">
+  <div class="pl-cmdk">
+    <div class="pl-cmdk__input"><svg class="pl-ico"><use href="#i-search"/></svg><input id="cmdk-q" placeholder="Çalışma alanı, komut veya medya ara…"><span class="pl-badge pl-badge--soft">Esc</span></div>
+    <div class="pl-cmdk__list" id="cmdk-list"></div>
+  </div>
+</dialog>
+
+<div class="pl-kurgu-toasts" id="toasts"></div>
+</div>
+
+<script src="omni-reference.js"></script><script src="omni.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-04",
+  "platform": "Windows x64 / Tauri 2 / WebView2",
+  "url": "http://tauri.localhost/",
+  "capabilities": {
+    "aiMask": false,
+    "gpu": false,
+    "graph": "serial-video",
+    "mymind": false,
+    "rust": true
+  },
+  "results": [
+    {
+      "workspace": "edit",
+      "status": "passed"
+    },
+    {
+      "workspace": "fusion",
+      "status": "passed"
+    },
+    {
+      "workspace": "ae",
+      "status": "passed"
+    },
+    {
+      "workspace": "color",
+      "status": "passed"
+    },
+    {
+      "workspace": "audio",
+      "status": "passed"
+    },
+    {
+      "workspace": "deliver",
+      "status": "passed"
+    }
+  ],
+  "commandPalette": "passed",
+  "nodeDrag": "passed",
+  "slider": "passed",
+  "layout1320": "passed",
+  "externalRequests": [],
+  "errors": [],
+  "scope": "UI preview; sample scene/measurements. No AI inference, GPU telemetry or professional codec export claimed."
+}
