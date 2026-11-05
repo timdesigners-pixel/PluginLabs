@@ -1,3 +1,11 @@
+PluginLabs Hub 0.4.19 — Gardrop 0.2.1
+
+- Gardrop 0.2.1: seçili MyWishlist aktarımı, fiyatlı kombin kolajı, 14 üretilmiş ürün fotoğrafı ve model üzerinde sabit demo görseli; MyMind metin isteği ve önizleme.
+- Katalog boyut/SHA256 değerleri Windows runner kaynak release paketinden alındı; dağıtım aynası aynı dosyaları sunar.
+- Gerçekçi kişisel giydirme ve 3B renderer uygulanmadı. İmzasız Windows sürümüdür.
+
+---
+
 PluginLabs Hub 0.4.18 — Genel bakış widget'larına örnek görseller.
 
 - Günün kombini (Gardrop) ve Günün menüsü (Mutfak Atölyesi: kahvaltı, öğle, akşam) widget'larında SVG çizimlerin yerine örnek fotoğraf görselleri. Görseller Google Gemini ile üretildi, uygulamayla birlikte gelir (`ui/img/`, WebP, toplam ~70 KB) ve internetten yüklenmez.
