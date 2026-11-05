@@ -50,3 +50,6 @@ Tauri 2 / Rust çekirdeği, WebView2 arayüzü; veri tek JSON dosyasında yalnı
 
 ---
 Oluşturma: 01.11.2026 · Kaynak → hedef: kullanıcı isteği → `registry/projects.json` → bu dosya
+
+## 05.11.2026 · v0.2.1 yayımlandı
+Kaynak: https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.2.1 · gerçek ekranlar ve fotoğraflı demo ürün deposunun README dosyasında. Hub 0.4.19 katalog kaydı; kişisel giydirme/3B değildir.
