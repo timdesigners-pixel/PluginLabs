@@ -1,6 +1,10 @@
-# PluginLabs Hub 0.3.0
+# PluginLabs Hub 0.4.19
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
+
+Flow Dock 0.2.0 ön sürümü Hub üzerinden kurulabilir. Windows 11 üzerinde doğrulandı; Windows Server 2025 açılış testi başarısız.
+
+![Hub 0.4.19 Flow Dock ön sürüm kaydı (Windows, gerçek Electron)](docs/screenshots/flow-dock-020-hub.png)
 
 ## Ekran görüntüleri
 

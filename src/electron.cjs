@@ -19,7 +19,8 @@ else {
         : path.join(app.getPath("userData"), "hub"),
     ).init();
     try {
-      await hub.startAPI();
+      // Disposable test profiles use an ephemeral loopback port to avoid the live Hub.
+      await hub.startAPI(!app.isPackaged && process.env.PLUGINLABS_DATA ? 0 : 47632);
     } catch {
       hub.log("API başlatılamadı: 47632 portunu kontrol edin.");
     }

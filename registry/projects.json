@@ -61,7 +61,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Çalışan Windows prototipi · bu görüşme",
+      "status": "Windows v0.2.0 ön sürüm (05.11.2026), Rust/Tauri; Windows 11 native geçti, Server 2025 native açılışı başarısız; Hub kataloğunda",
       "priority": "P0",
       "effort": "M",
       "platforms": {

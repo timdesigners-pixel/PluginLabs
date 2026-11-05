@@ -159,7 +159,7 @@
         "buildSourceCommit": "ec8e217e206265be08786bfd8f96acc97cbc49d3",
         "validationCommit": "f73c4d49705635c80ad45e474f08acbe6803cd58",
         "limitation": "Windows 11 native passed; hosted Server 2025 native EXE failed (0xC0000409), per product handoff",
-        "catalogDecision": "Hub currently excludes prereleases in src/hub.cjs checkUpdates; user choice requested before adding opt-in prerelease channel. Stable 0.1.0 remains."
+        "catalogDecision": "User explicitly approved including 0.2.0 in Hub release on 2026-11-05; exact pinned prerelease allowed, other prereleases excluded."
       }
     }
   ]

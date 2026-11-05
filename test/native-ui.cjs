@@ -31,6 +31,12 @@ const fs = require("node:fs/promises");
     path: require("node:path").resolve(__dirname, "../preview-home.png"),
     fullPage: true,
   });
+  await page.locator('nav [data-page="discover"]').click();
+  await page.locator('#search').fill('Flow Dock');
+  const flowCard = page.locator('.pl-appcard').filter({ has: page.getByRole('heading', { name: 'Flow Dock', exact: true }) });
+  await flowCard.getByText('Uygulama · v0.2.0 · Ön sürüm', { exact: true }).waitFor();
+  await page.screenshot({ path: require('node:path').resolve(__dirname, '../preview-flowdock.png'), fullPage: true });
+  await page.locator('#search').fill('');
   await page.locator('nav [data-page="resources"]').click();
   await page
     .locator(".card")

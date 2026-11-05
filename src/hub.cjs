@@ -560,7 +560,7 @@ class Hub extends EventEmitter {
       try {
         const prefix = `${item.id}-v`;
         const mine = releases
-          .filter((r) => !r.draft && !r.prerelease && typeof r.tag_name === "string" && r.tag_name.startsWith(prefix) && /^\d+(\.\d+)*$/.test(r.tag_name.slice(prefix.length)))
+          .filter((r) => !r.draft && (!r.prerelease || (item.prerelease === true && r.tag_name === `${prefix}${item.version}`)) && typeof r.tag_name === "string" && r.tag_name.startsWith(prefix) && /^\d+(\.\d+)*$/.test(r.tag_name.slice(prefix.length)))
           .sort((a, b) => versionCompare(b.tag_name.slice(prefix.length), a.tag_name.slice(prefix.length)));
         if (!mine.length) throw new Error("Dağıtım deposunda sürüm yok");
         const data = mine[0], version = data.tag_name.slice(prefix.length);
@@ -581,6 +581,7 @@ class Hub extends EventEmitter {
             )
           ) {
             Object.assign(item, {
+              prerelease: !!data.prerelease,
               version,
               url: asset.browser_download_url,
               size: asset.size,

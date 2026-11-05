@@ -58,6 +58,8 @@ jobs:
           }
           $catalog = node -e "console.log(JSON.stringify(require('./src/catalog.cjs').catalog.filter(c=>c.kind==='app').map(c=>({id:c.id,version:c.version,sha256:c.sha256}))))"
           @{ product = 'PluginLabs Hub'; version = $ver; commit = $env:GITHUB_SHA; builtAt = (Get-Date).ToUniversalTime().ToString('o'); runner = 'windows-latest'; signed = $false; tests = 'npm test + test:ui (Electron, Windows)'; catalogApps = ($catalog | ConvertFrom-Json) } | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 release/BUILD-INFO.json
+          Copy-Item preview-home.png release/Hub-overview.png
+          Copy-Item preview-flowdock.png release/Hub-FlowDock.png
           Push-Location release
           Get-ChildItem -File | Where-Object Name -ne 'SHA256SUMS.txt' | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content -Encoding utf8 SHA256SUMS.txt
           Get-Content SHA256SUMS.txt
