@@ -428,6 +428,10 @@ test("update check reads only own-prefixed releases from the public distribution
   assert.equal(hub.catalog[3].version, "2.0.0", "Explicit prerelease pin is retained; default catalog remains stable");
   assert.deepEqual(r["app-b"], { id: "app-b", version: "3.0.0", available: true, ready: false }, "başka depoya işaret eden dosya reddedilir");
   assert.match(r["app-c"].error, /sürüm yok/);
+  releases.push({ tag_name: "app-a-v2.1.0", draft: false, prerelease: false, assets: [{ name: "A.exe", size: 20, digest: sha, browser_download_url: dl("app-a-v2.1.0", "A.exe") }] });
+  await hub.checkUpdates();
+  assert.equal(hub.catalog[3].version, "2.1.0");
+  assert.equal(hub.catalog[3].prerelease, false, "Stable update clears prerelease label");
 });
 function storedZip(files) {
   // Sıkıştırmasız (stored) küçük zip: yalnız test için.
