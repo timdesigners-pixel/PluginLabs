@@ -1,3 +1,12 @@
+PluginLabs Hub 0.4.20 — Flow Dock 0.2.0 ön sürüm entegrasyonu.
+
+- Doğrulanmış 4.069.376 baytlık Rust/Tauri taşınabilir paket; SHA-256 dağıtım dosyası indirilerek doğrulandı.
+- Katalogda açık ön sürüm etiketi; Windows 11 native doğrulaması geçti, Server 2025 native açılışı başarısız.
+- Güncelleme denetimi yalnız katalogda açıkça işaretlenmiş mevcut ön sürüm etiketini kabul eder; diğer ön sürümler dışlanır, daha yeni kararlı sürümler kabul edilir.
+- Kurgu bu yayına dahil değil; kesin yayımlanmış manifest bekleniyor.
+
+---
+
 PluginLabs Hub 0.4.19 — Gardrop 0.2.1
 
 - Gardrop 0.2.1: seçili MyWishlist aktarımı, fiyatlı kombin kolajı, 14 üretilmiş ürün fotoğrafı ve model üzerinde sabit demo görseli; MyMind metin isteği ve önizleme.

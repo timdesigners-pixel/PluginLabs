@@ -268,8 +268,8 @@ function card(item, compact = false) {
     : "";
   const act = actionHTML(item, installed, job, different);
   if (compact)
-    return `<article class="card app-compact"><div class="ac-row">${icon(item.id)}<div class="ac-text"><h3>${esc(item.name)}</h3><small class="pl-muted pl-num">${bytes(item.size)}${installed ? " · yüklü" : ""}</small></div>${act}</div>${prog}</article>`;
-  return `<article class="card pl-appcard"><div class="pl-appcard__head">${icon(item.id)}<div style="min-width:0"><h3 class="pl-appcard__name">${esc(item.name)}</h3><span class="pl-label">${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}</span></div>${installed ? `<span class="pl-badge ${installed.enabled ? "pl-badge--success" : ""}" style="margin-left:auto">${installed.enabled ? "Yüklü" : "Devre dışı"}</span>` : ""}</div><p class="pl-appcard__desc">${esc(item.description)}</p>${prog}<div class="pl-appcard__foot"><span class="pl-badge">${bytes(item.size)}</span>${act}</div></article>`;
+    return `<article class="card app-compact"><div class="ac-row">${icon(item.id)}<div class="ac-text"><h3>${esc(item.name)}</h3><small class="pl-muted pl-num">${bytes(item.size)}${item.prerelease ? " · Ön sürüm" : ""}${installed ? " · yüklü" : ""}</small></div>${act}</div>${prog}</article>`;
+  return `<article class="card pl-appcard"><div class="pl-appcard__head">${icon(item.id)}<div style="min-width:0"><h3 class="pl-appcard__name">${esc(item.name)}</h3><span class="pl-label">${kindLabels[item.kind]} · v${esc(installed?.version || item.version)}${item.prerelease ? " · Ön sürüm" : ""}</span></div>${installed ? `<span class="pl-badge ${installed.enabled ? "pl-badge--success" : ""}" style="margin-left:auto">${installed.enabled ? "Yüklü" : "Devre dışı"}</span>` : ""}</div><p class="pl-appcard__desc">${esc(item.description)}</p>${prog}<div class="pl-appcard__foot"><span class="pl-badge">${bytes(item.size)}</span>${act}</div></article>`;
 }
 function grid(items, compact = false) {
   return items.length

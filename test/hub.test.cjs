@@ -411,20 +411,28 @@ test("update check reads only own-prefixed releases from the public distribution
     { tag_name: "app-b-v3.0.0", draft: false, prerelease: false, assets: [{ name: "B.exe", size: 1, digest: sha, browser_download_url: "https://github.com/baska/depo/releases/download/app-b-v3.0.0/B.exe" }] },
     { tag_name: "app-c-vbeta", draft: false, prerelease: false, assets: [] },
   ];
+  releases.push({ ...releases[0], tag_name: "app-d-v2.0.0", assets: [] });
   const original = global.fetch;
   global.fetch = async (url) => { assert.equal(url, `https://api.github.com/repos/${dist}/releases?per_page=100`); return Response.json(releases); };
   t.after(() => { global.fetch = original; });
   const item = (id, asset) => ({ id, name: id, kind: "app", version: "1.0.0", platform: "win32", format: "exe", file: "x.exe", size: 1, sha256: "a".repeat(64), url: "https://example.test/x.exe", distAsset: asset });
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-upd-"));
-  const hub = await new Hub(root, { catalog: [item("app-a", "^A\.exe$"), item("app-b", "^B\.exe$"), item("app-c", "x")], dist }).init();
+  const hub = await new Hub(root, { catalog: [item("app-a", "^A\.exe$"), item("app-b", "^B\.exe$"), item("app-c", "x"), { ...item("app-d", "^A[.]exe$"), prerelease: true, version: "2.0.0" }], dist }).init();
   // log() kaydı beklemeden başlatır; close() bekleyen yazmayı tamamlar, sonra klasör silinir (ENOTEMPTY yarışı).
   t.after(async () => { await hub.close(); await fs.rm(root, { recursive: true, force: true }); });
-  const r = Object.fromEntries((await hub.checkUpdates()).map((x) => [x.id, x]));
+  const checked = await hub.checkUpdates();
+  const r = Object.fromEntries(checked.slice(0, 3).map((x) => [x.id, x]));
+  assert.deepEqual(checked[3], { id: "app-d", version: "2.0.0", available: false, ready: false }, "Only the explicitly pinned prerelease is included");
   assert.deepEqual(r["app-a"], { id: "app-a", version: "1.10.0", available: true, ready: true }, "1.10.0 > 1.5.0; ön sürüm ve app-ab yok sayılır");
   assert.equal(hub.catalog[0].url, dl("app-a-v1.10.0", "A.exe"));
   assert.equal(hub.catalog[0].sha256, "b".repeat(64));
+  assert.equal(hub.catalog[3].version, "2.0.0", "Explicit prerelease pin is retained; default catalog remains stable");
   assert.deepEqual(r["app-b"], { id: "app-b", version: "3.0.0", available: true, ready: false }, "başka depoya işaret eden dosya reddedilir");
   assert.match(r["app-c"].error, /sürüm yok/);
+  releases.push({ tag_name: "app-d-v2.1.0", draft: false, prerelease: false, assets: [{ name: "A.exe", size: 20, digest: sha, browser_download_url: dl("app-d-v2.1.0", "A.exe") }] });
+  await hub.checkUpdates();
+  assert.equal(hub.catalog[3].version, "2.1.0");
+  assert.equal(hub.catalog[3].prerelease, false, "Stable update clears prerelease label");
 });
 function storedZip(files) {
   // Sıkıştırmasız (stored) küçük zip: yalnız test için.
