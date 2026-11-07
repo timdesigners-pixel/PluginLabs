@@ -12,10 +12,18 @@ Sayfalardaki dağınık **tablo ve liste verisini düzgün CSV ya da JSON'a** ç
 | **Ölçüler ve ayarlar** | **Tablolar (pano, yapıştırma, dosya, örnek)** |
 | ![Ölçüler](docs/screenshots/masaustu-04-olculer-ayarlar.png) | ![Tablolar](docs/screenshots/masaustu-05-tablolar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek tablolar ve taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek tablolar ve taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42399061852](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42399061852), kaynak a697439; Windows kasası DPAPI etkin) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — sütun önizlemesi](docs/screenshots/windows-masaustu-01-tablo-onizleme.png)
+
+| Windows — uyarılar ve kişisel veri | Windows — MyMind önerisi | Windows — ölçüler ve ayarlar |
+| --- | --- | --- |
+| ![Windows uyarılar](docs/screenshots/windows-masaustu-02-uyarilar-kisisel-veri.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows ölçüler](docs/screenshots/windows-masaustu-04-olculer-ayarlar.png) |
 
 ## İndir
-Windows sürümü `pluginlabs-dagitim` deposunda `insight-table-v0.1.0` etiketiyle yayımlanır. İmzasız önizleme.
+[insight-table-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0) — `InsightTable-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `ef38e9ca…8b91`, 81 748 281 bayt), `InsightTable-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `846762b4…7603`, 81 534 020 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub 0.4.26 kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Tarayıcıda tabloyu ya da listeyi fareyle seçip **Ctrl+C**; ardından **Panodan tablo** ya da her yerde **Ctrl+Alt+T**. Alternatifler: **Yapıştır…** (Ctrl+N; HTML, CSV, sekmeli metin, Markdown tablo, satırlar; kaynak adresi eklenebilir), **Dosya** (.html/.csv/.tsv/.md/.txt), **Örnek tablolar**.

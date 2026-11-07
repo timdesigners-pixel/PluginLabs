@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.26 — Insight Table 0.1.0 kataloğa eklendi.
+
+- Insight Table 0.1.0 (PL-040): sayfadaki tablo/liste (panodaki seçim — HTML biçimi —, Ctrl+Alt+T genel kısayolu, yapıştırılan HTML/CSV/TSV/Markdown/satırlar, kaydedilmiş .html/.csv/.md) sütun önizlemesiyle CSV ya da JSON'a çevrilir; rowspan/colspan ve çok satırlı başlık çözümü, menü listeleri ve yerleşim tabloları atlanır; sütun türü ve TR/EN sayı-tarih biçimi kanıtla seçilir; türüne uymayan, takvimde olmayan, farklı birimli, eksik ve mükerrer hücreler işaretlenir (hücre uydurulmaz, eksik doldurulmaz); kişisel veri sütunları maskelenir/çıkarılır; CSV formül enjeksiyonu etkisizleştirilir ve yazılan dosya geri okunup hücre hücre denetlenir; JSON kaynak adresi, kaynak satırı ve uyarılarla. MyMind / yerel model onaylı; yalnız sütun adı ve işaret, hücre değeri önerileri atılır. Site taraması yok.
+- Taşınabilir paket `pluginlabs-dagitim` insight-table-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.25 — Notion Bridge 0.1.0 kataloğa eklendi.
 
 - Notion Bridge 0.1.0 (PL-039): seçilen içerik (yapıştırma, pano düğmesi ya da Ctrl+Alt+N genel kısayolu, .txt/.md) kullanıcının kendi entegrasyon anahtarıyla bağlanan tek Notion veritabanının şemasına göre alanlara eşlenir; şemada olmayan alan ya da seçenek uydurulmaz, belirsiz alan boş ve gerekçeli kalır; kayıt öncesi taslak önizleme ve şema doğrulaması (uyumsuz taslak gönderilmez); her Notion isteği ayrı onaylı, yalnız yeni kart eklenir (var olan sayfa değişmez); yerel parmak izi + başlık sorgusuyla mükerrer kayıt engeli; Notion CSV/MD/JSON. MyMind / yerel model onaylı, iletişim bilgileri ve Notion anahtarı gönderilmez; öneri aynı şema denetiminden geçer.
