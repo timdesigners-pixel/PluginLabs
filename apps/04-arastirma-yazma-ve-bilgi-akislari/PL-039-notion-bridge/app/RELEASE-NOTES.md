@@ -1,0 +1,30 @@
+# Notion Bridge 0.1.0 — önizleme (Windows)
+
+PL-039 Notion Bridge'in ilk sürümü. Seçtiğiniz içeriği **tek bir Notion veritabanının alanlarına eşler**, **kaydetmeden önce taslağı gösterir** ve onayınızla **yeni kart** olarak ekler. Şemada olmayan alan ya da seçenek **uydurulmaz**, belirsiz alan **boş bırakılır**, şemaya uymayan taslak **gönderilmez**, aynı içerik **ikinci kez kaydedilmez**. **İmzasız önizleme:** Windows SmartScreen "Bilinmeyen yayımcı" uyarısı verebilir ("Ek bilgi" → "Yine de çalıştır").
+
+## Dosyalar
+- `NotionBridge-0.1.0-Windows-x64.exe` — kurulum (kullanıcı klasörüne, yönetici izni istemez)
+- `NotionBridge-0.1.0-Windows-Portable-x64.exe` — taşınabilir, kurulumsuz
+- `SHA256SUMS-windows.txt`, `BUILD-INFO-windows.txt`, `windows-masaustu-*.png` (Windows runner'ında duman testinin aldığı gerçek pencere görüntüleri; taklit Notion sunucusu ve uydurma test verisiyle)
+
+## Neler var
+- **Hedef:** kendi Notion **dahili entegrasyon** anahtarınız (`secret_…` / `ntn_…`; Windows kasasında DPAPI ile şifreli, arayüze ve günlüklere yazılmaz) + veritabanı bağlantısı ya da kimliği → **şema okunur** (alan adları, türleri, seçim/durum/çoklu seçim seçenekleri). Yalnız entegrasyonla paylaştığınız veritabanına erişilir. Notion hesabı olmadan denemek için **örnek şema**.
+- **İçerik:** Yeni içerik penceresi (metin + isteğe bağlı http/https kaynak adresi ve başlığı), **Panodan** düğmesi, her yerde çalışan **genel kısayol Ctrl+Alt+N** (pano yalnız tuşa bastığınızda okunur; kapatılabilir), `.txt` / `.md` dosyaları (en çok 20 dosya, 2 MB).
+- **Kural tabanlı eşleme:** "Alan adı: değer" satırları doğrudan o alana (büyük/küçük harf ve Türkçe karakter duyarsız); başlık ilk satırdan ya da kaynak başlığından; bağlantı alanı kaynak adresinden ya da metindeki tek bağlantıdan; tek tarih alanına metindeki tarih ("12 Kasım 2026", "18.11.2026", "yarın"); tek e-posta/telefon alanına tek değer; seçim/durum alanına metinde adı geçen **tek** seçenek; çoklu seçime metinde ya da #etiket olarak geçen seçenekler; Not/Açıklama alanına kalan metin. Sayılar TR/EN ayraçlarıyla ("1.250,75 TL", "4,5"), onay kutusu evet/hayır.
+- **Uydurma yok, belirsiz boş:** şemada olmayan "X: …" satırları ve #etiketler "Şemada olmayan — eklenmedi" listesinde gösterilir; olmayan seçenek **yeni seçenek olarak eklenmez**; birden çok seçenek/tarih/bağlantı alanı/e-posta değeri gibi belirsizliklerde alan boş kalır ve nedeni satırında yazar. Kişi, dosya, ilişki, formül ve sistem alanlarına yazılmaz.
+- **Taslak önizleme:** her alanın değeri, nereden geldiği ("Alan: değer" satırından / Kaynak bilgisinden / Metinden — tahmin / MyMind / Elle) ve kanıtı; türüne uygun düzenleyici (seçenek listesi, seçenek çipleri, tarih seçici, evet/hayır); geçersiz değer reddedilir.
+- **Şema doğrulaması (ölçüt: şema uyumsuz kayıt sıfır):** kayıttan önce taslak şemaya göre denetlenir (alan var mı, yazılabilir mi, tür ve seçenek uyuyor mu, başlık dolu mu); uyumsuz taslak gönderilmez ve "kayıttan önce yakalanan uyumsuz taslak" olarak sayılır. Notion yine de reddederse (ör. şema Notion'da değişmişse) hata anlaşılır biçimde gösterilir, "şema uyumsuz kayıt" ölçüsüne işlenir ve şemayı yeniden okumanız önerilir.
+- **Kayıt:** her kayıt ayrı onaylı; onay penceresinde gönderilecek alanların tam listesi. Yalnız **yeni sayfa** eklenir (`POST /v1/pages`); var olan sayfayı değiştiren ya da silen istek yoktur. Boş alanlar gönderilmez. 429'da Retry-After'a uyulur.
+- **Mükerrer kayıt engeli (ölçüt: aynı girdiyi tekrar çalıştırmada mükerrer kayıt yok):** yerel kayıt defteri (aynı veritabanı + aynı içerik + aynı kaynak adresi → aynı parmak izi; ayrıca aynı başlık + bağlantı) ve isteğe bağlı Notion'da başlıkla sorgu. Mükerrer taslak "Mükerrer" süzgecine düşer, mevcut kart açılabilir; gerçekten farklıysa düzenleyip taslağa geri alınabilir.
+- **Kayıtlar:** Kaydedilen (Notion'da aç), Mükerrer, Arşiv (iptal edilen taslaklar silinmez, geri alınabilir); arama.
+- **Ölçüler:** şema uyumsuz kayıt, Notion'a eklenen kart, önlenen mükerrer kayıt, kayıttan önce yakalanan uyumsuz taslak, otomatik dolan alan oranı, MyMind'dan atılan öğe; elle etiketli örnek içeriklerde eşleme doğruluğu ve uydurma alan sayısı.
+- **Dışa aktarma:** Notion'un "CSV ile birleştir" akışına uygun `.csv` (sütunlar şema alanları; yalnız şemaya uyan satırlar; formül enjeksiyonu engellenir), `.md`, JSON yedek.
+- **MyMind** (PluginLabs Hub) ya da bu bilgisayardaki **yerel model** (LM Studio, Ollama; yalnız 127.0.0.1/localhost): tek taslak, her istekte onay; alan adları/türleri/seçenekleri ve taslak metni gider; e-posta/telefon/bağlantı/IBAN/kart/T.C. kimlik/parola ⟦n⟧ ile gider; kaynak adresi, başlığı ve Notion anahtarı gönderilmez. Yanıt aynı şema denetiminden geçer: şemada olmayan alan, olmayan seçenek ve türe uymayan değer atılır ve listelenir; öneri "Boş alanlara uygula" ya da "Tümünü uygula" ile sizin onayınızla uygulanır.
+- Taslaklar, şema, kayıt defteri ve anahtarlar Windows kasasında (DPAPI) şifreli saklanır.
+
+## Sınırlar
+- İlk sürüm **tek veritabanına kart ekler** (Notion kartı). Çoklu şema, ekip onay akışı (Pro), sayfa içeriği (blok) yazma, var olan kartı güncelleme, kişi/dosya/ilişki alanları ve OAuth ile genel entegrasyon bu sürümde yok.
+- **Chrome eklentisi** (sayfadan seçip gönderme) ile Linux ve macOS paketleri bu sürümde yok.
+- Notion API sürümü `2022-06-28`; yeni "data source" (çoklu kaynaklı veritabanı) yapısındaki veritabanları denenmedi.
+- Eşleme kural tabanlıdır; "tahmin" işaretli alanları kaydetmeden önce kontrol edin.
+- Doğrulama: çekirdek birim testleri ve gerçek Electron penceresinde otomatik duman testi (taklit Notion API ve taklit MyMind/yerel model sunucusuyla; Windows runner + Linux/xvfb). **Gerçek bir Notion çalışma alanına karşı denenmedi.** Ölçütler yalnız uygulamadaki uydurma, elle etiketli 3 örnek içerikte (27 alan) ölçüldü (doğruluk %100, uydurma alan 0) ve taklit sunucuda (şema uyumsuz kayıt 0, aynı girdi tekrarında mükerrer kayıt 0); gerçek içeriklerde ve gerçek bir modelle ölçülmedi. Genel kısayol Windows'ta elle denenmedi; Windows DPI ve ekran okuyucu elle denenmedi.

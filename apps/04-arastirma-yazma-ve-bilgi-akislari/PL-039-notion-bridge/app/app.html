@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notion Bridge</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="nb" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar nb-side" aria-label="Ana menü">
+    <div class="nb-brand" aria-label="PluginLabs Apps"><span class="nb-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="nb-apps">APPS</span></div>
+    <div class="nb-product">
+      <span class="pl-applogo" aria-hidden="true">NB</span>
+      <div class="nb-product__text"><b>Notion Bridge</b><span>Alanlara eşleme</span></div>
+      <span class="nb-product__no pl-num" aria-label="Sıra numarası 39">39</span>
+    </div>
+    <div class="nb-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem nb-navbtn" type="button" data-nav="drafts" role="tab">Taslaklar<span class="pl-badge" id="draftCount">0</span></button>
+      <button class="pl-navitem nb-navbtn" type="button" data-nav="target" role="tab">Hedef ve şema<span class="pl-badge" id="targetState">Yok</span></button>
+      <button class="pl-navitem nb-navbtn" type="button" data-nav="history" role="tab">Kayıtlar<span class="pl-badge" id="savedCount">0</span></button>
+      <button class="pl-navitem nb-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="nb-mini" id="sideInfo"></div>
+    <div class="nb-side__foot">
+      <button class="pl-navitem nb-navbtn" type="button" id="openMymind"><span class="nb-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="nb-main">
+    <!-- Taslaklar -->
+    <div class="nb-view nb-work" id="view-drafts">
+      <div class="nb-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="capture">Yeni içerik</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard" title="Seçip kopyaladığınız içerik">Panodan</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Metin dosyası (.txt/.md)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek içerikler</button>
+        <span class="nb-grow"></span>
+        <div class="nb-target" id="targetChip"></div>
+      </div>
+
+      <section class="nb-empty-start" id="emptyPanel" hidden>
+        <div class="nb-card nb-start__card">
+          <h1 class="pl-h3 nb-h">İçeriği Notion'daki doğru alana taşıyın</h1>
+          <p class="pl-muted nb-small">Notion Bridge seçtiğiniz metni tek bir Notion veritabanının alanlarına eşler ve kaydetmeden önce taslağı gösterir. Şemada olmayan alan uydurulmaz, belirsiz alan boş bırakılır.</p>
+          <ol class="nb-ul">
+            <li><b>Hedef</b>: Notion'da bir dahili entegrasyon anahtarı oluşturun, veritabanını o entegrasyonla paylaşın ve bağlantısını yapıştırın. Şema (alanlar, türler, seçenekler) okunur.</li>
+            <li><b>İçerik</b>: metni yapıştırın, panodan alın ya da her yerde <b id="shortcutInline">Ctrl+Alt+N</b> ile kopyaladığınızı gönderin. “Alan: değer” satırları doğrudan o alana gider.</li>
+            <li><b>Önizleme</b>: her alanın değeri ve nereden geldiği görünür; seçim alanlarında yalnız şemadaki seçenekler kullanılır. Şemaya uymayan taslak kaydedilmez.</li>
+            <li><b>Kaydet</b>: onayınızla yalnız yeni kart eklenir; var olan sayfa değiştirilmez. Aynı içerik ikinci kez kaydedilmez.</li>
+          </ol>
+          <div class="nb-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-nav-go="target">Hedef veritabanını bağla</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek şema ve içeriklerle dene</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="nb-split" id="draftSplit">
+        <div class="nb-listcol nb-card">
+          <div class="nb-bar"><span class="pl-muted nb-small" id="draftInfo">0 taslak</span></div>
+          <ul class="nb-list" id="draftList" role="listbox" aria-label="Taslaklar"></ul>
+        </div>
+        <div class="nb-detail nb-card" id="draftDetail" aria-label="Seçili taslak"></div>
+      </section>
+    </div>
+
+    <!-- Hedef ve şema -->
+    <div class="nb-view nb-panels" id="view-target" hidden>
+      <section class="nb-card">
+        <h2 class="pl-h3 nb-h">1 · Notion bağlantı anahtarı</h2>
+        <ol class="nb-steps">
+          <li>Notion → Ayarlar → <b>Bağlantılar</b> → <b>Entegrasyon geliştir</b> → yeni <b>dahili</b> entegrasyon. Yetenekler: “İçeriği oku” ve “İçerik ekle” yeterli (“İçeriği güncelle” gerekmez).</li>
+          <li>Oluşan anahtarı (<code>secret_…</code> ya da <code>ntn_…</code>) aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır, arayüze ve günlüklere yazılmaz.</li>
+        </ol>
+        <div class="nb-tokrow">
+          <div class="pl-field"><label class="pl-field__label" for="notionKey">Entegrasyon anahtarı</label><input class="pl-input" id="notionKey" type="password" maxlength="130" autocomplete="off" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="notionSave">Kaydet</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="notionForget">Kaldır</button>
+        </div>
+        <p class="pl-muted nb-small" id="notionInfo"></p>
+      </section>
+      <section class="nb-card">
+        <h2 class="pl-h3 nb-h">2 · Hedef veritabanı</h2>
+        <ol class="nb-steps">
+          <li>Notion'da veritabanını tam sayfa açın → ••• → <b>Bağlantılar</b> → entegrasyonunuzu ekleyin (yalnız paylaştığınız veritabanına erişilir).</li>
+          <li>Adres çubuğundaki bağlantıyı (ya da 32 haneli kimliği) yapıştırıp <b>Şemayı oku</b>'ya basın. İlk sürüm tek veritabanına kart ekler.</li>
+        </ol>
+        <div class="nb-tokrow">
+          <div class="pl-field"><label class="pl-field__label" for="dbInput">Veritabanı bağlantısı ya da kimliği</label><input class="pl-input" id="dbInput" maxlength="600" spellcheck="false" placeholder="https://www.notion.so/…/Okuma-listesi-0f1e2d3c…?v=…"></div>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="dbFetch">Şemayı oku</button>
+        </div>
+        <p class="pl-muted nb-small">Notion hesabınız yoksa ya da önce denemek isterseniz: <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="useSample">Örnek şemayı kullan</button> (örnek şemayla kayıt yapılmaz; CSV olarak dışa aktarılabilir).</p>
+      </section>
+      <section class="nb-card nb-card--wide">
+        <div class="nb-bar"><h2 class="pl-h3 nb-h" id="schemaTitle">Şema</h2><span class="nb-grow"></span><span class="pl-muted nb-small" id="schemaMeta"></span></div>
+        <div id="schemaBody"></div>
+      </section>
+    </div>
+
+    <!-- Kayıtlar -->
+    <div class="nb-view nb-work" id="view-history" hidden>
+      <div class="nb-toolbar">
+        <div class="pl-segment" role="radiogroup" aria-label="Kayıt süzgeci">
+          <button type="button" role="radio" data-hf="kaydedildi">Kaydedilen</button>
+          <button type="button" role="radio" data-hf="mukerrer">Mükerrer</button>
+          <button type="button" role="radio" data-hf="iptal">Arşiv</button>
+        </div>
+        <span class="nb-grow"></span>
+        <input class="pl-input nb-search" id="q" placeholder="Ara (başlık, alan değeri)" aria-label="Kayıtlarda ara">
+      </div>
+      <section class="nb-split">
+        <div class="nb-listcol nb-card"><ul class="nb-list" id="histList" aria-label="Kayıtlar"></ul></div>
+        <div class="nb-detail nb-card" id="histDetail" aria-label="Seçili kayıt"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="nb-view nb-panels" id="view-settings" hidden>
+      <section class="nb-card nb-card--wide">
+        <h2 class="pl-h3 nb-h">Ölçüler</h2>
+        <p class="pl-muted nb-small">Notion doğrulama ölçütü: <b>şema uyumsuz kayıt sıfır</b> (Notion'un şema hatasıyla reddettiği gönderim sayısı) ve <b>aynı girdi tekrarında mükerrer kayıt oluşmaması</b>. Kayıttan önce yakalanan uyumsuz taslaklar ve önlenen mükerrer kayıtlar ayrıca sayılır. Yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="nb-metrics" id="metrics"></div>
+        <p class="pl-muted nb-small" id="goldInfo"></p>
+      </section>
+      <section class="nb-card">
+        <h2 class="pl-h3 nb-h">İçerik ve kayıt</h2>
+        <label class="nb-check"><input type="checkbox" id="setShortcut"> <span><b>Genel kısayol</b> — <span id="shortcutName">Ctrl+Alt+N</span>: seçip kopyaladığınız içerik (pano) yeni taslak olur. Pano yalnız tuşa bastığınızda okunur. <span id="shortcutState" class="pl-muted"></span></span></label>
+        <label class="nb-check"><input type="checkbox" id="setRemoteDup"> <span><b>Notion'da mükerrer denetimi</b> — kaydetmeden önce aynı başlıkla kart var mı diye veritabanı sorgulanır (yalnız başlık gönderilir). Kapalıyken yalnız bu bilgisayardaki kayıt defteri denetlenir.</span></label>
+      </section>
+      <section class="nb-card">
+        <h2 class="pl-h3 nb-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted nb-small">İsteğe bağlıdır; şema okuma, kural tabanlı eşleme, doğrulama ve kayıt motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="nb-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="nb-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="nb-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="nb-card nb-card--wide">
+        <div class="nb-bar"><h2 class="pl-h3 nb-h">Dışa aktarma ve gizlilik</h2><span class="nb-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">Notion CSV (.csv)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Markdown (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="nb-ul">
+          <li>CSV sütunları şemadaki alan adlarıdır; Notion'da veritabanı → ••• → <b>CSV ile birleştir</b> ile içe aktarılabilir. Yalnız şemaya uyan taslaklar ve kayıtlar yazılır; formül enjeksiyonu engellenir.</li>
+          <li>Notion'a yalnız üç istek yapılır: şemayı okuma, (açıksa) başlıkla mükerrer sorgusu ve yeni kart ekleme. Var olan sayfayı değiştiren ya da silen istek yoktur. Her istek ayrı onaylanır.</li>
+          <li>Yapay zekâ isteğe bağlıdır ve yalnız bu bilgisayardadır. Alan adları/türleri/seçenekleri ve taslak metni gider; e-posta, telefon, bağlantı, IBAN, kart, T.C. kimlik ve parola değerleri, kaynak adresi ve Notion anahtarı gönderilmez.</li>
+          <li>Kayıtlar silinmez: iptal edilen taslaklar “Arşiv”de, mükerrer işaretlenenler “Mükerrer”de kalır ve geri alınabilir. Sınır 2000 kayıt.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="nb-foot pl-muted">Notion Bridge 0.1.0 · PluginLabs · uydurma alan yok · belirsiz alan boş · yalnız yeni kart eklenir · yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal nb-dialog nb-dialog--wide" id="capDialog" aria-labelledby="capTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="capTitleH">Yeni içerik</h2><p class="pl-muted nb-tight">Eşlenecek metni yapıştırın. “Alan adı: değer” satırları doğrudan o alana yazılır; #etiketler çoklu seçim seçenekleriyle eşlenir.</p></div></div>
+    <div class="pl-modal__body nb-stack">
+      <textarea class="pl-input nb-area nb-area--dlg" id="capText" spellcheck="false" aria-label="İçerik" maxlength="20000"></textarea>
+      <div class="nb-capgrid">
+        <div class="pl-field nb-capgrid__wide"><label class="pl-field__label" for="capUrl">Kaynak adresi (isteğe bağlı, http/https — bağlantı alanına yazılır)</label><input class="pl-input" id="capUrl" maxlength="2000" spellcheck="false" placeholder="https://…"></div>
+        <div class="pl-field nb-capgrid__wide"><label class="pl-field__label" for="capTitle">Kaynak başlığı (isteğe bağlı — metinde başlık yoksa kullanılır)</label><input class="pl-input" id="capTitle" maxlength="200"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="capCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="capRun">Eşle ve önizle</button></div>
+  </dialog>
+  <dialog class="pl-modal nb-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon nb-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted nb-tight">Serbest metnin alanlara ayrılması bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body nb-stack">
+      <ol class="nb-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted nb-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="nb-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="nb-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
