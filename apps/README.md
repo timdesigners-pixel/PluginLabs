@@ -70,7 +70,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | --- | --- | --- | --- | --- | --- |
 | PL-041 | [Dev Patch Notes](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/app/README.md) |
 | PL-042 | [API Pocket](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/app/README.md) |
 | PL-044 | [Design Token Scout](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 | PL-045 | [Context Kit](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/README.md) | W · L · M · Chrome | Yeni fikir | P0 · M | — |
 | PL-046 | [Model Switchboard](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |

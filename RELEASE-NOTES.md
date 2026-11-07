@@ -1,3 +1,11 @@
+PluginLabs Hub 0.4.28 — Access Lens 0.1.0 kataloğa eklendi.
+
+- Access Lens 0.1.0 (PL-043): kullanıcının seçtiği tek sayfa (adres — her açılış onaylı —, kaydedilmiş .html ya da yapıştırılan HTML) görünmez, her denetimde yeni bellek içi oturumlu, sandbox'lı bir pencerede açılır; axe-core 4.14.0 yalıtılmış dünyada WCAG 2.2 A/AA (+ isteğe bağlı en iyi uygulamalar) kurallarıyla kontrast, form etiketi, erişilebilir ad, başlık yapısı ve ARIA bulgularını üretir; standart ve motor sürümü görünür; bulgu seçilince öğe ekran görüntüsünde işaretlenir; manuel kontrol listesi, odak sırası (pozitif tabindex, adsız öğe, görsel geri sıçrama uyarıları), başlık/bölge yapısı; yeniden denetimde yeni/giderilen bulgular; 3 fixture'da (17 bilinen sorun) doğru bulgu ve kritik yanlış olumlu ölçüsü; Markdown/JSON/CSV rapor. Sayfa betikleri CSP ile kapatılabilir; yerel dosyada uzak kaynaklar ayar açılmadıkça yüklenmez. MyMind / yerel model onaylı açıklama + düzeltme taslağı; sayfa adresi gönderilmez; uyumluluk/sertifika/puan iddiaları atılır. Puan ya da sertifika üretilmez.
+- Taşınabilir paket `pluginlabs-dagitim` access-lens-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+- Not: PL-042 API Pocket başka bir zamanlanmış çalıştırmada açık; bu sürüm numarası (0.4.28) o iş yayımlanırsa birleştirmede yeniden numaralandırılabilir.
+
+---
+
 PluginLabs Hub 0.4.27 — Dev Patch Notes 0.1.0 kataloğa eklendi.
 
 - Dev Patch Notes 0.1.0 (PL-041): yerel git deposundan (yalnız okuma: rev-parse, remote get-url, tag --list, log, show; kabuk yok) ya da yapıştırılan git log / --oneline / format-patch / diff'ten commit'ler Conventional Commits ve TR/EN anahtar sözcüklerle başlıklara ayrılır; her madde kaynak commit/PR bağlantılı ve düzenlenebilir; birleştirme, geri alma ve bakım commit'leri ayıklanır; sırlar girişte maskelenir; commit'te geçmeyen test/performans/güvenlik/teslim iddiası içeren not dışa aktarılamaz; Markdown (Türkçe başlıklar / Keep a Changelog), metin, JSON, pano; düzeltme oranı ve etkin düzenleme süresi ölçüsü. MyMind / yerel model onaylı, sırlar maskeli; yeni madde ve kanıtsız iddia önerileri atılır. Otomatik commit, push ve yayın yok.

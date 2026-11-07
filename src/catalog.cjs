@@ -430,6 +430,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/app",
   },
+  {
+    id: "access-lens",
+    name: "Access Lens",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Erişilebilirlik denetimi: seçtiğiniz tek sayfa (adres, kaydedilmiş .html ya da yapıştırılan HTML) yalıtılmış, oturumsuz bir pencerede açılır ve axe-core kural motoruyla WCAG 2.2 A/AA kontrast, form etiketi, erişilebilir ad, başlık yapısı ve ARIA bulguları raporlanır; standart ve motor sürümü görünür. Bulguyu seçince öğe sayfanın görüntüsünde işaretlenir; odak sırası, başlık/bölge yapısı ve manuel kontrol listesi ayrı. Yeniden denetimde yeni/giderilen bulgular. Markdown/JSON/CSV rapor. MyMind ya da yerel model ile onaylı açıklama ve düzeltme taslağı (sayfa adresi gönderilmez). Puan ya da sertifika üretmez; klavye ve ekran okuyucu kontrolleri ayrıca gerekir.",
+    platform: "win32",
+    format: "exe",
+    file: "AccessLens.exe",
+    size: 82066241,
+    sha256: "d886e58ee9cf11039aa38ab750e8f96abfccff097d021fa581ec579352b813e6",
+    url: dist("access-lens", "0.1.0", "AccessLens-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/app",
+  },
 
   {
     id: "mutfak-atolyesi",

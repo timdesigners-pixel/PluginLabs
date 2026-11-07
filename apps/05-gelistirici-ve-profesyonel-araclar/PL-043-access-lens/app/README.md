@@ -12,7 +12,18 @@ Arayüzünüzdeki erişilebilirlik sorunlarını yayından önce görün: Access
 | **Geçmiş** | **Ölçüler ve ayarlar (fixture doğruluğu, kritik yanlış olumlu)** |
 | ![Geçmiş](docs/screenshots/masaustu-04-gecmis.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinde (uygulamayla gelen örnek sayfalar, yerel test sunucusu, taklit MyMind yanıtı; tarih 7 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır; denetimler gerçek axe-core çalıştırmasıdır.
+Ekran görüntüleri gerçek uygulamadan, duman testinde (uygulamayla gelen örnek sayfalar, yerel test sunucusu, taklit MyMind yanıtı; tarih 7 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır; denetimler gerçek axe-core çalıştırmasıdır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42424984184](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42424984184), kaynak 7e8fe75; Windows kasası DPAPI etkin; fixture'larda 17/17 doğru bulgu, kritik yanlış olumlu %0) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — bulgu ve öğe](docs/screenshots/windows-masaustu-01-bulgu-ve-oge.png)
+
+| Windows — odak sırası | Windows — MyMind açıklaması | Windows — ölçüler |
+| --- | --- | --- |
+| ![Windows odak](docs/screenshots/windows-masaustu-02-odak-sirasi.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-aciklama.png) | ![Windows ölçüler](docs/screenshots/windows-masaustu-05-olculer-ayarlar.png) |
+
+## İndir
+[access-lens-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/access-lens-v0.1.0) — `AccessLens-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `6772d699…25d6`), `AccessLens-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `d886e58e…13e6`, 82 066 241 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Adresi yazıp **Denetle** (açılış onaylanır), **HTML dosyası** seçin ya da **HTML yapıştır**. İlk deneme için **Örnek sayfalar** (bilinen sorunları işaretli 3 fixture).
