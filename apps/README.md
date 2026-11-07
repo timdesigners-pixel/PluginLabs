@@ -62,7 +62,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-037 | [Mail Triage](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · L | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/app/README.md) |
 | PL-038 | [Action Inbox](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/app/README.md) |
 | PL-039 | [Notion Bridge](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/app/README.md) |
-| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/app/README.md) |
 
 ## 05 · Geliştirici ve profesyonel araçlar — PL-041–050
 

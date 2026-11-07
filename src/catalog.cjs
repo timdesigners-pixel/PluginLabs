@@ -396,6 +396,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/app",
   },
+  {
+    id: "insight-table",
+    name: "Insight Table",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Sayfadaki tabloyu temiz veriye çevirin: tarayıcıda tabloyu ya da listeyi seçip kopyalayın ve Panodan tablo'ya basın (ya da Ctrl+Alt+T); CSV, Markdown ya da kaydedilmiş .html sayfası da olur. Sütun önizlemesinde her sütunun türü (sayı, para, yüzde, tarih, evet/hayır) ve yerel biçimi (1.234,56 ↔ 1,234.56) denetlenir; türüne uymayan, eksik, farklı birimli ve mükerrer hücreler işaretlenir, hücre uydurulmaz. CSV formül enjeksiyonuna karşı güvenlidir ve geri okunup denetlenir; JSON kaynak adresi ve kaynak satırıyla yazılır. Kişisel veri sütunları maskelenir. MyMind ya da yerel model ile onaylı sütun adı önerisi (kişisel veri gönderilmez, hücre değeri önerilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "InsightTable.exe",
+    size: 81534020,
+    sha256: "846762b43e2264cbf661ff1aa83402e6176a467ea6ab9822c9a6dd83b9d37603",
+    url: dist("insight-table", "0.1.0", "InsightTable-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/app",
+  },
 
   {
     id: "mutfak-atolyesi",
