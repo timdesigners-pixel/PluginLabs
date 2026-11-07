@@ -14,10 +14,18 @@ Yüklediğiniz ya da yapıştırdığınız **toplantı transkriptini** (Teams /
 | **Transkript girişi (biçim önizlemesi, hassas veri uyarısı, beyan)** | **Toplantılar (arşiv)** |
 | ![Transkript girişi](docs/screenshots/masaustu-00-transkript-girisi.png) | ![Toplantılar](docs/screenshots/masaustu-05-toplantilar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma kişilerle örnek toplantı; taklit MyMind yanıtı) alınmıştır (`masaustu-*`: Linux/xvfb).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma kişilerle örnek toplantı; taklit MyMind yanıtı) alınmıştır (`masaustu-*`: Linux/xvfb, commit 6cc958f; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 42353424327](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42353424327), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — transkript ve taslaklar](docs/screenshots/windows-masaustu-01-transkript-ve-taslaklar.png)
+
+| Windows — MyMind önerisi | Windows — karar ve görevler |
+| --- | --- |
+| ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows görevler](docs/screenshots/windows-masaustu-04-karar-ve-gorevler.png) |
 
 ## İndir
-[meeting-trace-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0) — `MeetingTrace-0.1.0-Windows-x64.exe` (kurulum), `MeetingTrace-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO + Windows ekran görüntüleri. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[meeting-trace-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0) — `MeetingTrace-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `f1e65690…5fd4`), `MeetingTrace-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `6095506b…2eb7`, 81 538 634 bayt), SHA256SUMS + BUILD-INFO + Windows ekran görüntüleri. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Dosya aç** (.vtt, .srt, .txt, .md) ya da transkripti yapıştırın; ilk deneme için **Örnek**. Toplantı adını ve **tarihini** girin (yarın, cuma gibi son tarihler buna göre hesaplanır). Konuşmayan katılımcıları isteğe bağlı yazın (görev ataması için).

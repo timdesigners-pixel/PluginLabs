@@ -31,6 +31,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Source Trail (PL-031) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/source-trail-v0.1.0 |
 | Text Forge (PL-033) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/text-forge-v0.1.0 |
 | Parallel Translate (PL-034) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/parallel-translate-v0.1.0 |
+| Meeting Trace (PL-035) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0 |
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
@@ -45,7 +46,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–014, PL-053 ve Hub. PL-004–014 Windows paketleri GitHub Actions'ta Windows runner'ında derlenip otomatik duman testinden geçmiştir; gerçek Windows masaüstünde elle test, DPI ve ekran okuyucu testleri yapılmamıştır.
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper, PluginLabs Scrapper, Finansal Asistan, Flow Dock, Mutfak Atölyesi. PL-006–014'ün Windows sürümleri henüz `pluginlabs-dagitim` deposuna yansıtılmadı.
-- Sıradaki (Windows sürümü yok): PL-015–024 (yalnız plan), PL-025–050 (fikir; depo yok).
+- PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
+- Sıradaki (Windows sürümü yok): PL-036–050 (fikir; depo yok — PL-025 modeli). PL-025–035 dağıtım deposunda yayımlandı.
 
 ## Tüm liste (PL-001 … PL-059)
 
@@ -85,7 +87,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-032 | Read Partner | Windows uygulaması · **v0.1.0** (okuma yardımcısı: .txt/.md/.html ya da yapıştırma, seçili bölüm için yan yana sadeleştirme, terimler metnin içinden (bilinmiyor işaretli), 3 anlama sorusu, kaynak içi soru-cevap, sayfa içi talimat işaretleme, MyMind seviyeli açıklama + alıntı denetimi; imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-032-read-partner/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/read-partner-v0.1.0 |
 | PL-033 | Text Forge | Windows uygulaması · **v0.1.0** (metin atölyesi: yapıştırma/panodan al/Ctrl+Shift+Y/.txt-.md; düzelt, sadeleştir, kısalt, biçimlendir; ton (resmî/nötr/samimi/ton örneği); sabit alan (sayı, tarih, tutar, ad, e-posta, bağlantı, sözlük terimi) koruma ve denetimi; gizli veri maskesi; kelime düzeyinde fark; kopyala (kaynak uygulamaya otomatik yazmaz); MyMind alternatifleri (sabit alan değerleri gönderilmez); imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-033-text-forge/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/text-forge-v0.1.0 |
 | PL-034 | Parallel Translate | Windows uygulaması · **v0.1.0** (yan yana çeviri: paragraf/madde/cümle bölümleri; kişisel terim sözlüğü denetimi (TR ek/yumuşama, EN çoğul/fiil; CSV); korunan alan (sayı, tutar, bağlantı, gizli değer) denetimi; var olan çeviriyi hizalama; sözlük taslağı; kalite notu; TXT/CSV/Markdown/TMX; MyMind ya da yerel model (loopback) ile onaylı, veri azaltılmış çeviri + alternatif terim; imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-034-parallel-translate/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/parallel-translate-v0.1.0 |
-| PL-035 | Meeting Trace | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-035 | Meeting Trace | Windows uygulaması · **v0.1.0** (transkript → zaman damgalı satırlar; WebVTT/SRT/zaman damgalı satırlar/Teams kopyası; konuşmacı tahmini (tahmin etiketli); kurala dayalı karar/görev/açık soru taslakları, sorumlu + son tarih, belirsiz sorumlu görünür; insan onayı; zaman damgalı not; MD/TXT/CSV/ICS; MyMind ya da yerel model (onaylı; takma ad + yer tutucu); ses kaydı yok; imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-035-meeting-trace/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0 |
 | PL-036 | Voice Note Orbit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-037 | Mail Triage | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-038 | Action Inbox | Fikir / Hub içi önizleme (ayrı depo yok) | — |

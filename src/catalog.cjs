@@ -294,6 +294,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-034-parallel-translate/app",
   },
+  {
+    id: "meeting-trace",
+    name: "Meeting Trace",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Toplantı izi: yüklediğiniz Teams/Zoom/Meet transkriptini (WebVTT, SRT, zaman damgalı satırlar) zaman damgalı satırlara ayırır; kararları, görevleri (sorumlu ve son tarih) ve açık soruları kaynak satırına bağlı taslak olarak çıkarır. Konuşmacı tahmini ve sorumlusu belirsiz görevler görünür; her taslak onayınızdan geçer. Toplantı notu (Markdown), CSV ve takvim (ICS). Ses kaydı yapmaz. MyMind ya da yerel model ile onaylı çözümleme (adlar takma adla, hassas değerler gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "MeetingTrace.exe",
+    size: 81538634,
+    sha256: "6095506b19a42a2136dbefa995676f5e613c91d3140bd07c0f4743817c2b2eb7",
+    url: dist("meeting-trace", "0.1.0", "MeetingTrace-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-035-meeting-trace/app",
+  },
 
   {
     id: "mutfak-atolyesi",

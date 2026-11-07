@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.21 — Meeting Trace 0.1.0 kataloğa eklendi.
+
+- Meeting Trace 0.1.0 (PL-035): yüklenen/yapıştırılan toplantı transkriptinden (WebVTT, SRT, zaman damgalı satırlar) zaman damgalı karar, görev (sorumlu + son tarih) ve açık soru taslakları; konuşmacı tahmini ve belirsiz sorumlu görünür; her taslak kullanıcı onayından geçer; MD/TXT/CSV/ICS. Ses kaydı yok. MyMind / yerel model onaylı, takma ad + yer tutucuyla.
+- Taşınabilir paket `pluginlabs-dagitim` meeting-trace-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.20 — Flow Dock 0.2.0 ön sürüm entegrasyonu.
 
 - Doğrulanmış 4.069.376 baytlık Rust/Tauri taşınabilir paket; SHA-256 dağıtım dosyası indirilerek doğrulandı.
