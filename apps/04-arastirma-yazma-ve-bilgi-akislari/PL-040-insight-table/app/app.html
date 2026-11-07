@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight Table</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="it" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar it-side" aria-label="Ana menü">
+    <div class="it-brand" aria-label="PluginLabs Apps"><span class="it-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="it-apps">APPS</span></div>
+    <div class="it-product">
+      <span class="pl-applogo" aria-hidden="true">IT</span>
+      <div class="it-product__text"><b>Insight Table</b><span>Tablodan veriye</span></div>
+      <span class="it-product__no pl-num" aria-label="Sıra numarası 40">40</span>
+    </div>
+    <div class="it-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem it-navbtn" type="button" data-nav="tables" role="tab">Tablolar<span class="pl-badge" id="capCount">0</span></button>
+      <button class="pl-navitem it-navbtn" type="button" data-nav="exports" role="tab">Dışa aktarımlar<span class="pl-badge" id="expCount">0</span></button>
+      <button class="pl-navitem it-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="it-mini" id="sideInfo"></div>
+    <div class="it-side__foot">
+      <button class="pl-navitem it-navbtn" type="button" id="openMymind"><span class="it-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="it-main">
+    <!-- Tablolar -->
+    <div class="it-view it-work" id="view-tables">
+      <div class="it-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="capture">Yeni içerik</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard" title="Sayfada seçip kopyaladığınız tablo">Panodan</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Dosya aç (.html, .csv, .tsv, .md)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek sayfalar</button>
+        <span class="it-grow"></span>
+        <div class="pl-segment" role="radiogroup" aria-label="Kayıt süzgeci">
+          <button type="button" role="radio" data-lf="etkin">Etkin</button>
+          <button type="button" role="radio" data-lf="arsiv">Arşiv</button>
+        </div>
+      </div>
+
+      <section class="it-empty-start" id="emptyPanel" hidden>
+        <div class="it-card it-start__card">
+          <h1 class="pl-h3 it-h">Sayfadaki tabloyu temiz CSV ya da JSON'a dönüştürün</h1>
+          <p class="pl-muted it-small">Insight Table, seçtiğiniz sayfadaki tablo ve listeleri okur, sütunları ve veri türlerini önizlemede gösterir, sorunlu hücreleri işaretler ve güvenli CSV/JSON olarak yazar. Hücre değeri uydurulmaz; eksik değer boş kalır.</p>
+          <ol class="it-ul">
+            <li><b>Seç</b>: tarayıcıda tabloyu fareyle seçip kopyalayın, sonra <b>Panodan</b> ya da her yerde <b id="shortcutInline">Ctrl+Alt+I</b>. Sayfayı .html olarak kaydedip açabilir, Excel/Sheets'ten kopyalanan satırları ya da CSV/Markdown metnini yapıştırabilirsiniz.</li>
+            <li><b>Önizle</b>: sayfadaki her tablo ve liste ayrı listelenir. Başlık satırı, sütun adları ve türleri (sayı, tarih, evet/hayır, e-posta, bağlantı, metin) otomatik çıkarılır; değiştirebilirsiniz.</li>
+            <li><b>Kontrol et</b>: Türkçe/İngilizce sayı ve tarih biçimleri okunur; eksik, türe uymayan ve iki türlü okunabilen hücreler renkle işaretlenir. Kişisel veri sütunları varsayılan olarak maskelenir.</li>
+            <li><b>Dışa aktar</b>: CSV (standart ya da Excel-Türkçe) veya JSON; her hücrenin kaynak izi, formül enjeksiyonuna karşı koruma ve yazılan dosyanın geri okunarak doğrulanması.</li>
+          </ol>
+          <div class="it-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="capture">İçerik yapıştır</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek sayfalarla dene</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="it-split" id="capSplit">
+        <div class="it-listcol it-card">
+          <div class="it-bar"><span class="pl-muted it-small" id="capInfo">0 kayıt</span></div>
+          <ul class="it-list" id="capList" role="listbox" aria-label="Kayıtlar"></ul>
+        </div>
+        <div class="it-detail it-card" id="capDetail" aria-label="Seçili tablo"></div>
+      </section>
+    </div>
+
+    <!-- Dışa aktarımlar -->
+    <div class="it-view it-views" id="view-exports" hidden>
+      <section class="it-card">
+        <div class="it-bar"><h2 class="pl-h3 it-h">Dışa aktarımlar</h2><span class="it-grow"></span><span class="pl-muted it-small" id="expInfo"></span></div>
+        <p class="pl-muted it-small">Her dışa aktarımdan sonra dosya diskten geri okunur ve yazılması gereken hücrelerle birebir karşılaştırılır. Formül olarak çalışabilecek hücreler (=, +, -, @ ile başlayan metin) başına ' konularak etkisizleştirilir.</p>
+        <div id="expBody"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="it-view it-panels" id="view-settings" hidden>
+      <section class="it-card it-card--wide">
+        <h2 class="pl-h3 it-h">Ölçüler</h2>
+        <p class="pl-muted it-small">Notion doğrulama ölçütü: <b>kaynağa göre hücre doğruluğu ≥ %99</b> ve <b>CSV enjeksiyonuna karşı güvenli dışa aktarma</b>. Doğruluk, elle etiketlenmiş örnek sayfalarda okunan değerin beklenenle karşılaştırılmasıyla; dışa aktarma doğrulaması yazılan dosyanın geri okunmasıyla ölçülür. Yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="it-metrics" id="metrics"></div>
+        <p class="pl-muted it-small" id="goldInfo"></p>
+      </section>
+      <section class="it-card">
+        <h2 class="pl-h3 it-h">Okuma</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setLocale">Sayı biçimi — anlaşılamazsa Türkçe varsayılır ve hücre “belirsiz” işaretlenir</label>
+          <select class="pl-input" id="setLocale"><option value="oto">Otomatik (kaynaktan ya da sayfa dilinden)</option><option value="tr">Türkçe — 1.234,56</option><option value="en">İngilizce — 1,234.56</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setDate">Eğik çizgili tarihlerde gün/ay sırası</label>
+          <select class="pl-input" id="setDate"><option value="oto">Otomatik (12'den büyük değerden ya da sayfa dilinden)</option><option value="gun">GG/AA/YYYY</option><option value="ay">AA/GG/YYYY</option></select></div>
+        <label class="it-check"><input type="checkbox" id="setShortcut"> <span><b>Genel kısayol</b> — <span id="shortcutName">Ctrl+Alt+I</span>: kopyaladığınız tablo (pano) yeni kayıt olur. Pano yalnız tuşa bastığınızda okunur. <span id="shortcutState" class="pl-muted"></span></span></label>
+      </section>
+      <section class="it-card">
+        <h2 class="pl-h3 it-h">Dışa aktarma</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setProfile">CSV biçimi</label>
+          <select class="pl-input" id="setProfile"><option value="standart">Standart — virgül, nokta ondalık, ISO tarih</option><option value="excel-tr">Excel (Türkçe) — noktalı virgül, virgül ondalık</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setTrace">Kaynak izi</label>
+          <select class="pl-input" id="setTrace"><option value="satir">Satır izi (kaynak_satir / _kaynak)</option><option value="hucre">Hücre izi (JSON: değer, ham, R…C…)</option><option value="yok">İz ekleme</option></select></div>
+        <p class="pl-muted it-small">JSON her zaman kaynak adresini, başlığını, yakalama zamanını ve tablo numarasını içerir.</p>
+      </section>
+      <section class="it-card">
+        <h2 class="pl-h3 it-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted it-small">İsteğe bağlıdır; okuma, tür çıkarımı, işaretleme ve dışa aktarma motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="it-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="it-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="it-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="it-card">
+        <div class="it-bar"><h2 class="pl-h3 it-h">Gizlilik</h2><span class="it-grow"></span><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="it-ul">
+          <li>Uygulama web sayfası indirmez ve site taramaz; yalnız sizin verdiğiniz içerik okunur. HTML'deki betikler çalıştırılmaz.</li>
+          <li>Kişisel veri sütunları (e-posta, telefon, T.C. kimlik, IBAN, kart) algılanır ve varsayılan olarak maskelenir; sütun başlığından “dahil” ya da “çıkar” seçebilirsiniz.</li>
+          <li>Yapay zekâya satırlar, kaynak adresi ve kişisel veri gitmez; yalnız sütun adları, türleri, sayımlar ve en çok 3 örnek değer.</li>
+          <li>Kayıtlar silinmez, arşivlenir. Sınır 300 kayıt, tablo başına 5000 satır × 60 sütun.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="it-foot pl-muted">Insight Table 0.1.0 · PluginLabs · hücre değeri uydurulmaz · kaynak izi · CSV enjeksiyonu engellenir · yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal it-dialog it-dialog--wide" id="capDialog" aria-labelledby="capTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="capTitleH">Yeni içerik</h2><p class="pl-muted it-tight">Sayfanın HTML'ini, Excel/Sheets'ten kopyalanan satırları (sekmeli), CSV, Markdown tablosu ya da liste yapıştırın.</p></div></div>
+    <div class="pl-modal__body it-stack">
+      <textarea class="pl-input it-area" id="capText" spellcheck="false" aria-label="İçerik" maxlength="5000000"></textarea>
+      <div class="it-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="capUrl">Kaynak adresi (isteğe bağlı, http/https — dışa aktarılan dosyaya yazılır)</label><input class="pl-input" id="capUrl" maxlength="2000" spellcheck="false" placeholder="https://…"></div>
+        <div class="pl-field"><label class="pl-field__label" for="capTitle">Başlık (isteğe bağlı)</label><input class="pl-input" id="capTitle" maxlength="200"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="capCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="capRun">Tabloları bul</button></div>
+  </dialog>
+  <dialog class="pl-modal it-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon it-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted it-tight">Sütun adlarının normalleştirilmesi ve sorunlu değerlerin işaretlenmesi bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body it-stack">
+      <ol class="it-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted it-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="it-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="it-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
