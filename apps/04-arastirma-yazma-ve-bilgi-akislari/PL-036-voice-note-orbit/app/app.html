@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src blob:; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Note Orbit</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="vn" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar vn-side" aria-label="Ana menü">
+    <div class="vn-brand" aria-label="PluginLabs Apps">
+      <span class="vn-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="vn-apps">APPS</span>
+    </div>
+    <div class="vn-product">
+      <span class="pl-applogo" aria-hidden="true">VO</span>
+      <div class="vn-product__text"><b>Voice Note Orbit</b><span>Ses notları</span></div>
+      <span class="vn-product__no pl-num" aria-label="Sıra numarası 36">36</span>
+    </div>
+    <div class="vn-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem vn-navbtn" type="button" data-nav="inbox" role="tab">Gelen kutusu<span class="pl-badge" id="draftCount">0</span></button>
+      <button class="pl-navitem vn-navbtn" type="button" data-nav="tasks" role="tab">Görevler<span class="pl-badge" id="taskCount">0</span></button>
+      <button class="pl-navitem vn-navbtn" type="button" data-nav="notes" role="tab">Notlar<span class="pl-badge" id="noteCount">0</span></button>
+      <button class="pl-navitem vn-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="vn-mini" id="sideInfo"></div>
+    <div class="vn-side__foot">
+      <button class="pl-navitem vn-navbtn" type="button" id="bubbleBtn"><span class="vn-dot vn-dot--rec" aria-hidden="true"></span>Kayıt balonu<span class="pl-badge" id="bubbleState">Kapalı</span></button>
+      <button class="pl-navitem vn-navbtn" type="button" id="openMymind"><span class="vn-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="vn-main">
+    <!-- Gelen kutusu -->
+    <div class="vn-view vn-inbox" id="view-inbox">
+      <section class="vn-capture" aria-label="Yeni not">
+        <div class="vn-rec">
+          <button class="vn-recbtn" type="button" id="recBtn" aria-label="Basılı tutarak kaydet" title="Basılı tutun, konuşun, bırakın (Boşluk tuşuyla da)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          </button>
+          <div class="vn-rec__text">
+            <b id="recTitle">Basılı tut, konuş, bırak</b>
+            <span class="pl-muted vn-small" id="recSub">Kısa ses notu (en çok 60 sn). Bırakınca kayıt durur; sürekli dinleme yok.</span>
+            <div class="vn-meter" aria-hidden="true"><i id="meter"></i></div>
+          </div>
+        </div>
+        <span class="vn-sepv" aria-hidden="true"></span>
+        <div class="vn-typed">
+          <textarea class="pl-input vn-typed__area" id="typed" rows="2" maxlength="6000" placeholder="Ya da yazın: “Yarın 10'da Elif'i ara”" aria-label="Yazarak not"></textarea>
+          <div class="vn-row"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="typedBtn">Not ekle</button><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="fileBtn">Ses dosyası aç</button><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="sampleBtn">Örnek notlar</button></div>
+        </div>
+      </section>
+      <div class="vn-body">
+        <section class="vn-card vn-listcard" aria-label="Notlar">
+          <div class="vn-bar"><h2 class="pl-h3 vn-h">Notlar</h2><span class="vn-grow"></span>
+            <div class="pl-segment vn-filter" role="radiogroup" aria-label="Süzgeç">
+              <button type="button" role="radio" data-filter="taslak">Taslaklar</button>
+              <button type="button" role="radio" data-filter="hepsi">Hepsi</button>
+            </div></div>
+          <ul class="vn-list" id="list"></ul>
+        </section>
+        <section class="vn-card vn-detail" id="detail" aria-label="Not ayrıntısı"></section>
+      </div>
+    </div>
+
+    <!-- Görevler -->
+    <div class="vn-view vn-panels" id="view-tasks" hidden>
+      <section class="vn-card vn-card--wide">
+        <div class="vn-bar"><h2 class="pl-h3 vn-h">Görevler</h2><span class="pl-muted vn-small">Kaydettiğiniz görevler, tarihe göre.</span><span class="vn-grow"></span>
+          <label class="vn-check vn-check--inline"><input type="checkbox" id="showDone"> <span>Tamamlananları göster</span></label>
+          <select class="pl-input vn-select" id="exportFmt" aria-label="Dışa aktarma biçimi">
+            <option value="ics">Görevler (.ics, takvim)</option>
+            <option value="csv">Notlar ve görevler (.csv, Excel)</option>
+            <option value="md">Notlar ve görevler (.md)</option>
+            <option value="txt">Notlar ve görevler (.txt)</option>
+          </select>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportBtn">Dışa aktar</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="copyBtn">Kopyala</button></div>
+        <div class="vn-tasks" id="taskTable" role="table" aria-label="Görevler"></div>
+      </section>
+    </div>
+
+    <!-- Notlar -->
+    <div class="vn-view vn-panels" id="view-notes" hidden>
+      <section class="vn-card vn-card--wide">
+        <div class="vn-bar"><h2 class="pl-h3 vn-h">Notlar</h2><span class="pl-muted vn-small">Görev olmayan kayıtlı notlar.</span><span class="vn-grow"></span>
+          <input class="pl-input vn-search" id="noteSearch" placeholder="Notlarda ara" aria-label="Notlarda ara">
+          <label class="vn-check vn-check--inline"><input type="checkbox" id="showArchived"> <span>Arşivi göster</span></label>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <div class="vn-notes" id="noteGrid"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="vn-view vn-panels" id="view-settings" hidden>
+      <section class="vn-card vn-card--wide">
+        <h2 class="pl-h3 vn-h">Ölçüler</h2>
+        <p class="pl-muted vn-small">Notion doğrulama ölçütü: 30 sn'lik notu kaydetme akışı ≤ 3 tık; görev tarihini doğru çıkarma ≥ %90. Tıklar balon ya da kayıt düğmesine basıştan kaydetmeye kadar sayılır (onay penceresi dahil). Tarih doğruluğu, kaydettiğiniz görevin son tarihinin otomatik çıkarılanla karşılaştırılmasıdır; belirsiz işaretlenip doğru seçenek seçildiyse doğru sayılır.</p>
+        <div class="vn-metrics" id="metrics"></div>
+      </section>
+      <section class="vn-card">
+        <h2 class="pl-h3 vn-h">Metne çevirme (yerel)</h2>
+        <p class="pl-muted vn-small">Ses, yalnız bu bilgisayardaki OpenAI uyumlu konuşma→metin sunucusuna gider (whisper.cpp <code>server</code>, faster-whisper-server, Speaches, LocalAI…; uç nokta <code>/v1/audio/transcriptions</code>). Sunucu yoksa notu elle yazabilirsiniz; ses saklanır, sonra çevrilebilir.</p>
+        <div class="pl-field"><label class="pl-field__label" for="sttUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="sttUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:8080"></div>
+        <div class="vn-row">
+          <div class="pl-field vn-grow"><label class="pl-field__label" for="sttModel">Model adı</label><input class="pl-input" id="sttModel" maxlength="80" spellcheck="false" placeholder="whisper-1"></div>
+          <div class="pl-field"><label class="pl-field__label" for="sttLang">Dil</label><select class="pl-input vn-select vn-select--sm" id="sttLang"><option value="tr">Türkçe</option><option value="en">İngilizce</option><option value="auto">Otomatik</option></select></div>
+        </div>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm vn-self" type="button" id="saveStt">Kaydet</button>
+        <label class="vn-check"><input type="checkbox" id="sttAsk"> <span>Her kayıttan önce sor (önerilir). Kapatırsanız kayıt bırakılınca yerel sunucuya doğrudan gider.</span></label>
+      </section>
+      <section class="vn-card">
+        <h2 class="pl-h3 vn-h">Kayıt ve balon</h2>
+        <div class="pl-field"><label class="pl-field__label" for="maxSec">En uzun kayıt</label><select class="pl-input vn-select" id="maxSec"><option value="30">30 saniye</option><option value="60">60 saniye</option><option value="90">90 saniye</option><option value="120">120 saniye</option></select></div>
+        <label class="vn-check"><input type="checkbox" id="keepAudio"> <span>Metne çevrildikten sonra ses dosyasını sakla (kapalıysa transkript oluşunca ses silinir).</span></label>
+        <label class="vn-check"><input type="checkbox" id="setBubble"> <span>Yüzen kayıt balonunu göster <span class="pl-kbd" id="shortcutKbd">Ctrl+Alt+N</span></span></label>
+        <label class="vn-check"><input type="checkbox" id="setTop"> <span>Balon her zaman üstte</span></label>
+        <h3 class="vn-h4">MyMind düzeltmesi (isteğe bağlı)</h3>
+        <label class="vn-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="vn-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sohbet sunucusu (LM Studio, Ollama…).</span></label>
+        <div class="vn-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false" placeholder="ör. qwen2.5-7b-instruct"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm vn-self" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="vn-card vn-card--wide">
+        <h2 class="pl-h3 vn-h">Gizlilik ve sınırlar</h2>
+        <ul class="vn-ul">
+          <li>Mikrofon yalnız düğmeyi <b>basılı tuttuğunuz sürece</b> açıktır; bırakınca ya da süre dolunca kapanır. Sürekli dinleme, uyandırma sözcüğü ya da arka planda kayıt yoktur. Kayıt sırasında balon ve düğme kırmızıdır, sayaç görünür.</li>
+          <li>Mikrofon izni yalnız bu uygulamanın kendi pencerelerine ve yalnız ses için verilir; kamera, ekran paylaşımı ve diğer izinler reddedilir.</li>
+          <li>Ses ve transkript yalnız bu bilgisayarda saklanır. Metne çevirme ve MyMind isteğe bağlıdır, yalnız bu bilgisayardaki sunuculara gider ve varsayılan olarak her seferinde onay ister. MyMind'a ses gitmez; transkriptteki e-posta / telefon / IBAN / kart / T.C. kimlik / bağlantı değerleri yer tutucuyla gider.</li>
+          <li>Ses dosyası, transkript ve not <b>ayrı ayrı</b> silinebilir.</li>
+          <li>Tarih çıkarımı kurala dayalıdır; “saat 3”, “haftaya”, “hafta sonu” gibi belirsiz ifadelerde tek tarih uydurulmaz, seçmeniz istenir.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="vn-foot pl-muted" id="foot">Voice Note Orbit 0.1.0 · PluginLabs · çevrimdışı çalışır; metne çevirme yerel sunucuyla, MyMind isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal vn-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon vn-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted vn-tight">Transkript düzeltme ve tür/başlık önerisi bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır; ses gönderilmez.</p></div></div>
+    <div class="pl-modal__body vn-stack">
+      <ol class="vn-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted vn-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="vn-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="vn-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="src/recorder.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

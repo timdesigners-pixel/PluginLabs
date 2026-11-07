@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Voice Note Orbit — kayıt balonu</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="bubble.css">
+</head>
+<body>
+<div class="vb" id="root" data-pl data-pl-theme="dark" data-pl-product="hub">
+  <section class="vb-card" id="card" hidden aria-live="polite">
+    <div class="vb-card__head"><span class="vb-grip vb-grip--card" aria-hidden="true"></span><b class="vb-card__title" id="cardTitle"></b><button class="vb-x" type="button" id="cardClose" aria-label="Kapat">×</button></div>
+    <div id="cardBody" class="vb-card__body"></div>
+  </section>
+  <div class="vb-dock">
+    <div class="vb-grip" title="Sürükleyerek taşıyın" aria-hidden="true"></div>
+    <button class="vb-mic" type="button" id="mic" aria-label="Basılı tutarak ses notu kaydet" title="Basılı tutun, konuşun, bırakın">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      <span class="vb-ring" id="ring" aria-hidden="true"></span>
+    </button>
+    <span class="vb-label" id="label">Basılı tut</span>
+  </div>
+</div>
+<script src="src/core.js"></script>
+<script src="src/recorder.js"></script>
+<script src="bubble.js"></script>
+</body>
+</html>
