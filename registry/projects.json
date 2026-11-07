@@ -103,7 +103,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut proje notu · çalışan sürüm bu taramada doğrulanmadı",
+      "status": "v0.9.3 · Windows Rust/WebView2; Scrapper köprüsü, 33 Rust + 11 betik + gerçek EXE E2E geçti",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -144,7 +144,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut proje notu · kapsam genişletme önerisi",
+      "status": "v1.12.0 · Çalışan Windows uygulaması (kurulum + taşınabilir .exe); Hub kataloğunda",
       "priority": "P1",
       "effort": "XL",
       "platforms": {
@@ -185,7 +185,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut ayrıntılı proje planı · dağıtım durumu doğrulanmadı",
+      "status": "v0.8.0 · Chrome eklentisi + Windows uygulaması (PluginLabs Scrapper; Leo köprüsü, Alışveriş, Veri Kazıma Stüdyosu, Site Rehberi)",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -638,7 +638,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut oynatma listesi düzenleme görevi · yeni ürün adı",
+      "status": "Windows v0.1.1 yayımlandı (Takeout/bağlantı içe aktarma, izleme rafı, MyMind konu önerisi)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -680,7 +680,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Yeni fikir",
+      "status": "Windows + Chrome eklentisi v0.1.0 yayımlandı (sekme oturumları, alan adı gruplama, MyMind özet)",
       "priority": "P0",
       "effort": "S",
       "platforms": {
@@ -721,7 +721,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Yeni fikir",
+      "status": "Windows v0.1.0 yayımlandı (okunabilir sayfa kapsülü, kaynak URL + yakalama tarihi, Markdown/HTML)",
       "priority": "P0",
       "effort": "S",
       "platforms": {
@@ -762,7 +762,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Yeni fikir",
+      "status": "Windows + Chrome eklentisi v0.1.0 yayımlandı (alan eşleştirme profilleri, önizlemeli form doldurma, DPAPI kasa)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -803,7 +803,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Yeni fikir",
+      "status": "Windows v0.1.0 yayımlandı (çoklu sayfa/ürün özellik karşılaştırma tablosu, birim normalize, MyMind fark özeti)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -844,7 +844,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Yeni fikir",
+      "status": "Windows v0.1.0 yayımlandı (seçili sayfa bölgesi/CSS seçici izleme, metin farkı ve geçmiş)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -885,7 +885,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir · bu görüşmedeki düzenleme deneyiminden",
+      "status": "Windows v0.1.0 yayımlandı (klasör/masaüstü düzenleme kuralları, önizlemeli taşıma ve geri alma günlüğü)",
       "priority": "P0",
       "effort": "M",
       "platforms": {
@@ -925,7 +925,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir · birebir kopya taraması deneyiminden",
+      "status": "Windows v0.1.0 yayımlandı (SHA-256 birebir ve algısal görsel kopya bulucu, güvenli karantina)",
       "priority": "P0",
       "effort": "M",
       "platforms": {
@@ -965,7 +965,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "Windows v0.1.0 yayımlandı (DPAPI şifreli pano geçmişi, sabitlenen öğeler, hassas veri maskeleme)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1006,7 +1006,7 @@
         "slug": "masaustu-dosya-araclari-ve-widgetlar",
         "title": "03 · Masaüstü, dosya araçları ve widget’lar — PL-021–030"
       },
-      "status": "Yeni fikir",
+      "status": "Windows v0.1.0 yayımlandı (ekran/görselden çevrimdışı Türkçe/İngilizce OCR, tablo/satır koruma)",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2188,7 +2188,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.2.1 · Windows + Chrome · fotoğraflı demo",
+      "status": "v0.2.1 · Windows masaüstü (Rust + Tauri 2) + Chrome eklentisi (MV3); Hub kataloğunda",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2258,7 +2258,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.0 geliştirmede · Windows masaüstü (Tauri 2 / Rust) + tork-cli",
+      "status": "v0.1.0 · Windows masaüstü (Rust + Tauri 2) + tork-cli; CPU/disk/bellek yerel performans ölçümü ve karşılaştırma; Hub kataloğunda",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -2274,13 +2274,7 @@
         "komut satırı aracı"
       ],
       "summary": "Sistem benchmark’ı: CPU (tek/çok çekirdek), bellek ve disk testleriyle puan verir; ölçüm geçmişi, önce/sonra karşılaştırması, JSON/CSV dışa aktarma ve MyMind ile darboğaz yorumu.",
-      "repo": {
-        "owner": "timdesigners-pixel",
-        "name": "tork",
-        "url": "https://github.com/timdesigners-pixel/tork",
-        "verified": false,
-        "note": "Yerel depo hazır; GitHub deposu kullanıcı onayıyla açılacak (01.11.2026)"
-      },
+      "repo": "timdesigners-pixel/tork",
       "appPath": "apps/07-yeni-urunler/PL-057-tork",
       "codexProject": {
         "name": "PL-057 · Tork",
@@ -2299,7 +2293,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "Arayüz prototipi (03.11.2026) · PluginLabs Advanced, PLA-095 tabanlı; masaüstü kabuğu, kurgu motoru ve yayın yok",
+      "status": "v0.3.1 Windows ön sürümü · Rust, gerçek FFmpeg render, kurtarma, onaylı canlı Hub metin bağlantısı; Hub kataloğunda",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -2314,14 +2308,14 @@
         "masaüstü uygulaması"
       ],
       "summary": "Proje videolarını tek ekranda kurgulayan video düzenleyici: önizleme, metin/efekt/video/ses izli zaman çizelgesi, renk düzeltme, ortak çalışma imleçleri ve MyMind ile metin, görsel, avatar üretimi.",
-      "repo": null,
+      "repo": "timdesigners-pixel/kurgu-atolyesi",
       "appPath": "apps/07-yeni-urunler/PL-058-kurgu-atolyesi",
       "codexProject": {
         "name": "PL-058 · Kurgu Atölyesi",
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": null
+      "notionUrl": "https://app.notion.com/p/40d8aa13d8f980569c47ddaf88ddaaa4"
     },
     {
       "id": "PL-059",
@@ -2333,7 +2327,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.0 · Windows masaüstü (Rust + Tauri 2) + Chrome eklentisi (MV3)",
+      "status": "v0.1.1 · Windows/Chrome; gerçek Hub taban modeliyle sohbet doğrulandı; özel model eğitimi ayrı devam ediyor",
       "priority": null,
       "effort": null,
       "platforms": {
