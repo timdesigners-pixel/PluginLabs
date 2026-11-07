@@ -12,10 +12,18 @@ Posta uygulamanızdan dışa aktardığınız e-postalar (`.eml`, `.mbox`) için
 | **Ölçüler ve ayarlar** | **Başlangıç (salt okunur)** |
 | ![Ölçüler](docs/screenshots/masaustu-04-olculer-ayarlar.png) | ![Başlangıç](docs/screenshots/masaustu-00-baslangic.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek gelen kutusu; taklit MyMind yanıtı) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri release ekindedir (`windows-masaustu-*`).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek gelen kutusu; taklit MyMind yanıtı) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42376057505](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42376057505), kaynak 7484486) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — gelen kutusu](docs/screenshots/windows-masaustu-01-gelen-kutusu.png)
+
+| Windows — toplu değişiklik önizlemesi | Windows — MyMind ve yanıt taslağı |
+| --- | --- |
+| ![Windows toplu](docs/screenshots/windows-masaustu-02-toplu-degisiklik-onizleme.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-ve-yanit-taslagi.png) |
 
 ## İndir
-[mail-triage-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0) — `MailTriage-0.1.0-Windows-x64.exe` (kurulum), `MailTriage-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[mail-triage-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0) — `MailTriage-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `1120686f…d30a`), `MailTriage-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `74c63bdf…e8e3`, 81 533 991 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Ölçüler ve ayarlar** → e-posta adreslerinizi, adınızı ve önemli kişi/alanları girin (ör. `@musteri.com`). İlk deneme için **Örnek gelen kutusu** (adresler boşsa örnek ayarları da yazar).

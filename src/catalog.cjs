@@ -328,6 +328,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit/app",
   },
+  {
+    id: "mail-triage",
+    name: "Mail Triage",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Gelen kutusu önceliği (salt okunur): posta uygulamanızdan dışa aktardığınız .eml/.mbox iletileri için gerekçeli etiket (Yanıt bekliyor, Fatura/Ödeme, Toplantı, Kargo, Güvenlik, Bülten, Bildirim) ve öncelik önerir; önemli kişi, size doğrudan soru, yakın son tarih ve güvenlik iletilerini asla Düşük önermez. Eylem, son tarih ve tutarı çıkarır; toplu değişikliği önce önizler; kısa yanıt taslağı hazırlar (gönderilmez). Posta kutusuna bağlanmaz. MyMind ya da yerel model ile onaylı öneri (adlar ve iletişim bilgileri gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "MailTriage.exe",
+    size: 81533991,
+    sha256: "74c63bdf1c7f565772e01a89f3802e510daad7aae269c5d10b5f9fa15192e8e3",
+    url: dist("mail-triage", "0.1.0", "MailTriage-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/app",
+  },
 
   {
     id: "mutfak-atolyesi",
