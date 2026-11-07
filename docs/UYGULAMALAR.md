@@ -44,6 +44,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Meeting Trace (PL-035) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0 |
 | Voice Note Orbit (PL-036) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/voice-note-orbit-v0.1.0 |
 | Mail Triage (PL-037) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0 |
+| Action Inbox (PL-038) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0 |
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
@@ -60,12 +61,13 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–037, PL-051–059 ve Hub (v0.4.20).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–038, PL-051–059 ve Hub (v0.4.20).
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.3), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.1), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0).
 - PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-036 Voice Note Orbit 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` voice-note-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.22 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-037 Mail Triage 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` mail-triage-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.23 kataloğunda (PR birleşip Hub yayımlanınca).
-- Sıradaki (Windows sürümü yok): PL-038–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–037 `pluginlabs-dagitim` deposunda yayımlandı.
+- PL-038 Action Inbox 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` action-inbox-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.24 kataloğunda (PR birleşip Hub yayımlanınca).
+- Sıradaki (Windows sürümü yok): PL-039–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–038 `pluginlabs-dagitim` deposunda yayımlandı.
 
 ## Tüm liste (PL-001 … PL-059)
 
@@ -108,7 +110,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-035 | Meeting Trace | Windows uygulaması · **v0.1.0** (transkript → zaman damgalı satırlar; WebVTT/SRT/zaman damgalı satırlar/Teams kopyası; konuşmacı tahmini (tahmin etiketli); kurala dayalı karar/görev/açık soru taslakları, sorumlu + son tarih, belirsiz sorumlu görünür; insan onayı; zaman damgalı not; MD/TXT/CSV/ICS; MyMind ya da yerel model (onaylı; takma ad + yer tutucu); ses kaydı yok; imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-035-meeting-trace/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0 |
 | PL-036 | Voice Note Orbit | Windows uygulaması · **v0.1.0** (yüzen kayıt balonu + ana pencere: basılı tutarak kısa ses notu, sürekli dinleme yok, görünür gösterge; yerel whisper sunucusuyla (loopback) onaylı metne çevirme ya da elle yazma; görev/not + tarih–saat taslağı, belirsiz ifadede seçenek (balonda tek tık seç-kaydet); ses/transkript/not ayrı silme; ICS/CSV/MD; MyMind ya da yerel model (onaylı, yer tutucu); imzasız önizleme). Kaynak PluginLabs `apps/04-…/PL-036-voice-note-orbit/app` (ürün deposu yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/voice-note-orbit-v0.1.0 |
 | PL-037 | Mail Triage | Windows uygulaması · **v0.1.0** (salt okunur pilot: .eml/.mbox içe aktarma; gerekçeli etiket + öncelik önerisi, önemli e-postayı Düşük önermeme korumaları; eylem/son tarih/tutar; toplu değişiklik önizlemesi; öneri kabul/düzeltme ölçüleri; yanıt taslağı (gönderilmez); CSV/MD; MyMind ya da yerel model (onaylı; adlar ve iletişim bilgileri gizli)) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0 |
-| PL-038 | Action Inbox | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-038 | Action Inbox | Windows uygulaması · **v0.1.0** (seçilen metinden kaynaklı görev adayları: yapıştırma, pano düğmesi/genel kısayol, .txt/.md; fiil, son tarih (yakalama gününe göre) ve materyal çıkarımı; kişi ataması yalnız taslak; inceleme kuyruğu; yinelenen görev tespiti + birleştirme; görev kovaları ve görev kutusu (widget); haftalık tamamlama ve yinelenen görev oranı; MD/ICS/CSV; MyMind ya da yerel model (onaylı; adlar ve iletişim bilgileri gizli); otomatik kaynak izleme yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0 |
 | PL-039 | Notion Bridge | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-040 | Insight Table | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-041 | Dev Patch Notes | Fikir / Hub içi önizleme (ayrı depo yok) | — |

@@ -1,8 +1,8 @@
-# PluginLabs Hub 0.4.23
+# PluginLabs Hub 0.4.24
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
-Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
+Action Inbox 0.1.0 (PL-038; seçilen metinden kaynaklı görev adayları, inceleme kuyruğu, yinelenen görev birleştirme, görev kutusu), Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
 
 Flow Dock 0.2.0 ön sürümü Hub üzerinden kurulabilir. Windows 11 üzerinde doğrulandı; Windows Server 2025 açılış testi başarısız.
 

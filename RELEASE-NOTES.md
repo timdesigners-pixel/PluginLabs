@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.24 — Action Inbox 0.1.0 kataloğa eklendi.
+
+- Action Inbox 0.1.0 (PL-038): sayfa, e-posta ve mesajlardan seçilip yakalanan metin (yapıştırma, pano düğmesi ya da Ctrl+Alt+I genel kısayolu, .txt/.md) kaynaklı görev adaylarına ayrılır; fiil, son tarih (yakalama gününe göre) ve gerekli materyal önerilir, kişi ataması yalnız taslaktır; inceleme kuyruğu (hiçbir aday kendiliğinden görev olmaz); yinelenen görev uyarısı ve mevcut göreve birleştirme; son tarih kovalı görev kuyruğu ve görev kutusu (widget); haftalık kaynaklı tamamlama ve yinelenen görev oranı; MD/ICS/CSV. MyMind / yerel model onaylı, kişi adları ve iletişim bilgileri gizli. Otomatik kaynak izleme yok.
+- Taşınabilir paket `pluginlabs-dagitim` action-inbox-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.23 — Mail Triage 0.1.0 kataloğa eklendi.
 
 - Mail Triage 0.1.0 (PL-037): salt okunur pilot — dışa aktarılan .eml/.mbox iletileri için gerekçeli etiket (Yanıt bekliyor, Fatura/Ödeme, Toplantı, Kargo/Sipariş, Güvenlik, Bülten/Kampanya, Bildirim) ve öncelik önerisi; önemli kişi, doğrudan soru/rica, yakın son tarih ve güvenlik iletileri Düşük önerilmez; eylem/son tarih/tutar çıkarımı; toplu değişiklik önizlemesi; yanıt taslağı (gönderilmez). Posta kutusuna bağlanmaz. MyMind / yerel model onaylı; adlar ve iletişim bilgileri gizlenir.

@@ -14,10 +14,18 @@ E-posta, sayfa ve mesajlarda gördüğünüz yapılacakları **seçip yakalayın
 | **Görev kutusu (widget)** | **Başlangıç** |
 | ![Görev kutusu](docs/screenshots/masaustu-06-gorev-kutusu.png) | ![Başlangıç](docs/screenshots/masaustu-00-baslangic.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek yakalamalar; taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`) release ekindedir.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek yakalamalar; taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42379528611](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42379528611), kaynak 59a539e) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — inceleme kuyruğu](docs/screenshots/windows-masaustu-01-inceleme-kuyrugu.png)
+
+| Windows — olası yineleme | Windows — görevler | Windows — görev kutusu |
+| --- | --- | --- |
+| ![Windows yineleme](docs/screenshots/windows-masaustu-02-olasi-yineleme.png) | ![Windows görevler](docs/screenshots/windows-masaustu-04-gorevler.png) | ![Windows widget](docs/screenshots/windows-masaustu-06-gorev-kutusu.png) |
 
 ## İndir
-[action-inbox-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0) — `ActionInbox-0.1.0-Windows-x64.exe` (kurulum), `ActionInbox-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[action-inbox-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0) — `ActionInbox-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `c555b669…cdd4`), `ActionInbox-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `58a9071a…517b`, 81 537 096 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Kaynakta yapılacak metni seçip kopyalayın, ardından **Ctrl+Alt+I** (her yerde) ya da **Panodan yakala**. Kaynak adresini/türünü eklemek için **Metin yakala** (Ctrl+N). Toplantı notu gibi listeler için `.txt`/`.md` dosyası da açabilirsiniz. İlk deneme için **Örnek yakalamalar**.

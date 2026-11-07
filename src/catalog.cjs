@@ -361,6 +361,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/app",
   },
+  {
+    id: "action-inbox",
+    name: "Action Inbox",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Kaynaklı görev kuyruğu: e-posta, sayfa ya da mesajda seçtiğiniz yapılacak metni yapıştırın, panodan alın ya da Ctrl+Alt+I ile her yerden yakalayın. Metin görev adaylarına ayrılır; fiil, son tarih ve gerekli materyal önerilir, kişi ataması yalnız taslaktır. Adaylar inceleme kuyruğuna girer; aynı iş zaten varsa olası yineleme uyarısıyla mevcut göreve birleştirilir. Görevler son tarihe göre sıralanır; görev kutusu (widget) her zaman üstte kalabilir. Otomatik kaynak izleme yok. MyMind ya da yerel model ile onaylı çıkarım (kişi adları ve iletişim bilgileri gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "ActionInbox.exe",
+    size: 81537096,
+    sha256: "58a9071acef82d3ed00a32a8c1e47468bd554319af69ef7ab94d290a8745517b",
+    url: dist("action-inbox", "0.1.0", "ActionInbox-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/app",
+  },
 
   {
     id: "mutfak-atolyesi",
