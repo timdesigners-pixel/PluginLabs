@@ -413,6 +413,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/app",
   },
+  {
+    id: "dev-patch-notes",
+    name: "Dev Patch Notes",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Commit'lerden kaynağına bağlı sürüm notu: yerel git deposundan (yalnız okunur; son etiketten bu yana) ya da yapıştırılan git log / .patch / diff'ten commit'leri özellik, düzeltme, iyileştirme, güvenlik ve belge başlıklarına ayırır; her madde commit ve PR bağlantısıyla gelir ve düzenlenebilir. Birleştirme commit'leri, geri alınan çiftler ve bakım işleri ayıklanır. Sırlar (API anahtarı, belirteç, parola) girişte maskelenir; commit'te yazmayan test, performans ya da güvenlik iddiası içeren not dışa aktarılamaz. Markdown (Türkçe başlıklar ya da Keep a Changelog), düz metin, JSON, pano. MyMind ya da yerel model ile onaylı yeniden yazım. Otomatik commit, push ve yayın yok.",
+    platform: "win32",
+    format: "exe",
+    file: "DevPatchNotes.exe",
+    size: 81535432,
+    sha256: "5d04ef6fe1e8b03a9b85806588d6e6552e24a01cab1a728b6a319f99dc6cb4df",
+    url: dist("dev-patch-notes", "0.1.0", "DevPatchNotes-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/app",
+  },
 
   {
     id: "mutfak-atolyesi",

@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.27 — Dev Patch Notes 0.1.0 kataloğa eklendi.
+
+- Dev Patch Notes 0.1.0 (PL-041): yerel git deposundan (yalnız okuma: rev-parse, remote get-url, tag --list, log, show; kabuk yok) ya da yapıştırılan git log / --oneline / format-patch / diff'ten commit'ler Conventional Commits ve TR/EN anahtar sözcüklerle başlıklara ayrılır; her madde kaynak commit/PR bağlantılı ve düzenlenebilir; birleştirme, geri alma ve bakım commit'leri ayıklanır; sırlar girişte maskelenir; commit'te geçmeyen test/performans/güvenlik/teslim iddiası içeren not dışa aktarılamaz; Markdown (Türkçe başlıklar / Keep a Changelog), metin, JSON, pano; düzeltme oranı ve etkin düzenleme süresi ölçüsü. MyMind / yerel model onaylı, sırlar maskeli; yeni madde ve kanıtsız iddia önerileri atılır. Otomatik commit, push ve yayın yok.
+- Taşınabilir paket `pluginlabs-dagitim` dev-patch-notes-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.26 — Insight Table 0.1.0 kataloğa eklendi.
 
 - Insight Table 0.1.0 (PL-040): sayfadaki tablo/liste (panodaki seçim — HTML biçimi —, Ctrl+Alt+T genel kısayolu, yapıştırılan HTML/CSV/TSV/Markdown/satırlar, kaydedilmiş .html/.csv/.md) sütun önizlemesiyle CSV ya da JSON'a çevrilir; rowspan/colspan ve çok satırlı başlık çözümü, menü listeleri ve yerleşim tabloları atlanır; sütun türü ve TR/EN sayı-tarih biçimi kanıtla seçilir; türüne uymayan, takvimde olmayan, farklı birimli, eksik ve mükerrer hücreler işaretlenir (hücre uydurulmaz, eksik doldurulmaz); kişisel veri sütunları maskelenir/çıkarılır; CSV formül enjeksiyonu etkisizleştirilir ve yazılan dosya geri okunup hücre hücre denetlenir; JSON kaynak adresi, kaynak satırı ve uyarılarla. MyMind / yerel model onaylı; yalnız sütun adı ve işaret, hücre değeri önerileri atılır. Site taraması yok.

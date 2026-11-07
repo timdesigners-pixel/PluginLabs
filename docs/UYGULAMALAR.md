@@ -47,6 +47,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Action Inbox (PL-038) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0 |
 | Notion Bridge (PL-039) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/notion-bridge-v0.1.0 |
 | Insight Table (PL-040) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0 |
+| Dev Patch Notes (PL-041) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0 |
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
@@ -63,15 +64,16 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–040, PL-051–059 ve Hub (v0.4.25).
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.4), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0), Insight Table (0.1.0; Hub 0.4.26).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–041, PL-051–059 ve Hub (v0.4.25).
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.4), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0), Insight Table (0.1.0; Hub 0.4.26), Dev Patch Notes (0.1.0; Hub 0.4.27).
 - PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-036 Voice Note Orbit 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` voice-note-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.22 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-037 Mail Triage 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` mail-triage-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.23 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-038 Action Inbox 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` action-inbox-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.24 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-039 Notion Bridge 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` notion-bridge-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.25 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-040 Insight Table 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` insight-table-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.26 kataloğunda (PR birleşip Hub yayımlanınca).
-- Sıradaki (Windows sürümü yok): PL-041–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–040 `pluginlabs-dagitim` deposunda yayımlandı.
+- PL-041 Dev Patch Notes 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` dev-patch-notes-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.27 kataloğunda (PR birleşip Hub yayımlanınca).
+- Sıradaki (Windows sürümü yok): PL-042–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–041 `pluginlabs-dagitim` deposunda yayımlandı.
 
 ## Tüm liste (PL-001 … PL-059)
 
@@ -117,7 +119,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-038 | Action Inbox | Windows uygulaması · **v0.1.0** (seçilen metinden kaynaklı görev adayları: yapıştırma, pano düğmesi/genel kısayol, .txt/.md; fiil, son tarih (yakalama gününe göre) ve materyal çıkarımı; kişi ataması yalnız taslak; inceleme kuyruğu; yinelenen görev tespiti + birleştirme; görev kovaları ve görev kutusu (widget); haftalık tamamlama ve yinelenen görev oranı; MD/ICS/CSV; MyMind ya da yerel model (onaylı; adlar ve iletişim bilgileri gizli); otomatik kaynak izleme yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0 |
 | PL-039 | Notion Bridge | Windows uygulaması · **v0.1.0** (seçilen içeriği tek Notion veritabanının alanlarına eşleme: şema okuma, kural tabanlı eşleme, uydurma alan/seçenek yok, belirsiz alan boş; kayıt öncesi taslak önizleme ve şema doğrulaması; onaylı yalnız-ekleme kaydı; mükerrer kayıt engeli; Notion CSV; MyMind/yerel model onaylı) — kaynak PluginLabs `apps/` içinde | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/notion-bridge-v0.1.0 |
 | PL-040 | Insight Table | Windows uygulaması · **v0.1.0** (sayfadaki tablo/listeyi panodan, yapıştırmadan ya da .html/.csv/.md dosyasından çıkarma; rowspan/colspan; sütun önizlemesi; tür ve TR/EN yerel biçim denetimi; türüne uymayan/eksik/farklı birimli/mükerrer hücre işaretleri, hücre uydurulmaz; kişisel veri maskeleme; enjeksiyona karşı güvenli CSV + gidiş-dönüş denetimi; kaynak izli JSON; MyMind/yerel model onaylı, yalnız sütun adı ve işaret) — kaynak PluginLabs `apps/` içinde | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0 |
-| PL-041 | Dev Patch Notes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-041 | Dev Patch Notes | Windows uygulaması · **v0.1.0** (yerel git deposundan yalnız okuma, yapıştırılan git log / --oneline / format-patch / diff; Conventional Commits + TR/EN anahtar sözcükle başlıklara ayırma; her madde kaynak commit/PR bağlantılı ve düzenlenebilir; birleştirme/geri alma/bakım ayıklama; sır maskeleme; commit'te geçmeyen test/performans/güvenlik iddiası dışa aktarılamaz; Markdown/Keep a Changelog/metin/JSON/pano; düzeltme oranı ölçüsü; MyMind/yerel model onaylı) — kaynak PluginLabs `apps/` içinde | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0 |
 | PL-042 | API Pocket | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-043 | Access Lens | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-044 | Design Token Scout | Fikir / Hub içi önizleme (ayrı depo yok) | — |

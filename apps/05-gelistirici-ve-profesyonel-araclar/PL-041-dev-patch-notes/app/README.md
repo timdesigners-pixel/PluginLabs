@@ -12,10 +12,18 @@ Kod değişikliğini kullanıcıya anlaşılır sürüm notuna dönüştürmek i
 | **Dışa aktarımlar (düzeltme oranı, geri okuma)** | **Ölçüler ve ayarlar** |
 | ![Dışa aktarımlar](docs/screenshots/masaustu-04-disa-aktarimlar.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek depo; taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek depo; taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42404990282](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42404990282), kaynak b01e54a) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — sürüm notu](docs/screenshots/windows-masaustu-01-surum-notu.png)
+
+| Windows — kanıtsız iddia engeli | Windows — MyMind önerisi | Windows — dışa aktarımlar |
+| --- | --- | --- |
+| ![Windows engel](docs/screenshots/windows-masaustu-02-kanitsiz-iddia.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows dışa aktarımlar](docs/screenshots/windows-masaustu-04-disa-aktarimlar.png) |
 
 ## İndir
-[dev-patch-notes-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0) — `DevPatchNotes-0.1.0-Windows-x64.exe` (kurulum), `DevPatchNotes-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. Yerel depodan okumak için [Git for Windows](https://git-scm.com) gerekir (yapıştırma ve dosya için gerekmez). PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[dev-patch-notes-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0) — `DevPatchNotes-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `6d5a7c72…2e45`), `DevPatchNotes-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `5d04ef6f…b4df`, 81 535 432 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. Yerel depodan okumak için [Git for Windows](https://git-scm.com) gerekir (yapıştırma ve dosya için gerekmez). PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Git deposundan** → klasör seçin; aralık son etiketten itibaren önerilir (`v1.3.0..HEAD`), depo adresi origin'den gelir. Ya da **git log / yama yapıştır**, **Dosya aç** (.patch/.diff/.log). İlk deneme için **Örnek depo**.
