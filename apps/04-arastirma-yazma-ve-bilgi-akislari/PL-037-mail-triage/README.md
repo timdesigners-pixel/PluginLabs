@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-037` · `mail-triage` |
 | Kategori | 04 · Araştırma, yazma ve bilgi akışları — PL-031–040 |
-| Durum | Mevcut e-posta kategorizasyon görevinden yeni ürün önerisi |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması yayımlandı** (salt okunur pilot) — [mail-triage-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.23 kataloğunda · Notion durumu: Mevcut e-posta kategorizasyon görevinden yeni ürün önerisi |
 | Öncelik / efor | P1 · L |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-mail-triage-windows.yml)) |
 | Codex projesi | `PL-037 · Mail Triage` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc) |
 
@@ -56,6 +56,16 @@ Bireysel Pro; ekip ortak gelen kutusu paketi daha sonra.
 ## Öncelik ve efor
 
 P1 · L; sağlayıcı izin/onay süresi takvime dahil.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **seçili e-postaları incele → etiket ve öncelik öner → toplu değişiklik önizlemesi**; ilk pilot **salt okunur**. Kullanıcı posta uygulamasından dışa aktardığı `.eml` (birden çok) ya da `.mbox` dosyalarını açar veya iletinin kaynağını yapıştırır; posta kutusuna bağlanılmaz, OAuth istenmez, ileti gönderilmez/taşınmaz/silinmez, kaynak dosyalar değiştirilmez (Notion: "ilk sürüm tüm kutuyu dış servise taşımaz"). MIME (multipart, quoted-printable, base64, RFC 2047/2231; UTF-8, ISO-8859-9, Windows-1254) ayrıştırılır, HTML düz metne çevrilir.
+
+Her ileti için **gerekçeli etiket** (Yanıt bekliyor, Fatura/Ödeme, Toplantı, Kargo/Sipariş, Güvenlik, Bülten/Kampanya, Bildirim) ve **öncelik** (Yüksek/Normal/Düşük) önerilir. Düşük yalnız toplu/otomatik ve önem işareti olmayan iletiye verilir; önemli kişi/alan, size doğrudan soru/rica, yakın son tarih, güvenlik uyarısı, "yüksek önem" başlığı ve son ödeme tarihli fatura **Düşük önerilmez** (Notion ölçütü: önemli e-postayı yanlış düşük öncelikleme < %2). Kullanıcı öneriyi kabul eder ya da düzeltir; seçili iletilerde etiket/öncelik değişikliği önce **önce/sonra tablosuyla** önizlenir, önem işaretli ileti Düşük'e alınırken uyarı verilir. **Yapay zekânın rolü:** eylem/tarih/tutar kurallarla çıkarılır ve kısa **yanıt taslağı** hazırlanır — **gönderim otomatik değil**, taslak panoya kopyalanır. İsteğe bağlı MyMind / yerel model: tek ileti, her istekte onay; adlar [Gönderen]/[Alıcı], e-posta adresleri, telefon, IBAN, kart, T.C. kimlik, doğrulama kodu gönderilmez; model önem işaretli iletiyi Düşük yapamaz. Ölçüler: etiket kabulü (hedef ≥ %85) ve yanlış düşük öncelik oranı kullanıcının kararlarından; elle etiketli 12 iletilik örnekte etiket kesinliği/duyarlılığı %100, önemli iletinin Düşük önerilmesi 0/6 (gerçek gelen kutularında ölçülmedi). Dışa aktarma: CSV (Excel), Markdown özet, JSON yedek; kayıt Windows kasasıyla (DPAPI) şifreli.
+
+![Mail Triage — gerekçeli öncelik ve etiket önerisi](app/docs/screenshots/masaustu-01-gelen-kutusu.png)
+
+Kapsam dışı (bu sürüm): Gmail/Outlook API ve OAuth (sağlayıcı doğrulaması sonraki faz), etiketin posta kutusuna yazılması, Chrome eklentisi, Linux/macOS paketleri, ekip ortak gelen kutusu, Pro. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

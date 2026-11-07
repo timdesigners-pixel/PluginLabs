@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.23 — Mail Triage 0.1.0 kataloğa eklendi.
+
+- Mail Triage 0.1.0 (PL-037): salt okunur pilot — dışa aktarılan .eml/.mbox iletileri için gerekçeli etiket (Yanıt bekliyor, Fatura/Ödeme, Toplantı, Kargo/Sipariş, Güvenlik, Bülten/Kampanya, Bildirim) ve öncelik önerisi; önemli kişi, doğrudan soru/rica, yakın son tarih ve güvenlik iletileri Düşük önerilmez; eylem/son tarih/tutar çıkarımı; toplu değişiklik önizlemesi; yanıt taslağı (gönderilmez). Posta kutusuna bağlanmaz. MyMind / yerel model onaylı; adlar ve iletişim bilgileri gizlenir.
+- Taşınabilir paket `pluginlabs-dagitim` mail-triage-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.22 — Voice Note Orbit 0.1.0 kataloğa eklendi.
 
 - Voice Note Orbit 0.1.0 (PL-036): yüzen kayıt balonundan ya da ana pencereden basılı tutarak kısa ses notu (sürekli dinleme yok, görünür kayıt göstergesi); bu bilgisayardaki whisper sunucusuyla onaylı metne çevirme ya da elle yazma; görev/not ve tarih–saat taslağı, belirsiz ifadede seçenek; ses, transkript ve not ayrı silinir; ICS/CSV. MyMind / yerel model onaylı, hassas değerler yer tutucuyla.
