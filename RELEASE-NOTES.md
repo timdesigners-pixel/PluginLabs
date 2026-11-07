@@ -1,3 +1,11 @@
+PluginLabs Hub 0.4.25 — Notion Bridge 0.1.0 kataloğa eklendi.
+
+- Notion Bridge 0.1.0 (PL-039): seçilen içerik (yapıştırma, pano düğmesi ya da Ctrl+Alt+N genel kısayolu, .txt/.md) kullanıcının kendi entegrasyon anahtarıyla bağlanan tek Notion veritabanının şemasına göre alanlara eşlenir; şemada olmayan alan ya da seçenek uydurulmaz, belirsiz alan boş ve gerekçeli kalır; kayıt öncesi taslak önizleme ve şema doğrulaması (uyumsuz taslak gönderilmez); her Notion isteği ayrı onaylı, yalnız yeni kart eklenir (var olan sayfa değişmez); yerel parmak izi + başlık sorgusuyla mükerrer kayıt engeli; Notion CSV/MD/JSON. MyMind / yerel model onaylı, iletişim bilgileri ve Notion anahtarı gönderilmez; öneri aynı şema denetiminden geçer.
+- Taşınabilir paket `pluginlabs-dagitim` notion-bridge-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+- Bu dal güncel `main` (Codex Hub 0.4.21: Leo Helper 0.9.4, MyMind AI 0.1.2) ile birleştirildi; aynı 0.4.21 numarası iki dalda kullanıldığından birleşik sürüm 0.4.25 olarak yayımlanır.
+
+---
+
 PluginLabs Hub 0.4.24 — Action Inbox 0.1.0 kataloğa eklendi.
 
 - Action Inbox 0.1.0 (PL-038): sayfa, e-posta ve mesajlardan seçilip yakalanan metin (yapıştırma, pano düğmesi ya da Ctrl+Alt+I genel kısayolu, .txt/.md) kaynaklı görev adaylarına ayrılır; fiil, son tarih (yakalama gününe göre) ve gerekli materyal önerilir, kişi ataması yalnız taslaktır; inceleme kuyruğu (hiçbir aday kendiliğinden görev olmaz); yinelenen görev uyarısı ve mevcut göreve birleştirme; son tarih kovalı görev kuyruğu ve görev kutusu (widget); haftalık kaynaklı tamamlama ve yinelenen görev oranı; MD/ICS/CSV. MyMind / yerel model onaylı, kişi adları ve iletişim bilgileri gizli. Otomatik kaynak izleme yok.

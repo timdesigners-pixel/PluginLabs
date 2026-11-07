@@ -12,10 +12,18 @@ Web'de ya da masaüstünde gördüğünüz içeriği **Notion'daki doğru alana*
 | **Kayıtlar (Notion'a eklenen kart)** | **Ölçüler ve ayarlar** |
 | ![Kayıtlar](docs/screenshots/masaustu-04-kayitlar.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek içerikler; **taklit Notion API** ve taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek içerikler; **taklit Notion API** ve taklit MyMind yanıtı; tarih 6 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42383971671](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42383971671), kaynak ce9f8a8; Windows kasası DPAPI etkin) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — taslak önizleme](docs/screenshots/windows-masaustu-01-taslak-onizleme.png)
+
+| Windows — hedef ve şema | Windows — MyMind önerisi | Windows — kayıtlar |
+| --- | --- | --- |
+| ![Windows şema](docs/screenshots/windows-masaustu-02-hedef-ve-sema.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows kayıtlar](docs/screenshots/windows-masaustu-04-kayitlar.png) |
 
 ## İndir
-Windows paketleri `pluginlabs-dagitim` deposunda `notion-bridge-v0.1.0` etiketiyle yayımlanır. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[notion-bridge-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/notion-bridge-v0.1.0) — `NotionBridge-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `df65772b…0263`), `NotionBridge-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `d43bf3e7…70ed`, 81 533 098 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kurulum: Notion bağlantısı
 1. Notion → Ayarlar → **Bağlantılar** → **Entegrasyon geliştir** → yeni **dahili** entegrasyon. Yetenekler: "İçeriği oku" ve "İçerik ekle" yeterli ("İçeriği güncelle" gerekmez).

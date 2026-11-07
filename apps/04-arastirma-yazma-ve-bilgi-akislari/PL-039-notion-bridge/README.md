@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-039` · `notion-bridge` |
 | Kategori | 04 · Araştırma, yazma ve bilgi akışları — PL-031–040 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [notion-bridge-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/notion-bridge-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.25 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-notion-bridge-windows.yml)) |
 | Codex projesi | `PL-039 · Notion Bridge` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc) |
 
@@ -56,6 +56,18 @@ Freemium yakalama; Pro çoklu şema ve ekip onay akışı.
 ## Öncelik ve efor
 
 P1 · M; yerel dosya erişimi için masaüstü köprüsü.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **izinli Notion hedefi seç → şemayı oku → alan eşleştir → taslak önizle → kaydet; ilk sürüm tek veri tabanına kart ekleme.** Kullanıcının kendi dahili entegrasyon anahtarıyla (Windows kasasında şifreli) ve entegrasyonla paylaştığı tek veritabanına bağlanılır; şema (alanlar, türler, seçenekler) okunur. İçerik yapıştırılarak (isteğe bağlı http/https kaynak adresiyle), **Panodan** düğmesiyle, her yerde **Ctrl+Alt+N** genel kısayoluyla (pano yalnız tuşa basınca okunur) ya da `.txt`/`.md` dosyasından alınır.
+
+Yapay zekânın rolü (Notion): **metni veritabanı alanlarına ayırır; olmayan property uydurmaz ve belirsiz alanı boş bırakır.** Kural tabanlı eşleme her zaman çalışır ("Alan: değer" satırları, kaynak adresi, tek tarih/e-posta/telefon alanı, metinde adı geçen tek seçenek, #etiketler); şemada karşılığı olmayan satırlar "eklenmedi" listesinde gösterilir, olmayan seçenek yeni seçenek olarak eklenmez, belirsiz alan boş kalır ve nedeni yazılır. MyMind ya da yerel model isteğe bağlıdır, her istek onaylıdır, iletişim bilgileri ⟦n⟧ olarak gider, kaynak adresi ve Notion anahtarı gönderilmez; yanıt aynı şema denetiminden geçer (uydurma alan/seçenek atılır).
+
+Teknik sınır (Notion): **ayrıcalık yükseltmez; var olan sayfa içeriğini sessizce değiştirmez.** Yalnız üç Notion isteği vardır (şema okuma, başlıkla mükerrer sorgusu, yeni sayfa ekleme), her biri ayrı onaylıdır; PATCH/silme ucu yoktur; 429'da Retry-After'a uyulur. Doğrulama ölçütü: **şema uyumsuz kayıt sıfır** — taslak kayıttan önce şemaya göre denetlenir ve uyumsuzsa gönderilmez; **aynı girdiyi tekrar çalıştırmada mükerrer kayıt oluşmaması** — yerel parmak izi defteri ve Notion'da başlık sorgusu. Dışa aktarma: Notion "CSV ile birleştir" akışına uygun CSV, Markdown, JSON yedek.
+
+![Notion Bridge — taslak önizleme: her alanın değeri, kaynağı ve kanıtı; belirsiz alan boş](app/docs/screenshots/masaustu-01-taslak-onizleme.png)
+
+Kapsam dışı (bu sürüm): çoklu şema ve ekip onay akışı (Pro), var olan kartı güncelleme, sayfa gövdesi (blok) yazma, kişi/dosya/ilişki alanları, OAuth genel entegrasyonu, Chrome eklentisi, Linux/macOS paketleri. Gerçek bir Notion çalışma alanına karşı denenmedi (taklit Notion API ile otomatik test). Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

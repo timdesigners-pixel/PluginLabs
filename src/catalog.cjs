@@ -378,6 +378,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/app",
   },
+  {
+    id: "notion-bridge",
+    name: "Notion Bridge",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Notion'a doğru alanla kayıt: seçtiğiniz içeriği yapıştırın, panodan alın ya da Ctrl+Alt+N ile her yerden gönderin; kendi entegrasyon anahtarınızla bağladığınız tek Notion veritabanının şemasına göre alanlara eşlenir. Şemada olmayan alan ya da seçenek uydurulmaz, belirsiz alan boş bırakılır; kaydetmeden önce taslak önizlenir ve şemaya göre doğrulanır. Onayınızla yalnız yeni kart eklenir (var olan sayfa değişmez); aynı içerik ikinci kez kaydedilmez. Notion CSV dışa aktarma. MyMind ya da yerel model ile onaylı eşleme (iletişim bilgileri ve Notion anahtarı gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "NotionBridge.exe",
+    size: 81533098,
+    sha256: "d43bf3e7ca6a8fece143755cebc6958abcc148dc5695385a5079106610ba70ed",
+    url: dist("notion-bridge", "0.1.0", "NotionBridge-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/app",
+  },
 
   {
     id: "mutfak-atolyesi",
