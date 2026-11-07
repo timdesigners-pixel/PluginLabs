@@ -9,7 +9,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Uygulama | Sürüm | Nereden |
 | --- | --- | --- |
 | Flow Dock (PL-001) | v0.2.0 ön sürüm (Rust/Tauri, kurulum + taşınabilir); Windows 11 geçti, Server 2025 açılışı başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| Leo Helper (PL-002) | **v0.9.3** (Tauri/Rust; kurulum + taşınabilir exe; Scrapper köprüsü) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.3 |
+| Leo Helper (PL-002) | **v0.9.4** (Tauri/Rust; kurulum + taşınabilir exe; Scrapper köprüsü) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.4 |
 | Mind Palace (PL-003) | **v1.12.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
 | The Ultimate Scrapper (PL-004) | **v0.8.0** (PluginLabs Scrapper; Leo köprüsü, Alışveriş + Veri Kazıma Stüdyosu + Site Rehberi) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
@@ -55,14 +55,14 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | The Ultimate Upscaler (PL-056) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
 | Tork (PL-057) | **v0.1.0** (Tauri/Rust; taşınabilir exe + `tork-cli` + SHA256SUMS + BUILD-INFO; Hub kataloğunda) | https://github.com/timdesigners-pixel/tork/releases/tag/v0.1.0 |
 | Kurgu Atölyesi (PL-058) | **v0.3.1** ön sürüm (Tauri/Rust; gerçek FFmpeg MP4 render, kurtarma, MyMind metin taslağı) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/kurgu-atolyesi-v0.3.1 |
-| MyMind AI (PL-059) | **v0.1.1** (Tauri/Rust masaüstü + Chrome MV3 eklentisi) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.1 |
+| MyMind AI (PL-059) | **v0.1.2** (Tauri/Rust masaüstü + Chrome MV3 eklentisi) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.2 |
 
 Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanımı) `main` dalındadır: `npm ci && npm run test:agent`. Eski `wip-agent-inapp` dalı bunun taslağıydı; `main` onu aşmıştır.
 
 ## Özet
 
 - Windows sürümü yayımlanmış (GitHub release): PL-001–038, PL-051–059 ve Hub (v0.4.20).
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.3), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.1), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0).
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.4), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0).
 - PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-036 Voice Note Orbit 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` voice-note-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.22 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-037 Mail Triage 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` mail-triage-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.23 kataloğunda (PR birleşip Hub yayımlanınca).
@@ -74,7 +74,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | **v0.2.0 ön sürüm**, imzasız; Windows 11 native geçti, Server 2025 başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.3** (Tauri/Rust; Scrapper köprüsü; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.3 |
+| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.4** (Tauri/Rust; Scrapper köprüsü; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.4 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.12.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
 | PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.8.0** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
@@ -131,4 +131,4 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-056 | The Ultimate Upscaler | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (cihazda görsel büyütme, önce/sonra karşılaştırma, toplu sıra) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
 | PL-057 | Tork | Windows uygulaması (Rust/Tauri) · **v0.1.0** + `tork-cli` (CPU/disk/bellek yerel performans ölçümü ve karşılaştırma; Hub kataloğunda) | https://github.com/timdesigners-pixel/tork/releases/tag/v0.1.0 |
 | PL-058 | Kurgu Atölyesi | Windows ön sürümü (Rust/Tauri) · **v0.3.1** (gerçek FFmpeg MP4 render, katmanlar, renk, ses, kurtarma, MyMind metin taslağı; Hub kataloğunda) | https://github.com/timdesigners-pixel/kurgu-atolyesi |
-| PL-059 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.1** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.1 |
+| PL-059 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.2** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.2 |

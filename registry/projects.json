@@ -103,7 +103,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "v0.9.3 · Windows Rust/WebView2; Scrapper köprüsü, 33 Rust + 11 betik + gerçek EXE E2E geçti",
+      "status": "v0.9.4 · Windows Rust/WebView2; Scrapper köprüsü, 33 Rust + 11 betik + gerçek EXE E2E geçti",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -2332,7 +2332,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.1 · Windows/Chrome; gerçek Hub taban modeliyle sohbet doğrulandı; özel model eğitimi ayrı devam ediyor",
+      "status": "v0.1.2 · Windows/Chrome; gerçek Hub taban modeliyle sohbet doğrulandı; özel model eğitimi ayrı devam ediyor",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -2355,7 +2355,7 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": null
+      "notionUrl": "https://app.notion.com/p/4118aa13d8f981e4afa9c4cfaea19562"
     }
   ]
 }

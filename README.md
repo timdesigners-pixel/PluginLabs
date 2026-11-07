@@ -4,6 +4,16 @@ PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; y
 
 Action Inbox 0.1.0 (PL-038; seçilen metinden kaynaklı görev adayları, inceleme kuyruğu, yinelenen görev birleştirme, görev kutusu), Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
 
+Hub 0.4.21 (Codex): Leo Helper **0.9.4** ve MyMind AI **0.1.2** katalogda güncellendi. Windows paketleri boyut ve SHA256 ile doğrulanır. MyMind uygulama yayını, Qwen3-4B Colab eğitiminin tamamlandığı anlamına gelmez.
+
+07.11.2026, paketlenmiş gerçek Windows Electron uygulaması; aşağıdaki katalog ekranları sürüm değerlerini doğrular:
+
+![Leo Helper 0.9.4 katalog kaydı](docs/screenshots/release-0.4.21/02-leo-helper.png)
+
+![MyMind AI 0.1.2 katalog kaydı](docs/screenshots/release-0.4.21/03-mymind-ai.png)
+
+Önceki sürümlerin ekranları aşağıda tarihleriyle korunur.
+
 Flow Dock 0.2.0 ön sürümü Hub üzerinden kurulabilir. Windows 11 üzerinde doğrulandı; Windows Server 2025 açılış testi başarısız.
 
 ![Hub 0.4.20 Flow Dock ön sürüm kaydı (Windows, gerçek Electron)](docs/screenshots/flow-dock-020-hub.png)

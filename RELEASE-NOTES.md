@@ -24,6 +24,19 @@ PluginLabs Hub 0.4.21 — Meeting Trace 0.1.0 kataloğa eklendi.
 - Meeting Trace 0.1.0 (PL-035): yüklenen/yapıştırılan toplantı transkriptinden (WebVTT, SRT, zaman damgalı satırlar) zaman damgalı karar, görev (sorumlu + son tarih) ve açık soru taslakları; konuşmacı tahmini ve belirsiz sorumlu görünür; her taslak kullanıcı onayından geçer; MD/TXT/CSV/ICS. Ses kaydı yok. MyMind / yerel model onaylı, takma ad + yer tutucuyla.
 - Taşınabilir paket `pluginlabs-dagitim` meeting-trace-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
 
+PluginLabs Hub 0.4.21 (Codex, main) — Leo Helper 0.9.4 ve MyMind AI 0.1.2. (Aynı numara iki ayrı dalda kullanıldı; birleşik dal sonraki sürüm numarasıyla yayımlanır.)
+
+- Leo Helper 0.9.4: eksik/oyun/iptal kodlarda otomatik hazırlama ve giriş engeli; akıştaki adaylar korunur.
+- MyMind AI 0.1.2: PL-059 ürün kartı kimliği; güncel Windows ve Chrome paketleri.
+- Katalog URL, boyut ve SHA256 değerleri gerçek paketlerle eşleşir. PL-059 Notion kartı ve yayın merkezi bağlandı.
+- 33 Hub testi ve iki gerçek Electron UI akışı geçti; paketlenmiş Windows EXE üzerinde iki ürünün sürümleri ayrıca doğrulandı.
+- Windows yayın iş akışı kilitli Playwright sürümünü kullanır; eski 1.49.1'e geçici indirme kaldırıldı.
+- Qwen3-4B özel model eğitimi henüz tamamlanmadı. Uygulama sürümüyle model eğitimi ayrı kabul edilir.
+
+![Leo Helper kataloğu](https://raw.githubusercontent.com/timdesigners-pixel/PluginLabs/main/docs/screenshots/release-0.4.21/02-leo-helper.png)
+
+Geri alma: Hub 0.4.20 paketini kullanın; uygulama verisi ve işletim sistemi kasasını koruyun. İmzasız Windows paketidir.
+
 ---
 
 PluginLabs Hub 0.4.20 — Flow Dock 0.2.0 ön sürüm entegrasyonu.
