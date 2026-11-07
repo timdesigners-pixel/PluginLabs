@@ -103,7 +103,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "v0.9.4 · Windows Rust/WebView2; Scrapper köprüsü, 33 Rust + 11 betik + gerçek EXE E2E geçti",
+      "status": "v0.9.4 · Windows Rust/WebView2; Scrapper köprüsü, 33 Rust + 11 betik + gerçek EXE E2E geçti; Hub kataloğunda",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -185,7 +185,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "v0.8.0 · Chrome eklentisi + Windows uygulaması (PluginLabs Scrapper; Leo köprüsü, Alışveriş, Veri Kazıma Stüdyosu, Site Rehberi)",
+      "status": "v0.8.0 · Chrome eklentisi + Windows uygulaması (PluginLabs Scrapper; Leo köprüsü, Alışveriş, Veri Kazıma Stüdyosu, Site Rehberi); Hub kataloğunda",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -350,7 +350,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "status": "v0.2.0 · Chrome eklentisi + Windows uygulaması (skill/eklenti arşivi, görsel efekt stüdyosu, yerel+Gemini sağlayıcı)",
       "priority": "P0",
       "effort": "S",
       "platforms": {
