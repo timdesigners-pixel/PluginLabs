@@ -1489,7 +1489,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "07.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim voice-note-orbit-v0.1.0; kaynak PluginLabs apps/…/PL-036-voice-note-orbit/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1512,7 +1512,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "release": {
+        "tag": "voice-note-orbit-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/voice-note-orbit-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-037",

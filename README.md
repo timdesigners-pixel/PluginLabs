@@ -1,8 +1,8 @@
-# PluginLabs Hub 0.4.21
+# PluginLabs Hub 0.4.22
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
-Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
+Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
 
 Flow Dock 0.2.0 ön sürümü Hub üzerinden kurulabilir. Windows 11 üzerinde doğrulandı; Windows Server 2025 açılış testi başarısız.
 

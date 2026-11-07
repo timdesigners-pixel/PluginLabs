@@ -1,3 +1,10 @@
+PluginLabs Hub 0.4.22 — Voice Note Orbit 0.1.0 kataloğa eklendi.
+
+- Voice Note Orbit 0.1.0 (PL-036): yüzen kayıt balonundan ya da ana pencereden basılı tutarak kısa ses notu (sürekli dinleme yok, görünür kayıt göstergesi); bu bilgisayardaki whisper sunucusuyla onaylı metne çevirme ya da elle yazma; görev/not ve tarih–saat taslağı, belirsiz ifadede seçenek; ses, transkript ve not ayrı silinir; ICS/CSV. MyMind / yerel model onaylı, hassas değerler yer tutucuyla.
+- Taşınabilir paket `pluginlabs-dagitim` voice-note-orbit-v0.1.0 sürümünden; boyut ve SHA-256 dağıtım dosyası indirilerek doğrulandı.
+
+---
+
 PluginLabs Hub 0.4.21 — Meeting Trace 0.1.0 kataloğa eklendi.
 
 - Meeting Trace 0.1.0 (PL-035): yüklenen/yapıştırılan toplantı transkriptinden (WebVTT, SRT, zaman damgalı satırlar) zaman damgalı karar, görev (sorumlu + son tarih) ve açık soru taslakları; konuşmacı tahmini ve belirsiz sorumlu görünür; her taslak kullanıcı onayından geçer; MD/TXT/CSV/ICS. Ses kaydı yok. MyMind / yerel model onaylı, takma ad + yer tutucuyla.

@@ -311,6 +311,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-035-meeting-trace/app",
   },
+  {
+    id: "voice-note-orbit",
+    name: "Voice Note Orbit",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Ses notu yörüngesi: yüzen kayıt balonunu ya da düğmeyi basılı tutun, konuşun, bırakın — sürekli dinleme yok, kayıt sırasında görünür gösterge. Kısa ses notu bu bilgisayardaki whisper sunucusuyla (onayınızla) metne çevrilir ya da elle yazılır; görev/not ve tarih–saat taslağı çıkarılır, belirsiz ifadede (saat 3, haftaya) seçmeniz istenir. Ses, transkript ve not ayrı silinir; takvim (ICS) ve CSV. MyMind ya da yerel model ile onaylı düzeltme (hassas değerler gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "VoiceNoteOrbit.exe",
+    size: 81542900,
+    sha256: "ecffe519d21a6c11735432133cd9e56500b3ff712d93ae710340e4245874bf1a",
+    url: dist("voice-note-orbit", "0.1.0", "VoiceNoteOrbit-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit/app",
+  },
 
   {
     id: "mutfak-atolyesi",

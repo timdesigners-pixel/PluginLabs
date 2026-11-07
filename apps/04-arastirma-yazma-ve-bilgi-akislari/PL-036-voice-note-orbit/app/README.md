@@ -14,10 +14,18 @@ Aklınıza gelen işi **yazmadan yakalayın**: yüzen **kayıt balonunu** ya da 
 | **Ölçüler ve ayarlar** | **Boş gelen kutusu** |
 | ![Ölçüler](docs/screenshots/masaustu-06-olculer-ayarlar.png) | ![Gelen kutusu](docs/screenshots/masaustu-00-bos-gelen-kutusu.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (Chromium taklit mikrofonu, taklit whisper ve MyMind yanıtları, uydurma kişiler; `masaustu-*`: Linux/xvfb).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle alınmıştır (Chromium taklit mikrofonu, taklit whisper ve MyMind yanıtları, uydurma kişiler; `masaustu-*`: Linux/xvfb, commit e2e39ac; `windows-masaustu-*`: GitHub Actions Windows runner, [çalıştırma 42361929923](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42361929923), release ekinde de var).
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — kayıt ve taslak](docs/screenshots/windows-masaustu-01-kayit-ve-taslak.png)
+
+| Windows — yüzen balon | Windows — belirsiz tarih seçimi | Windows — görevler |
+| --- | --- | --- |
+| ![Windows balon](docs/screenshots/windows-masaustu-02-balon-belirsiz-saat.png) | ![Windows belirsiz tarih](docs/screenshots/windows-masaustu-03-belirsiz-tarih-secimi.png) | ![Windows görevler](docs/screenshots/windows-masaustu-05-gorevler.png) |
 
 ## İndir
-Sürüm yayımlanınca: [voice-note-orbit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/voice-note-orbit-v0.1.0) — kurulum + taşınabilir exe, SHA256SUMS + BUILD-INFO + Windows ekran görüntüleri. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[voice-note-orbit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/voice-note-orbit-v0.1.0) — `VoiceNoteOrbit-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `3af3a5f6…7538`), `VoiceNoteOrbit-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `ecffe519…bf1a`, 81 542 900 bayt), SHA256SUMS + BUILD-INFO + Windows ekran görüntüleri. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Metne çevirme için yerel sunucu (bir kez)
 Uygulama konuşma tanıma modeli taşımaz; ses yalnız **bu bilgisayardaki** OpenAI uyumlu bir sunucuya gider. Örnekler:

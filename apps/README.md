@@ -58,7 +58,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-033 | [Text Forge](04-arastirma-yazma-ve-bilgi-akislari/PL-033-text-forge/README.md) | W · L · M · Chrome | Yeni fikir | P0 · S | — |
 | PL-034 | [Parallel Translate](04-arastirma-yazma-ve-bilgi-akislari/PL-034-parallel-translate/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 | PL-035 | [Meeting Trace](04-arastirma-yazma-ve-bilgi-akislari/PL-035-meeting-trace/README.md) | W · L · M | Windows v0.1.0 (07.11.2026) | P2 · L | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-035-meeting-trace/app/README.md) |
-| PL-036 | [Voice Note Orbit](04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit/README.md) | W · L · M | Yeni fikir | P1 · M | — |
+| PL-036 | [Voice Note Orbit](04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit/README.md) | W · L · M | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-036-voice-note-orbit/app/README.md) |
 | PL-037 | [Mail Triage](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/README.md) | W · L · M · Chrome | Mevcut e-posta kategorizasyon görevinden yeni ürün önerisi | P1 · L | — |
 | PL-038 | [Action Inbox](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
 | PL-039 | [Notion Bridge](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
