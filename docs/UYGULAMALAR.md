@@ -16,7 +16,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | MyWishlist (PL-054) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
 | Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
-| Prompt Dünyası (PL-008) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
+| Prompt Dünyası (PL-008) | **v0.2.0** (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.2.0 |
 | What the App! (PL-009) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip, BUILD-INFO) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | Binbir Dizayn Stüdyo (PL-010) | studyo-v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
 | WhatsApp Chat Viewer (PL-011) | v0.1.0 (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
@@ -49,7 +49,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
-| PluginLabs Hub | **v0.4.20** (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.4.20 |
+| PluginLabs Hub | **v0.4.25** (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.4.25 |
 | Extension Manager (PL-051) | **v1.1.0** (Windows kurulum/taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/extension-manager/releases/tag/v1.1.0 |
 | Tweakster (PL-052) | **v0.1.0** (Windows kurulum/taşınabilir exe) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | Gardrop (PL-055) | **v0.2.1** (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.2.1 |
@@ -62,7 +62,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–039, PL-051–059 ve Hub (v0.4.20).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–039, PL-051–059 ve Hub (v0.4.25).
 - Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.4), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0).
 - PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-036 Voice Note Orbit 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` voice-note-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.22 kataloğunda (PR birleşip Hub yayımlanınca).
@@ -82,7 +82,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | PL-006 | Note Master | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
 | PL-007 | Musebook | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
-| PL-008 | Prompt Dünyası | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.1.0 |
+| PL-008 | Prompt Dünyası | Chrome eklentisi + Windows uygulaması · **v0.2.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.2.0 |
 | PL-009 | What the App! | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
 | PL-010 | 1001 Designs / Pin to Component | Design Replicator Chrome eklentisi v1.4.0 + **Binbir Dizayn Stüdyo** Windows uygulaması **studyo-v0.1.0** (1001 bileşen kütüphanesi, çevrimdışı; imzasız önizleme) | https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0 |
 | PL-011 | WhatsApp Chat Viewer | Windows uygulaması · **v0.1.0** (ZIP/TXT içe aktarma, arama, DPAPI şifreli yerel arşiv; imzasız önizleme) | https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0 |
