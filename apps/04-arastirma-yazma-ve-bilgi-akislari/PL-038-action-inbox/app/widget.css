@@ -1,0 +1,18 @@
+/* Action Inbox görev kutusu (widget) — yalnız yerleşim; değerler PluginLabs tokenlarından. */
+.axw { height: 100vh; display: flex; flex-direction: column; background: var(--pl-bg-1); color: var(--pl-fg-1); position: relative; overflow: hidden; }
+.axw-head { display: flex; align-items: center; gap: var(--pl-space-3); padding: var(--pl-space-3); border-bottom: 1px solid var(--pl-line); background: var(--pl-bg-2); }
+.axw-logo { flex: none; }
+.axw-head__text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.axw-head__text span { font-size: var(--pl-text-xs); }
+.axw-list { flex: 1; min-height: 0; overflow-y: auto; margin: 0; padding: var(--pl-space-2); list-style: none; display: flex; flex-direction: column; gap: 2px; scrollbar-width: thin; }
+.axw-item { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: var(--pl-space-2); align-items: start; padding: var(--pl-space-2); border-radius: var(--pl-radius-sm); }
+.axw-item:hover { background: var(--pl-bg-3); }
+.axw-item input { margin-top: 3px; accent-color: var(--pl-accent); }
+.axw-item__body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.axw-title { border: 0; background: none; padding: 0; text-align: start; font: inherit; font-size: var(--pl-text-sm); color: var(--pl-fg-1); cursor: pointer; overflow-wrap: anywhere; line-height: 1.4; }
+.axw-title:focus-visible, .axw-item input:focus-visible { outline: 2px solid var(--pl-accent); outline-offset: 2px; }
+.axw-meta { display: flex; flex-wrap: wrap; gap: 4px; }
+.axw-meta .pl-badge { font-size: 11px; }
+.axw-foot { display: flex; align-items: center; gap: var(--pl-space-2); justify-content: space-between; padding: var(--pl-space-2) var(--pl-space-3); border-top: 1px solid var(--pl-line); background: var(--pl-bg-2); }
+.axw-toasts { inset-inline: var(--pl-space-2); bottom: 3.5rem; }
+@media (prefers-reduced-motion: reduce) { .axw * { transition: none !important; animation: none !important; } }

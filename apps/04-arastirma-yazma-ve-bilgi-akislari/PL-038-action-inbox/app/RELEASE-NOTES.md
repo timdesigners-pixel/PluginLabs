@@ -1,0 +1,28 @@
+# Action Inbox 0.1.0 — önizleme (Windows)
+
+PL-038 Action Inbox'in ilk sürümü. E-posta, sayfa ve mesajlarda gördüğünüz yapılacakları **seçip yakalarsınız**; Action Inbox onları **kaynaklı görev adaylarına** ayırır, **fiil, son tarih ve gerekli materyali** önerir ve **inceleme kuyruğuna** koyar. Onayladıklarınız tek bir görev kuyruğunda son tarihe göre sıralanır. **Otomatik kaynak izleme yoktur.** **İmzasız önizleme:** Windows SmartScreen "Bilinmeyen yayımcı" uyarısı verebilir ("Ek bilgi" → "Yine de çalıştır").
+
+## Dosyalar
+- `ActionInbox-0.1.0-Windows-x64.exe` — kurulum (kullanıcı klasörüne, yönetici izni istemez)
+- `ActionInbox-0.1.0-Windows-Portable-x64.exe` — taşınabilir, kurulumsuz
+- `SHA256SUMS-windows.txt`, `BUILD-INFO-windows.txt`, `windows-masaustu-*.png` (Windows runner'ında duman testinin aldığı gerçek pencere görüntüleri)
+
+## Neler var
+- **Yakalama:** Metin yakala penceresi (metin + kaynak türü: Sayfa/E-posta/Mesaj/Not/Diğer, isteğe bağlı başlık ve http/https adresi), **Panodan yakala** düğmesi, her yerde çalışan **genel kısayol Ctrl+Alt+I** (kaynakta seçip kopyaladığınız metni ekler; pano yalnız tuşa bastığınızda okunur; Ayarlar'dan kapatılabilir), `.txt` / `.md` dosyaları (en çok 20 dosya, 2 MB).
+- **Adaylara ayırma:** liste satırları ("- [ ] …", "• …", "1. …", "TODO: …") her biri bir aday, işaretli ([x]) satırlar atlanır; düz metinde eylem cümleleri (rica, emir, "-malı/-meli", "-sın/-sin", "gerekiyor", "could you / need to"…); eylem bulunamazsa kısa metnin tamamı (işaretlenir). Bir yakalamada en çok 8 aday.
+- **Çıkarım:** fiil (gönder, incele, öde, doldur, hazırla, yükle, gözden geçir…; Türkçe ve İngilizce), son tarih yakalama gününe göre (cuma, cumaya kadar, haftaya pazartesi, 13 Kasım, 18.11.2026, yarın, 2 gün içinde, ay sonu, by Friday) — tarih cümlede yoksa yakalamanın başka yerindeki "…kadar / son ödeme / sona erecektir" ifadesi önerilir ve "kontrol edin" diye işaretlenir; gerekli materyal (rapor, sunum, sözleşme, fatura, form, şartname.pdf gibi dosya adları, bağlantılar).
+- **Kişi ataması yalnız taslak:** "@ad", "Ad Bey/Hanım", "Ad'ın … hazırlaması", "Ad hazırlasın", "Name will …" kalıplarından önerilir; siz "Atamayı onaylıyorum" demedikçe listede, görev kutusunda ve dışa aktarmada **taslak** yazar.
+- **İnceleme kuyruğu:** hiçbir aday kendiliğinden görev olmaz. Başlığı, fiili, son tarihi, materyali ve kişiyi düzenleyip **Göreve ekle**, **Reddet** (reddedilenler kaybolmaz, geri alınabilir) ya da seçilenleri toplu ekle.
+- **Yinelenen görev tespiti:** yeni aday açık ya da son 14 günde tamamlanan bir görevle aynı iş gibi görünürse (sözcük benzerliği + aynı son tarih/kaynak) **olası yineleme** uyarısı; **Mevcut göreve birleştir** kaynağı o göreve ekler, görev çoğalmaz. Toplu kabulde olası yinelemeler bekletilir; tek tek eklemek için "Yine de ayrı görev" gerekir. Kabulden sonra fark edilen yineleme görev ayrıntısından birleştirilir.
+- **Görev kuyruğu:** Gecikmiş / Bugün / 7 gün içinde / Daha sonra / Tarihsiz; tamamlama, yeniden açma, arama; her görevde kaynak(lar), yakalama zamanı ve seçilen cümlenin vurgulandığı alıntı; **Kaynağı aç** (yalnız http/https, varsayılan tarayıcıda).
+- **Görev kutusu (widget):** gecikmiş/bugün/yaklaşan açık görevler, işaretleyerek tamamlama, panodan yakalama; isteğe bağlı her zaman üstte.
+- **Ölçüler (Notion ölçütü):** bu hafta tamamlanan kaynaklı görevler ve son 4 hafta; **yinelenen görev oranı** (hedef < %3: kabulden sonra birleştirilen / kabul edilen), önlenen yineleme, aday kabul ve düzenleme oranları, onaylanmamış kişi taslakları; elle etiketli örnek yakalamalarda fiil/son tarih/yineleme doğruluğu.
+- **Dışa aktarma:** görev listesi `.md` (kovalara göre, kaynak bağlantılarıyla), takvim/görev uygulamaları için `.ics` (VTODO, son tarih), `.csv` (Excel; formül enjeksiyonu engellenir), JSON yedek.
+- **MyMind** (PluginLabs Hub) ya da bu bilgisayardaki **yerel model** (LM Studio, Ollama; yalnız 127.0.0.1/localhost): tek aday, her istekte onay; yalnız adayın cümlesi ve kısa bağlamı gider, kişi adları [Kişi1]… olur, e-posta/telefon/bağlantı/IBAN/kart/T.C. kimlik/parola ⟦n⟧ ile gider, kaynak adresi ve başlığı gönderilmez. Yanıt denetlenir: metinde olmayan kişi ve çözülemeyen tarih atılır; öneri sizin onayınızla uygulanır, kişi yine taslak kalır.
+- Görevler, yakalanan metinler ve MyMind anahtarı Windows kasasında (DPAPI) şifreli saklanır.
+
+## Sınırlar
+- **Otomatik kaynak izleme yok** (Notion: "İlk sürüm otomatik kaynak izleme yok"): sayfa indirme, posta kutusu ya da sohbet uygulaması bağlantısı yoktur; yalnız sizin yakaladığınız metin işlenir.
+- **Chrome eklentisi** (sayfada seçili metni sağ tıkla yakalama), Linux ve macOS paketleri, ekip akışı, Pro bağlayıcılar ve Note Master/Flow Dock ortak görev şeması bu sürümde yok. Mail Triage ile doğrudan bağlantı yok; Mail Triage'in `.md` özetindeki "- [ ]" satırları dosya olarak içe aktarılabilir.
+- Çıkarım kural tabanlıdır (Türkçe ve İngilizce kalıplar); her öneri düzenlenebilir ve onayınızla kesinleşir. Ad tanıma kalıplara dayanır; bazı adlar kaçabilir ya da ad olmayan büyük harfli sözcükler MyMind isteğinde gereğinden fazla gizlenebilir.
+- Doğrulama: çekirdek birim testleri ve gerçek Electron penceresinde otomatik duman testi (taklit MyMind/yerel model sunucusuyla; Windows runner + Linux/xvfb). Notion ölçütleri yalnız uygulamadaki uydurma, elle etiketli 7 yakalamalık (11 aday) örnekte ölçüldü (fiil ve son tarih doğruluğu %100, yineleme tespiti 1/1, yanlış yineleme 0); gerçek yakalamalarda, gerçek bir modelle ve haftalık gerçek kullanımda ölçülmedi. Genel kısayol Windows'ta elle denenmedi; Windows DPI ve ekran okuyucu elle denenmedi.

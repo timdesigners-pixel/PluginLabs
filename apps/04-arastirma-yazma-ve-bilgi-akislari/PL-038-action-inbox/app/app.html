@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Action Inbox</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">AI</span>
+      <div class="ax-product__text"><b>Action Inbox</b><span>Kaynaklı görevler</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 38">38</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="review" role="tab">İnceleme kuyruğu<span class="pl-badge" id="reviewCount">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="tasks" role="tab">Görevler<span class="pl-badge" id="taskCount">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="openWidget"><span class="ax-wdot" aria-hidden="true"></span>Görev kutusu<span class="pl-badge" id="widgetState">Kapalı</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- İnceleme kuyruğu -->
+    <div class="ax-view ax-work" id="view-review">
+      <div class="ax-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="capture">Metin yakala</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard" title="Kaynakta seçip kopyaladığınız metin">Panodan yakala</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Metin dosyası (.txt/.md)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek yakalamalar</button>
+        <span class="ax-grow"></span>
+        <span class="pl-muted ax-small" id="shortcutHint"></span>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Yapılacakları tek kuyrukta toplayın</h1>
+          <p class="pl-muted ax-small">E-posta, sayfa ya da mesajda gördüğünüz yapılacağı seçin ve yakalayın. Action Inbox kaynağına bağlanmaz ve onu izlemez — yalnız sizin yakaladığınız metni işler.</p>
+          <ol class="ax-ul">
+            <li>Metni <b>yapıştırın</b>, <b>panodan</b> alın ya da her yerde <b id="shortcutInline">Ctrl+Alt+I</b> kısayoluyla kopyaladığınızı gönderin. Kaynak adresini ve türünü ekleyebilirsiniz.</li>
+            <li>Metin görev adaylarına ayrılır: <b>fiil</b>, <b>son tarih</b> (yakalama gününe göre) ve <b>gerekli materyal</b> önerilir; kişi ataması yalnız <b>taslaktır</b>.</li>
+            <li>Adaylar <b>inceleme kuyruğuna</b> girer; onaylamadığınız hiçbir şey görev olmaz. Aynı iş zaten varsa <b>olası yineleme</b> uyarısı çıkar ve kaynağı mevcut göreve birleştirebilirsiniz.</li>
+            <li>Görevler son tarihe göre sıralanır; tamamladıklarınız haftalık ölçülür. Görev kutusu (widget) her zaman üstte kalabilir.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="capture">Metin yakala</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek yakalamalar</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ax-split" id="reviewSplit">
+        <div class="ax-listcol ax-card">
+          <div class="ax-bar"><label class="ax-check ax-check--inline"><input type="checkbox" id="selAll"> <span id="reviewInfo">0 aday</span></label><span class="ax-grow"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="acceptSelBtn" disabled>Seçilenleri göreve ekle</button></div>
+          <ul class="ax-list" id="reviewList" role="listbox" aria-label="Görev adayları"></ul>
+        </div>
+        <div class="ax-detail ax-card" id="reviewDetail" aria-label="Seçili aday"></div>
+      </section>
+    </div>
+
+    <!-- Görevler -->
+    <div class="ax-view ax-work" id="view-tasks" hidden>
+      <div class="ax-toolbar">
+        <div class="pl-segment" role="radiogroup" aria-label="Görev süzgeci">
+          <button type="button" role="radio" data-tf="acik">Açık</button>
+          <button type="button" role="radio" data-tf="tamam">Tamamlanan</button>
+          <button type="button" role="radio" data-tf="red">Reddedilen</button>
+        </div>
+        <span class="ax-grow"></span>
+        <input class="pl-input ax-search" id="q" placeholder="Ara (görev, materyal, kaynak)" aria-label="Görevlerde ara">
+      </div>
+      <section class="ax-split" id="taskSplit">
+        <div class="ax-listcol ax-card"><ul class="ax-list" id="taskList" aria-label="Görevler"></ul></div>
+        <div class="ax-detail ax-card" id="taskDetail" aria-label="Seçili görev"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="ax-view ax-panels" id="view-settings" hidden>
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Ölçüler</h2>
+        <p class="pl-muted ax-small">Notion doğrulama ölçütü: kaynaklı görev tamamlama haftalık ölçülür; yinelenen görev &lt; %3. Yinelenen görev oranı = görev olarak kabul edildikten <b>sonra</b> yineleme olduğu anlaşılıp birleştirilen görevler / kabul edilen tüm görevler. İncelemede birleştirilenler “önlenen yineleme” sayılır. Yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="ax-metrics" id="metrics"></div>
+        <div class="ax-weeks" id="weeks" aria-label="Son 4 hafta tamamlanan görevler"></div>
+        <p class="pl-muted ax-small" id="goldInfo"></p>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yakalama</h2>
+        <div class="pl-field"><label class="pl-field__label" for="defType">Varsayılan kaynak türü (Metin yakala penceresi)</label><select class="pl-input" id="defType"></select></div>
+        <label class="ax-check"><input type="checkbox" id="setShortcut"> <span><b>Genel kısayol</b> — <span id="shortcutName">Ctrl+Alt+I</span>: kaynakta seçip kopyaladığınız metni (pano) inceleme kuyruğuna ekler. Pano yalnız tuşa bastığınızda okunur. <span id="shortcutState" class="pl-muted"></span></span></label>
+        <label class="ax-check"><input type="checkbox" id="setOnTop"> <span><b>Görev kutusu her zaman üstte</b> — widget diğer pencerelerin üstünde kalır.</span></label>
+        <p class="pl-muted ax-small">Otomatik kaynak izleme yoktur: Action Inbox sayfaları, posta kutunuzu ya da sohbet uygulamalarını okumaz; yalnız sizin yakaladığınız metni işler.</p>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ax-small">İsteğe bağlıdır; yakalama, kural tabanlı çıkarım, yineleme tespiti ve görev kuyruğu motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="ax-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="ax-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="ax-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar"><h2 class="pl-h3 ax-h">Dışa aktarma ve gizlilik</h2><span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Görev listesi (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="icsBtn">Takvim/görev (.ics)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">Tablo (.csv, Excel)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="ax-ul">
+          <li>Kaynağa bağlanılmaz: Action Inbox sayfa indirmez, posta kutusuna ya da sohbet uygulamasına erişmez. Kaynak adresi yalnız siz “Kaynağı aç” dediğinizde varsayılan tarayıcıda açılır (yalnız http/https).</li>
+          <li>Hiçbir aday kendiliğinden görev olmaz; kişi ataması siz onaylamadıkça <b>taslak</b> olarak işaretlenir ve dışa aktarmada da öyle yazılır.</li>
+          <li>Yapay zekâ isteğe bağlıdır ve yalnız bu bilgisayardadır. Yalnız seçili adayın cümlesi ve kısa bağlamı gider: kişi adları [Kişi1]… olur; e-posta, telefon, bağlantı, IBAN, kart, T.C. kimlik ve parola değerleri, kaynak adresi ve başlığı gönderilmez.</li>
+          <li>Kayıtlar silinmez: reddedilen adaylar “Reddedilen” süzgecinde kalır, birleştirilenler hedef görevin kaynağı olur. Sınır 3000 kayıt.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ax-foot pl-muted">Action Inbox 0.1.0 · PluginLabs · otomatik kaynak izleme yok · kişi ataması taslaktır · yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal ax-dialog ax-dialog--wide" id="capDialog" aria-labelledby="capTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="capTitleH">Metin yakala</h2><p class="pl-muted ax-tight">Kaynakta seçtiğiniz yapılacak metni yapıştırın. Liste satırları (“- [ ] …”) ayrı aday olur; işaretli ([x]) satırlar atlanır.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <textarea class="pl-input ax-area ax-area--dlg" id="capText" spellcheck="false" aria-label="Yakalanacak metin" maxlength="20000"></textarea>
+      <div class="ax-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="capType">Kaynak türü</label><select class="pl-input" id="capType"></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="capTitle">Kaynak başlığı (isteğe bağlı)</label><input class="pl-input" id="capTitle" maxlength="200" placeholder="ör. Teklif revizyonu hakkında"></div>
+        <div class="pl-field ax-capgrid__wide"><label class="pl-field__label" for="capUrl">Kaynak adresi (isteğe bağlı, http/https)</label><input class="pl-input" id="capUrl" maxlength="1000" spellcheck="false" placeholder="https://…"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="capCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="capRun">İnceleme kuyruğuna ekle</button></div>
+  </dialog>
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ax-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ax-tight">Fiil, son tarih ve materyal çıkarımı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <ol class="ax-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="ax-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
