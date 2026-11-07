@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Token Scout</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="dt" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar dt-side" aria-label="Ana menü">
+    <div class="dt-brand" aria-label="PluginLabs Apps"><span class="dt-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="dt-apps">APPS</span></div>
+    <div class="dt-product">
+      <span class="pl-applogo" aria-hidden="true">DT</span>
+      <div class="dt-product__text"><b>Design Token Scout</b><span>Tasarım tokenları</span></div>
+      <span class="dt-product__no pl-num" aria-label="Sıra numarası 44">44</span>
+    </div>
+    <div class="dt-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem dt-navbtn" type="button" data-nav="scan" role="tab">Tarama<span class="pl-badge" id="tokCount">0</span></button>
+      <button class="pl-navitem dt-navbtn" type="button" data-nav="history" role="tab">Geçmiş<span class="pl-badge" id="scanCount">0</span></button>
+      <button class="pl-navitem dt-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="dt-mini" id="sideInfo"></div>
+    <div class="dt-side__foot">
+      <button class="pl-navitem dt-navbtn" type="button" id="openMymind"><span class="dt-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="dt-main">
+    <!-- Tarama -->
+    <div class="dt-view dt-work" id="view-scan">
+      <div class="dt-toolbar">
+        <form class="dt-urlrow" id="urlForm"><input class="pl-input" id="urlInput" type="text" inputmode="url" maxlength="2000" spellcheck="false" placeholder="Taranacak sayfanın adresi — https://…" aria-label="Sayfa adresi"><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit" id="urlBtn">Tara</button></form>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="file">HTML dosyası</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="paste">HTML yapıştır</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="samples">Örnek sayfalar</button>
+      </div>
+
+      <section class="dt-empty-start" id="emptyPanel" hidden>
+        <div class="dt-card dt-start__card">
+          <h1 class="pl-h3 dt-h">Var olan arayüzün tasarım sistemini belgeleyin</h1>
+          <p class="pl-muted dt-small">Design Token Scout seçtiğiniz tek sayfayı yalıtılmış, oturumsuz bir pencerede açar ve görünür öğelerin <b>hesaplanmış stillerinden</b> renk, yazı, boşluk, köşe ve gölge değerlerini kullanım sayılarıyla çıkarır. Yakın değerleri birleştirip token adları önerir; <b>yalnız onayladığınız</b> tokenlar dosyaya yazılır.</p>
+          <ol class="dt-ul">
+            <li><b>Sayfa</b>: adresi yazıp <b>Tara</b> (her açılış ayrı onaylıdır), kaydedilmiş bir <b>HTML dosyası</b> seçin ya da HTML yapıştırın. Bağlantılar izlenmez, site taranmaz.</li>
+            <li><b>Adaylar</b>: renkte ΔE, ölçülerde px toleransıyla kümelenmiş değerler; birleşen ham değerler, kullanım yerleri ve sayfadaki CSS değişkenleri görünür. :hover/:focus renkleri ayrıca örneklenir.</li>
+            <li><b>Onay ve dışa aktarma</b>: adları düzenleyin, tokenları onaylayın; <b>DTCG token JSON</b>, <b>CSS değişkenleri</b> ya da <b>Markdown rapor</b> alın.</li>
+          </ol>
+          <p class="dt-note"><b>Önemli:</b> araç tasarım kopyalamak için değil, erişiminiz ve kullanım hakkınız olan bir arayüzün mevcut sistemini belgelemek içindir. Görünmeyen durumlar (açılır menü, modal) ancak görünür olduklarında örneklenir.</p>
+          <div class="dt-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="samples">Örnek sayfaları tara</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="file">HTML dosyası seç</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dt-res" id="resultPanel" hidden>
+        <div class="dt-card dt-head" id="scanHead"></div>
+        <div class="dt-bar2">
+          <div class="pl-segment" role="radiogroup" aria-label="Token grubu">
+            <button type="button" role="radio" data-tab="renk">Renkler</button>
+            <button type="button" role="radio" data-tab="yazi">Yazı</button>
+            <button type="button" role="radio" data-tab="bosluk">Boşluk</button>
+            <button type="button" role="radio" data-tab="kose">Köşe ve gölge</button>
+            <button type="button" role="radio" data-tab="degisken">Sayfa değişkenleri</button>
+          </div>
+          <span class="dt-grow"></span>
+          <select class="pl-input dt-select" id="showFilter" aria-label="Görünüm süzgeci"><option value="">Tüm adaylar</option><option value="oneri">Yalnız önerilenler</option><option value="onay">Yalnız onaylılar</option></select>
+        </div>
+        <div class="dt-body">
+          <div class="dt-card dt-listcol"><ul class="dt-list" id="leftList" aria-label="Tokenlar"></ul></div>
+          <div class="dt-card dt-detail" id="rightDetail" aria-label="Ayrıntı"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Geçmiş -->
+    <div class="dt-view dt-work" id="view-history" hidden>
+      <div class="dt-toolbar">
+        <div class="pl-segment" role="radiogroup" aria-label="Geçmiş süzgeci">
+          <button type="button" role="radio" data-hf="tamam">Taramalar</button>
+          <button type="button" role="radio" data-hf="arsiv">Arşiv</button>
+        </div>
+        <span class="dt-grow"></span>
+        <input class="pl-input dt-search" id="q" placeholder="Ara (başlık, adres)" aria-label="Geçmişte ara">
+      </div>
+      <section class="dt-empty-start"><div class="dt-card"><ul class="dt-list dt-hlist" id="histList" aria-label="Taramalar"></ul></div></section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="dt-view dt-panels" id="view-settings" hidden>
+      <section class="dt-card dt-card--wide">
+        <h2 class="pl-h3 dt-h">Ölçüler</h2>
+        <p class="pl-muted dt-small">Notion doğrulama ölçütü: <b>örnek 5 sayfada kullanılan ana değerleri ≥%90 kapsama</b> ve <b>token tekrarında düşüş</b>. Örnek sayfalar uygulamayla gelir; her birinin ana değerleri önceden yazılıdır (“Örnek sayfalar”). Ölçüler yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="dt-metrics" id="metrics"></div>
+        <p class="pl-muted dt-small" id="fixtureInfo"></p>
+      </section>
+      <section class="dt-card">
+        <h2 class="pl-h3 dt-h">Birleştirme ve öneri</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setColorTol">Renk birleştirme (ΔE76)</label><select class="pl-input dt-select" id="setColorTol"><option value="0">Kapalı — yalnız birebir aynı</option><option value="2">2 — fark edilmeyecek kadar yakın</option><option value="3">3 — önerilen</option><option value="5">5 — yakın tonlar</option><option value="8">8 — geniş</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setNumTol">Ölçü birleştirme (px)</label><select class="pl-input dt-select" id="setNumTol"><option value="0">Kapalı</option><option value="0.5">0,5 px</option><option value="1">1 px — önerilen</option><option value="2">2 px</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setMinUses">Öneri eşiği (en az kullanım)</label><select class="pl-input dt-select" id="setMinUses"><option value="1">1</option><option value="2">2 — önerilen</option><option value="3">3</option><option value="5">5</option></select></div>
+        <p class="pl-muted dt-small">Ayarlar yeni taramalara uygulanır; açık taramaya uygulamak için “Yeniden öner”i kullanın (ad ve onay düzenlemeleri sıfırlanır).</p>
+      </section>
+      <section class="dt-card">
+        <h2 class="pl-h3 dt-h">Tarama</h2>
+        <label class="dt-check"><input type="checkbox" id="setScripts"> <span><b>Sayfanın kendi betiklerini çalıştır</b> — JavaScript ile oluşan içerik için gerekir. Kapalıyken sayfaya <code>script-src 'none'</code> uygulanır; tarama betiği yalıtılmış çalıştığı için etkilenmez.</span></label>
+        <label class="dt-check"><input type="checkbox" id="setRemote"> <span><b>Yerel dosyada uzak kaynaklar</b> — .html dosyası ya da yapıştırılan HTML içindeki internetteki stil/yazı tiplerinin yüklenmesine izin verir (kapalıyken ağa çıkılmaz).</span></label>
+        <div class="pl-field"><label class="pl-field__label" for="setWidth">Görünüm genişliği (px)</label><select class="pl-input dt-select" id="setWidth"><option value="1280">1280 — masaüstü</option><option value="1024">1024 — dizüstü / tablet yatay</option><option value="768">768 — tablet</option><option value="390">390 — telefon</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setWait">Yükleme sonrası bekleme</label><select class="pl-input dt-select" id="setWait"><option value="0">Beklemeden</option><option value="800">0,8 sn</option><option value="2000">2 sn</option><option value="5000">5 sn (yavaş sayfalar)</option></select></div>
+      </section>
+      <section class="dt-card">
+        <h2 class="pl-h3 dt-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted dt-small">İsteğe bağlıdır; tarama ve kümeleme model olmadan çalışır. Model yalnız token adı ve hiyerarşi önerir; değerleri değiştiremez, token ekleyemez. Her istek ayrı onaylanır, öneriler siz uygulayana kadar bekler.</p>
+        <label class="dt-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="dt-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="dt-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="dt-card">
+        <h2 class="pl-h3 dt-h">Sınırlar ve gizlilik</h2>
+        <ul class="dt-ul">
+          <li>Yalnız görünür öğeler örneklenir (en çok 5000). Açılır menü, modal ya da karanlık tema gibi durumlar sayfada görünür değilse taranmaz; :hover/:focus/:active/:disabled renkleri okunabilen stil sayfalarından ayrıca toplanır (başka alan adından gelen stil sayfaları okunamaz, raporda sayısı yazar).</li>
+          <li>Sayfa her taramada yeni, bellek içi bir oturumda açılır: tarayıcı çerezleriniz ve oturumlarınız kullanılmaz. iframe içerikleri taranmaz.</li>
+          <li>Modele yalnız token türü, değeri, kullanım sayısı ve şimdiki adı gider; sayfa adresi, seçiciler ve metinler gönderilmez.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="dt-foot pl-muted" id="footer">Design Token Scout · PluginLabs</footer>
+  </main>
+
+  <dialog class="pl-modal dt-dialog dt-dialog--wide" id="pasteDialog" aria-labelledby="pasteTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pasteTitle">HTML yapıştır</h2><p class="pl-muted dt-tight">Bir sayfanın ya da bileşenin HTML kodunu (stilleriyle) yapıştırın. Kod yalnız bu bilgisayarda, yalıtılmış pencerede açılır; uzak kaynaklar ayarlardan açılmadıkça yüklenmez.</p></div></div>
+    <div class="pl-modal__body dt-stack"><textarea class="pl-input dt-area dt-area--dlg" id="pasteText" spellcheck="false" aria-label="HTML" maxlength="5000000"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pasteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pasteRun">Tara</button></div>
+  </dialog>
+  <dialog class="pl-modal dt-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon dt-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted dt-tight">Token adları ve hiyerarşi önerisi bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body dt-stack">
+      <ol class="dt-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted dt-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="dt-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="dt-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

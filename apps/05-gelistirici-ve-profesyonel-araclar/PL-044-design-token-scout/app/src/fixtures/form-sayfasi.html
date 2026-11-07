@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Kayıt Formu</title>
+<style>
+:root { --mavi: #2563eb; --hata: #dc2626; }
+* { margin: 0; box-sizing: border-box; }
+body { background: #ffffff; color: #111827; font: 16px/1.5 Roboto, "Segoe UI", sans-serif; padding: 24px; }
+form { max-width: 480px; display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid #d1d5db; border-radius: 6px; }
+h1 { font-size: 20px; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #374151; }
+input, select { padding: 8px 12px; border: 1px solid #d2d6dc; border-radius: 6px; font: 16px Roboto, "Segoe UI", sans-serif; color: #111827; background: #ffffff; }
+input:focus { border-color: var(--mavi); outline: 2px solid #93c5fd; }
+.hata { color: var(--hata); font-size: 12px; }
+.input-hata { border-color: var(--hata); }
+.ipucu { color: #6b7280; font-size: 12px; }
+.satir { display: flex; gap: 12px; }
+button { padding: 8px 16px; border: 0; border-radius: 6px; background: var(--mavi); color: #ffffff; font: 600 16px Roboto, "Segoe UI", sans-serif; }
+button:disabled { background: #9ca3af; }
+.ikincil { background: #ffffff; color: #374151; border: 1px solid #d1d5db; }
+</style></head>
+<body>
+<form>
+  <h1>Atölyeye kayıt</h1>
+  <label>Ad soyad<input value="Deniz Yılmaz"></label>
+  <label>E-posta<input class="input-hata" value="deniz@"><span class="hata">Geçerli bir e-posta adresi yazın.</span></label>
+  <label>Atölye<select><option>Seramik</option><option>Ahşap</option></select><span class="ipucu">Kontenjan: 12 kişi</span></label>
+  <div class="satir"><button type="button">Kaydol</button><button type="button" class="ikincil">Vazgeç</button></div>
+</form>
+<script type="application/json" id="dts-beklenen">{"color":["#ffffff","#111827","#374151","#d1d5db","#2563eb","#dc2626","#6b7280"],"fontSize":["12px","14px","16px","20px"],"space":["4px","8px","12px","16px","24px"],"radius":["6px"],"fontFamily":["Roboto"],"birlesmeli":[["#d1d5db","#d2d6dc"]]}</script>
+</body></html>

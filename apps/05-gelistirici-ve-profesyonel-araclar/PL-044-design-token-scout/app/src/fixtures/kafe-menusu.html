@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Kafe Menüsü</title>
+<style>
+:root { --krem: #fff8f0; --kahve: #3b2a1f; --kiremit: #c2410c; --soluk: #8a6f5a; --cizgi: #ead9c6; }
+* { margin: 0; box-sizing: border-box; }
+body { background: var(--krem); color: var(--kahve); font: 16px/1.5 system-ui, "Segoe UI", sans-serif; padding: 32px; }
+header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--cizgi); margin-bottom: 24px; }
+h1 { font-family: Georgia, "Times New Roman", serif; font-size: 32px; line-height: 1.25; }
+h2 { font-family: Georgia, "Times New Roman", serif; font-size: 20px; margin-bottom: 8px; }
+nav { display: flex; gap: 16px; }
+nav a { color: var(--soluk); font-size: 14px; text-decoration: none; }
+nav a:hover { color: var(--kiremit); }
+.menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.urun { padding: 16px; border: 1px solid var(--cizgi); border-radius: 8px; background: #ffffff; }
+.urun p { font-size: 14px; color: var(--soluk); margin-bottom: 8px; }
+.fiyat { color: var(--kiremit); font-weight: 700; font-size: 16px; }
+.etiket { display: inline-block; padding: 4px 8px; border-radius: 999px; background: var(--kiremit); color: #ffffff; font-size: 14px; }
+.not { margin-top: 24px; padding: 16px; border-radius: 8px; background: #f7eadb; color: #3c2b20; font-size: 14px; }
+button { padding: 8px 16px; border: 0; border-radius: 999px; background: var(--kiremit); color: #ffffff; font: 600 14px system-ui, "Segoe UI", sans-serif; }
+button:hover { background: #9a3412; }
+</style></head>
+<body>
+<header><h1>Köşe Kafe</h1><nav><a href="#">Menü</a><a href="#">Saatler</a><a href="#">İletişim</a></nav></header>
+<h2>Sıcak içecekler</h2>
+<section class="menu">
+  <div class="urun"><h2>Türk kahvesi</h2><p>Közde pişirilir, lokumla.</p><span class="fiyat">85 ₺</span> <span class="etiket">Klasik</span></div>
+  <div class="urun"><h2>Filtre kahve</h2><p>Günün çekirdeği.</p><span class="fiyat">95 ₺</span></div>
+  <div class="urun"><h2>Salep</h2><p>Tarçınla.</p><span class="fiyat">90 ₺</span> <span class="etiket">Mevsim</span></div>
+  <div class="urun"><h2>Sıcak çikolata</h2><p>Bitter çikolatadan.</p><span class="fiyat">110 ₺</span></div>
+</section>
+<p class="not">Tüm kahvelerimiz bitki sütüyle hazırlanabilir.</p>
+<p style="margin-top:16px"><button>Sipariş ver</button></p>
+<script type="application/json" id="dts-beklenen">{"color":["#fff8f0","#3b2a1f","#c2410c","#8a6f5a","#ead9c6","#ffffff"],"fontSize":["14px","16px","20px","32px"],"space":["8px","16px","24px","32px"],"radius":["8px","9999px"],"fontFamily":["system-ui","Georgia"],"birlesmeli":[["#3b2a1f","#3c2b20"]]}</script>
+</body></html>

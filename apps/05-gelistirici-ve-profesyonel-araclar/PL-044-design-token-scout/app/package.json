@@ -1,0 +1,64 @@
+{
+  "name": "design-token-scout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PL-044 Design Token Scout — Windows uygulaması: seçtiğiniz tek web sayfasını (adres, kaydedilmiş .html dosyası ya da yapıştırılan HTML) yalıtılmış, oturumsuz bir pencerede açar; görünür öğelerin hesaplanmış stillerinden (computed style) renk, yazı ailesi/boyutu/kalınlığı/satır yüksekliği, boşluk, köşe yarıçapı ve gölge değerlerini kullanım sayısı ve örnek öğeleriyle çıkarır; :hover/:focus gibi durum kurallarını ayrıca örnekler; sayfada tanımlı CSS değişkenlerini eşler; yakın değerleri (renkte ΔE, ölçülerde px toleransı) kümeler, token hiyerarşisi ve anlamsal takma adlar önerir; yalnız kullanıcının onayladığı tokenlar W3C DTCG token JSON, CSS değişkenleri ve Markdown rapor olarak dışa aktarılır; kapsama ve tekrar düşüşü ölçüsü, 5 örnek sayfada beklenen ana değer kapsaması; MyMind (Hub) ya da yerel model ile onaylı, veri azaltılmış adlandırma önerisi (değer uydurmaz)",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable --x64 --publish never",
+    "smoke": "node tests/desktop-smoke.cjs"
+  },
+  "main": "desktop/main.js",
+  "author": "PluginLabs",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdesigners-pixel/PluginLabs.git",
+    "directory": "apps/05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.pluginlabs.design-token-scout",
+    "productName": "Design Token Scout",
+    "copyright": "PluginLabs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "app.html",
+      "app.js",
+      "app.css",
+      "src/**",
+      "pl/**",
+      "icons/icon256.png",
+      "icons/icon32.png",
+      "icons/icon16.png",
+      "icons/icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "DesignTokenScout-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Design Token Scout"
+    },
+    "portable": {
+      "artifactName": "DesignTokenScout-${version}-Windows-Portable-${arch}.${ext}"
+    },
+    "asar": true,
+    "publish": null
+  }
+}

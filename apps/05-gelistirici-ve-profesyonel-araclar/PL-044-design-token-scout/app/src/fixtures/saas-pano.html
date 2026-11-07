@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Satış Panosu</title>
+<style>
+:root { --zemin: #0f172a; --yuzey: #1e293b; --metin: #e2e8f0; --soluk: #94a3b8; --vurgu: #6366f1; --basari: #22c55e; --tehlike: #ef4444; }
+* { margin: 0; box-sizing: border-box; }
+body { background: var(--zemin); color: var(--metin); font: 14px/1.5 "Inter", system-ui, sans-serif; padding: 24px; display: grid; grid-template-columns: 200px 1fr; gap: 24px; }
+aside { display: flex; flex-direction: column; gap: 4px; }
+aside a { padding: 8px 12px; border-radius: 6px; color: var(--soluk); text-decoration: none; font-size: 14px; }
+aside a.aktif { background: var(--yuzey); color: var(--metin); }
+aside a:hover { background: #1f2a3c; }
+h1 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+.kartlar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.kart { padding: 16px; border-radius: 12px; background: var(--yuzey); border: 1px solid #334155; }
+.kart small { color: var(--soluk); font-size: 12px; }
+.kart b { display: block; font-size: 24px; margin: 4px 0; }
+.up { color: var(--basari); font-size: 12px; }
+.down { color: var(--tehlike); font-size: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1f2a3c; border-radius: 12px; }
+td, th { padding: 12px 16px; text-align: left; border-bottom: 1px solid #334155; font-size: 14px; }
+th { color: var(--soluk); font-weight: 500; font-size: 12px; }
+.durum { padding: 4px 8px; border-radius: 6px; background: var(--vurgu); color: #ffffff; font-size: 12px; }
+button { padding: 8px 16px; border: 0; border-radius: 6px; background: var(--vurgu); color: #ffffff; font: 600 14px "Inter", system-ui, sans-serif; }
+button:focus-visible { outline: 2px solid #a5b4fc; }
+</style></head>
+<body>
+<aside><a class="aktif" href="#">Genel bakış</a><a href="#">Siparişler</a><a href="#">Müşteriler</a><a href="#">Raporlar</a></aside>
+<main>
+<h1>Kasım satışları</h1>
+<div class="kartlar">
+  <div class="kart"><small>Ciro</small><b>482.300 ₺</b><span class="up">+12,4%</span></div>
+  <div class="kart"><small>Sipariş</small><b>1.284</b><span class="up">+3,1%</span></div>
+  <div class="kart"><small>İade</small><b>37</b><span class="down">+0,8%</span></div>
+</div>
+<table><tr><th>Sipariş</th><th>Müşteri</th><th>Tutar</th><th>Durum</th></tr>
+<tr><td>#10421</td><td>Ayşe K.</td><td>1.250 ₺</td><td><span class="durum">Kargoda</span></td></tr>
+<tr><td>#10420</td><td>Mert D.</td><td>640 ₺</td><td><span class="durum">Hazırlanıyor</span></td></tr>
+<tr><td>#10419</td><td>Selin A.</td><td>2.100 ₺</td><td><span class="durum">Teslim</span></td></tr></table>
+<p style="margin-top:16px"><button>Rapor indir</button></p>
+</main>
+<script type="application/json" id="dts-beklenen">{"color":["#0f172a","#1e293b","#e2e8f0","#94a3b8","#6366f1","#22c55e","#ef4444","#334155"],"fontSize":["12px","14px","24px"],"space":["4px","8px","12px","16px","24px"],"radius":["6px","12px"],"fontFamily":["Inter"],"birlesmeli":[["#1e293b","#1f2a3c"]]}</script>
+</body></html>
