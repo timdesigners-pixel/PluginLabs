@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dev Patch Notes</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="dp" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar dp-side" aria-label="Ana menü">
+    <div class="dp-brand" aria-label="PluginLabs Apps"><span class="dp-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="dp-apps">APPS</span></div>
+    <div class="dp-product">
+      <span class="pl-applogo" aria-hidden="true">DP</span>
+      <div class="dp-product__text"><b>Dev Patch Notes</b><span>Sürüm notu</span></div>
+      <span class="dp-product__no pl-num" aria-label="Sıra numarası 41">41</span>
+    </div>
+    <div class="dp-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="notes" role="tab">Sürüm notları<span class="pl-badge" id="relCount">0</span></button>
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="exports" role="tab">Dışa aktarımlar<span class="pl-badge" id="expCount">0</span></button>
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="dp-mini" id="sideInfo"></div>
+    <div class="dp-side__foot">
+      <button class="pl-navitem dp-navbtn" type="button" id="openMymind"><span class="dp-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="dp-main">
+    <div class="dp-view dp-work" id="view-notes">
+      <div class="dp-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="repo">Git deposundan</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="paste">git log / yama yapıştır</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="file">Dosya aç (.patch, .diff, .log)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek depo</button>
+        <span class="dp-grow"></span>
+        <div class="pl-segment" role="radiogroup" aria-label="Süzgeç">
+          <button type="button" role="radio" data-lf="etkin">Etkin</button>
+          <button type="button" role="radio" data-lf="arsiv">Arşiv</button>
+        </div>
+      </div>
+
+      <section class="dp-empty-start" id="emptyPanel" hidden>
+        <div class="dp-card dp-start__card">
+          <h1 class="pl-h3 dp-h">Commit'lerden, kaynağına bağlı sürüm notu</h1>
+          <p class="pl-muted dp-small">Dev Patch Notes seçtiğiniz commit'leri özellik, düzeltme ve iyileştirme başlıklarına ayırır; her madde kaynak commit bağlantısıyla gelir ve düzenlenebilir. Commit'te yazmayan test, performans ya da güvenlik iddiası nota giremez. Otomatik commit, push ya da yayın yoktur.</p>
+          <ol class="dp-ul">
+            <li><b>Kaynak</b>: yerel git deposu (yalnız okunur; “son etiketten bu yana” gibi bir aralık seçin), yapıştırılan <code>git log</code> / <code>git format-patch</code> / <code>git diff</code> ya da .patch dosyası.</li>
+            <li><b>Sınıflandırma</b>: Conventional Commits (<code>feat:</code>, <code>fix:</code>…) kesin; Türkçe/İngilizce anahtar sözcükler ve dosya türleri tahmin olarak işaretlenir. Birleştirme commit'leri, geri alınan çiftler ve bakım işleri varsayılan olarak notta yer almaz.</li>
+            <li><b>Düzenleme</b>: maddeleri yeniden yazın, başlığını değiştirin ya da çıkarın. Sırlar girişte maskelenir; kanıtsız iddia ya da sır içeren madde varken dışa aktarılmaz.</li>
+            <li><b>Çıktı</b>: Markdown (Türkçe başlıklar ya da Keep a Changelog), düz metin, JSON ya da pano.</li>
+          </ol>
+          <div class="dp-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="repo">Git deposu seç</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek depoyla dene</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dp-split" id="relSplit">
+        <div class="dp-listcol dp-card">
+          <div class="dp-bar"><span class="pl-muted dp-small" id="relInfo">0 sürüm notu</span></div>
+          <ul class="dp-list" id="relList" role="listbox" aria-label="Sürüm notları"></ul>
+        </div>
+        <div class="dp-detail dp-card" id="relDetail" aria-label="Seçili sürüm notu"></div>
+      </section>
+    </div>
+
+    <div class="dp-view dp-views" id="view-exports" hidden>
+      <section class="dp-card">
+        <div class="dp-bar"><h2 class="pl-h3 dp-h">Dışa aktarımlar</h2><span class="dp-grow"></span><span class="pl-muted dp-small" id="expInfo"></span></div>
+        <p class="pl-muted dp-small">Dosya yazıldıktan sonra geri okunup birebir karşılaştırılır. “Düzeltme oranı”, üretilen taslakla dışa aktarılan metin arasında değişen sözcüklerin payıdır.</p>
+        <div id="expBody"></div>
+      </section>
+    </div>
+
+    <div class="dp-view dp-panels" id="view-settings" hidden>
+      <section class="dp-card dp-card--wide">
+        <h2 class="pl-h3 dp-h">Ölçüler</h2>
+        <p class="pl-muted dp-small">Notion doğrulama ölçütü: <b>10 sürümde editör düzeltme süresinde ≥ %50 azalma</b> ve <b>uydurma teslim iddiası sıfır</b>. Kanıtsız iddia içeren not dışa aktarılamaz; son 10 dışa aktarılan sürümde düzeltme oranı ve etkin düzenleme süresi gösterilir. Elle yazma süresi (karşılaştırma tabanı) uygulamada ölçülmez. Yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="dp-metrics" id="metrics"></div>
+        <p class="pl-muted dp-small" id="goldInfo"></p>
+      </section>
+      <section class="dp-card">
+        <h2 class="pl-h3 dp-h">Not biçimi</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setTemplate">Şablon</label>
+          <select class="pl-input" id="setTemplate"><option value="kullanici">Kullanıcıya yönelik — Türkçe başlıklar</option><option value="keepachangelog">Keep a Changelog — Added / Changed / Fixed / Security</option></select></div>
+        <label class="dp-check"><input type="checkbox" id="setInternal"> <span><b>Bakım maddelerini dahil et</b> — bağımlılık, CI, test ve stil commit'leri yeni notlarda varsayılan olarak işaretli gelir.</span></label>
+        <div class="pl-field"><label class="pl-field__label" for="setMax">Depodan okunacak en çok commit</label><input class="pl-input" id="setMax" type="number" min="10" max="1000" step="10"></div>
+      </section>
+      <section class="dp-card">
+        <h2 class="pl-h3 dp-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted dp-small">İsteğe bağlıdır; okuma, sınıflandırma, sır taraması ve iddia denetimi motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="dp-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="dp-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="dp-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="dp-card dp-card--wide">
+        <div class="dp-bar"><h2 class="pl-h3 dp-h">Güvenlik ve gizlilik</h2><span class="dp-grow"></span><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="dp-ul">
+          <li>Git deposu yalnız okunur: <code>rev-parse</code>, <code>remote get-url origin</code>, <code>tag --list</code>, <code>log</code>, <code>show</code>. Commit, push, etiket, fetch ya da yayın yapan komut yoktur; kabuk kullanılmaz.</li>
+          <li>Sır taraması: AWS/GitHub/OpenAI/Anthropic/Slack/Google/Stripe/Notion anahtarları, JWT, özel anahtar blokları, bağlantı dizesindeki parola ve parola/anahtar atamaları girişte bulunup maskelenir; ham hâli saklanmaz, nota, dosyaya ve modele gitmez.</li>
+          <li>Yapay zekâya yazar adları, e-postalar ve depo adresi gitmez; commit başlıkları, açıklamalar, dosya adları ve kısaltılmış fark maskeli gider.</li>
+          <li>Kayıtlar silinmez, arşivlenir. Sınır 300 sürüm notu, sürüm başına 1000 commit.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="dp-foot pl-muted">Dev Patch Notes 0.1.0 · PluginLabs · her madde kaynak commit'e bağlı · kanıtsız iddia yok · otomatik commit/push/yayın yok</footer>
+  </main>
+
+  <dialog class="pl-modal dp-dialog dp-dialog--wide" id="repoDialog" aria-labelledby="repoTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="repoTitle">Git deposundan</h2><p class="pl-muted dp-tight">Depo yalnız okunur. Aralık boşsa son commit'ler alınır.</p></div></div>
+    <div class="pl-modal__body dp-stack">
+      <div class="dp-repo"><div class="pl-field"><label class="pl-field__label" for="repoDir">Klasör</label><input class="pl-input" id="repoDir" readonly></div><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="repoPick">Klasör seç…</button></div>
+      <div class="dp-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="repoRange">Aralık (ör. v1.3.0..HEAD)</label><input class="pl-input" id="repoRange" list="repoTags" maxlength="250" spellcheck="false"><datalist id="repoTags"></datalist></div>
+        <div class="pl-field"><label class="pl-field__label" for="repoVer">Sürüm</label><input class="pl-input" id="repoVer" maxlength="80" placeholder="1.4.0"></div>
+        <div class="pl-field"><label class="pl-field__label" for="repoUrl">Depo adresi (commit bağlantıları için)</label><input class="pl-input" id="repoUrl" maxlength="500" spellcheck="false" placeholder="https://github.com/…"></div>
+      </div>
+      <p class="pl-muted dp-small" id="repoInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="repoCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="repoRun">Commit'leri oku</button></div>
+  </dialog>
+  <dialog class="pl-modal dp-dialog dp-dialog--wide" id="pasteDialog" aria-labelledby="pasteTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pasteTitle">git log / yama yapıştır</h2><p class="pl-muted dp-tight"><code>git log --stat</code>, <code>git log --oneline</code>, <code>git format-patch</code> çıktısı ya da <code>git diff</code>.</p></div></div>
+    <div class="pl-modal__body dp-stack">
+      <textarea class="pl-input dp-area" id="pasteText" spellcheck="false" aria-label="git çıktısı" maxlength="8000000"></textarea>
+      <div class="dp-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="pasteVer">Sürüm</label><input class="pl-input" id="pasteVer" maxlength="80" placeholder="1.4.0"></div>
+        <div class="pl-field"><label class="pl-field__label" for="pasteDate">Tarih</label><input class="pl-input" id="pasteDate" type="date"></div>
+        <div class="pl-field"><label class="pl-field__label" for="pasteUrl">Depo adresi (commit bağlantıları için)</label><input class="pl-input" id="pasteUrl" maxlength="500" spellcheck="false" placeholder="https://github.com/…"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pasteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pasteRun">Not taslağı oluştur</button></div>
+  </dialog>
+  <dialog class="pl-modal dp-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon dp-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted dp-tight">Maddelerin kullanıcı diliyle yeniden yazılması bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body dp-stack">
+      <ol class="dp-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted dp-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="dp-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="dp-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
