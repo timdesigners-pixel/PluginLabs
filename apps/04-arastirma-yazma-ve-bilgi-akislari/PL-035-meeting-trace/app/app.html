@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meeting Trace</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="mt" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar mt-side" aria-label="Ana menü">
+    <div class="mt-brand" aria-label="PluginLabs Apps">
+      <span class="mt-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="mt-apps">APPS</span>
+    </div>
+    <div class="mt-product">
+      <span class="pl-applogo" aria-hidden="true">MT</span>
+      <div class="mt-product__text"><b>Meeting Trace</b><span>Toplantı izi</span></div>
+      <span class="mt-product__no pl-num" aria-label="Sıra numarası 35">35</span>
+    </div>
+    <div class="mt-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem mt-navbtn" type="button" data-nav="desk" role="tab">Toplantı</button>
+      <button class="pl-navitem mt-navbtn" type="button" data-nav="list" role="tab">Toplantılar<span class="pl-badge" id="mtCount">0</span></button>
+      <button class="pl-navitem mt-navbtn" type="button" data-nav="tasks" role="tab">Görevler<span class="pl-badge" id="taskCount">0</span></button>
+      <button class="pl-navitem mt-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="mt-mini" id="sideInfo"></div>
+    <div class="mt-side__foot">
+      <button class="pl-navitem mt-navbtn" type="button" id="openMymind"><span class="mt-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="mt-main">
+    <!-- Toplantı -->
+    <div class="mt-view mt-desk" id="view-desk">
+      <!-- Başlangıç: transkript al -->
+      <section class="mt-start" id="startPanel">
+        <div class="mt-card mt-start__card">
+          <div class="mt-bar"><h1 class="pl-h3 mt-h">Toplantı transkripti</h1><span class="mt-grow"></span>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="openFile" title="WebVTT, SRT, Teams/Zoom/Meet dökümü ya da metin dosyası">Dosya aç</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="clip" title="Panodaki metni al (yalnız siz bastığınızda okunur)">Panodan al</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek toplantı</button></div>
+          <textarea class="pl-input mt-area" id="input" maxlength="200000" placeholder="Toplantı transkriptini yapıştırın ya da dosya açın (.vtt, .srt, .txt). Teams, Zoom ve Google Meet dökümleri, “Ad: metin” satırları ve [00:12:05] zaman damgaları tanınır." aria-label="Transkript" spellcheck="false"></textarea>
+          <div class="mt-row mt-small pl-muted"><span id="inCount">0 karakter</span><span class="mt-grow"></span><span id="inInfo"></span></div>
+          <div class="pl-callout pl-callout--warning mt-sens" id="sensWarn" hidden></div>
+          <div class="mt-meta-grid">
+            <div class="pl-field"><label class="pl-field__label" for="mtTitle">Toplantı adı</label><input class="pl-input" id="mtTitle" maxlength="120" placeholder="ör. Haftalık ürün toplantısı"></div>
+            <div class="pl-field"><label class="pl-field__label" for="mtDate">Tarih</label><input class="pl-input" id="mtDate" type="date"></div>
+            <div class="pl-field mt-span2"><label class="pl-field__label" for="mtPeople">Konuşmayan katılımcılar (isteğe bağlı, virgülle)</label><input class="pl-input" id="mtPeople" maxlength="400" placeholder="Görev atanabilecek ama transkriptte konuşmayan kişiler"></div>
+          </div>
+          <div class="mt-consent" id="consentBox">
+            <label class="mt-check"><input type="checkbox" id="consentOk"> <span><b>Katılımcılar bilgilendirildi</b> ve transkriptin not almak için işlenmesine itiraz etmedi.</span></label>
+            <div class="mt-row">
+              <select class="pl-input mt-select" id="consentMethod" aria-label="Bilgilendirme yolu">
+                <option value="Toplantı başında sözlü">Toplantı başında sözlü</option>
+                <option value="Toplantı sohbetine yazılı not">Toplantı sohbetine yazılı not</option>
+                <option value="Davetiyede bildirim">Davetiyede bildirim</option>
+                <option value="E-posta ile bildirim">E-posta ile bildirim</option>
+                <option value="Platformun kayıt bildirimi">Platformun kayıt bildirimi</option>
+              </select>
+              <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="noticeBtn">Bilgilendirme metnini kopyala</button>
+              <span class="mt-grow"></span>
+              <button class="pl-btn pl-btn--primary" type="button" id="createBtn" disabled>Transkripti çözümle</button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-card mt-start__help">
+          <h2 class="pl-h3 mt-h">Nasıl çalışır</h2>
+          <ol class="mt-ul">
+            <li>Transkript zaman damgalı satırlara ve konuşmacılara ayrılır. Konuşmacısı belirsiz satırlar <b>tahmin</b> olarak işaretlenir.</li>
+            <li><b>Kararlar</b> (“kesinleşti”, “karar verdik”, “… ile devam ediyoruz”) ve <b>görevler</b> (“göndereceğim”, “… paylaşabilir misin?”, “Aksiyon:”) taslak olarak çıkarılır; son tarih (cuma, yarın, 10.11) toplantı tarihine göre hesaplanır.</li>
+            <li>Sorumlu metinden açıkça çıkmıyorsa <b>Belirsiz</b> kalır ve nedeni yazılır; hiçbir taslak onayınız olmadan nota girmez.</li>
+            <li>İsteğe bağlı <b>MyMind</b> incelemesi: adlar K1, K2… kodlarıyla, iletişim bilgileri gizlenerek gider.</li>
+            <li>Onaylı kararlar ve görevler Markdown/TXT notu, Excel için CSV ya da takvim görevi (ICS) olarak dışa aktarılır; tüm toplantılarda aranabilir.</li>
+          </ol>
+          <p class="pl-muted mt-small">Bu sürüm ses kaydetmez ve mikrofon izni istemez; gizli ya da sürekli kayıt yoktur. Transkripti toplantı platformunuzdan (Teams, Zoom, Meet) indirip yükleyin.</p>
+        </div>
+      </section>
+
+      <!-- Toplantı çalışma alanı -->
+      <section class="mt-ws" id="wsPanel" hidden>
+        <div class="mt-wshead">
+          <input class="pl-input mt-title" id="wsTitle" maxlength="120" aria-label="Toplantı adı">
+          <input class="pl-input mt-date" id="wsDate" type="date" aria-label="Toplantı tarihi">
+          <span class="pl-badge" id="wsFormat"></span>
+          <span class="mt-grow"></span>
+          <div class="mt-stats" id="wsStats"></div>
+        </div>
+        <div class="mt-toolbar">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="aiBtn"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg>MyMind ile incele</button>
+          <span class="mt-sepv" aria-hidden="true"></span>
+          <select class="pl-input mt-select" id="exportFmt" aria-label="Dışa aktarma biçimi">
+            <option value="md">Toplantı notu (.md)</option>
+            <option value="txt">Toplantı notu (.txt)</option>
+            <option value="csv">Görevler (.csv, Excel)</option>
+            <option value="ics">Takvim görevleri (.ics)</option>
+          </select>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportBtn">Dışa aktar</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="copyBtn">Notu kopyala</button>
+          <span class="mt-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="newBtn">Yeni transkript</button>
+        </div>
+        <div class="mt-speakers" id="speakers" aria-label="Konuşmacılar"></div>
+        <div class="mt-wsbody">
+          <div class="mt-timeline mt-card" aria-label="Zaman damgalı transkript">
+            <div class="mt-bar"><h2 class="pl-h3 mt-h">Zaman çizelgesi</h2><span class="mt-grow"></span>
+              <input class="pl-input mt-filter" id="lineFilter" placeholder="Satırlarda ara" aria-label="Satırlarda ara"></div>
+            <div class="mt-lines" id="lines" role="list"></div>
+          </div>
+          <div class="mt-drafts mt-card" aria-label="Karar ve görev taslakları">
+            <div class="pl-tabs mt-tabs" role="tablist">
+              <button class="pl-tab" type="button" role="tab" data-tab="gorev">Görevler <span class="pl-badge" id="tabTasks">0</span></button>
+              <button class="pl-tab" type="button" role="tab" data-tab="karar">Kararlar <span class="pl-badge" id="tabDecisions">0</span></button>
+            </div>
+            <div class="mt-bar">
+              <div class="pl-segment" role="radiogroup" aria-label="Süzgeç">
+                <button type="button" role="radio" data-filter="all">Tümü</button>
+                <button type="button" role="radio" data-filter="taslak">Bekleyen</button>
+                <button type="button" role="radio" data-filter="belirsiz">Belirsiz sorumlu</button>
+                <button type="button" role="radio" data-filter="onayli">Onaylı</button>
+              </div>
+              <span class="mt-grow"></span>
+              <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="approveAllBtn"></button>
+            </div>
+            <div class="mt-items" id="items" role="list"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Toplantılar -->
+    <div class="mt-view mt-panels" id="view-list" hidden>
+      <section class="mt-card mt-card--wide">
+        <div class="mt-bar"><h2 class="pl-h3 mt-h">Kararları ve görevleri bul</h2><span class="mt-grow"></span>
+          <input class="pl-input mt-search" id="searchQ" placeholder="ör. lansman tarihi, Mehmet, SSS" aria-label="Tüm toplantılarda ara"></div>
+        <ul class="mt-results" id="results"></ul>
+      </section>
+      <section class="mt-card mt-card--wide">
+        <div class="mt-bar"><h2 class="pl-h3 mt-h">Toplantılar</h2><span class="pl-muted mt-small">Yalnız bu bilgisayarda; arşivlenen toplantı silinmez.</span><span class="mt-grow"></span>
+          <label class="mt-check mt-check--inline"><input type="checkbox" id="showArchived"> <span>Arşivi göster</span></label>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="mt-mlist" id="mtList"></ul>
+      </section>
+    </div>
+
+    <!-- Görevler -->
+    <div class="mt-view mt-panels" id="view-tasks" hidden>
+      <section class="mt-card mt-card--wide">
+        <div class="mt-bar"><h2 class="pl-h3 mt-h">Onaylı görevler</h2><span class="pl-muted mt-small">Tüm toplantılardan; son tarihe göre.</span><span class="mt-grow"></span>
+          <select class="pl-input mt-select" id="ownerFilter" aria-label="Sorumluya göre süz"></select>
+          <label class="mt-check mt-check--inline"><input type="checkbox" id="hideDone" checked> <span>Tamamlananları gizle</span></label></div>
+        <div class="mt-tasktable" id="taskTable" role="table" aria-label="Görevler"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="mt-view mt-panels" id="view-settings" hidden>
+      <section class="mt-card mt-card--wide">
+        <h2 class="pl-h3 mt-h">Ölçüler</h2>
+        <p class="pl-muted mt-small">Notion doğrulama ölçütü: elle etiketli örneklerde görev çıkarma kesinliği ≥ %90; atanan kişi belirsizlikleri görünür. Kesinlik iki yoldan ölçülür: etiketli örnek toplantı(lar) ve sizin onay/red kararlarınız (insan etiketi). Yalnız bu bilgisayarda, arşivlenmemiş toplantılardan sayılır.</p>
+        <div class="mt-metrics" id="metrics"></div>
+        <div class="mt-goldlist" id="goldList"></div>
+      </section>
+      <section class="mt-card">
+        <h2 class="pl-h3 mt-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted mt-small">İsteğe bağlıdır; transkript çözümleme, kural tabanlı çıkarım, onay ve dışa aktarma motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="mt-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632) üzerinden; Hub istemci anahtarı gerekir.</span></label>
+        <label class="mt-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…). Gizli toplantılar için önerilir.</span></label>
+        <div class="mt-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false" placeholder="ör. qwen2.5-7b-instruct"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="mt-card">
+        <h2 class="pl-h3 mt-h">Çıkarım</h2>
+        <label class="mt-check"><input type="checkbox" id="setStrict"> <span><b>Yalnız güçlü görev ifadeleri</b> (güven ≥ 0,75): “gerekiyor / lazım” gibi sorumlusuz gereklilikler taslak olarak önerilmez. Yeni transkriptlerde geçerlidir.</span></label>
+        <p class="pl-muted mt-small">Kural tabanlı çıkarım Türkçe ve İngilizce görev kalıplarını tanır (gelecek zaman, rica, “Aksiyon:” satırları, gereklilik, “I will”, “can you”). Kim yapacağı sorulan (“kim üstlenecek?”) ya da geçmişe dönük ifadeler görev sayılmaz.</p>
+      </section>
+      <section class="mt-card mt-card--wide">
+        <h2 class="pl-h3 mt-h">Gizlilik, izin ve sınırlar</h2>
+        <ul class="mt-ul">
+          <li>Meeting Trace ses kaydetmez; mikrofon ve kamera izni her zaman reddedilir. Yalnız sizin yapıştırdığınız, açtığınız ya da bastığınız düğmeyle panodan aldığınız transkripti işler. Gizli veya sürekli kayıt yoktur.</li>
+          <li>Her toplantı katılımcıların bilgilendirildiği kaydıyla oluşturulur (yol ve zaman saklanır, nota yazılır). Kayıt ve transkript kuralları için toplantı platformunuzun koşulları ve yerel mevzuat geçerlidir; uygulama hukuki değerlendirme yapmaz.</li>
+          <li>Yapay zekâ isteğe bağlıdır ve yalnız bu bilgisayardadır (Hub ya da yerel model). Her istekte ne gideceği gösterilir. Adlar K-kodlarıyla gider; e-posta, telefon, bağlantı, IBAN, kart, T.C. kimlik ve parola değerleri gönderilmez.</li>
+          <li>Taslaklar makine çıkarımıdır ve hata yapabilir; onaylamadığınız hiçbir karar ya da görev nota ve dışa aktarmaya girmez.</li>
+          <li>Toplantılar silinmez, arşivlenir. Sınır (80) aşınca en eski arşivli toplantı çıkarılır; önce JSON yedek alabilirsiniz.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="mt-foot pl-muted" id="foot">Meeting Trace 0.1.0 · PluginLabs · çevrimdışı çalışır; yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal mt-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon mt-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted mt-tight">Konuşmacı ayrımı ve karar/görev çıkarımı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body mt-stack">
+      <ol class="mt-ul">
+        <li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li>
+        <li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li>
+        <li>Verilen anahtarı aşağıya yapıştırın. Anahtar Windows kasasında (DPAPI) şifreli saklanır.</li>
+      </ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted mt-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <dialog class="pl-modal mt-dialog" id="speakerDialog" aria-labelledby="speakerTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="speakerTitle">Konuşmacıyı adlandır</h2><p class="pl-muted mt-tight" id="speakerInfo"></p></div></div>
+    <div class="pl-modal__body mt-stack">
+      <div class="pl-field"><label class="pl-field__label" for="speakerName">Gerçek ad (var olan bir adı yazarsanız iki konuşmacı birleşir)</label><input class="pl-input" id="speakerName" maxlength="60" list="speakerNames" autocomplete="off"></div>
+      <datalist id="speakerNames"></datalist>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="speakerCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="speakerSave">Kaydet</button></div>
+  </dialog>
+  <div class="mt-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="mt-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
