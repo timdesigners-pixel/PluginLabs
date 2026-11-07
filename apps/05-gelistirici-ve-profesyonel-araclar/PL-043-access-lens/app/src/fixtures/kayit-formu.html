@@ -1,0 +1,33 @@
+<!doctype html>
+<html data-beklenen="html-has-lang">
+<head><meta charset="utf-8"><title>Atölye kayıt formu (fixture)</title>
+<style>
+body { font: 16px/1.5 sans-serif; background: #ffffff; color: #1a1a1a; margin: 0; }
+main { max-width: 760px; margin: 0 auto; padding: 24px; }
+.soluk { color: #a0a0a0; }
+.iyi { color: #4a4a4a; }
+.ikon { width: 36px; height: 36px; border: 1px solid #333; background: #fff; }
+label { display: block; margin-top: 12px; }
+</style></head>
+<body>
+<main>
+  <h1>Atölye kayıt formu</h1>
+  <p class="iyi">Bu sayfa Access Lens için bilinen sorunlar içeren bir test sayfasıdır (uydurma içerik).</p>
+  <p class="soluk" data-beklenen="color-contrast">Kayıtlar 20 Kasım'da kapanır.</p>
+  <h3 data-beklenen="heading-order">Kişisel bilgiler</h3>
+  <form action="#" onsubmit="return false">
+    <label for="ad">Ad soyad</label>
+    <input id="ad" name="ad" type="text" autocomplete="name">
+    <input id="eposta" name="eposta" type="email" data-beklenen="label">
+    <label for="sehir">Şehir</label>
+    <select id="sehir" name="sehir"><option>İstanbul</option><option>Ankara</option></select>
+    <select name="atolye" data-beklenen="select-name"><option>Seramik</option><option>Fotoğraf</option></select>
+    <p><button type="submit">Kaydol</button> <button type="button" class="ikon" data-beklenen="button-name"><svg width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6"/></svg></button></p>
+  </form>
+  <p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="120" height="60" data-beklenen="image-alt">
+     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="120" height="60" alt="Atölye salonu"></p>
+  <p><a href="#ayrinti" data-beklenen="link-name"><svg width="16" height="16" aria-hidden="true"><rect width="16" height="16"/></svg></a> <a href="#sss">Sık sorulan sorular</a></p>
+  <p><a href="#iletisim" tabindex="3" data-beklenen="tabindex">İletişim</a></p>
+</main>
+</body>
+</html>

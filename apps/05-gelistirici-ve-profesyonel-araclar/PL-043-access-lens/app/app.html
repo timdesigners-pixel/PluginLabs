@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access Lens</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="al" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar al-side" aria-label="Ana menü">
+    <div class="al-brand" aria-label="PluginLabs Apps"><span class="al-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="al-apps">APPS</span></div>
+    <div class="al-product">
+      <span class="pl-applogo" aria-hidden="true">AL</span>
+      <div class="al-product__text"><b>Access Lens</b><span>Erişilebilirlik</span></div>
+      <span class="al-product__no pl-num" aria-label="Sıra numarası 43">43</span>
+    </div>
+    <div class="al-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem al-navbtn" type="button" data-nav="audit" role="tab">Denetim<span class="pl-badge" id="findCount">0</span></button>
+      <button class="pl-navitem al-navbtn" type="button" data-nav="history" role="tab">Geçmiş<span class="pl-badge" id="auditCount">0</span></button>
+      <button class="pl-navitem al-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="al-mini" id="sideInfo"></div>
+    <div class="al-side__foot">
+      <button class="pl-navitem al-navbtn" type="button" id="openMymind"><span class="al-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="al-main">
+    <!-- Denetim -->
+    <div class="al-view al-work" id="view-audit">
+      <div class="al-toolbar">
+        <form class="al-urlrow" id="urlForm"><input class="pl-input" id="urlInput" type="text" inputmode="url" maxlength="2000" spellcheck="false" placeholder="Denetlenecek sayfanın adresi — https://…" aria-label="Sayfa adresi"><button class="pl-btn pl-btn--primary pl-btn--sm" type="submit" id="urlBtn">Denetle</button></form>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="file">HTML dosyası</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="paste">HTML yapıştır</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="samples">Örnek sayfalar</button>
+      </div>
+
+      <section class="al-empty-start" id="emptyPanel" hidden>
+        <div class="al-card al-start__card">
+          <h1 class="pl-h3 al-h">Arayüzünüzdeki erişilebilirlik sorunlarını erken görün</h1>
+          <p class="pl-muted al-small">Access Lens seçtiğiniz tek sayfayı yalıtılmış, oturumsuz bir pencerede açar ve <b>axe-core</b> kural motoruyla <b>WCAG 2.2 A/AA</b> ölçütlerine göre kontrast, form etiketi, erişilebilir ad, başlık yapısı ve ARIA sorunlarını raporlar. Bir bulguya tıkladığınızda ilgili öğe sayfanın görüntüsünde işaretlenir.</p>
+          <ol class="al-ul">
+            <li><b>Sayfa</b>: adresi yazıp <b>Denetle</b> (her açılış ayrı onaylıdır), kaydedilmiş bir <b>HTML dosyası</b> seçin ya da HTML yapıştırın. Bağlantılar izlenmez, site taranmaz.</li>
+            <li><b>Bulgular</b>: önem derecesi, WCAG başarı ölçütü, sorunlu öğe ve motorun açıklaması. Motorun emin olamadıkları <b>Manuel kontrol</b> listesindedir; <b>Odak sırası</b> ve <b>Yapı</b> sekmeleri klavye sırasını ve başlık/bölge düzenini gösterir.</li>
+            <li><b>Rapor</b>: Markdown, JSON ya da CSV. Yeniden denetimde yeni ve giderilen bulgular gösterilir.</li>
+          </ol>
+          <p class="al-note"><b>Önemli:</b> otomatik denetim bir sertifika ya da uygunluk beyanı değildir ve puan üretmez. Klavye, ekran okuyucu ve gerçek kullanıcı kontrolleri ayrıca gerekir.</p>
+          <div class="al-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="samples">Örnek sayfaları denetle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="file">HTML dosyası seç</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="al-res" id="resultPanel" hidden>
+        <div class="al-card al-head" id="auditHead"></div>
+        <div class="al-bar2">
+          <div class="pl-segment" role="radiogroup" aria-label="Sonuç görünümü">
+            <button type="button" role="radio" data-tab="findings">Bulgular</button>
+            <button type="button" role="radio" data-tab="manual">Manuel kontrol</button>
+            <button type="button" role="radio" data-tab="focus">Odak sırası</button>
+            <button type="button" role="radio" data-tab="outline">Yapı</button>
+          </div>
+          <span class="al-grow"></span>
+          <select class="pl-input al-select" id="impactFilter" aria-label="Önem süzgeci"><option value="">Tüm önem dereceleri</option><option value="critical">Kritik</option><option value="serious">Ciddi</option><option value="moderate">Orta</option><option value="minor">Düşük</option></select>
+        </div>
+        <div class="al-body">
+          <div class="al-card al-listcol"><ul class="al-list" id="leftList" aria-label="Liste"></ul></div>
+          <div class="al-card al-detail" id="rightDetail" aria-label="Ayrıntı"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Geçmiş -->
+    <div class="al-view al-work" id="view-history" hidden>
+      <div class="al-toolbar">
+        <div class="pl-segment" role="radiogroup" aria-label="Geçmiş süzgeci">
+          <button type="button" role="radio" data-hf="tamam">Denetimler</button>
+          <button type="button" role="radio" data-hf="arsiv">Arşiv</button>
+        </div>
+        <span class="al-grow"></span>
+        <input class="pl-input al-search" id="q" placeholder="Ara (başlık, adres)" aria-label="Geçmişte ara">
+      </div>
+      <section class="al-empty-start"><div class="al-card"><ul class="al-list al-hlist" id="histList" aria-label="Denetimler"></ul></div></section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="al-view al-panels" id="view-settings" hidden>
+      <section class="al-card al-card--wide">
+        <h2 class="pl-h3 al-h">Ölçüler</h2>
+        <p class="pl-muted al-small">Notion doğrulama ölçütü: <b>bilinen fixture'larda kurala göre doğru bulgu</b> ve <b>kritik yanlış olumlu &lt;%5</b>. Fixture'lar uygulamayla gelen, sorunları önceden işaretlenmiş örnek sayfalardır (“Örnek sayfalar”). Ölçüler yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="al-metrics" id="metrics"></div>
+        <p class="pl-muted al-small" id="fixtureInfo"></p>
+      </section>
+      <section class="al-card">
+        <h2 class="pl-h3 al-h">Denetim</h2>
+        <label class="al-check"><input type="checkbox" id="setScripts"> <span><b>Sayfanın kendi betiklerini çalıştır</b> — dinamik (JavaScript ile oluşan) içerik için gerekir. Kapalıyken sayfaya <code>script-src 'none'</code> uygulanır; denetim motoru yalıtılmış çalıştığı için etkilenmez.</span></label>
+        <label class="al-check"><input type="checkbox" id="setBest"> <span><b>En iyi uygulamalar</b> — WCAG dışı ama yaygın kabul gören kurallar (başlık sırası, bölgeler, tabindex…). Kapalıyken yalnız WCAG 2.2 A/AA.</span></label>
+        <label class="al-check"><input type="checkbox" id="setRemote"> <span><b>Yerel dosyada uzak kaynaklar</b> — .html dosyası ya da yapıştırılan HTML içindeki internetteki stil/görsellerin yüklenmesine izin verir (kapalıyken ağa çıkılmaz).</span></label>
+        <div class="pl-field"><label class="pl-field__label" for="setWidth">Görünüm genişliği (px)</label><select class="pl-input al-select" id="setWidth"><option value="1280">1280 — masaüstü</option><option value="1024">1024 — dizüstü / tablet yatay</option><option value="768">768 — tablet</option><option value="390">390 — telefon</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setWait">Yükleme sonrası bekleme</label><select class="pl-input al-select" id="setWait"><option value="0">Beklemeden</option><option value="800">0,8 sn</option><option value="2000">2 sn</option><option value="5000">5 sn (yavaş sayfalar)</option></select></div>
+      </section>
+      <section class="al-card">
+        <h2 class="pl-h3 al-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted al-small">İsteğe bağlıdır; denetim motor olmadan çalışır. Model bulguyu sade dille açıklar ve düzeltme taslağı önerir; “uyumlu/sertifikalı” ya da puan iddiaları atılır. Her istek ayrı onaylanır.</p>
+        <label class="al-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="al-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="al-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="al-card al-card--wide">
+        <h2 class="pl-h3 al-h">Sınırlar ve gizlilik</h2>
+        <ul class="al-ul">
+          <li id="engineInfo"></li>
+          <li>Otomatik kurallar sorunların yalnız bir bölümünü yakalar. Klavyeyle gezinme, ekran okuyucu (NVDA, Ekran Okuyucu), %200 yakınlaştırma ve gerçek kullanıcı testleri ayrıca gerekir; raporda bu kontrol listesi yer alır.</li>
+          <li>Sayfa her denetimde yeni, bellek içi bir oturumda açılır: tarayıcı çerezleriniz ve oturumlarınız kullanılmaz; giriş gerektiren sayfaların yalnız herkese açık hâli denetlenir. iframe içerikleri denetlenmez.</li>
+          <li>Modele kural, motor özeti ve öğenin HTML parçası gider (e-posta, telefon, uzun sayılar gizlenir); sayfa adresi gönderilmez.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="al-foot pl-muted" id="footer">Access Lens · PluginLabs</footer>
+  </main>
+
+  <dialog class="pl-modal al-dialog al-dialog--wide" id="pasteDialog" aria-labelledby="pasteTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pasteTitle">HTML yapıştır</h2><p class="pl-muted al-tight">Bir sayfanın ya da bileşenin HTML kodunu yapıştırın. Kod yalnız bu bilgisayarda, yalıtılmış pencerede açılır; uzak kaynaklar ayarlardan açılmadıkça yüklenmez.</p></div></div>
+    <div class="pl-modal__body al-stack"><textarea class="pl-input al-area al-area--dlg" id="pasteText" spellcheck="false" aria-label="HTML" maxlength="5000000"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pasteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pasteRun">Denetle</button></div>
+  </dialog>
+  <dialog class="pl-modal al-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon al-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted al-tight">Bulguların sade dille açıklanması ve düzeltme taslağı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body al-stack">
+      <ol class="al-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted al-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="al-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="al-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

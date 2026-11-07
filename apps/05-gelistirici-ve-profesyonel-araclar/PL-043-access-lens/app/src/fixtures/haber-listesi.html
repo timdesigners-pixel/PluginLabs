@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="tr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" data-beklenen="meta-viewport"><title>Haber listesi (fixture)</title>
+<style>
+body { font: 16px/1.5 sans-serif; background: #111827; color: #e5e7eb; margin: 0; }
+main { max-width: 760px; margin: 0 auto; padding: 24px; }
+.koyu { color: #4b5563; }
+a { color: #93c5fd; }
+</style></head>
+<body>
+<main>
+  <h1>Bugünün haberleri</h1>
+  <ul data-beklenen="list">
+    <li><a href="#h1">Şehirde yeni bisiklet yolları açıldı</a></li>
+    <div>Reklam alanı</div>
+    <li><a href="#h2">Kütüphane hafta sonu da açık</a></li>
+  </ul>
+  <li data-beklenen="listitem">Tek başına liste öğesi</li>
+  <h2 data-beklenen="empty-heading"></h2>
+  <p class="koyu" data-beklenen="color-contrast">Son güncelleme: 07.11.2026 09:00</p>
+  <iframe srcdoc="<p>Hava durumu</p>" width="300" height="60" data-beklenen="frame-title"></iframe>
+  <iframe srcdoc="<p>Döviz</p>" width="300" height="60" title="Döviz kurları"></iframe>
+  <p><a href="#h3">Tüm haberler</a></p>
+</main>
+</body>
+</html>

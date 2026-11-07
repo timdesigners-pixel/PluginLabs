@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="tr">
+<head><meta charset="utf-8"><title>Ürün kartı (fixture)</title>
+<style>
+body { font: 16px/1.5 sans-serif; background: #f6f7fb; color: #1b1e28; margin: 0; }
+main { max-width: 760px; margin: 0 auto; padding: 24px; }
+.kart { background: #ffffff; border-radius: 12px; padding: 20px; }
+.buyuk { font-size: 24px; font-weight: 700; color: #767676; }
+.gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.btn { background: #3949ab; color: #ffffff; border: 0; padding: 10px 16px; border-radius: 8px; font-size: 16px; }
+.afis { background: url("data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==") #2b2b2b; color: #ffffff; padding: 16px; }
+</style></head>
+<body>
+<header><nav aria-label="Ana menü"><a href="#">Anasayfa</a> · <a href="#">Ürünler</a></nav></header>
+<main>
+  <h1>Kablosuz kulaklık</h1>
+  <div class="kart">
+    <p class="buyuk">Kasım kampanyası</p>
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="120" alt="Siyah kablosuz kulaklık, yandan görünüm">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="10" height="10" alt="">
+    <p>Fiyat: <strong>1.299,90 TL</strong></p>
+    <label for="adet">Adet</label> <input id="adet" type="number" value="1" min="1">
+    <label><input type="checkbox" checked> Hediye paketi</label>
+    <label for="not" class="gizli">Sipariş notu</label><input id="not" type="text">
+    <p><button class="btn" type="button">Sepete ekle</button>
+       <button class="btn" type="button" aria-label="Favorilere ekle"><svg width="16" height="16" aria-hidden="true"><path d="M8 14 2 8a3 3 0 0 1 6-4 3 3 0 0 1 6 4z"/></svg></button>
+       <span role="buton" data-beklenen="aria-roles">Karşılaştır</span></p>
+    <div aria-hidden="true" data-beklenen="aria-hidden-focus"><a href="#paylas">Paylaş</a></div>
+    <p class="afis">Ücretsiz kargo — yalnız bu hafta</p>
+  </div>
+  <h2>Teknik özellikler</h2>
+  <ul><li>Pil: 32 saat</li><li>Ağırlık: 210 g</li></ul>
+</main>
+<footer><p>© PluginLabs fixture</p></footer>
+</body>
+</html>
