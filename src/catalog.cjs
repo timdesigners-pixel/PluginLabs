@@ -365,6 +365,22 @@ const catalog = [
     repo: "timdesigners-pixel/ultimate-upscaler",
   },
   {
+    id: "tork",
+    name: "Tork",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Sistem benchmark'ı: CPU (tek/çok çekirdek), bellek ve disk testleriyle puan verir; ölçüm geçmişi, önce/sonra karşılaştırması, JSON/CSV dışa aktarma, tork-cli ve MyMind ile darboğaz yorumu (WebView2 gerekir).",
+    platform: "win32",
+    format: "exe",
+    file: "Tork.exe",
+    size: 4923392,
+    sha256: "58d17201206afe88f35803629d0e12194c577f9d97c920d2afb5554d51f5d8ad",
+    url: dist("tork", "0.1.0", "Tork-0.1.0-portable.exe"),
+    distAsset: "^Tork-[0-9.]+-portable\\.exe$",
+    repo: "timdesigners-pixel/tork",
+  },
+  {
     id: "llama-engine",
     name: "My Mind · Çalıştırma motoru",
     kind: "engine",

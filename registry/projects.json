@@ -2248,7 +2248,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.0 kaynak hazır · Windows masaüstü (Rust + Tauri 2); CPU/disk/bellek/GPU yerel performans ölçümü ve karşılaştırma",
+      "status": "v0.1.0 · Windows masaüstü (Rust + Tauri 2) + tork-cli; CPU/disk/bellek yerel performans ölçümü ve karşılaştırma; Hub kataloğunda",
       "priority": "P2",
       "effort": "M",
       "platforms": {

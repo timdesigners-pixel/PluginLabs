@@ -49,6 +49,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Tweakster (PL-052) | **v0.1.0** (Windows kurulum/taşınabilir exe) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | Gardrop (PL-055) | **v0.2.1** (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.2.1 |
 | The Ultimate Upscaler (PL-056) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
+| Tork (PL-057) | **v0.1.0** (Tauri/Rust; taşınabilir exe + `tork-cli` + SHA256SUMS + BUILD-INFO; Hub kataloğunda) | https://github.com/timdesigners-pixel/tork/releases/tag/v0.1.0 |
 | Kurgu Atölyesi (PL-058) | **v0.3.1** ön sürüm (Tauri/Rust; gerçek FFmpeg MP4 render, kurtarma, MyMind metin taslağı) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/kurgu-atolyesi-v0.3.1 |
 | MyMind AI (PL-059) | **v0.1.1** (Tauri/Rust masaüstü + Chrome MV3 eklentisi) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.1 |
 
@@ -56,8 +57,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–034, PL-051–056, PL-058–059 ve Hub (v0.4.20). PL-057 (Tork) kaynak kodu v0.1.0 hazır, release etiketi bekliyor.
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.3), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.1), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–034, PL-051–059 ve Hub (v0.4.20).
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.3), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.1), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0).
 - Sıradaki (Windows sürümü yok): PL-035–050 (fikir / Hub içi önizleme; ayrı depo yok).
 
 ## Tüm liste (PL-001 … PL-059)
@@ -120,6 +121,6 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-054 | MyWishlist | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (istek listeleri, fiyat takibi, çok sitede arama ve karşılaştırma, MyMind ile ekleme, görselden tanıma; imzasız önizleme) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
 | PL-055 | Gardrop | Windows uygulaması (Rust/Tauri) · **v0.2.1** + Chrome eklentisi (dijital gardırop, kombin, “Bugün ne giysem?”) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.2.1 |
 | PL-056 | The Ultimate Upscaler | Windows uygulaması (Rust/Tauri) · **v0.1.0** + Chrome eklentisi (cihazda görsel büyütme, önce/sonra karşılaştırma, toplu sıra) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
-| PL-057 | Tork | Windows uygulaması (Rust/Tauri) · **v0.1.0** kaynak hazır (CPU/disk/bellek/GPU yerel performans ölçümü ve karşılaştırma; release etiketi bekliyor) | https://github.com/timdesigners-pixel/tork |
+| PL-057 | Tork | Windows uygulaması (Rust/Tauri) · **v0.1.0** + `tork-cli` (CPU/disk/bellek yerel performans ölçümü ve karşılaştırma; Hub kataloğunda) | https://github.com/timdesigners-pixel/tork/releases/tag/v0.1.0 |
 | PL-058 | Kurgu Atölyesi | Windows ön sürümü (Rust/Tauri) · **v0.3.1** (gerçek FFmpeg MP4 render, katmanlar, renk, ses, kurtarma, MyMind metin taslağı; Hub kataloğunda) | https://github.com/timdesigners-pixel/kurgu-atolyesi |
 | PL-059 | MyMind AI | Windows uygulaması (Rust/Tauri) · **v0.1.1** + Chrome eklentisi (yerel modelle sohbet, 13 görev şablonu, onaylı yerel köprü; imzasız önizleme) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.1 |
