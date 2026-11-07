@@ -1,6 +1,16 @@
-# PluginLabs Hub 0.4.20
+# PluginLabs Hub 0.4.21
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
+
+Leo Helper **0.9.4** ve MyMind AI **0.1.2** katalogda güncellendi. Windows paketleri boyut ve SHA256 ile doğrulanır. MyMind uygulama yayını, Qwen3-4B Colab eğitiminin tamamlandığı anlamına gelmez.
+
+07.11.2026, paketlenmiş gerçek Windows Electron uygulaması; aşağıdaki katalog ekranları sürüm değerlerini doğrular:
+
+![Leo Helper 0.9.4 katalog kaydı](docs/screenshots/release-0.4.21/02-leo-helper.png)
+
+![MyMind AI 0.1.2 katalog kaydı](docs/screenshots/release-0.4.21/03-mymind-ai.png)
+
+Önceki sürümlerin ekranları aşağıda tarihleriyle korunur.
 
 Flow Dock 0.2.0 ön sürümü Hub üzerinden kurulabilir. Windows 11 üzerinde doğrulandı; Windows Server 2025 açılış testi başarısız.
 
