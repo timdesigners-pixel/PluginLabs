@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mail Triage</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ml" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ml-side" aria-label="Ana menü">
+    <div class="ml-brand" aria-label="PluginLabs Apps"><span class="ml-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ml-apps">APPS</span></div>
+    <div class="ml-product">
+      <span class="pl-applogo" aria-hidden="true">MT</span>
+      <div class="ml-product__text"><b>Mail Triage</b><span>Posta önceliği</span></div>
+      <span class="ml-product__no pl-num" aria-label="Sıra numarası 37">37</span>
+    </div>
+    <div class="ml-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ml-navbtn" type="button" data-nav="inbox" role="tab">Gelen kutusu<span class="pl-badge" id="inboxCount">0</span></button>
+      <button class="pl-navitem ml-navbtn" type="button" data-nav="bulk" role="tab">Toplu değişiklik<span class="pl-badge" id="selCount">0</span></button>
+      <button class="pl-navitem ml-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ml-mini" id="sideInfo"></div>
+    <div class="ml-side__foot">
+      <button class="pl-navitem ml-navbtn" type="button" id="openMymind"><span class="ml-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ml-main">
+    <!-- Gelen kutusu -->
+    <div class="ml-view ml-inbox" id="view-inbox">
+      <div class="ml-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="import" title=".eml ve .mbox dosyaları (birden çok seçilebilir)">E-posta dosyası aç</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="paste">Kaynağı yapıştır</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek gelen kutusu</button>
+        <span class="ml-sepv" aria-hidden="true"></span>
+        <div class="pl-segment" role="radiogroup" aria-label="Öncelik süzgeci">
+          <button type="button" role="radio" data-prio="all">Tümü</button>
+          <button type="button" role="radio" data-prio="yuksek">Yüksek</button>
+          <button type="button" role="radio" data-prio="normal">Normal</button>
+          <button type="button" role="radio" data-prio="dusuk">Düşük</button>
+        </div>
+        <select class="pl-input ml-select" id="labelFilter" aria-label="Etiket süzgeci"></select>
+        <label class="ml-check ml-check--inline"><input type="checkbox" id="onlyNew"> <span>Gözden geçirilmemiş</span></label>
+        <span class="ml-grow"></span>
+        <input class="pl-input ml-search" id="q" placeholder="Ara (gönderen, konu, gövde)" aria-label="İletilerde ara">
+      </div>
+
+      <section class="ml-empty-start" id="emptyPanel" hidden>
+        <div class="ml-card ml-start__card">
+          <h1 class="pl-h3 ml-h">Gelen kutunuzu önceliklendirin</h1>
+          <p class="pl-muted ml-small">Salt okunur pilot: posta kutunuza bağlanmaz, ileti göndermez, taşımaz ya da silmez. Posta uygulamanızdan dışa aktardığınız <b>.eml</b> ya da <b>.mbox</b> dosyalarını açın ya da bir iletinin kaynağını yapıştırın.</p>
+          <ol class="ml-ul">
+            <li>Her ileti için <b>etiket</b> (Yanıt bekliyor, Fatura/Ödeme, Toplantı, Kargo/Sipariş, Güvenlik, Bülten/Kampanya, Bildirim) ve <b>öncelik</b> gerekçesiyle önerilir.</li>
+            <li>Önemli kişi, size doğrudan yazılmış soru/rica, yakın son tarih ve güvenlik uyarısı olan iletiler <b>asla Düşük</b> önerilmez.</li>
+            <li>Öneriyi kabul edin ya da düzeltin; birden çok iletiyi <b>toplu değişiklik önizlemesiyle</b> güncelleyin.</li>
+            <li>Eylemler, son tarih ve tutar çıkarılır; kısa <b>yanıt taslağı</b> hazırlanır ve panoya kopyalanır — gönderim sizin posta uygulamanızdadır.</li>
+            <li>İsteğe bağlı <b>MyMind</b>: yalnız seçili ileti, adlar ve iletişim bilgileri gizlenerek gider.</li>
+          </ol>
+          <div class="ml-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="import">E-posta dosyası aç</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek gelen kutusu</button>
+          </div>
+          <p class="pl-muted ml-small">Gmail: ileti → ⋮ → “İletiyi indir” (.eml). Outlook: iletiyi masaüstüne sürükleyin ya da “Farklı kaydet” (.eml). Thunderbird: “Farklı kaydet” ya da klasörün .mbox dosyası.</p>
+        </div>
+      </section>
+
+      <section class="ml-split" id="splitPanel">
+        <div class="ml-listcol ml-card">
+          <div class="ml-bar"><label class="ml-check ml-check--inline"><input type="checkbox" id="selAll"> <span id="listInfo">0 ileti</span></label><span class="ml-grow"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="acceptSelBtn" disabled>Seçilenlerin önerisini kabul et</button></div>
+          <ul class="ml-list" id="list" role="listbox" aria-label="İletiler"></ul>
+        </div>
+        <div class="ml-detail ml-card" id="detail" aria-label="Seçili ileti"></div>
+      </section>
+    </div>
+
+    <!-- Toplu değişiklik -->
+    <div class="ml-view ml-panels" id="view-bulk" hidden>
+      <section class="ml-card ml-card--wide">
+        <div class="ml-bar"><h2 class="pl-h3 ml-h">Toplu değişiklik önizlemesi</h2><span class="pl-muted ml-small" id="bulkInfo"></span></div>
+        <p class="pl-muted ml-small">Gelen kutusunda seçtiğiniz iletilere etiket ekleyin/kaldırın ya da öncelik verin. Önce önizleme gösterilir; değişiklikler yalnız bu uygulamanın kaydına yazılır (posta kutusu değişmez).</p>
+        <div class="ml-bulkform">
+          <div class="pl-field"><label class="pl-field__label" for="bulkAdd">Etiket ekle</label><select class="pl-input" id="bulkAdd"></select></div>
+          <div class="pl-field"><label class="pl-field__label" for="bulkRemove">Etiket kaldır</label><select class="pl-input" id="bulkRemove"></select></div>
+          <div class="pl-field"><label class="pl-field__label" for="bulkPrio">Öncelik</label><select class="pl-input" id="bulkPrio"><option value="">— değiştirme —</option><option value="yuksek">Yüksek</option><option value="normal">Normal</option><option value="dusuk">Düşük</option></select></div>
+          <button class="pl-btn pl-btn--secondary" type="button" id="bulkPreviewBtn">Önizle</button>
+        </div>
+        <div class="pl-callout pl-callout--warning" id="bulkWarn" hidden></div>
+        <div class="ml-ptable" id="bulkTable" role="table" aria-label="Önizleme"></div>
+        <div class="ml-row"><span class="ml-grow"></span><button class="pl-btn pl-btn--ghost" type="button" id="bulkBack">Gelen kutusuna dön</button><button class="pl-btn pl-btn--primary" type="button" id="bulkApplyBtn" disabled>Değişiklikleri uygula</button></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="ml-view ml-panels" id="view-settings" hidden>
+      <section class="ml-card ml-card--wide">
+        <h2 class="pl-h3 ml-h">Ölçüler</h2>
+        <p class="pl-muted ml-small">Notion doğrulama ölçütleri: önerilen etiket kabulü ≥ %85 (gözden geçirdiğiniz iletilerde önerilen etiketlerin korunma oranı) ve önemli e-postayı yanlış düşük öncelikleme &lt; %2 (Yüksek olarak işaretlediğiniz ya da “Önemli” dediğiniz iletilerden Düşük önerilenlerin oranı). Yalnız bu bilgisayarda, arşivlenmemiş iletilerden sayılır.</p>
+        <div class="ml-metrics" id="metrics"></div>
+        <p class="pl-muted ml-small" id="goldInfo"></p>
+      </section>
+      <section class="ml-card">
+        <h2 class="pl-h3 ml-h">Adreslerim ve önemli kişiler</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setMine">E-posta adreslerim (virgülle)</label><input class="pl-input" id="setMine" maxlength="800" spellcheck="false" placeholder="ad@sirket.com.tr, ad@gmail.com"></div>
+        <div class="pl-field"><label class="pl-field__label" for="setName">Adım (yanıt taslağının imzası)</label><input class="pl-input" id="setName" maxlength="80"></div>
+        <div class="pl-field"><label class="pl-field__label" for="setVip">Önemli kişi ve alanlar (virgülle; ör. yonetici@sirket.com, @musteri.com)</label><textarea class="pl-input ml-area" id="setVip" rows="3" maxlength="4000" spellcheck="false"></textarea></div>
+        <div class="ml-row"><button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="saveAddr">Kaydet ve önerileri yenile</button></div>
+        <p class="pl-muted ml-small">“Doğrudan size” tespiti için adreslerinizi girin; önemli kişilerden gelen iletiler hiçbir zaman Düşük önerilmez. Kararlarınız korunur.</p>
+      </section>
+      <section class="ml-card">
+        <h2 class="pl-h3 ml-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ml-small">İsteğe bağlıdır; içe aktarma, kural tabanlı öneri, toplu değişiklik ve yanıt taslağı motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="ml-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="ml-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="ml-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ml-card ml-card--wide">
+        <div class="ml-bar"><h2 class="pl-h3 ml-h">Dışa aktarma ve gizlilik</h2><span class="ml-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">Öneriler (.csv, Excel)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Gelen kutusu özeti (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="ml-ul">
+          <li>Salt okunur: Mail Triage posta sunucunuza bağlanmaz, OAuth izni istemez; yalnız sizin seçtiğiniz dosyaları okur ve onları değiştirmez. İleti gönderme, taşıma, silme yoktur. Ekler açılmaz ve kaydedilmez (yalnız adı/türü gösterilir).</li>
+          <li>HTML iletiler düz metne çevrilir; uzak görseller, betikler ve bağlantılar yüklenmez (CSP ağ erişimini kapatır).</li>
+          <li>Yapay zekâ isteğe bağlıdır ve yalnız bu bilgisayardadır. Yalnız seçili ileti gider: alıntılar ve imza atılır, adlar [Gönderen]/[Alıcı] olur; e-posta, telefon, bağlantı, IBAN, kart, T.C. kimlik ve doğrulama kodu/parola değerleri gönderilmez.</li>
+          <li>İletiler silinmez, arşivlenir. Sınır 2000 ileti; aynı Message-ID ikinci kez eklenmez.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ml-foot pl-muted">Mail Triage 0.1.0 · PluginLabs · salt okunur pilot; ileti gönderilmez · yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal ml-dialog ml-dialog--wide" id="pasteDialog" aria-labelledby="pasteTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pasteTitle">E-posta kaynağını yapıştır</h2><p class="pl-muted ml-tight">Posta uygulamanızda “Orijinali göster / Kaynağı görüntüle” ile açılan ham iletiyi (başlıklarla birlikte) yapıştırın.</p></div></div>
+    <div class="pl-modal__body ml-stack"><textarea class="pl-input ml-area ml-area--dlg" id="pasteText" spellcheck="false" aria-label="E-posta kaynağı"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pasteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pasteRun">Ekle</button></div>
+  </dialog>
+  <dialog class="pl-modal ml-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ml-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ml-tight">Eylem/tarih/konu çıkarımı ve kısa yanıt taslağı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla güçlendirilebilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body ml-stack">
+      <ol class="ml-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ml-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="ml-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ml-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
