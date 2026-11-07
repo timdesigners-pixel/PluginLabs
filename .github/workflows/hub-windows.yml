@@ -35,7 +35,6 @@ jobs:
       - run: npm test
       - name: Arayüz testi (gerçek Electron penceresi)
         run: |
-          npm install --no-save playwright@1.49.1
           npm run test:ui
         env:
           PLAYWRIGHT_MODULE: playwright
