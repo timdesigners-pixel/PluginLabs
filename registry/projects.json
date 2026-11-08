@@ -226,7 +226,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut ayrıntılı proje planı",
+      "status": "v0.1.0 · Windows uygulaması (kurulum + taşınabilir, kapalı pilot, imzasız) ürün deposunda yayımlı (30.10.2026, özel; dağıtım/Hub kataloğunda değil) · Notion: Mevcut ayrıntılı proje planı",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -391,7 +391,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut fikir · uygulama keşif/paketleme yönü",
+      "status": "v0.1.0 · Windows uygulaması + Chrome eklentisi ürün deposunda yayımlı (30.10.2026, özel; dağıtım/Hub kataloğunda değil; imzasız önizleme) · Notion: Mevcut fikir",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -432,7 +432,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut proje ve görev kayıtları · geçmiş ilerleme, canlı doğrulama yok",
+      "status": "Binbir Dizayn Stüdyo studyo-v0.1.0 Windows uygulaması (30.10.2026) + Design Replicator Chrome eklentisi v1.4.0 ürün deposunda yayımlı (özel; dağıtım/Hub kataloğunda değil) · Notion: Mevcut proje ve görev kayıtları",
       "priority": "P2",
       "effort": "XL",
       "platforms": {
@@ -474,7 +474,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut kişisel kullanım fikri · ürünleşme önerisi",
+      "status": "v0.1.0 · Windows uygulaması ürün deposunda yayımlı (30.10.2026, özel; dağıtım/Hub kataloğunda değil; imzasız önizleme) · Notion: Mevcut kişisel kullanım fikri",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -515,7 +515,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut fikir · doğrulanmış çalışan ürün sayılmaz",
+      "status": "v0.1.0 · Windows uygulaması ürün deposunda yayımlı (30.10.2026, özel; dağıtım/Hub kataloğunda değil; imzasız önizleme) · Notion: Mevcut fikir",
       "priority": "P2",
       "effort": "L",
       "platforms": {
@@ -556,7 +556,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut isim/fikir · bu kapsam yeni öneri",
+      "status": "v0.1.0 · Windows uygulaması ürün deposunda yayımlı (30.10.2026, özel; dağıtım/Hub kataloğunda değil; imzasız önizleme) · Notion: Mevcut isim/fikir",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -597,7 +597,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut Instagram kaydedilenleri düzenleme görevi",
+      "status": "v0.1.0 · Windows uygulaması ürün deposunda yayımlı (31.10.2026, özel; dağıtım/Hub kataloğunda değil; imzasız önizleme) · Notion: Mevcut Instagram kaydedilenleri düzenleme görevi",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2117,7 +2117,7 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · “01 · PluginLabs & Yazılım” sayfasında adı geçiyor · özellik listesi depodan doğrulanacak",
+      "status": "v0.4.1 · web + Android test APK + Windows x64 zip ürün deposunda yayımlı (31.10.2026, özel); dağıtım deposunda mutfak-atolyesi-v0.4.1; Hub kataloğunda",
       "priority": null,
       "effort": null,
       "platforms": {
