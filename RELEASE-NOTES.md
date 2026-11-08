@@ -1,3 +1,22 @@
+PluginLabs Hub 0.5.0 — PL-040..PL-050 Araştırma, Yazma, Geliştirici ve Profesyonel Araçlar Serisi Kataloğa Eklendi.
+
+- **PL-040 Insight Table 0.1.0:** Tablosal veri içgörü ve sütun istatistikleri aracı.
+- **PL-041 Dev Patch Notes 0.1.0:** Git commit ve PR'lardan otomatik sürüm notu derleyicisi.
+- **PL-042 API Pocket 0.1.0:** Hızlı API test ve mock istek yönetim cep aracı.
+- **PL-043 Access Lens 0.1.0:** Rol, izin ve IAM yetki matrisi denetim lensi.
+- **PL-044 Design Token Scout 0.1.0:** Kod ve CSS dosyalarından tasarım tokenı ayıklama ve denetim aracı.
+- **PL-045 Context Kit 0.1.0:** LLM ve model bağlamları için token/kod paketi hazırlayıcısı.
+- **PL-046 Model Switchboard 0.1.0:** Yerel ve bulut yapay zeka modelleri arası yönlendirme panosu.
+- **PL-047 Permission Radar 0.1.0:** Uygulama ve eklenti izin risk radarı.
+- **PL-048 Offline Aid 0.1.0:** Çevrimdışı dokümantasyon, cheat sheet ve yerel acil bilgi deposu.
+- **PL-049 Invoice Inbox 0.1.0:** Fatura ve makbuz ayrıştırma, KDV özeti ve muhasebe ön izleme kutusu.
+- **PL-050 Decision Board 0.1.0:** Ağırlıklı karar matrisi ve mimari seçim karar tahtası.
+
+Tüm 11 yeni ürün `pluginlabs-dagitim` üzerinden resmi v0.1.0 Windows paketleri (Portable + NSIS) olarak yayımlandı; SHA256 özetleri ve dosya boyutları Hub kataloğuna işlendi.
+Hub artık PL-001..PL-059 arasındaki tüm 59 ürünün tamamını doğrudan kurma, doğrulama ve çalıştırma desteğine sahiptir.
+
+---
+
 PluginLabs Hub 0.4.26 — Leo Helper 0.9.5 katalog ve dağıtım güncellemesi.
 
 - Leo Helper 0.9.5: Windows genel Ctrl+Alt+P hızlı mesaj paneli ve Ctrl+Alt+Esc durdurma; paket boyutu ve SHA256 güncel herkese açık dağıtımla eşleşir.
