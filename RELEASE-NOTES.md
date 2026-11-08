@@ -1,3 +1,13 @@
+PluginLabs Hub 0.4.27 — PL-040–050 Windows uygulamaları kataloğa eklendi.
+
+- Yeni yayımlanan dört uygulama (08.11.2026, `pluginlabs-dagitim`, Windows runner: npm test + gerçek Electron duman testi + kurulum/taşınabilir + SHA256 + BUILD-INFO + Windows ekran görüntüleri): Permission Radar 0.1.0 (PL-047; eklenti izin kartları, bilinmeyen kapsam etiketi, izin değişim geçmişi; zararlı yazılım tespiti iddiası yok), Offline Aid 0.1.0 (PL-048; yerel model ya da modelsiz yedek motorla cihaz içi metin görevleri, dışa giden istek 0), Invoice Inbox 0.1.0 (PL-049; fatura/fiş alan çıkarımı, deterministik toplam denetimi, zorunlu insan incelemesi), Decision Board 0.1.0 (PL-050; kaynaklı karar matrisi, %100 puan izlenebilirliği, ADR günlüğü).
+- Daha önce dağıtım deposunda yayımlanıp katalogda olmayan yedi uygulama eklendi: Insight Table, Dev Patch Notes, API Pocket, Access Lens, Design Token Scout, Context Kit, Model Switchboard (0.1.0).
+- Tüm taşınabilir paketlerin boyutu ve SHA-256 değeri dağıtım dosyasından alındı; dört yeni paket indirilerek MZ başlığı ve hash yeniden doğrulandı.
+- Uygulama düzeltmeleri: Decision Board ağırlık seçicisindeki satır içi stil CSP ihlali (duman testini düşürüyordu) sınıfa taşındı ve `aria-label` düzeltildi; Permission Radar etki düzeyi rozetleri Türkçe karakterli.
+- Windows paketleri imzasızdır.
+
+---
+
 PluginLabs Hub 0.4.26 — Leo Helper 0.9.5 katalog ve dağıtım güncellemesi.
 
 - Leo Helper 0.9.5: Windows genel Ctrl+Alt+P hızlı mesaj paneli ve Ctrl+Alt+Esc durdurma; paket boyutu ve SHA256 güncel herkese açık dağıtımla eşleşir.

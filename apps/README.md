@@ -62,22 +62,22 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-037 | [Mail Triage](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · L | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/app/README.md) |
 | PL-038 | [Action Inbox](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/app/README.md) |
 | PL-039 | [Notion Bridge](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/app/README.md) |
-| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/app/README.md) |
 
 ## 05 · Geliştirici ve profesyonel araçlar — PL-041–050
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-041 | [Dev Patch Notes](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-042 | [API Pocket](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-044 | [Design Token Scout](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-045 | [Context Kit](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/README.md) | W · L · M · Chrome | Yeni fikir | P0 · M | — |
-| PL-046 | [Model Switchboard](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-047 | [Permission Radar](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/README.md) | W · L · M · Chrome | Yeni fikir | P2 · M | — |
-| PL-048 | [Offline Aid](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-049 | [Invoice Inbox](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-050 | [Decision Board](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-041 | [Dev Patch Notes](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/app/README.md) |
+| PL-042 | [API Pocket](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/app/README.md) |
+| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/app/README.md) |
+| PL-044 | [Design Token Scout](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app/README.md) |
+| PL-045 | [Context Kit](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P0 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/app/README.md) |
+| PL-046 | [Model Switchboard](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/app/README.md) |
+| PL-047 | [Permission Radar](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/app/README.md) |
+| PL-048 | [Offline Aid](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/app/README.md) |
+| PL-049 | [Invoice Inbox](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/app/README.md) |
+| PL-050 | [Decision Board](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/app/README.md) |
 
 ## 06 · Bağımsız ürün depoları — PL-051–053
 

@@ -6,7 +6,7 @@
 | --- | --- |
 | Kimlik | `PL-048` · `offline-aid` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | 07.11.2026: **0.1.0 Windows uygulaması hazır** — [offline-aid-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/offline-aid-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md) · Notion durumu: Yeni fikir |
+| Durum | 08.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [offline-aid-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/offline-aid-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + kurulum/taşınabilir + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P2 · L |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
