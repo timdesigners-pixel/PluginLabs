@@ -1731,7 +1731,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim api-pocket-v0.1.0; kaynak PluginLabs apps/…/PL-042-api-pocket/app; istek şablonu + ortam değişkenleri, kasada gizli değişkenler, yalnız kullanıcı başlatmalı GET, biçimlenmiş yanıt, örnek API) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1754,7 +1754,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "api-pocket-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/api-pocket-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-043",

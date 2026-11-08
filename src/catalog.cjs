@@ -464,6 +464,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app",
   },
+  {
+    id: "api-pocket",
+    name: "API Pocket",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Küçük API çağrılarını büyük araç açmadan dener: istek şablonları (adres, parametre, başlık, not, belge bağlantısı) {{değişken}}li ortamlarla doldurulur, istek yalnız siz Gönder'e bastığınızda gider (ilk sürüm yalnız GET) ve yanıt renklendirilmiş JSON, alan listesi ve başlıklarla gösterilir. Anahtar ve belirteçler gizli değişken olarak Windows kasasında saklanır; ekranda, gönderim geçmişinde, curl kopyasında ve dışa aktarmada görünmez, yanıtta geçerse gizlenir. Üretim ortamında her gönderimden önce önizleme ve onay; curl yapıştırınca anahtarlar otomatik gizliye taşınır; uygulama içi örnek API ile ilk istek iki dakikanın altında. MyMind ya da yerel model ile onaylı yanıt alanı açıklaması ve istek taslağı (yalnız alan yolları/türleri ve değişken adları gider).",
+    platform: "win32",
+    format: "exe",
+    file: "APIPocket.exe",
+    size: 81539363,
+    sha256: "e0db60adcef7dd22fa2c5adc84bad924a3e42fc7aa679e465060c86bc2d12004",
+    url: dist("api-pocket", "0.1.0", "APIPocket-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/app",
+  },
 
   {
     id: "mutfak-atolyesi",

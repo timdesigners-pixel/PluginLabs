@@ -12,10 +12,18 @@ Küçük bir API çağrısını denemek için büyük bir araç açmayın: API P
 | **MyMind alan açıklaması (uydurma alan ve dış bağlantı atıldı)** | **Ölçüler ve ayarlar** |
 | ![MyMind](docs/screenshots/masaustu-05-mymind-alanlar.png) | ![Ölçüler](docs/screenshots/masaustu-06-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uygulama içi uydurma kitap API'si, taklit yankı sunucusu ve taklit MyMind yanıtı) Linux/xvfb'de alınmıştır; bu ortamda işletim sistemi kasası yoktur (gizli değerler yalnız bellekte).
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uygulama içi uydurma kitap API'si, taklit yankı sunucusu ve taklit MyMind yanıtı) Linux/xvfb'de alınmıştır; bu ortamda işletim sistemi kasası yoktur (gizli değerler yalnız bellekte). Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42444671045](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42444671045), kaynak 0285f75; Windows kasası DPAPI etkin, kullanıcı verisinde düz sır yok) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — örnek API yanıtı](docs/screenshots/windows-masaustu-01-ornek-yanit.png)
+
+| Windows — curl ve gizli değişken | Windows — ortamlar | Windows — MyMind alan açıklaması |
+| --- | --- | --- |
+| ![Windows curl](docs/screenshots/windows-masaustu-02-curl-gizli-degisken.png) | ![Windows ortamlar](docs/screenshots/windows-masaustu-03-ortamlar.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-05-mymind-alanlar.png) |
 
 ## İndir
-`pluginlabs-dagitim` deposunda `api-pocket-v0.1.0` etiketi: `APIPocket-0.1.0-Windows-x64.exe` (kurulum), `APIPocket-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[api-pocket-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/api-pocket-v0.1.0) — `APIPocket-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `676953c4…2aa9`), `APIPocket-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `e0db60ad…2004`, 81 539 363 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Örnek API** → “Örnek verilerle başla”: bu bilgisayarda (yalnız 127.0.0.1) uydurma bir kitap API'si açılır; hazır ortam (`base_url`, gizli `api_key`, `kitap_id`, `sayfa_boyu`) ve dört şablon gelir. **Gönder** → ilk doğru istek. Süre “Ölçüler”de görünür (hedef ≤ 2 dk).
