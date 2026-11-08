@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Pocket</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="dp" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar dp-side" aria-label="Ana menü">
+    <div class="dp-brand" aria-label="PluginLabs Apps"><span class="dp-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="dp-apps">APPS</span></div>
+    <div class="dp-product">
+      <span class="pl-applogo" aria-hidden="true">AP</span>
+      <div class="dp-product__text"><b>API Pocket</b><span>İstek şablonu</span></div>
+      <span class="dp-product__no pl-num" aria-label="Sıra numarası 42">42</span>
+    </div>
+    <div class="dp-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="requests" role="tab">İstekler<span class="pl-badge" id="tplCount">0</span></button>
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="envs" role="tab">Ortamlar<span class="pl-badge" id="envCount">0</span></button>
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="history" role="tab">Geçmiş<span class="pl-badge" id="histCount">0</span></button>
+      <button class="pl-navitem dp-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="dp-mini" id="sideInfo"></div>
+    <div class="dp-side__foot">
+      <button class="pl-navitem dp-navbtn" type="button" id="openMymind"><span class="dp-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="dp-main">
+    <div class="dp-view dp-work" id="view-requests">
+      <div class="dp-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="new">Yeni istek</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="curl">curl yapıştır</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="draft">MyMind ile taslak</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="import">Koleksiyon aç</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek API</button>
+        <span class="dp-grow"></span>
+        <label class="dp-envpick"><span class="pl-muted dp-small">Ortam</span><select class="pl-input dp-select" id="envSelect" aria-label="Etkin ortam"></select></label>
+        <div class="pl-segment" role="radiogroup" aria-label="Süzgeç">
+          <button type="button" role="radio" data-lf="etkin">Etkin</button>
+          <button type="button" role="radio" data-lf="arsiv">Arşiv</button>
+        </div>
+      </div>
+
+      <section class="dp-empty-start" id="emptyPanel" hidden>
+        <div class="dp-card dp-start__card">
+          <h1 class="pl-h3 dp-h">Küçük API çağrıları için cep istemcisi</h1>
+          <p class="pl-muted dp-small">API Pocket istek şablonlarını ortam değişkenleriyle doldurur, isteği yalnız siz <b>Gönder</b>'e bastığınızda yollar ve yanıtı biçimlendirir. İlk sürüm yalnız <b>GET</b> isteği gönderir. Anahtar ve belirteçler <b>gizli değişken</b> olarak Windows kasasında saklanır; arayüzde, geçmişte ve dışa aktarmada görünmez.</p>
+          <ol class="dp-ul">
+            <li><b>Örnek API</b>: bu bilgisayarda açılan uydurma bir kitap API'si, hazır ortam ve dört şablon — iki dakikadan kısa sürede ilk doğru isteği görün.</li>
+            <li><b>curl yapıştır</b>: tarayıcının “cURL olarak kopyala” çıktısı ya da belgelerdeki örnek; içindeki anahtarlar otomatik olarak gizli değişkene taşınır.</li>
+            <li><b>Ortamlar</b>: <code>{{base_url}}</code>, <code>{{api_key}}</code> gibi değişkenler; “üretim” işaretli ortamda her gönderimden önce ek önizleme ve onay.</li>
+            <li><b>Yanıt</b>: durum, süre, boyut; girintili ve renklendirilmiş JSON, alan listesi (tür, boş sayısı), başlıklar. MyMind alanları açıklayabilir.</li>
+          </ol>
+          <div class="dp-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek verilerle başla</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="curl">curl yapıştır</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dp-split" id="tplSplit">
+        <div class="dp-listcol dp-card">
+          <div class="dp-bar"><input class="pl-input dp-search" id="tplSearch" type="search" placeholder="Şablon ara" aria-label="Şablon ara" maxlength="80"></div>
+          <ul class="dp-list" id="tplList" role="listbox" aria-label="İstek şablonları"></ul>
+        </div>
+        <div class="dp-detail dp-card" id="tplDetail" aria-label="Seçili istek"></div>
+      </section>
+    </div>
+
+    <div class="dp-view dp-work" id="view-envs" hidden>
+      <div class="dp-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="envNew">Yeni ortam</button>
+        <span class="pl-muted dp-small">Değişkenler şablonda <code>{{ad}}</code> olarak kullanılır. Gizli değişkenin değeri bir kez yazılır, sonra hiçbir yerde gösterilmez.</span>
+      </div>
+      <section class="dp-split dp-split--env">
+        <div class="dp-listcol dp-card"><ul class="dp-list" id="envList" role="listbox" aria-label="Ortamlar"></ul></div>
+        <div class="dp-detail dp-card" id="envDetail" aria-label="Seçili ortam"></div>
+      </section>
+    </div>
+
+    <div class="dp-view dp-views" id="view-history" hidden>
+      <section class="dp-card">
+        <div class="dp-bar"><h2 class="pl-h3 dp-h">Gönderim geçmişi</h2><span class="dp-grow"></span><span class="pl-muted dp-small" id="histInfo"></span></div>
+        <p class="pl-muted dp-small">Her satır gönderilen isteğin maskeli kaydıdır: gizli değişkenler <code>{{ad}}</code> olarak kalır, yanıt gövdesi saklanmaz. Satıra tıklayınca şablon açılır.</p>
+        <div id="histBody"></div>
+      </section>
+    </div>
+
+    <div class="dp-view dp-panels" id="view-settings" hidden>
+      <section class="dp-card dp-card--wide">
+        <h2 class="pl-h3 dp-h">Ölçüler</h2>
+        <p class="pl-muted dp-small">Notion doğrulama ölçütü: <b>örnek API'de ilk doğru istek ≤ 2 dk</b> ve <b>sırların günlükte görünmesi sıfır</b>. İlk süre “Örnek verilerle başla”dan ilk 2xx yanıta kadar ölçülür. Sızıntı sayısı, kayıtlı geçmiş ve şablonların bütün gizli değişken değerlerine (düz, URL kodlu, base64) karşı her açılışta yeniden taranır. Yalnız bu bilgisayarda hesaplanır.</p>
+        <div class="dp-metrics" id="metrics"></div>
+      </section>
+      <section class="dp-card">
+        <h2 class="pl-h3 dp-h">İstek</h2>
+        <div class="pl-field"><label class="pl-field__label" for="setTimeout">Zaman aşımı (sn)</label><input class="pl-input" id="setTimeout" type="number" min="5" max="120"></div>
+        <div class="pl-field"><label class="pl-field__label" for="setMax">En büyük yanıt (MB)</label><input class="pl-input" id="setMax" type="number" min="1" max="20"></div>
+        <label class="dp-check"><input type="checkbox" id="setUa"> <span><b>User-Agent: APIPocket/sürüm</b> — şablonda User-Agent başlığı yoksa eklenir.</span></label>
+        <p class="pl-muted dp-small">Yönlendirmeler otomatik izlenmez (kimlik başlıkları başka sunucuya taşınmasın diye); 3xx yanıtında hedef adres gösterilir. TLS sertifikası her zaman doğrulanır.</p>
+      </section>
+      <section class="dp-card">
+        <h2 class="pl-h3 dp-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted dp-small">İsteğe bağlıdır; şablon, gönderim ve biçimlendirme motor olmadan çalışır. İki seçenek de yalnız bu bilgisayardadır; her istek ayrı onaylanır.</p>
+        <label class="dp-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="dp-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="dp-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="dp-card dp-card--wide">
+        <div class="dp-bar"><h2 class="pl-h3 dp-h">Güvenlik ve gizlilik</h2><span class="dp-grow"></span><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportBtn">Koleksiyonu dışa aktar (sırsız)</button></div>
+        <ul class="dp-ul">
+          <li>İstek yalnız <b>Gönder</b> ile gider; zamanlanmış, toplu ya da arka planda istek yoktur. İlk sürüm yalnız <b>GET</b>; POST/PUT/PATCH/DELETE yoktur.</li>
+          <li>Gizli değişkenler yalnız ana süreçte çözülür ve Windows kasasında (DPAPI) şifreli saklanır. Arayüz, gönderim geçmişi, onay pencereleri, curl kopyası ve koleksiyon dışa aktarması sırrı <code>{{ad}}</code> olarak gösterir. Yanıtta sır değeri (düz, URL kodlu ya da base64) geçerse ⟦sır:ad⟧ ile değiştirilir.</li>
+          <li>curl içe aktarırken Authorization, X-Api-Key, Cookie gibi başlıklar ve <code>api_key</code>, <code>token</code> gibi parametreler otomatik olarak gizli değişkene taşınır.</li>
+          <li>Arayüz ağa kapalıdır (CSP <code>connect-src 'none'</code>); yanıt HTML olarak çalıştırılmaz, yalnız metin olarak gösterilir. Çerez ve önbellek tutulmaz.</li>
+          <li>Yapay zekâya yanıtın yalnız alan yolları, türleri ve maskeli kısa örnekleri gider; gövde, başlıklar ve değişken değerleri gitmez.</li>
+          <li>Şablonlar silinmez, arşivlenir. Sınır 500 şablon, 50 ortam, 500 geçmiş kaydı.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="dp-foot pl-muted" id="foot">API Pocket · PluginLabs · yalnız GET · istek yalnız siz gönderince · sırlar kasada, günlükte yok</footer>
+  </main>
+
+  <dialog class="pl-modal dp-dialog dp-dialog--wide" id="curlDialog" aria-labelledby="curlTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="curlTitle">curl komutundan şablon</h2><p class="pl-muted dp-tight">Tarayıcı geliştirici araçlarında “Copy as cURL” ya da API belgesindeki örnek. Yalnız GET; anahtarlar gizli değişkene taşınır.</p></div></div>
+    <div class="pl-modal__body dp-stack"><textarea class="pl-input dp-area" id="curlText" spellcheck="false" aria-label="curl komutu" maxlength="100000" placeholder="curl 'https://api.ornek.example/v1/…' -H 'Authorization: Bearer …'"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="curlCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="curlRun">Şablon oluştur</button></div>
+  </dialog>
+  <dialog class="pl-modal dp-dialog dp-dialog--wide" id="draftDialog" aria-labelledby="draftTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon dp-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="draftTitle">MyMind ile istek taslağı</h2><p class="pl-muted dp-tight">Ne istediğinizi yazın; taslak yalnız şablon olarak eklenir, gönderilmez. Etkin ortamdaki değişkenlerin yalnız adları paylaşılır.</p></div></div>
+    <div class="pl-modal__body dp-stack"><textarea class="pl-input dp-area dp-area--short" id="draftText" spellcheck="false" aria-label="İstek açıklaması" maxlength="2000" placeholder="Örnek: base_url üzerindeki kitap listesinden roman türündekileri 10'ar getir"></textarea></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="draftCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="draftRun">Taslak iste</button></div>
+  </dialog>
+  <dialog class="pl-modal dp-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon dp-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted dp-tight">Yanıt alanlarının açıklanması ve istek taslağı bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body dp-stack">
+      <ol class="dp-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted dp-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="dp-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="dp-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
