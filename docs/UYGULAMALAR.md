@@ -49,6 +49,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Insight Table (PL-040) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0 |
 | Dev Patch Notes (PL-041) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0 |
 | Access Lens (PL-043) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/access-lens-v0.1.0 |
+| Design Token Scout (PL-044) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/design-token-scout-v0.1.0 |
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
@@ -75,7 +76,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 - PL-040 Insight Table 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` insight-table-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.26 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-041 Dev Patch Notes 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` dev-patch-notes-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.27 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-043 Access Lens 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` access-lens-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.28 kataloğunda (PR birleşip Hub yayımlanınca). PL-042 API Pocket başka bir çalıştırmada açık (henüz yayımlanmadı).
-- Sıradaki (Windows sürümü yok): PL-042–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–041 `pluginlabs-dagitim` deposunda yayımlandı.
+- PL-044 Design Token Scout 0.1.0 yayımlandı (08.11.2026; `pluginlabs-dagitim` design-token-scout-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.29 kataloğunda (PR birleşip Hub yayımlanınca). PL-042 API Pocket başka bir çalıştırmada açık.
+- Sıradaki (Windows sürümü yok): PL-042, PL-045–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–041 `pluginlabs-dagitim` deposunda yayımlandı.
 
 ## Tüm liste (PL-001 … PL-059)
 
@@ -124,7 +126,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-041 | Dev Patch Notes | Windows uygulaması · **v0.1.0** (yerel git deposundan yalnız okuma, yapıştırılan git log / --oneline / format-patch / diff; Conventional Commits + TR/EN anahtar sözcükle başlıklara ayırma; her madde kaynak commit/PR bağlantılı ve düzenlenebilir; birleştirme/geri alma/bakım ayıklama; sır maskeleme; commit'te geçmeyen test/performans/güvenlik iddiası dışa aktarılamaz; Markdown/Keep a Changelog/metin/JSON/pano; düzeltme oranı ölçüsü; MyMind/yerel model onaylı) — kaynak PluginLabs `apps/` içinde | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0 |
 | PL-042 | API Pocket | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-043 | Access Lens | Windows uygulaması · **v0.1.0** (seçilen tek sayfa — adres, .html, yapıştırılan HTML — yalıtılmış oturumsuz pencerede; axe-core 4.14.0 ile WCAG 2.2 A/AA kontrast, etiket, ad, yapı, ARIA bulguları; öğe vurgulu görüntü; odak sırası ve başlık/bölge yapısı; manuel kontrol listesi; yeniden denetim farkı; fixture'larda doğru bulgu ve kritik yanlış olumlu ölçüsü; Markdown/JSON/CSV; MyMind onaylı açıklama taslağı, sertifika/puan iddiası atılır) — ayrı depo yok, kaynak `apps/…/PL-043-access-lens/app` | [access-lens-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/access-lens-v0.1.0) |
-| PL-044 | Design Token Scout | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-044 | Design Token Scout | Windows uygulaması · **v0.1.0** (seçilen tek sayfa — adres, .html, yapıştırılan HTML — yalıtılmış oturumsuz pencerede; görünür öğelerin computed style değerlerinden renk/yazı/boşluk/köşe/gölge adayları, kullanım sayısı ve örnek öğe; :hover/:focus durum renkleri; sayfa CSS değişkenleri; ΔE/px kümeleme, değer uydurulmaz; token hiyerarşisi ve anlamsal takma adlar; yalnız onaylı tokenlar DTCG JSON/CSS/Markdown; 5 örnek sayfada ana değer kapsaması; MyMind onaylı, yalnız ad önerisi) — ayrı depo yok, kaynak `apps/…/PL-044-design-token-scout/app` | [design-token-scout-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/design-token-scout-v0.1.0) |
 | PL-045 | Context Kit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-046 | Model Switchboard | Fikir / Hub içi önizleme (ayrı depo yok) | — |
 | PL-047 | Permission Radar | Fikir / Hub içi önizleme (ayrı depo yok) | — |

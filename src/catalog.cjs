@@ -447,6 +447,23 @@ const catalog = [
     // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/app",
   },
+  {
+    id: "design-token-scout",
+    name: "Design Token Scout",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Var olan arayüzün tasarım sistemini belgeler: seçtiğiniz tek sayfa (adres, kaydedilmiş .html ya da yapıştırılan HTML) yalıtılmış, oturumsuz bir pencerede açılır; görünür öğelerin hesaplanmış stillerinden renk, yazı, boşluk, köşe ve gölge değerleri kullanım sayısı ve örnek öğeleriyle çıkarılır, :hover/:focus durum renkleri ve sayfanın CSS değişkenleri ayrıca okunur. Yakın değerler (renkte ΔE, ölçülerde px) birleştirilir — değer uydurulmaz, token değeri en çok kullanılan üyedir; token adları, hiyerarşi ve anlamsal takma adlar önerilir. Yalnız onayladığınız tokenlar W3C DTCG token JSON, CSS değişkenleri ve Markdown rapor olarak dışa aktarılır. MyMind ya da yerel model ile onaylı ad önerisi (yalnız tür/değer/kullanım gider; sayfa adresi gönderilmez).",
+    platform: "win32",
+    format: "exe",
+    file: "DesignTokenScout.exe",
+    size: 81534347,
+    sha256: "bb69be056eacdc75cc963337f678d0288c0cf3271ce516f9abe353b2cc4f92ae",
+    url: dist("design-token-scout", "0.1.0", "DesignTokenScout-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app",
+  },
 
   {
     id: "mutfak-atolyesi",

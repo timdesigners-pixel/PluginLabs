@@ -12,10 +12,18 @@ Var olan bir arayüzün tasarım sistemini belgeleyin: Design Token Scout seçti
 | **MyMind ad önerileri (geçersizler atıldı, değerler değişmez)** | **Ölçüler ve ayarlar (5 örnek sayfada kapsama)** |
 | ![MyMind](docs/screenshots/masaustu-03-mymind-onerisi.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinde (uygulamayla gelen örnek sayfalar, yerel test sunucusu, taklit MyMind yanıtı; tarih 8 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır; taramalar gerçek Chromium hesaplanmış stilleridir.
+Ekran görüntüleri gerçek uygulamadan, duman testinde (uygulamayla gelen örnek sayfalar, yerel test sunucusu, taklit MyMind yanıtı; tarih 8 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır; taramalar gerçek Chromium hesaplanmış stilleridir. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42427568096](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42427568096), kaynak 4b38dfc; Windows kasası DPAPI etkin; 5 örnek sayfada 91 ana değerin 89'u, 6/6 yakın renk çifti) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — renkler](docs/screenshots/windows-masaustu-01-renkler.png)
+
+| Windows — yazı | Windows — kullanım yeri | Windows — MyMind önerileri | Windows — ölçüler |
+| --- | --- | --- | --- |
+| ![Windows yazı](docs/screenshots/windows-masaustu-02-yazi.png) | ![Windows kullanım yeri](docs/screenshots/windows-masaustu-06-kullanim-yeri.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows ölçüler](docs/screenshots/windows-masaustu-05-olculer-ayarlar.png) |
 
 ## İndir
-Windows paketi `pluginlabs-dagitim` deposunda `design-token-scout-v0.1.0` etiketiyle yayımlanır (kurulum + taşınabilir exe, SHA256SUMS + BUILD-INFO). İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[design-token-scout-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/design-token-scout-v0.1.0) — `DesignTokenScout-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `1b30a418…2e07`), `DesignTokenScout-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `bb69be05…92ae`, 81 534 347 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. Adresi yazıp **Tara** (açılış onaylanır), **HTML dosyası** seçin ya da **HTML yapıştır**. İlk deneme için **Örnek sayfalar** (ana değerleri önceden yazılı 5 sayfa).
