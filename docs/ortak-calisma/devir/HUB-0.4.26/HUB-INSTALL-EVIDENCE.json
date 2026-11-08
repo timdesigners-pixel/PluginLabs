@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-08",
+  "platform": "win32",
+  "results": [
+    {
+      "id": "leo-helper",
+      "version": "0.9.5",
+      "status": "passed",
+      "size": 8436224,
+      "sha256": "cbc4f9f7b44ff0fe703f118ba1c20c168182f124670c685e7bd56dd77f9be005",
+      "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/download/leo-helper-v0.9.5/LeoHelper.exe"
+    },
+    {
+      "id": "mymind-ai",
+      "version": "0.1.2",
+      "status": "passed",
+      "size": 4033536,
+      "sha256": "4cd76efd0ed60555ecc2097e3321226c3cce04f7c6f2c9548a1bc7e5327ac3b0",
+      "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/download/mymind-ai-v0.1.2/MyMindAI-0.1.2-portable.exe"
+    }
+  ]
+}

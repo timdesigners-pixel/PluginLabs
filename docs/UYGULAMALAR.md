@@ -9,7 +9,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Uygulama | Sürüm | Nereden |
 | --- | --- | --- |
 | Flow Dock (PL-001) | v0.2.0 ön sürüm (Rust/Tauri, kurulum + taşınabilir); Windows 11 geçti, Server 2025 açılışı başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| Leo Helper (PL-002) | **v0.9.4** (Tauri/Rust; kurulum + taşınabilir exe; Scrapper köprüsü) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.4 |
+| Leo Helper (PL-002) | **v0.9.5** (Tauri/Rust; kurulum + taşınabilir exe; Scrapper köprüsü) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.5 |
 | Mind Palace (PL-003) | **v1.12.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
 | The Ultimate Scrapper (PL-004) | **v0.8.0** (PluginLabs Scrapper; Leo köprüsü, Alışveriş + Veri Kazıma Stüdyosu + Site Rehberi) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
@@ -55,7 +55,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Quick Convert (PL-028) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/quick-convert-v0.1.0 |
 | File Pilot (PL-025) | **v0.1.0** (Windows kurulum/taşınabilir, BUILD-INFO, BENCH, Windows ekran görüntüleri; dağıtım deposunda) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/file-pilot-v0.1.0 |
 | Mutfak Atölyesi (PL-053) | **v0.4.1** (Android test APK + Windows x64 zip + SHA256SUMS; imzasız/test) | https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1 |
-| PluginLabs Hub | **v0.4.25** (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.4.25 |
+| PluginLabs Hub | **v0.4.26** (imzasız önizleme) | https://github.com/timdesigners-pixel/PluginLabs/releases/tag/v0.4.26 |
 | Extension Manager (PL-051) | **v1.1.0** (Windows kurulum/taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/extension-manager/releases/tag/v1.1.0 |
 | Tweakster (PL-052) | **v0.1.0** (Windows kurulum/taşınabilir exe) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | Gardrop (PL-055) | **v0.2.1** (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/gardrop/releases/tag/v0.2.1 |
@@ -68,8 +68,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 
 ## Özet
 
-- Windows sürümü yayımlanmış (GitHub release): PL-001–041, PL-051–059 ve Hub (v0.4.25).
-- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.4), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0), Insight Table (0.1.0; Hub 0.4.26), Dev Patch Notes (0.1.0; Hub 0.4.27).
+- Windows sürümü yayımlanmış (GitHub release): PL-001–045, PL-051–059 ve Hub (v0.4.26).
+- Hub kataloğunda (Hub'dan kurulabilir): Mind Palace, Leo Helper (0.9.5), PluginLabs Scrapper, MyWishlist, Kurgu Atölyesi (0.3.1), MyMind AI (0.1.2), Finansal Asistan, Flow Dock (0.2.0), File Pilot, Workspace Scenes, Focus Orbit, Quick Convert, Screenshot Studio, Daily Brief Widget, Read Partner, Source Trail, Text Forge, Parallel Translate, Mutfak Atölyesi (0.4.1), Gardrop (0.2.1), The Ultimate Upscaler (0.1.0), Tork (0.1.0), Insight Table (0.1.0; Hub 0.4.26), Dev Patch Notes (0.1.0; Hub 0.4.27).
 - PL-035 Meeting Trace 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` meeting-trace-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.21 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-036 Voice Note Orbit 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` voice-note-orbit-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.22 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-037 Mail Triage 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` mail-triage-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.23 kataloğunda (PR birleşip Hub yayımlanınca).
@@ -88,7 +88,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | **v0.2.0 ön sürüm**, imzasız; Windows 11 native geçti, Server 2025 başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.4** (Tauri/Rust; Scrapper köprüsü; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.4 |
+| PL-002 | Leo Helper | Çalışan Windows uygulaması · **v0.9.5** (Tauri/Rust; Scrapper köprüsü; imzasız önizleme) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.5 |
 | PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.12.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
 | PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.8.0** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |

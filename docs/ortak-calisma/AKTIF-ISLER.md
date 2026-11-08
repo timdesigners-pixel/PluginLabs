@@ -4,6 +4,8 @@ Codex ve Claude Code işe başlamadan önce buraya satır ekler, bitince durumu 
 
 | PL | Ajan | Dal | Başlangıç | Kapsam | Durum |
 | --- | --- | --- | --- | --- | --- |
+| PL-002 | Codex — sohbet 01a1b61a-ad83-7100-bfdf-37d0fa520342 | `codex/PL-002-global-quick-panel` (leo-helper) | 08.11.2026 | Windows genel Ctrl+Alt+P / Ctrl+Alt+Esc; ayrı hızlı mesaj paneli, isteğe bağlı pano okuma, son kodları kopyalama, ana çalışma alanına geçiş; gerçek EXE kabulü ve ekranlar. Önceki Leo 0.9.4 / MyMind 0.1.2 yayın işi tamamlandı; eğitim ayrı açık. | Tamamlandı — Leo PR #15 birleşti, 0.9.5 ürün ve herkese açık dağıtım yayımlandı; Hub devamı ayrı satırda |
+| PL-002 / hub | Codex — sohbet 01a1b61a-ad83-7100-bfdf-37d0fa520342 | `codex/hub-leo-095-20261108` (izole worktree) | 08.11.2026 | Leo Helper 0.9.5 yayın sonrası katalog/kurulum hash güncellemesi ve Hub 0.4.26; diğer ürünlerdeki kirli alanlar korunur | Aktif — Leo PR #15 birleşti; Hub paket/test/ekran/dağıtım kabulü sürüyor |
 | hub | Claude Code | `claude/pluginlabs-hiyerarsi-ve-claude-code` | 29.10.2026 | Uygulama hiyerarşisi (apps/, registry/), 53 README, Claude Code entegrasyonu, ortak çalışma protokolü | Tamamlandı — PR #8 birleşti |
 | PL-004 | Claude Code | `claude/pluginlabs-hiyerarsi-ve-claude-code` | 29.10.2026 | v2 kapsam: Data Miner & Shopping Assistant (Notion + README) | Tamamlandı — PR #8 birleşti |
 | PL-054 | Claude Code | `claude/pluginlabs-hiyerarsi-ve-claude-code` | 29.10.2026 | Yeni ürün PinCart (MyWishlist): Notion kartı + README; Codex projesi bilgisayar bağlantısını bekliyor | 30.10.2026: ad MyWishlist olarak kesinleşti; PR #8 birleşti; Codex projesi “PL-054 · MyWishlist” oluşturuldu (ikinci klasör PluginLabs, doğrulandı) |

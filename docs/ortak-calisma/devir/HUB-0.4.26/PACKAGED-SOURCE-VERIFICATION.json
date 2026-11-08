@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "version": "0.4.26",
+  "catalogSourceMatches": true,
+  "productionDependenciesMatch": true,
+  "catalogSha256": "da0cdb6f7d6ae2600b64a827a34cc15b428e90268e903978d70618e4b7cf4597",
+  "buildSourceCommit": "7f8fc6a"
+}
