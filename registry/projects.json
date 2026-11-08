@@ -103,7 +103,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "v0.9.5 · Windows Rust/WebView2; genel kısayollar/hızlı panel; 36 Rust + 11 betik + 8 soğuk açılış + gerçek EXE E2E ve native tuş kabulü geçti; Hub kataloğunda",
+      "status": "v0.9.6 · Windows Rust/WebView2; Telegram mesaj geçmişi ve oturum sırası; 47 Rust, 11 betik, 8 soğuk açılış ve gerçek EXE kabulü geçti; Hub 0.5.1 kataloğunda",
       "priority": "P1",
       "effort": "L",
       "platforms": {
