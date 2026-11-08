@@ -164,7 +164,7 @@
     },
     {
       "id": "PL-002-RELEASE-095",
-      "status": "in-progress",
+      "status": "review",
       "repo": "timdesigners-pixel/PluginLabs",
       "ownerChat": "01a1b61a-ad83-7100-bfdf-37d0fa520342",
       "branch": "codex/hub-leo-095-20261108",

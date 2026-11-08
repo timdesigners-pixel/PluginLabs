@@ -1,3 +1,14 @@
+PluginLabs Hub 0.4.26 — Leo Helper 0.9.5 katalog ve dağıtım güncellemesi.
+
+- Leo Helper 0.9.5: Windows genel Ctrl+Alt+P hızlı mesaj paneli ve Ctrl+Alt+Esc durdurma; paket boyutu ve SHA256 güncel herkese açık dağıtımla eşleşir.
+- MyMind AI 0.1.2 korunur. Hub çekirdeği üzerinden iki herkese açık paket indirildi; boyut ve SHA256 doğrulandı.
+- 33/33 birim/API testi, native-ui ve extension-ui, üretim bağımlılık denetimi (0 açık), Windows kurulum ve taşınabilir derleme geçti. Paketli EXE katalog sürümleri ve ayrı profil yolu doğrulandı.
+- Windows paketleri imzasızdır. Tam MyMind 4B eğitimi henüz bitmedi: checkpoint 125/1610 kurtarıldı; Kaggle telefon/GPU doğrulaması bekliyor. Leo'nun OCR/oyun/etkinlik ve eski panel kapsamı ayrıca açık; bu yayın tam eski uygulama eşdeğerliği iddiası taşımaz.
+
+![Leo Helper 0.9.5 katalog kartı](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/download/pluginlabs-hub-v0.4.26/PluginLabsHub-0.4.26.png)
+
+---
+
 PluginLabs Hub 0.4.25 — Notion Bridge 0.1.0 kataloğa eklendi.
 
 - Notion Bridge 0.1.0 (PL-039): seçilen içerik (yapıştırma, pano düğmesi ya da Ctrl+Alt+N genel kısayolu, .txt/.md) kullanıcının kendi entegrasyon anahtarıyla bağlanan tek Notion veritabanının şemasına göre alanlara eşlenir; şemada olmayan alan ya da seçenek uydurulmaz, belirsiz alan boş ve gerekçeli kalır; kayıt öncesi taslak önizleme ve şema doğrulaması (uyumsuz taslak gönderilmez); her Notion isteği ayrı onaylı, yalnız yeni kart eklenir (var olan sayfa değişmez); yerel parmak izi + başlık sorgusuyla mükerrer kayıt engeli; Notion CSV/MD/JSON. MyMind / yerel model onaylı, iletişim bilgileri ve Notion anahtarı gönderilmez; öneri aynı şema denetiminden geçer.
