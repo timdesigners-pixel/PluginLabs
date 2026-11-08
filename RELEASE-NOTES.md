@@ -1,3 +1,13 @@
+PluginLabs Hub 0.4.27 — PL-040–050 geliştirici ve bilgi araçları kataloğa eklendi (11 uygulama).
+
+- Insight Table (PL-040), Dev Patch Notes (PL-041), API Pocket (PL-042), Access Lens (PL-043), Design Token Scout (PL-044), Context Kit (PL-045), Model Switchboard (PL-046), Permission Radar (PL-047), Offline Aid (PL-048), Invoice Inbox (PL-049), Decision Board (PL-050) — hepsi 0.1.0, Windows.
+- Taşınabilir paketler `pluginlabs-dagitim` `<id>-v0.1.0` sürümlerinden (07–08.11.2026, Windows runner: npm test + masaüstü duman testi + kurulum/taşınabilir + SHA256 + BUILD-INFO + Windows ekran görüntüleri). Katalog boyut ve SHA-256 değerleri GitHub'ın dosya özetleri (digest) ve sürümdeki SHA256SUMS ile eşleştirildi.
+- Hub'ın kendi davranışı değişmedi. Bu uygulamaların ürün deposu yok; kaynak PluginLabs `apps/` altında (PL-025 modeli). Chrome eklentileri bu sürümlerde yok.
+
+İmzasız önizleme sürümüdür; SmartScreen uyarı verebilir.
+
+---
+
 PluginLabs Hub 0.4.26 — Leo Helper 0.9.5 katalog ve dağıtım güncellemesi.
 
 - Leo Helper 0.9.5: Windows genel Ctrl+Alt+P hızlı mesaj paneli ve Ctrl+Alt+Esc durdurma; paket boyutu ve SHA256 güncel herkese açık dağıtımla eşleşir.

@@ -1,8 +1,12 @@
-# PluginLabs Hub 0.4.26
+# PluginLabs Hub 0.4.27
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
 Notion Bridge 0.1.0 (PL-039; seçilen içeriği tek Notion veritabanının alanlarına eşler, kayıt öncesi taslak önizleme ve şema doğrulaması, onaylı yalnız-ekleme kaydı, mükerrer kayıt engeli), Action Inbox 0.1.0 (PL-038; seçilen metinden kaynaklı görev adayları, inceleme kuyruğu, yinelenen görev birleştirme, görev kutusu), Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
+
+## 0.4.27 · PL-040–050 kataloğa eklendi
+
+Insight Table, Dev Patch Notes, API Pocket, Access Lens, Design Token Scout, Context Kit, Model Switchboard, Permission Radar, Offline Aid, Invoice Inbox ve Decision Board **0.1.0** Hub'dan kurulabilir. Uygulamaların gerçek Windows ekran görüntüleri her birinin `apps/…/app/docs/screenshots/` klasöründe ve `pluginlabs-dagitim` sürümünde (`windows-masaustu-*.png`). Hub ekranı bu sürümde değişmedi; aşağıdaki görüntüler 0.4.26'dan (tarihsel).
 
 ## 0.4.26 · Leo Helper 0.9.5
 
