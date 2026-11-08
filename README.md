@@ -1,8 +1,14 @@
-# PluginLabs Hub 0.4.26
+# PluginLabs Hub 0.4.27
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
 Notion Bridge 0.1.0 (PL-039; seçilen içeriği tek Notion veritabanının alanlarına eşler, kayıt öncesi taslak önizleme ve şema doğrulaması, onaylı yalnız-ekleme kaydı, mükerrer kayıt engeli), Action Inbox 0.1.0 (PL-038; seçilen metinden kaynaklı görev adayları, inceleme kuyruğu, yinelenen görev birleştirme, görev kutusu), Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
+
+## 0.4.27 · Leo Helper 0.9.6
+
+Leo Helper 0.9.6 mesaj geçmişini saklar ve aynı profilin kod işlemlerini sıraya alır. Hub kurulumu taşınabilir dosyanın boyutunu ve SHA256 özetini doğrular.
+
+![Leo Helper 0.9.6 katalog kaydı](docs/screenshots/release-0.4.27/02-leo-helper.png)
 
 ## 0.4.26 · Leo Helper 0.9.5
 
