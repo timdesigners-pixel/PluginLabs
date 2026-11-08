@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Note Master</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="mindpalace" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">NM</span>
+      <div class="ax-product__text"><b>Note Master</b><span>Kaynaklı hızlı not ve görev</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 06">06</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn is-active" type="button" data-nav="notes" role="tab">Notlar<span class="pl-badge" id="notesBadge">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="tasks" role="tab">Görevler<span class="pl-badge" id="tasksBadge">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="export" role="tab">Dışa Aktar ve Ayarlar</button>
+    </div>
+    <div class="ax-tagside">
+      <div class="ax-lbl">Etiketler</div>
+      <div class="ax-tags" id="tagList"></div>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="miniBtn" title="Her yerden açmak için Ctrl+Shift+Space">Hızlı not widget’ı</button>
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- Hızlı yakalama (her görünümde üstte; widget kipinde tek başına) -->
+    <section class="ax-capture" id="capture" aria-label="Hızlı not">
+      <div class="ax-capture__row">
+        <div class="pl-segment ax-kind" role="radiogroup" aria-label="Kayıt türü">
+          <button type="button" class="is-active" data-kind="not" role="radio" aria-checked="true">Not</button>
+          <button type="button" data-kind="gorev" role="radio" aria-checked="false">Görev</button>
+        </div>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="clipBtn" title="Seçtiğiniz metni kopyalayın, sonra bu düğmeye basın">Panodan alıntı al</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="moreBtn" aria-expanded="false" aria-controls="captureMore">+ Kaynak, alıntı, etiket</button>
+        <span class="ax-grow"></span>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="miniExitBtn" hidden>Tam pencere</button>
+      </div>
+      <textarea class="pl-input ax-area" id="cBody" rows="2" maxlength="20000" placeholder="Hızlı not ya da görev… #etiket yazabilirsiniz (Ctrl+Enter ile kaydet)" aria-label="Not metni"></textarea>
+      <div class="ax-capture__more" id="captureMore" hidden>
+        <textarea class="pl-input ax-area ax-quote" id="cQuote" rows="2" placeholder="Kaynaktan alıntı (isteğe bağlı) — alıntı sınırı uygulanır" aria-label="Alıntı"></textarea>
+        <div class="ax-fields">
+          <input class="pl-input" id="cUrl" maxlength="2048" placeholder="Kaynak adresi (https://…)" aria-label="Kaynak adresi">
+          <input class="pl-input" id="cSrcTitle" maxlength="200" placeholder="Kaynak adı (kitap, toplantı…)" aria-label="Kaynak adı">
+          <input class="pl-input" id="cTags" maxlength="300" placeholder="Etiketler (virgülle)" aria-label="Etiketler">
+          <input class="pl-input" id="cDue" type="date" aria-label="Son tarih (görev)" hidden>
+        </div>
+      </div>
+      <div class="ax-capture__row">
+        <label class="ax-check"><input type="checkbox" id="cPrivate"> Gizli (MyMind'a gönderilmez)</label>
+        <span class="pl-muted ax-small" id="quoteInfo"></span>
+        <span class="ax-grow"></span>
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="saveBtn">Kaydet</button>
+      </div>
+    </section>
+
+    <!-- 1) Notlar -->
+    <div class="ax-view ax-work" id="view-notes">
+      <div class="ax-toolbar">
+        <input class="pl-input ax-search" id="searchInput" type="search" placeholder="Notlarda ara (başlık, etiket, metin, kaynak)…" aria-label="Notlarda ara">
+        <select class="pl-input ax-sel" id="kindSel" aria-label="Tür süzgeci">
+          <option value="">Tümü</option>
+          <option value="not">Yalnız notlar</option>
+          <option value="gorev">Yalnız görevler</option>
+        </select>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="clearTagBtn" hidden></button>
+        <span class="ax-grow"></span>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek notları yükle</button>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Okurken fikirleri ve yapılacakları kaybetmeyin</h1>
+          <p class="pl-muted ax-small">Yukarıdaki kutuya yazıp <span class="pl-kbd">Ctrl+Enter</span> ile kaydedin (her yerden açmak için <span class="pl-kbd">Ctrl+Shift+Space</span>) — ilk notunuz 60 saniyeden kısa sürer. Seçtiğiniz metni kopyalayıp <b>Panodan alıntı al</b> ile kaynaklı not oluşturabilirsiniz.</p>
+          <ol class="ax-ul">
+            <li><b>Kaynaklı not:</b> Kaynak adresi ve alıntı birlikte saklanır; alıntı sınırı (varsayılan 600 karakter) uygulanır, izleme parametreleri atılır.</li>
+            <li><b>Hızlı görev ve etiket:</b> <code>#etiket</code> yazdığınızda otomatik eklenir; görevlerin son tarihi ve tamamlandı durumu tutulur.</li>
+            <li><b>Markdown dışa aktarma:</b> Tüm notlar ya da gizliler hariç; JSON yedek ve içe aktarma aynı not şemasıyla.</li>
+            <li><b>MyMind taslağı:</b> Uzun notu görev/özet/anahtar kavram taslağına çevirir; özgün metniniz değişmez, gizli notlar varsayılan olarak gönderilmez.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek notları yükle</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ax-split" id="notesSplit">
+        <div class="ax-listcol ax-card">
+          <div class="ax-bar"><span class="ax-lbl" id="listCount"></span></div>
+          <ul class="ax-list" id="noteList" aria-label="Notlar"></ul>
+        </div>
+        <div class="ax-detail ax-card" id="noteDetail" aria-label="Seçili not"></div>
+      </section>
+    </div>
+
+    <!-- 2) Görevler -->
+    <div class="ax-view ax-panels" id="view-tasks" hidden>
+      <div class="ax-card">
+        <div class="ax-bar"><h2 class="pl-h3 ax-h">Açık görevler</h2><span class="pl-badge" id="openCount">0</span></div>
+        <ul class="ax-list" id="openTasks"></ul>
+      </div>
+      <div class="ax-card">
+        <div class="ax-bar"><h2 class="pl-h3 ax-h">Tamamlananlar</h2><span class="pl-badge" id="doneCount">0</span></div>
+        <ul class="ax-list" id="doneTasks"></ul>
+      </div>
+    </div>
+
+    <!-- 3) Dışa aktar ve ayarlar -->
+    <div class="ax-view ax-panels" id="view-export" hidden>
+      <div class="ax-card">
+        <h2 class="pl-h3 ax-h">Doğrulama ölçütleri</h2>
+        <p class="pl-muted ax-small">Notion ölçütü: ilk notun 60 sn içinde alınması; haftada ≥5 geri çağrılan not (not açma, kopyalama). Ölçümler yalnız bu bilgisayarda tutulur.</p>
+        <div class="ax-kpis" id="kpis"></div>
+      </div>
+      <div class="ax-card">
+        <h2 class="pl-h3 ax-h">Dışa ve içe aktarma</h2>
+        <label class="ax-check"><input type="checkbox" id="exclPrivate"> Gizli notları dışa aktarmaya dahil etme</label>
+        <div class="ax-row">
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="mdBtn">Markdown (.md)</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="jsonBtn">JSON yedek</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="importBtn">JSON içe aktar</button>
+        </div>
+        <p class="pl-muted ax-small">JSON dosyaları <code>pluginlabs-note/1</code> şemasındadır; aynı kimlikli notlar içe aktarmada atlanır.</p>
+      </div>
+      <div class="ax-card">
+        <h2 class="pl-h3 ax-h">Alıntı sınırı</h2>
+        <div class="pl-field"><label class="pl-field__label" for="quoteLimit">Kaynaktan alınan metin en çok (karakter)</label><input class="pl-input" id="quoteLimit" type="number" min="120" max="2000" step="20"></div>
+        <p class="pl-muted ax-small">Uzun alıntılar kelime sınırından kısaltılır ve “alıntı sınırı nedeniyle kısaltıldı” olarak işaretlenir.</p>
+      </div>
+      <div class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay zekâ sağlayıcısı</h2>
+        <label class="ax-check"><input type="radio" name="prov" value="hub" id="provHub"> MyMind — PluginLabs Hub (127.0.0.1:47632)</label>
+        <label class="ax-check"><input type="radio" name="prov" value="yerel" id="provLocal"> Yerel model (OpenAI uyumlu, yalnız bu bilgisayar)</label>
+        <div class="ax-localbox">
+          <input class="pl-input" id="localUrl" maxlength="200" placeholder="http://127.0.0.1:1234" aria-label="Yerel model adresi">
+          <input class="pl-input" id="localModel" maxlength="120" placeholder="Model adı (isteğe bağlı)" aria-label="Yerel model adı">
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="saveLocal">Yerel ayarı kaydet</button>
+        </div>
+        <label class="ax-check"><input type="checkbox" id="allowPrivate"> Gizli notların da (kişisel veriler maskelenerek) gönderilmesine izin ver</label>
+      </div>
+    </div>
+
+    <footer class="ax-foot pl-muted" id="footInfo"></footer>
+  </main>
+
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head">
+      <div>
+        <h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2>
+        <p class="pl-muted ax-tight">Uzun notları görev/özet/anahtar kavram taslağına çevirmek için yerel PluginLabs Hub (127.0.0.1:47632) kullanılır.</p>
+      </div>
+    </div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub İstemci Anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button>
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button>
+    </div>
+  </dialog>
+
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
