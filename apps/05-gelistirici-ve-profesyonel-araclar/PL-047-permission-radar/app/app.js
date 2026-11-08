@@ -30,6 +30,7 @@
   const guard = (fn) => async (...a) => { try { await fn(...a); } catch (e) { busy(null); toast(clean(e), true); } };
 
   const LEVEL_TONE = { kritik: "warning", yuksek: "accent", orta: "", dusuk: "success", uyari: "warning" };
+  const LEVEL_LABEL = { kritik: "Kritik", yuksek: "Yüksek", orta: "Orta", dusuk: "Düşük", uyari: "Uyarı" };
 
   function apply(s) {
     if (s && s.settings) {
@@ -115,7 +116,7 @@
       el("div", { class: "pr-permcard" + (!c.known ? " is-unknown" : "") + (c.level === "kritik" ? " is-kritik" : ""), "data-perm": c.raw },
         el("div", { class: "pr-bar" },
           el("b", { text: c.raw }),
-          !c.known ? badge("Bilinmeyen kapsam", "warning") : badge(c.level.toUpperCase(), LEVEL_TONE[c.level]),
+          !c.known ? badge("Bilinmeyen kapsam", "warning") : badge(LEVEL_LABEL[c.level] || c.level, LEVEL_TONE[c.level]),
           badge(c.kind === "host" ? "Site erişimi" : c.kind === "optional" ? "İsteğe bağlı" : "İzin")
         ),
         el("span", { class: "pr-ititle", text: c.title }),

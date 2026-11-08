@@ -434,7 +434,7 @@
       lines.push(`## ${x.name} (\`v${x.version}\` · \`${x.id}\`)`);
       lines.push(`- **Yönetim ekranı:** \`${x.chromeManageUrl}\``);
       for (const c of x.cards) {
-        lines.push(`  - **[${c.known ? c.level.toUpperCase() : "BİLİNMEYEN KAPSAM"}] \`${c.raw}\` (${c.title}):** ${c.meaning}`);
+        lines.push(`  - **[${c.known ? ({ kritik: "KRİTİK", yuksek: "YÜKSEK", orta: "ORTA", dusuk: "DÜŞÜK", uyari: "UYARI" }[c.level] || c.level) : "BİLİNMEYEN KAPSAM"}] \`${c.raw}\` (${c.title}):** ${c.meaning}`);
       }
       if (x.history && x.history.length) {
         lines.push(`- **İzin Değişim Geçmişi:**`);
