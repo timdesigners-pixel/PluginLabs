@@ -119,9 +119,10 @@ async function pickOnly(page, ids) {
     await page.fill("#key-openai", "sess-chatgpt-cerez-" + "x".repeat(30));
     await page.click('[data-keysave="openai"]');
     await toastHas(page, /Yalnız resmi API anahtarı/);
-    await page.fill("#key-openai", OKEY); await page.click('[data-keysave="openai"]'); await toastHas(page, /OpenAI anahtarı/);
-    await page.fill("#key-anthropic", AKEY); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı/);
-    await page.fill("#key-hub", HKEY); await page.click('[data-keysave="hub"]'); await toastHas(page, /MyMind \(Hub\) anahtarı|kasasına|bellekte/);
+    await page.fill("#key-openai", OKEY); await page.click('[data-keysave="openai"]'); await toastHas(page, /OpenAI anahtarı (Windows kasasına|yalnız bu oturum)/);
+    await page.fill("#key-anthropic", AKEY); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı (Windows kasasına|yalnız bu oturum)/);
+    await page.fill("#key-hub", HKEY); await page.click('[data-keysave="hub"]'); await toastHas(page, /MyMind \(Hub\) anahtarı (Windows kasasına|yalnız bu oturum)/);
+    await until(page, async () => { const k = (await window.msDesktop.state()).keys; return k.openai && k.anthropic && k.hub; });
     s = await state(page);
     assert.deepEqual(s.keys, { openai: true, anthropic: true, hub: true });
     assert.ok(!JSON.stringify(s).includes(OKEY) && !JSON.stringify(s).includes(AKEY));
@@ -215,7 +216,7 @@ async function pickOnly(page, ids) {
 
     // 5) Sağlayıcı hatası (geçersiz Anthropic anahtarı → 401), diğer model sonuç verir
     await page.click('[data-nav="models"]');
-    await page.fill("#key-anthropic", "sk-ant-yanlis-" + "q".repeat(24)); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı/);
+    await page.fill("#key-anthropic", "sk-ant-yanlis-" + "q".repeat(24)); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı (Windows kasasına|yalnız bu oturum)/);
     await page.click('[data-nav="compare"]');
     await page.fill("#tTitle", "Özet denemesi");
     await page.fill("#tPrompt", "Toplantı notunu 2 maddede özetle: KDV Ocak'ta %20 olacak; PDF şablonu yenilenecek.");
@@ -228,7 +229,7 @@ async function pickOnly(page, ids) {
     assert.equal(s.active.type, "ozet");
     await page.click('[data-result="0"] [data-star="4"]');
     await page.click('[data-nav="models"]');
-    await page.fill("#key-anthropic", AKEY); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı/);
+    await page.fill("#key-anthropic", AKEY); await page.click('[data-keysave="anthropic"]'); await toastHas(page, /Anthropic anahtarı (Windows kasasına|yalnız bu oturum)/);
 
     // 6) MyMind önerisi
     await page.click('[data-nav="compare"]');
