@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-28",
+  "updatedAt": "2026-11-08",
   "coordinationChat": "01a18271-0676-7a73-a8af-81434db99c2c",
   "policy": "One owner chat and branch/workspace per work item; evidence is required before done. This register does not execute a scheduler or enforce CI.",
   "items": [
@@ -161,6 +161,22 @@
         "limitation": "Windows 11 native passed; hosted Server 2025 native EXE failed (0xC0000409), per product handoff",
         "catalogDecision": "User explicitly approved including 0.2.0 in Hub release on 2026-11-05; exact pinned prerelease allowed, other prereleases excluded."
       }
+    },
+    {
+      "id": "PL-002-RELEASE-095",
+      "status": "review",
+      "repo": "timdesigners-pixel/PluginLabs",
+      "ownerChat": "01a1b61a-ad83-7100-bfdf-37d0fa520342",
+      "branch": "codex/hub-leo-095-20261108",
+      "baseSha": "7ebd42993b2d2cee27917dcf3a369b8b0b388b27",
+      "acceptance": [
+        "Leo0.9.5 public release SHA256 matches catalogue",
+        "Hub unit/UI and actual packaged EXE catalogue acceptance",
+        "Public Hub install verifies exact bytes/hash",
+        "Hub0.4.26 installer/portable/screenshots/SHA256/BUILD-INFO published"
+      ],
+      "productPr": "https://github.com/timdesigners-pixel/leo-helper/pull/15",
+      "notion": "https://www.notion.so/4118aa13d8f9819c81efd9502142e9d0"
     }
   ]
 }

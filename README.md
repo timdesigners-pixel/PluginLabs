@@ -1,8 +1,20 @@
-# PluginLabs Hub 0.4.25
+# PluginLabs Hub 0.4.26
 
 PluginLabs uygulama, eklenti ve kaynak merkezi. Electron masaüstü arayüzü; yönetilen kurulumlar; yerel My Mind sunucusu; uygulama bazlı izinli cihaz API’si.
 
 Notion Bridge 0.1.0 (PL-039; seçilen içeriği tek Notion veritabanının alanlarına eşler, kayıt öncesi taslak önizleme ve şema doğrulaması, onaylı yalnız-ekleme kaydı, mükerrer kayıt engeli), Action Inbox 0.1.0 (PL-038; seçilen metinden kaynaklı görev adayları, inceleme kuyruğu, yinelenen görev birleştirme, görev kutusu), Mail Triage 0.1.0 (PL-037; salt okunur: .eml/.mbox için gerekçeli etiket ve öncelik, toplu değişiklik önizlemesi, yanıt taslağı), Voice Note Orbit 0.1.0 (PL-036; yüzen balondan basılı tutarak ses notu, yerel metne çevirme, belirsiz tarihte seçim) ve Meeting Trace 0.1.0 (PL-035; toplantı transkriptinden onaylı karar ve görevler) Hub kataloğuna eklendi.
+
+## 0.4.26 · Leo Helper 0.9.5
+
+Leo Helper **0.9.5** (Windows genel kısayolları, hızlı mesaj paneli ve başlatma/iptal düzeltmeleri) kataloğa alındı. Taşınabilir dosya boyut ve SHA256 ile doğrulanır. MyMind AI uygulama sürümü **0.1.2**; özel 4B eğitim hâlâ tamamlanmadı.
+
+08.11.2026, paketlenmiş gerçek Windows Electron uygulaması:
+
+![Leo Helper 0.9.5](docs/screenshots/release-0.4.26/02-leo-helper.png)
+
+![MyMind AI 0.1.2](docs/screenshots/release-0.4.26/03-mymind-ai.png)
+
+## Önceki katalog kabulü · 07.11.2026
 
 Hub 0.4.21 (Codex): Leo Helper **0.9.4** ve MyMind AI **0.1.2** katalogda güncellendi. Windows paketleri boyut ve SHA256 ile doğrulanır. MyMind uygulama yayını, Qwen3-4B Colab eğitiminin tamamlandığı anlamına gelmez.
 

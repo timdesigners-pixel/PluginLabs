@@ -84,3 +84,8 @@ Aşağıdaki metin `resources/notion-catalog.json` (Notion anlık görüntüsü,
 
 ---
 Oluşturma: 29.10.2026 · Kaynak → hedef: Notion kataloğu → `registry/projects.json` → bu dosya
+
+
+## 08.11.2026 · 0.9.5 yayın kabulü
+
+[Leo Helper 0.9.5](https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.5): Windows genel kısayolları/hızlı mesaj paneli, güvenli durdurma ve başlatma düzeltmeleri. 36 Rust, 11 sayfa, 8 soğuk açılış, gerçek EXE ve native tuş kabulü geçti. Kurulum/taşınabilir EXE, 12 gerçek ekran ve SHA256/BUILD-INFO mevcut. Hub 0.4.26 kataloğu bu işte güncellenir. Eski Notion metni yukarıda korunur; OCR/oyunlar/etkinlikler ve güvenli Telegram düzenleme takibi hâlâ açıktır.
