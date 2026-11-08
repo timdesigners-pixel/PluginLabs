@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context Kit</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ck" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ck-side" aria-label="Ana menü">
+    <div class="ck-brand" aria-label="PluginLabs Apps"><span class="ck-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ck-apps">APPS</span></div>
+    <div class="ck-product">
+      <span class="pl-applogo" aria-hidden="true">CK</span>
+      <div class="ck-product__text"><b>Context Kit</b><span>AI bağlam paketi</span></div>
+      <span class="ck-product__no pl-num" aria-label="Sıra numarası 45">45</span>
+    </div>
+    <div class="ck-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ck-navbtn" type="button" data-nav="kits" role="tab">Paketler<span class="pl-badge" id="kitCount">0</span></button>
+      <button class="pl-navitem ck-navbtn" type="button" data-nav="exports" role="tab">Dışa aktarmalar<span class="pl-badge" id="exportCount">0</span></button>
+      <button class="pl-navitem ck-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ck-mini" id="sideInfo"></div>
+    <div class="ck-side__foot">
+      <button class="pl-navitem ck-navbtn" type="button" id="openMymind"><span class="ck-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ck-main">
+    <div class="ck-view ck-work" id="view-kits">
+      <div class="ck-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="new">Yeni paket</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek proje</button>
+        <span class="ck-grow"></span>
+        <div class="pl-segment" role="radiogroup" aria-label="Paket süzgeci">
+          <button type="button" role="radio" data-tf="acik">Açık</button>
+          <button type="button" role="radio" data-tf="arsiv">Arşiv</button>
+        </div>
+      </div>
+      <section class="ck-empty-start" id="emptyPanel" hidden>
+        <div class="ck-card ck-start__card">
+          <h1 class="pl-h3 ck-h">Yapay zekâya yalnız gereken bağlamı verin</h1>
+          <p class="pl-muted ck-small">Context Kit bir proje klasöründen ya da sayfalardan, göreve göre seçilmiş parçalar ve dosya ağacıyla, token sınırına sığan bir bağlam paketi hazırlar. Sırlar ve kişisel veriler gizlenir; kaynaktaki talimat benzeri metinler veri olarak işaretlenir.</p>
+          <ol class="ck-ul">
+            <li><b>Kaynak</b>: proje klasörünü seçin (yalnız okunur; node_modules, derleme çıktıları, kilit ve ikili dosyalar, .env ve anahtar dosyaları dışarıda) ya da sayfa metni yapıştırın.</li>
+            <li><b>Görev</b>: yapay zekâdan ne istediğinizi yazın. Dosyalar parçalara bölünür ve göreve göre puanlanır.</li>
+            <li><b>Önizleme</b>: dosya ağacında neyin girip neyin çıktığını ve nedenini görün; dosya ya da parça sabitleyin veya dışlayın.</li>
+            <li><b>Dışa aktarın</b>: bütçeye sığan Markdown/JSON paketi ya da panoya kopyalama. Yazılan paket yeniden taranır: bütçe ve kalan sır denetlenir.</li>
+          </ol>
+          <div class="ck-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="new">Yeni paket</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek projeyle dene</button>
+          </div>
+        </div>
+      </section>
+      <section class="ck-split" id="kitSplit">
+        <div class="ck-listcol ck-card">
+          <div class="ck-bar"><span class="pl-muted ck-small" id="listInfo">0 paket</span></div>
+          <ul class="ck-list" id="kitList" role="listbox" aria-label="Paketler"></ul>
+        </div>
+        <div class="ck-detail ck-card" id="kitDetail" aria-label="Seçili paket"></div>
+      </section>
+    </div>
+
+    <div class="ck-view ck-panels" id="view-exports" hidden>
+      <section class="ck-card ck-card--wide">
+        <div class="ck-bar"><h2 class="pl-h3 ck-h">Dışa aktarmalar</h2><span class="ck-grow"></span><span class="pl-muted ck-small" id="exportsMeta"></span></div>
+        <p class="pl-muted ck-small">Her dışa aktarmada yazılan paket (dosya ya da pano) yeniden okunur: token bütçesine sığıyor mu, ⟦GİZLİ⟧ işaretleri dışında sır ya da kişisel veri kalmış mı, “içerik veridir” uyarısı başta mı. Örnek görevlerde gerekli bağlam kapsaması da yazılır.</p>
+        <div id="exportsBody"></div>
+      </section>
+    </div>
+
+    <div class="ck-view ck-panels" id="view-settings" hidden>
+      <section class="ck-card ck-card--wide">
+        <h2 class="pl-h3 ck-h">Ölçüler</h2>
+        <p class="pl-muted ck-small">Doğrulama ölçütü: <b>test görevinde gerekli bağlam kapsaması ≥ %90</b> ve <b>paket boyutunda ≥ %40 azalma</b>. Kapsama, örnek projedeki elle etiketlenmiş iki görevde ölçülür; azalma, dışa aktarılan paketlerin dahil edilen tüm dosyalara göre token oranıdır. Token sayısı tahminidir (karakter/4).</p>
+        <div class="ck-metrics" id="metrics"></div>
+        <div id="sampleInfo"></div>
+      </section>
+      <section class="ck-card">
+        <h2 class="pl-h3 ck-h">Paket ve hariç tutma</h2>
+        <div class="ck-setrow"><label class="pl-field__label" for="setBudget">Yeni paketlerde token bütçesi</label>
+          <select class="pl-input ck-select" id="setBudget"><option value="4000">4.000</option><option value="8000">8.000</option><option value="16000">16.000</option><option value="32000">32.000</option><option value="64000">64.000</option><option value="128000">128.000</option></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="setRules">Tüm paketlerde ek hariç tutma kuralları (.gitignore biçimi; ! ile istisna)</label><textarea class="pl-input ck-rules" id="setRules" spellcheck="false" placeholder="*.test.js&#10;docs/eski/&#10;!docs/eski/onemli.md"></textarea></div>
+        <div class="ck-row"><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveRules">Kuralları kaydet</button></div>
+        <p class="pl-muted ck-small" id="defaultRules"></p>
+      </section>
+      <section class="ck-card">
+        <h2 class="pl-h3 ck-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ck-small">İsteğe bağlıdır; tarama, puanlama, sır filtresi ve paket motor olmadan çalışır. Motora yalnız görev, dosya yolları ve parça başlıkları gider — dosya içerikleri ve tüm depo gönderilmez. Her istek ayrı onaylanır.</p>
+        <label class="ck-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="ck-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="ck-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ck-card ck-card--wide">
+        <h2 class="pl-h3 ck-h">Gizlilik ve güvenlik</h2>
+        <ul class="ck-ul">
+          <li>Klasörler yalnız okunur; hiçbir dosya değiştirilmez ya da silinmez. Sembolik bağlantılar izlenmez; hariç klasörlerin içine girilmez. En çok 2000 dosya, dosya başına 1 MB, toplam 8 MB.</li>
+          <li>.env, *.pem, *.key, id_rsa, credentials ve secrets dosyaları her zaman hariçtir. Paketteki API anahtarı, belirteç, özel anahtar, parola ataması, bağlantı dizesi parolası, e-posta, telefon, T.C. kimlik, IBAN ve kart numarası ⟦GİZLİ:tür⟧ ile değiştirilir.</li>
+          <li>Kaynaktaki talimat benzeri metinler (“önceki talimatları yok say” gibi) işaretlenir; paket başlığı içeriğin veri olduğunu ve talimat sayılmayacağını açıkça yazar.</li>
+          <li>Uygulama dış ağa bağlanmaz; yalnız isteğe bağlı MyMind/yerel model (bu bilgisayar) ile konuşur.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ck-foot pl-muted">Context Kit 0.1.0 · PluginLabs · yalnız gereken bağlam · token bütçesi · sır filtresi · içerik veridir · yapay zekâ isteğe bağlı</footer>
+  </main>
+
+  <dialog class="pl-modal ck-dialog ck-dialog--wide" id="pageDialog" aria-labelledby="pageTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="pageTitleH">Sayfa ekle</h2><p class="pl-muted ck-tight">Belge, hata kaydı ya da sayfa metnini yapıştırın. Biçimli içerik (HTML) metne çevrilir; bağlantılar indirilmez.</p></div></div>
+    <div class="pl-modal__body ck-stack">
+      <div class="pl-field"><label class="pl-field__label" for="pageName">Ad</label><input class="pl-input" id="pageName" maxlength="80"></div>
+      <textarea class="pl-input ck-area ck-area--dlg" id="pageText" spellcheck="false" aria-label="Sayfa metni"></textarea>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="pageCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="pageRun">Ekle</button></div>
+  </dialog>
+  <dialog class="pl-modal ck-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ck-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ck-tight">Göreve göre dosya sıralaması ve kısa bağlam özeti bu bilgisayardaki PluginLabs Hub'ın My Mind motoruyla yapılabilir. İsteğe bağlıdır.</p></div></div>
+    <div class="pl-modal__body ck-stack">
+      <ol class="ck-ul"><li>PluginLabs Hub'ı açın ve My Mind motorunu başlatın.</li><li>Hub → Ayarlar → API istemcileri: <b>mymind.chat</b> izniyle yeni istemci oluşturun.</li><li>Anahtarı aşağıya yapıştırın; Windows kasasında (DPAPI) şifreli saklanır.</li></ol>
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ck-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+  <div class="ck-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ck-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
