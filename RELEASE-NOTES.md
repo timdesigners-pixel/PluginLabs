@@ -1,3 +1,15 @@
+# 0.5.1
+
+PluginLabs Hub 0.5.1 kataloğu Leo Helper 0.9.6'ya günceller. Leo'nun Telegram mesaj geçmişi ve aynı profil için oturum sırası bu sürümde kullanılabilir. Hub, genel dağıtımdan Leo 0.9.6 ile MyMind AI 0.1.2 paketlerini indirdi ve boyutlarını ve SHA256 özetlerini doğruladı. 0.5.0 ile eklenen 11 ürün katalogda yer alır.
+
+Windows x64 paketinde 33 test, iki Electron UI akışı ve yalıtılmış katalog kabulü geçti. Üretim bağımlılık taramasında sıfır bulgu var. Kurulum, taşınabilir EXE, üç gerçek ekran ve SHA256 dosyası yayıma dahildir. Windows paketleri imzasızdır. Özel MyMind Qwen3-4B eğitimi ayrı çalışmada sürüyor.
+
+![Paketli Hub 0.5.1 üzerinde Leo Helper 0.9.6](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/download/pluginlabs-hub-v0.5.1/PluginLabsHub-0.5.1.png)
+
+[Leo Helper 0.9.6 dağıtımı](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/leo-helper-v0.9.6)
+
+---
+
 PluginLabs Hub 0.5.0 — PL-040..PL-050 Araştırma, Yazma, Geliştirici ve Profesyonel Araçlar Serisi Kataloğa Eklendi.
 
 - **PL-040 Insight Table 0.1.0:** Tablosal veri içgörü ve sütun istatistikleri aracı.
