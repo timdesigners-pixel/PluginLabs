@@ -100,9 +100,8 @@
       const weightSelect = el(
         "select",
         {
-          class: "pl-input",
-          style: "width:4.5rem;height:26px;padding:0 4px;font-size:11px;margin-top:4px",
-          ariaLabel: `${crit.name} ağırlığı`,
+          class: "pl-input db-weight-select",
+          "aria-label": `${crit.name} ağırlığı`,
           onchange: (e) =>
             run(async () => {
               S = await D.board.updateWeight(crit.id, Number(e.target.value));

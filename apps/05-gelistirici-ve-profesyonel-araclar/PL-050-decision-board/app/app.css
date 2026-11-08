@@ -84,3 +84,6 @@ html, body { margin: 0; height: 100%; }
 .ax-fields__wide { grid-column: 1 / -1; }
 .ax-pros-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pl-space-3); }
 .ax-num { font-family: var(--pl-font-mono); }
+
+/* Ölçüt ağırlığı seçici (CSP style-src 'self': satır içi stil yerine sınıf) */
+.db-weight-select { width: 4.5rem; height: 26px; padding: 0 4px; font-size: 11px; margin-top: 4px; }
