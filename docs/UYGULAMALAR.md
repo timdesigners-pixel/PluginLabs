@@ -14,7 +14,7 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | The Ultimate Scrapper (PL-004) | **v0.8.0** (PluginLabs Scrapper; Leo köprüsü, Alışveriş + Veri Kazıma Stüdyosu + Site Rehberi) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | MyWishlist (PL-054) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
-| Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
+| Note Master (PL-006) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip; özel ürün deposu) · ayrı masaüstü uygulaması v0.1.0 dağıtım deposunda (08.11.2026; esas kod tabanı kararı bekliyor) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 · https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/note-master-v0.1.0 |
 | Musebook (PL-007) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0 |
 | Prompt Dünyası (PL-008) | **v0.2.0** (Windows kurulum/taşınabilir + Chrome zip) | https://github.com/timdesigners-pixel/prompt-dunyasi/releases/tag/v0.2.0 |
 | What the App! (PL-009) | v0.1.0 (Windows kurulum/taşınabilir + Chrome zip, BUILD-INFO) | https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0 |
@@ -69,7 +69,7 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 - PL-037 Mail Triage 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` mail-triage-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.23 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-038 Action Inbox 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` action-inbox-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.24 kataloğunda (PR birleşip Hub yayımlanınca).
 - PL-039 Notion Bridge 0.1.0 yayımlandı (07.11.2026; `pluginlabs-dagitim` notion-bridge-v0.1.0; kaynak PluginLabs `apps/` içinde). Hub 0.4.25 kataloğunda (PR birleşip Hub yayımlanınca).
-- Sıradaki (Windows sürümü yok): PL-040–050 (fikir; ayrı depo yok — PL-025 modeli). PL-025–039 `pluginlabs-dagitim` deposunda yayımlandı.
+- PL-040–050 0.1.0 Windows uygulamaları `pluginlabs-dagitim` deposunda yayımlandı (07–08.11.2026; kaynak PluginLabs `apps/`). Hub kataloğuna henüz eklenmedi. PL-025–039 `pluginlabs-dagitim` deposunda yayımlandı.
 
 ## Tüm liste (PL-001 … PL-059)
 
@@ -114,17 +114,17 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | PL-037 | Mail Triage | Windows uygulaması · **v0.1.0** (salt okunur pilot: .eml/.mbox içe aktarma; gerekçeli etiket + öncelik önerisi, önemli e-postayı Düşük önermeme korumaları; eylem/son tarih/tutar; toplu değişiklik önizlemesi; öneri kabul/düzeltme ölçüleri; yanıt taslağı (gönderilmez); CSV/MD; MyMind ya da yerel model (onaylı; adlar ve iletişim bilgileri gizli)) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/mail-triage-v0.1.0 |
 | PL-038 | Action Inbox | Windows uygulaması · **v0.1.0** (seçilen metinden kaynaklı görev adayları: yapıştırma, pano düğmesi/genel kısayol, .txt/.md; fiil, son tarih (yakalama gününe göre) ve materyal çıkarımı; kişi ataması yalnız taslak; inceleme kuyruğu; yinelenen görev tespiti + birleştirme; görev kovaları ve görev kutusu (widget); haftalık tamamlama ve yinelenen görev oranı; MD/ICS/CSV; MyMind ya da yerel model (onaylı; adlar ve iletişim bilgileri gizli); otomatik kaynak izleme yok) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/action-inbox-v0.1.0 |
 | PL-039 | Notion Bridge | Windows uygulaması · **v0.1.0** (seçilen içeriği tek Notion veritabanının alanlarına eşleme: şema okuma, kural tabanlı eşleme, uydurma alan/seçenek yok, belirsiz alan boş; kayıt öncesi taslak önizleme ve şema doğrulaması; onaylı yalnız-ekleme kaydı; mükerrer kayıt engeli; Notion CSV; MyMind/yerel model onaylı) — kaynak PluginLabs `apps/` içinde | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/notion-bridge-v0.1.0 |
-| PL-040 | Insight Table | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-041 | Dev Patch Notes | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-042 | API Pocket | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-043 | Access Lens | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-044 | Design Token Scout | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-045 | Context Kit | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-046 | Model Switchboard | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-047 | Permission Radar | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-048 | Offline Aid | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-049 | Invoice Inbox | Fikir / Hub içi önizleme (ayrı depo yok) | — |
-| PL-050 | Decision Board | Fikir / Hub içi önizleme (ayrı depo yok) | — |
+| PL-040 | Insight Table | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0 |
+| PL-041 | Dev Patch Notes | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0 |
+| PL-042 | API Pocket | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/api-pocket-v0.1.0 |
+| PL-043 | Access Lens | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/access-lens-v0.1.0 |
+| PL-044 | Design Token Scout | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/design-token-scout-v0.1.0 |
+| PL-045 | Context Kit | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0 |
+| PL-046 | Model Switchboard | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/model-switchboard-v0.1.0 |
+| PL-047 | Permission Radar | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/permission-radar-v0.1.0 |
+| PL-048 | Offline Aid | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/offline-aid-v0.1.0 |
+| PL-049 | Invoice Inbox | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/invoice-inbox-v0.1.0 |
+| PL-050 | Decision Board | Windows uygulaması · **v0.1.0** (dağıtım deposunda; kaynak PluginLabs `apps/`; Hub kataloğunda değil) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/decision-board-v0.1.0 |
 | PL-051 | Extension Manager / Eklenti Yöneticisi | Windows uygulaması + Chrome eklentisi · **v1.1.0** (kurulum + taşınabilir exe + Chrome zip, SHA256, BUILD-INFO; imzasız önizleme) | https://github.com/timdesigners-pixel/extension-manager/releases/tag/v1.1.0 |
 | PL-052 | Tweakster | Windows uygulaması · **v0.1.0** (kurulum + taşınabilir exe, SHA256, BUILD-INFO, Windows ekran görüntüleri; imzasız önizleme) | https://github.com/timdesigners-pixel/tweakster/releases/tag/v0.1.0 |
 | PL-053 | Mutfak Atölyesi | Çalışan: web, Android test APK, Windows x64 zip · **v0.4.1** (GitHub release; Hub kataloğunda) | https://github.com/timdesigners-pixel/mutfak-atolyesi |

@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-006` · `note-master` |
 | Kategori | 01 · Mevcut ürünler ve fikirler — PL-001–010 |
-| Durum | 08.11.2026: **0.1.0 Windows uygulaması hazır** — kaynak [app/](app/README.md) (9 birim testi + gerçek Electron duman testi + ekran görüntüleri); dağıtım iş akışı [`app/ci/`](app/ci/pluginlabs-dagitim-note-master-windows.yml) · Notion durumu: Mevcut fikir · Proje ve Fikirler notu |
+| Durum | **Ürün deposunda v0.1.0** (30.10.2026, özel depo: Chrome eklentisi + Windows uygulaması) · 08.11.2026: bu klasördeki [app/](app/README.md) **ayrı bir masaüstü uygulaması** olarak geliştirildi ve `pluginlabs-dagitim` deposunda [`note-master-v0.1.0`](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/note-master-v0.1.0) etiketiyle yayımlandı — iki kod tabanından hangisinin esas alınacağı karar bekliyor (aşağıya bakın) · Notion durumu: Mevcut fikir · Proje ve Fikirler notu |
 | Öncelik / efor | P1 · S |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3), widget |
-| Geliştirme deposu | [timdesigners-pixel/note-master](https://github.com/timdesigners-pixel/note-master) (henüz kod yok) — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda `note-master-v<sürüm>` etiketiyle |
+| Geliştirme deposu | [timdesigners-pixel/note-master](https://github.com/timdesigners-pixel/note-master) (Chrome eklentisi + Windows uygulaması v0.1.0) — ayrıca ikinci bir masaüstü uygulaması bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda `note-master-v<sürüm>` etiketiyle |
 | Codex projesi | `PL-006 · Note Master` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114) |
 
@@ -57,7 +57,10 @@ Kaynak URL ve alıntı sınırı tutulur; gizli sayfa içeriği varsayılan bulu
 
 P1 · S; Mind Palace modülü ve bağımsız eklenti aynı çekirdek.
 
-## 0.1.0 sürümü (Windows)
+## 0.1.0 sürümü (Windows) — PluginLabs `apps/` masaüstü uygulaması
+
+> **Çakışma uyarısı (08.11.2026):** Bu masaüstü uygulaması, kayıt defterinde ürün deposu “henüz kod yok” görünürken geliştirildi. Oysa [note-master](https://github.com/timdesigners-pixel/note-master) deposunda 30.10.2026 tarihli **v0.1.0** (Chrome eklentisi + Windows uygulaması) zaten vardı; o sürüm herkese açık dağıtım deposuna ve Hub kataloğuna hiç alınmamıştı. Sonuç: aynı sürüm numarasında iki farklı Windows paketi var — ürün deposundaki (özel) ve `pluginlabs-dagitim` `note-master-v0.1.0` (herkese açık, bu klasörden). Hub katalog girdisi bu karar verilene kadar eklenmedi. Seçenekler: (a) ürün deposunu esas al, bu uygulamanın MyMind taslağı/widget/ölçüt özelliklerini oraya taşı; (b) bu uygulamayı masaüstü halefi olarak 0.2.0'a yükselt; (c) ürün deposundaki v0.1.0 paketlerini dağıtım deposuna aynen aktar.
+
 
 Notion MVP akışı: **seçili metinden kaynaklı not, hızlı görev, etiket ve Markdown dışa aktarma.** Seçilen metin panodan alıntı olarak alınır; alıntı kaynak adresi ya da kaynak adı olmadan kaydedilmez. `#etiket` otomatik eklenir; görevlerde son tarih ve tamamlandı durumu; Türkçe karakter duyarlı arama ve etiket süzgeci; her zaman üstte hızlı not widget'ı (`Ctrl+Shift+Space`). Markdown (gizliler hariç seçeneğiyle) ve `pluginlabs-note/1` JSON yedek/içe aktarma.
 

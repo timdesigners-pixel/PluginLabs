@@ -13,8 +13,8 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-003 | [Mind Palace Plugin Hub](01-mevcut-urunler-ve-fikirler/PL-003-mind-palace-plugin-hub/README.md) | W · L · M · Chrome | Mevcut proje notu | P1 · XL | [mind-palace](https://github.com/timdesigners-pixel/mind-palace) |
 | PL-004 | [The Ultimate Scrapper](01-mevcut-urunler-ve-fikirler/PL-004-the-ultimate-scrapper/README.md) | W · L · M · Chrome | Mevcut ayrıntılı proje planı | P1 · L | [the-ultimate-scrapper](https://github.com/timdesigners-pixel/the-ultimate-scrapper) |
 | PL-005 | [Finansal Asistan](01-mevcut-urunler-ve-fikirler/PL-005-finansal-asistan/README.md) | W · L · M | Mevcut ayrıntılı proje planı | P1 · L | [finansal-asistan](https://github.com/timdesigners-pixel/finansal-asistan) |
-| PL-006 | [Note Master](01-mevcut-urunler-ve-fikirler/PL-006-note-master/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · S | [note-master](https://github.com/timdesigners-pixel/note-master) |
-| PL-007 | [Musebook](01-mevcut-urunler-ve-fikirler/PL-007-musebook/README.md) | W · L · M · Chrome | Mevcut fikir | P1 · M | [musebook](https://github.com/timdesigners-pixel/musebook) |
+| PL-006 | [Note Master](01-mevcut-urunler-ve-fikirler/PL-006-note-master/README.md) | W · L · M · Chrome | Windows + Chrome v0.1.0 (ürün deposu, 30.10.2026) · ayrı masaüstü uygulaması dağıtımda v0.1.0 (08.11.2026) | P1 · S | [note-master](https://github.com/timdesigners-pixel/note-master) · [app/](01-mevcut-urunler-ve-fikirler/PL-006-note-master/app/README.md) |
+| PL-007 | [Musebook](01-mevcut-urunler-ve-fikirler/PL-007-musebook/README.md) | W · L · M · Chrome | Windows + Chrome v0.1.0 (ürün deposu, 30.10.2026) | P1 · M | [musebook](https://github.com/timdesigners-pixel/musebook) |
 | PL-008 | [Prompt Dünyası](01-mevcut-urunler-ve-fikirler/PL-008-prompt-dunyasi/README.md) | W · L · M · Chrome | Mevcut fikir | P0 · S | [prompt-dunyasi](https://github.com/timdesigners-pixel/prompt-dunyasi) |
 | PL-009 | [What the App!](01-mevcut-urunler-ve-fikirler/PL-009-what-the-app/README.md) | W · L · M · Chrome | Mevcut fikir | P2 · M | [what-the-app](https://github.com/timdesigners-pixel/what-the-app) |
 | PL-010 | [1001 Designs / Pin to Component](01-mevcut-urunler-ve-fikirler/PL-010-1001-designs-pin-to-component/README.md) | W · L · M · Chrome | Mevcut proje ve görev kayıtları | P2 · XL | [1001-designs](https://github.com/timdesigners-pixel/1001-designs) |
@@ -62,22 +62,22 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-037 | [Mail Triage](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · L | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-037-mail-triage/app/README.md) |
 | PL-038 | [Action Inbox](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-038-action-inbox/app/README.md) |
 | PL-039 | [Notion Bridge](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-039-notion-bridge/app/README.md) |
-| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-040 | [Insight Table](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](04-arastirma-yazma-ve-bilgi-akislari/PL-040-insight-table/app/README.md) |
 
 ## 05 · Geliştirici ve profesyonel araçlar — PL-041–050
 
 | Kimlik | Uygulama | Platform | Durum | Öncelik | Depo |
 | --- | --- | --- | --- | --- | --- |
-| PL-041 | [Dev Patch Notes](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-042 | [API Pocket](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-044 | [Design Token Scout](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
-| PL-045 | [Context Kit](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/README.md) | W · L · M · Chrome | Yeni fikir | P0 · M | — |
-| PL-046 | [Model Switchboard](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-047 | [Permission Radar](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/README.md) | W · L · M · Chrome | Yeni fikir | P2 · M | — |
-| PL-048 | [Offline Aid](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-049 | [Invoice Inbox](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/README.md) | W · L · M · Chrome | Yeni fikir | P2 · L | — |
-| PL-050 | [Decision Board](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/README.md) | W · L · M · Chrome | Yeni fikir | P1 · M | — |
+| PL-041 | [Dev Patch Notes](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/README.md) | W · L · M · Chrome | Windows v0.1.0 (07.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-041-dev-patch-notes/app/README.md) |
+| PL-042 | [API Pocket](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-042-api-pocket/app/README.md) |
+| PL-043 | [Access Lens](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-043-access-lens/app/README.md) |
+| PL-044 | [Design Token Scout](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app/README.md) |
+| PL-045 | [Context Kit](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P0 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/app/README.md) |
+| PL-046 | [Model Switchboard](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-046-model-switchboard/app/README.md) |
+| PL-047 | [Permission Radar](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-047-permission-radar/app/README.md) |
+| PL-048 | [Offline Aid](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-048-offline-aid/app/README.md) |
+| PL-049 | [Invoice Inbox](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P2 · L | [app/](05-gelistirici-ve-profesyonel-araclar/PL-049-invoice-inbox/app/README.md) |
+| PL-050 | [Decision Board](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/README.md) | W · L · M · Chrome | Windows v0.1.0 (08.11.2026) | P1 · M | [app/](05-gelistirici-ve-profesyonel-araclar/PL-050-decision-board/app/README.md) |
 
 ## 06 · Bağımsız ürün depoları — PL-051–053
 
