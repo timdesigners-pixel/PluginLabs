@@ -1,3 +1,11 @@
+PluginLabs Hub 0.4.31 — Context Kit 0.1.0 kataloğa eklendi.
+
+- Context Kit 0.1.0 (PL-045): proje klasörü (salt okunur) ve sayfalardan (yapıştırma, pano, .html/.md/.txt) göreve göre seçilmiş parçalar ve dosya ağacıyla token bütçesine sığan AI bağlam paketi; varsayılan + .gitignore biçiminde hariç tutma (sır dosyaları her zaman hariç, nedeni görünür); parçalama ve görev terimleriyle puanlama, dosya/parça sabitleme ve dışlama; API anahtarı/belirteç/özel anahtar/parola/bağlantı dizesi ve kişisel veriler ⟦GİZLİ⟧; istem enjeksiyonu işaretleme ve "içerik veridir" başlığı; Markdown/JSON/pano ve yeniden denetim (bütçe, kalan sır). MyMind / yerel model onaylı sıralama ve özet; yalnız yollar ve parça başlıkları gider.
+- Taşınabilir paket `pluginlabs-dagitim` context-kit-v0.1.0 sürümünden; boyut (81 527 197 bayt) ve SHA-256 dağıtım dosyası indirilerek doğrulandı. Windows runner duman testi geçti (çalıştırma 42450828104).
+- Not: Bu çalıştırma önce PL-040'ı yeniden yazdı; PL-040 #90 ile zaten yayımlı olduğundan bu deneme kullanılmadı (geçmişte 4dca645 olarak korunur). Hub sürüm numaraları (0.4.26–0.4.31) PR'lar birleştirilirken yeniden numaralandırılabilir.
+
+---
+
 PluginLabs Hub 0.4.30 — API Pocket 0.1.0 kataloğa eklendi.
 
 - API Pocket 0.1.0 (PL-042): istek şablonları (adres, parametre, başlık, not, belge bağlantısı) `{{değişken}}`li ortamlarla doldurulur; istek yalnız kullanıcı Gönder'e basınca gider (ilk sürüm yalnız GET; tanımsız değişken, geçersiz adres, başlıkta satır sonu → gönderilmez; yönlendirme otomatik izlenmez). Gizli değişkenler yalnız ana süreçte çözülür ve Windows kasasında (DPAPI) saklanır; arayüz, gönderim geçmişi, onay metni, curl kopyası ve koleksiyon dışa aktarması sırrı `{{ad}}` gösterir; yanıtta geçen sır ⟦sır:ad⟧ olur. Üretim ortamında maskeli önizleme ve onay. Renklendirilmiş JSON, alan listesi, başlıklar. curl içe aktarmada anahtarlar otomatik gizliye. Uygulama içi örnek API (127.0.0.1) ile ilk doğru istek ölçüsü. MyMind ya da yerel model ile onaylı alan açıklaması ve istek taslağı (yalnız alan yolları/türleri ve değişken adları gider; olmayan alan, verilmeyen bağlantı ve düz anahtar atılır).

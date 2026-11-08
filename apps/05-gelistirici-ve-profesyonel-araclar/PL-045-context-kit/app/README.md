@@ -12,10 +12,18 @@ Yapay zekâya **yalnız gereken bağlamı** verin: Context Kit bir proje klasör
 | **Dışa aktarmalar (yeniden denetim)** | **Ölçüler ve ayarlar** |
 | ![Dışa aktarmalar](docs/screenshots/masaustu-04-disa-aktarmalar.png) | ![Ölçüler](docs/screenshots/masaustu-05-olculer-ayarlar.png) |
 
-Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek proje ve geçici klasör; taklit MyMind yanıtı; tarih 8 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri release ekindedir.
+Ekran görüntüleri gerçek uygulamadan, duman testinin test verisiyle (uydurma örnek proje ve geçici klasör; taklit MyMind yanıtı; tarih 8 Kasım 2026'ya sabitlenmiş) Linux/xvfb'de alınmıştır. Windows runner'ında alınan gerçek pencere görüntüleri (`windows-masaustu-*`, [çalıştırma 42450828104](https://github.com/timdesigners-pixel/pluginlabs-dagitim/actions/runs/42450828104), kaynak 74d097d) release ekinde ve aşağıdadır.
+
+**Windows'ta (Windows runner, gerçek pencere):**
+
+![Windows — paket önizleme](docs/screenshots/windows-masaustu-01-paket-onizleme.png)
+
+| Windows — klasör ve hariç tutma | Windows — MyMind önerisi | Windows — dışa aktarmalar |
+| --- | --- | --- |
+| ![Windows klasör](docs/screenshots/windows-masaustu-02-klasor-ve-haric-tutma.png) | ![Windows MyMind](docs/screenshots/windows-masaustu-03-mymind-onerisi.png) | ![Windows dışa aktarmalar](docs/screenshots/windows-masaustu-04-disa-aktarmalar.png) |
 
 ## İndir
-[context-kit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0) — `ContextKit-0.1.0-Windows-x64.exe` (kurulum), `ContextKit-0.1.0-Windows-Portable-x64.exe` (taşınabilir), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
+[context-kit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0) — `ContextKit-0.1.0-Windows-x64.exe` (kurulum, SHA-256 `1b71ff41…3b5d`), `ContextKit-0.1.0-Windows-Portable-x64.exe` (taşınabilir, SHA-256 `4c27c9ac…355b`, 81 527 197 bayt), SHA256SUMS + BUILD-INFO. İmzasız önizleme. PluginLabs Hub kataloğundan da kurulabilir (Hub kataloğu birleşip yayımlanınca).
 
 ## Kullanım
 1. **Yeni paket** → **görevi** yazın (ör. "Kargo bulunamadığında 500 yerine 404 dönsün").

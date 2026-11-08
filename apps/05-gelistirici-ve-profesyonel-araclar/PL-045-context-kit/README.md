@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-045` · `context-kit` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 08.11.2026: **0.1.0 Windows uygulaması yayımlandı** — [context-kit-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md); Hub 0.4.31 kataloğunda · Notion durumu: Yeni fikir |
 | Öncelik / efor | P0 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-context-kit-windows.yml)) |
 | Codex projesi | `PL-045 · Context Kit` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,18 @@ Test görevinde gerekli bağlam kapsaması ≥%90; paket boyutunda ≥%40 azalma
 ## Öncelik ve efor
 
 P0 · M; AI maliyetini somut görevle ölçen niş ürün.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **klasör/sayfa seç → ilgili parçaları ve dosya ağacını önizle → sır filtresi → boyut limitli bağlam paketi dışa aktar.** Proje klasörü salt okunur taranır (sembolik bağlantı izlenmez, hariç klasörlere girilmez); sayfalar yapıştırma, pano ya da .html/.md/.txt belgesiyle eklenir. Dosyalar parçalara bölünür ve görev terimleriyle (yol, içerik, parça başlığı) puanlanır; token bütçesine sığan en ilgili parçalar ve dosya ağacı pakete girer; dosya/parça sabitlenebilir ya da dışlanabilir.
+
+Teknik sınır (Notion): **hariç tutma kuralları, sır/kişisel veri işaretleme ve token tahmini; kaynak içi istem enjeksiyonları talimat sayılmaz.** Varsayılan + `.gitignore` biçiminde kullanıcı kuralları (her hariç tutmanın nedeni görünür; .env/anahtar dosyaları her zaman hariç); API anahtarı, belirteç, özel anahtar, parola ataması, bağlantı dizesi parolası, e-posta, telefon, T.C. kimlik, IBAN, kart pakette ⟦GİZLİ:tür⟧; talimat benzeri satırlar işaretlenir ve paket başlığı içeriğin veri olduğunu yazar; token tahmini karakter/4. Dışa aktarılan paket yeniden okunup bütçe ve kalan sır için denetlenir.
+
+Yapay zekânın rolü (Notion): **göreve göre dosya/parça sıralaması ve kısa bağlam özeti; tüm depoyu otomatik göndermez.** MyMind ya da yerel model onaylı; yalnız görev, dosya yolları ve parça başlıkları (sırlar gizli) gider; olmayan yollar atılır, özet sansürlenir ve "tahmin" olarak işaretlenir. Doğrulama ölçütü: örnek projedeki iki elle etiketli görevde kapsama %100 (hedef ≥ %90), paket boyutunda %85,2 / %86,6 azalma (hedef ≥ %40).
+
+![Context Kit — paket önizleme: puana göre dosyalar, hariç tutma nedenleri, bütçe ve paket metni](app/docs/screenshots/masaustu-01-paket-onizleme.png)
+
+Kapsam dışı (bu sürüm): Pro değerlendirme ve ekip reçeteleri, Chrome kaynak seçici, Linux/macOS paketleri, anlamsal arama. Gerçek projelerde ve gerçek bir modelle ölçülmedi. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

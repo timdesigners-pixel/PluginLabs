@@ -1851,7 +1851,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim context-kit-v0.1.0; kaynak PluginLabs apps/…/PL-045-context-kit/app; görev odaklı parça seçimi, token bütçesi, sır/kişisel veri filtresi, istem enjeksiyonu işaretleme, yeniden denetimli Markdown/JSON paket) · Notion: Yeni fikir",
       "priority": "P0",
       "effort": "M",
       "platforms": {
@@ -1874,7 +1874,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "context-kit-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-046",

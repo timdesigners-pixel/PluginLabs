@@ -465,6 +465,23 @@ const catalog = [
     source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-044-design-token-scout/app",
   },
   {
+    id: "context-kit",
+    name: "Context Kit",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Yapay zekâya yalnız gereken bağlamı verin: proje klasörü (salt okunur) ve sayfalardan, göreve göre seçilmiş parçalar ve dosya ağacıyla token bütçesine sığan bağlam paketi. node_modules, derleme çıktıları, kilit/ikili dosyalar ve .env/anahtar dosyaları hariç (nedeni görünür; kendi .gitignore kurallarınız); sırlar ve kişisel veriler ⟦GİZLİ⟧ ile gizlenir, kaynaktaki talimat benzeri metinler veri olarak işaretlenir. Dosya/parça sabitleme, Markdown/JSON/pano ve yeniden denetim (bütçe, kalan sır). MyMind ya da yerel model ile onaylı sıralama ve kısa özet (yalnız yollar ve başlıklar gider).",
+    platform: "win32",
+    format: "exe",
+    file: "ContextKit.exe",
+    size: 81527197,
+    sha256: "4c27c9ac615b8fe362b77555db727010f113734b1088e4f4346f1b10d7a2355b",
+    url: dist("context-kit", "0.1.0", "ContextKit-0.1.0-Windows-Portable-x64.exe"),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Ürün deposu henüz yok; kaynak PluginLabs ön geliştirme alanında.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/main/apps/05-gelistirici-ve-profesyonel-araclar/PL-045-context-kit/app",
+  },
+  {
     id: "api-pocket",
     name: "API Pocket",
     kind: "app",
