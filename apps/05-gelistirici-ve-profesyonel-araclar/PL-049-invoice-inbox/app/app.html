@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Inbox</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">II</span>
+      <div class="ax-product__text"><b>Invoice Inbox</b><span>Fatura ve fiş kutusu</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 49">49</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn is-active" type="button" data-nav="review" role="tab">İnceleme Kuyruğu<span class="pl-badge" id="reviewCount">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="approved" role="tab">Onaylı / Arşiv<span class="pl-badge" id="approvedCount">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve Ayarlar</button>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- İnceleme Kuyruğu -->
+    <div class="ax-view ax-work" id="view-review">
+      <div class="ax-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="ingest">Belge metni yapıştır</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard">Panodan al</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Belge dosyası (.txt/.xml/.html)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek fatura ve fişler</button>
+        <span class="ax-grow"></span>
+        <span class="pl-muted ax-small" id="privacyHint">TCKN/IBAN/Kart kırpma: Açık · Otomatik beyanname yok</span>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Fatura ve fişleri doğrulayarak CSV'ye aktarın</h1>
+          <p class="pl-muted ax-small">Serbest çalışanlar için belge kutusu: yüklenen e-Arşiv/e-Fatura (XML/HTML/metin) ve perakende fiş/serbest meslek makbuzu belgelerinden satıcı, tarih, KDV ve genel toplamı çıkarır.</p>
+          <ol class="ax-ul">
+            <li><b>İki belge şablonu:</b> Şablon 1 (GİB e-Arşiv / UBL-TR e-Fatura) ve Şablon 2 (Perakende Fiş / Serbest Meslek Makbuzu).</li>
+            <li><b>Deterministik tutarlılık denetimi:</b> Kalemler toplamı = Ara Toplam ve <code>Ara Toplam + KDV = Genel Toplam</code> eşitliği kuruşuna kadar kontrol edilir.</li>
+            <li><b>Zorunlu insan incelemesi:</b> Toplamı uyuşmayan veya son ödeme tarihi belirsiz belgeler otomatik onaylanamaz; düzeltme ya da inceleme notu zorunludur.</li>
+            <li><b>Şifreli ve gizli:</b> TCKN, IBAN ve kart numaraları isteğe bağlı kırpılır; veriler DPAPI ile şifrelenir; vergi beyannamesi veya muhasebe kaydı asla otomatik gönderilmez.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="ingest">Belge metni yapıştır</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek fatura ve fişler</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ax-split" id="reviewSplit">
+        <div class="ax-listcol ax-card">
+          <div class="ax-bar">
+            <span class="ax-lbl" id="reviewInfo">0 belge incelemede</span>
+          </div>
+          <ul class="ax-list" id="reviewList" role="listbox" aria-label="İnceleme bekleyen belgeler"></ul>
+        </div>
+        <div class="ax-detail ax-card" id="reviewDetail" aria-label="Seçili belge ayrıntısı"></div>
+      </section>
+    </div>
+
+    <!-- Onaylı / Arşiv -->
+    <div class="ax-view ax-work" id="view-approved" hidden>
+      <div class="ax-toolbar">
+        <div class="pl-segment" role="radiogroup" aria-label="Belge durumu süzgeci">
+          <button type="button" role="radio" data-df="onayli" aria-checked="true">Onaylananlar</button>
+          <button type="button" role="radio" data-df="red" aria-checked="false">Reddedilenler</button>
+        </div>
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="topExportCsv">Finansal Asistan CSV aktar</button>
+        <span class="ax-grow"></span>
+        <input class="pl-input ax-search" id="q" placeholder="Satıcı veya fatura no ara…" aria-label="Belgelerde ara">
+      </div>
+      <section class="ax-split">
+        <div class="ax-listcol ax-card"><ul class="ax-list" id="approvedList" aria-label="Onaylı veya reddedilen belgeler"></ul></div>
+        <div class="ax-detail ax-card" id="approvedDetail" aria-label="Onaylı belge ayrıntısı"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve Ayarlar -->
+    <div class="ax-view ax-panels" id="view-settings" hidden>
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Doğrulama Ölçütleri ve Tutarlılık Özeti</h2>
+        <p class="pl-muted ax-small">Notion doğrulama ölçütü: örnek belgelerde toplam ve tarih alanı <b>≥%98 doğruluk</b>; belirsiz veya matematiksel olarak uyumsuz alanlar <b>zorunlu incelemeli</b>. Muhasebe kaydı veya vergi beyannamesi otomatik gönderilmez.</p>
+        <div class="ax-metrics" id="metrics"></div>
+        <p class="pl-muted ax-small" id="goldInfo"></p>
+      </section>
+
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Gizlilik ve Kimlik Verisi Kırpma</h2>
+        <label class="ax-check">
+          <input type="checkbox" id="setRedact" checked>
+          <span><b>Kimlik ve ödeme verisi kırpma (TCKN, IBAN, Kart No)</b> — Belge içe aktarılırken 11 haneli TCKN, TR IBAN ve 16 haneli kart numaraları maskelenir.</span>
+        </label>
+        <p class="pl-muted ax-small">Finansal Asistan entegrasyonu: ayrı bir finans defteri oluşturmaz; onayladığınız belgeleri Finansal Asistan'ın içe aktarabileceği standart CSV tablosu olarak üretir.</p>
+      </section>
+
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay Zekâ Motoru (İsteğe Bağlı)</h2>
+        <p class="pl-muted ax-small">Kural tabanlı şablon ayrıştırıcı ve deterministik toplam kontrolü model olmadan çalışır. MyMind ya da yerel model yalnız bu bilgisayarda (loopback) çalışır; yanıt yine deterministik matematik kontrolünden geçer.</p>
+        <label class="ax-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="ax-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="ax-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar">
+          <h2 class="pl-h3 ax-h">Dışa Aktarma ve Şifreli Depolama</h2>
+          <span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="csvBtn">Finansal Asistan CSV (.csv)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Fatura Özeti (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON Yedek</button>
+        </div>
+        <ul class="ax-ul">
+          <li><b>İnsan onayı zorunludur:</b> İnceleme kuyruğundaki hiçbir taslak belge CSV dışa aktarımına dahil edilmez.</li>
+          <li><b>Otomatik gönderim yoktur:</b> Uygulama GİB, e-Beyanname veya herhangi bir muhasebe servisine ağ bağlantısı kurmaz.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="ax-foot pl-muted">Invoice Inbox 0.1.0 · PluginLabs · 2 belge şablonu · deterministik toplam kontrolü · otomatik beyanname yok</footer>
+  </main>
+
+  <dialog class="pl-modal ax-dialog ax-dialog--wide" id="ingestDialog" aria-labelledby="ingestTitleH">
+    <div class="pl-modal__head">
+      <div>
+        <h2 class="pl-h3" id="ingestTitleH">Fatura veya fiş metni yapıştır</h2>
+        <p class="pl-muted ax-tight">e-Arşiv/e-Fatura (metin/HTML/UBL-XML) veya perakende fiş/serbest meslek makbuzu içeriğini yapıştırın.</p>
+      </div>
+    </div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field">
+        <label class="pl-field__label" for="ingestTitle">Belge adı / kaynak başlığı</label>
+        <input class="pl-input" id="ingestTitle" maxlength="200" placeholder="ör. Kasım Bulut Sunucu Faturası">
+      </div>
+      <textarea class="pl-input ax-area ax-area--dlg" id="ingestText" spellcheck="false" aria-label="Belge metni" maxlength="80000"></textarea>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="ingestCancel">Vazgeç</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="ingestRun">Taslak çıkar ve incelemeye al</button>
+    </div>
+  </dialog>
+
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head">
+      <div>
+        <h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2>
+        <p class="pl-muted ax-tight">Belirsiz fatura/fiş metinlerinde alan çıkarımı yerel PluginLabs Hub (127.0.0.1:47632) ile desteklenebilir.</p>
+      </div>
+    </div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub İstemci Anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button>
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button>
+    </div>
+  </dialog>
+
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

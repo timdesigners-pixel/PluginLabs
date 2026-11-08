@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dev Patch Notes</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="dpn" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar dpn-side" aria-label="Ana menü">
+    <div class="dpn-brand" aria-label="PluginLabs Apps"><span class="dpn-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="dpn-apps">APPS</span></div>
+    <div class="dpn-product">
+      <span class="pl-applogo" aria-hidden="true">DP</span>
+      <div class="dpn-product__text"><b>Dev Patch Notes</b><span>Kaynaklı sürüm notları</span></div>
+      <span class="dpn-product__no pl-num" aria-label="Sıra numarası 41">41</span>
+    </div>
+    <div class="dpn-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem dpn-navbtn" type="button" data-nav="editor" role="tab">Sürüm notu düzenleyici<span class="pl-badge" id="relCount">0</span></button>
+      <button class="pl-navitem dpn-navbtn" type="button" data-nav="audit" role="tab">Sır ve iddia denetimi<span class="pl-badge" id="auditCount">0</span></button>
+      <button class="pl-navitem dpn-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="dpn-mini" id="sideInfo"></div>
+    <div class="dpn-side__foot">
+      <button class="pl-navitem dpn-navbtn" type="button" id="openMymind"><span class="dpn-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="dpn-main">
+    <!-- Düzenleyici -->
+    <div class="dpn-view dpn-work" id="view-editor">
+      <div class="dpn-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="capture">Git log / diff içe al</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard">Panodan içe al</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Dosya aç (.log/.diff)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek sürüm yükle</button>
+        <span class="dpn-grow"></span>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportMdBtn">Markdown (.md) indir</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportJsonBtn">JSON indir</button>
+      </div>
+
+      <section class="dpn-empty-start" id="emptyPanel" hidden>
+        <div class="dpn-card dpn-start__card">
+          <h1 class="pl-h3 dpn-h">Git değişikliklerinden kaynak commit bağlantılı sürüm notları üretin</h1>
+          <p class="pl-muted dpn-small">Seçilen <code>git log</code>, commit listesi ya da <code>git diff</code> çıktısını içe alın. Dev Patch Notes değişiklikleri Özellik, Düzeltme, Güvenlik ve Kırıcı Değişiklik başlıklarına ayırır; otomatik commit, push veya yayın yapmaz.</p>
+          <ol class="dpn-ul">
+            <li><b>Kaynak commit bağlantıları:</b> Her sürüm notu maddesi kaynak commit SHA ve depo bağlantısıyla eşlenir.</li>
+            <li><b>API anahtarı ve sır taraması:</b> Commit mesajlarında veya diff içinde unutulan <code>sk-...</code>, <code>ghp_...</code>, <code>AKIA...</code> anahtarları yakalanır ve maskelenir.</li>
+            <li><b>Uydurma teslim iddiası sıfır:</b> Kanıtı olmayan “tüm testler geçti” veya “performansta %X artış” iddiaları otomatik ayıklanır ve engellenir.</li>
+            <li><b>Düzenlenebilir Markdown ve Keep a Changelog:</b> Dışa aktarmadan önce her maddeyi düzenleyebilir veya MyMind ile kullanıcı diline çevirebilirsiniz.</li>
+          </ol>
+          <div class="dpn-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="capture">Git log / diff içe al</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek sürümü yükle</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dpn-split" id="editorSplit">
+        <div class="dpn-listcol dpn-card">
+          <div class="dpn-bar"><b class="dpn-lbl">Sürümler</b><span class="dpn-grow"></span><span class="pl-muted dpn-small" id="relSummary">0 sürüm</span></div>
+          <ul class="dpn-list" id="releaseList" role="listbox" aria-label="Sürümler"></ul>
+        </div>
+        <div class="dpn-detail dpn-card" id="releaseDetail" aria-label="Seçili sürüm notu"></div>
+      </section>
+    </div>
+
+    <!-- Sır ve iddia denetimi -->
+    <div class="dpn-view dpn-work" id="view-audit" hidden>
+      <div class="dpn-toolbar">
+        <b class="pl-h3 dpn-h">API Anahtarı Sızıntısı ve Kanıtsız İddia Denetimi</b>
+        <span class="dpn-grow"></span>
+        <span class="pl-muted dpn-small" id="auditSummary"></span>
+      </div>
+      <section class="dpn-auditwrap" id="auditWrap"></section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="dpn-view dpn-panels" id="view-settings" hidden>
+      <section class="dpn-card dpn-card--wide">
+        <h2 class="pl-h3 dpn-h">Doğrulama ölçütleri</h2>
+        <p class="pl-muted dpn-small">Notion doğrulama ölçütü: 10 sürümde editör düzeltme süresinde ≥%50 azalma; uydurma teslim iddiası sıfır; otomatik commit, push ve yayın yok.</p>
+        <div class="dpn-metrics" id="metrics"></div>
+      </section>
+      <section class="dpn-card">
+        <h2 class="pl-h3 dpn-h">Şablon ve dışa aktarma</h2>
+        <div class="pl-field"><label class="pl-field__label" for="exportStyle">Markdown başlık biçimi</label>
+          <select class="pl-input" id="exportStyle">
+            <option value="tr">Türkçe (Özellikler / Hata Düzeltmeleri / Güvenlik)</option>
+            <option value="keepachangelog">Keep a Changelog (Added / Fixed / Security)</option>
+          </select>
+        </div>
+        <p class="pl-muted dpn-small">Otomatik commit, push ve yayın yoktur: Dev Patch Notes git deponuzda hiçbir yazma komutu çalıştırmaz.</p>
+      </section>
+      <section class="dpn-card">
+        <h2 class="pl-h3 dpn-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted dpn-small">İsteğe bağlıdır; kod farkından kullanıcı dostu davranış değişikliği taslağı çıkarır; test geçişi veya performans artışı kanıtsız yazılmaz.</p>
+        <label class="dpn-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="dpn-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="dpn-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="dpn-card dpn-card--wide">
+        <div class="dpn-bar"><h2 class="pl-h3 dpn-h">Yedekleme ve gizlilik</h2><span class="dpn-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek indir</button>
+        </div>
+        <ul class="dpn-ul">
+          <li>Yalnız seçili depo/veri işlenir; yakalanan API anahtarları dışa aktarmada ve MyMind isteklerinde maskelenir.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="dpn-foot pl-muted">Dev Patch Notes 0.1.0 · PluginLabs · otomatik commit/push/yayın yok · uydurma teslim iddiası 0 · sır taramalı</footer>
+  </main>
+
+  <dialog class="pl-modal dpn-dialog dpn-dialog--wide" id="capDialog" aria-labelledby="capTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="capTitleH">Git log / commit listesi / diff içe al</h2><p class="pl-muted dpn-tight"><code>git log</code>, <code>git log --oneline</code> veya <code>git diff</code> çıktısını yapıştırın.</p></div></div>
+    <div class="pl-modal__body dpn-stack">
+      <textarea class="pl-input dpn-area" id="capText" spellcheck="false" aria-label="Git log veya diff metni" placeholder="commit a1b2c3d... veya 7f8e9a1 feat: ..."></textarea>
+      <div class="dpn-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="capVer">Sürüm etiketi</label><input class="pl-input" id="capVer" maxlength="40" value="v0.1.0"></div>
+        <div class="pl-field"><label class="pl-field__label" for="capTitle">Sürüm başlığı</label><input class="pl-input" id="capTitle" maxlength="140" placeholder="ör. Kasım Güncellemesi"></div>
+        <div class="pl-field dpn-capgrid__wide"><label class="pl-field__label" for="capRepo">Depo web adresi (isteğe bağlı, commit bağlantıları için)</label><input class="pl-input" id="capRepo" maxlength="1000" spellcheck="false" placeholder="https://github.com/ekip/proje"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="capCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="capRun">Sürüm notu oluştur</button></div>
+  </dialog>
+
+  <dialog class="pl-modal dpn-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted dpn-tight">Commit mesajlarından kullanıcıya anlaşılır davranış değişikliği taslağı çıkarır; kanıtsız iddia yazmaz.</p></div></div>
+    <div class="pl-modal__body dpn-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub istemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted dpn-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="dpn-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="dpn-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-045` · `context-kit` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 08.11.2026: **0.1.0 Windows masaüstü uygulaması hazır** — kaynak [`app/`](app/README.md) (çekirdek birim testleri + gerçek Electron duman testi + Windows ekran görüntüleri); dağıtım iş akışı [`app/ci/`](app/ci/pluginlabs-dagitim-context-kit-windows.yml) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P0 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-context-kit-windows.yml)) |
 | Codex projesi | `PL-045 · Context Kit` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,18 @@ Test görevinde gerekli bağlam kapsaması ≥%90; paket boyutunda ≥%40 azalma
 ## Öncelik ve efor
 
 P0 · M; AI maliyetini somut görevle ölçen niş ürün.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **klasör/sayfa seç → ilgili parçaları ve dosya ağacını önizle → sır filtresi → boyut limitli bağlam paketi dışa aktar.** Dosya veya web sayfası kesitleri yapıştırılarak, panodan ya da dosya seçiciyle alınır; `node_modules/**`, `.git/**`, `.env*`, `dist/**`, `*.lock` gibi hariç tutma kuralları otomatik uygulanır; açık API anahtarları (`sk-...`, `AKIA...`, `ghp_...`, JWT/Bearer, PEM) ve kişisel veriler (e-posta, telefon) maskelenir.
+
+Yapay zekânın rolü (Notion): **göreve göre dosya/parça sıralaması ve kısa bağlam özeti; tüm depoyu otomatik göndermez.** Kural tabanlı görev-alaka puanlaması her zaman çalışır ve token/bayt üst sınırı içinde yalnız görevle alakalı parçaları seçer; MyMind (PluginLabs Hub) ya da yerel model isteğe bağlıdır, yalnız loopback üzerinden ve her istekte kullanıcı onayıyla kısa bağlam özeti ve öncelikli dosya sıralaması üretir.
+
+Teknik sınır ve doğrulama ölçütü (Notion): **hariç tutma kuralları, sır/kişisel veri işaretleme ve token tahmini; kaynak içi istem enjeksiyonları talimat sayılmaz.** Kaynak kod ve sayfa içindeki prompt injection kalıpları algılanarak işaretlenir ve dışa aktarılan tüm kaynaklar güvenilmeyen veri (`UNTRUSTED_DATA`) sınırlarıyla sarılır. Örnek görevde gerekli 4 bağlam kaynağının %100’ü kapsanır (hedef ≥ %90) ve paket boyutunda %76,6 azalma sağlanır (hedef ≥ %40). Kullanıcı onayıyla Markdown (`.md`), XML (`.xml`) ve JSON (`.json`) bağlam paketi dışa aktarılır.
+
+![Context Kit — göreve göre sıralanan bağlam kaynakları ve bütçe](app/docs/screenshots/masaustu-01-baglam-kaynaklari.png)
+
+Kapsam dışı (bu sürüm): canlı Chrome sekmesi kaynak seçici eklentisi (Manifest V3), Linux/macOS paketleri. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

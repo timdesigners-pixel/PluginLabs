@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context Kit</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">CK</span>
+      <div class="ax-product__text"><b>Context Kit</b><span>AI bağlam paketi</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 45">45</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="sources" role="tab">Kaynaklar ve sır filtresi<span class="pl-badge" id="sourceCountBadge">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="preview" role="tab">Bağlam paketi önizleme<span class="pl-badge" id="packageBadge">0 tok</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- Kaynaklar, Görev Sıralaması ve Sır / Enjeksiyon Filtresi -->
+    <div class="ax-view ax-work" id="view-sources">
+      <div class="ax-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="add">Dosya / sayfa ekle</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard">Panodan ekle</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Dosya seç</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek görev ve 8 kaynak</button>
+        <span class="ax-grow"></span>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="aiBtn">MyMind bağlam özeti</button>
+      </div>
+
+      <div class="ax-taskbar" id="taskBar" hidden>
+        <label class="ax-lbl" for="taskQueryInput">AI görevi (dosya/parça sıralaması tüm depoyu göndermeden bu göreve göre yapılır)</label>
+        <div class="ax-row">
+          <input class="pl-input ax-grow" id="taskQueryInput" maxlength="300" spellcheck="false" placeholder="ör. Oturum yenileme (refresh token) yarış durumu ve 429 kota aşımı hatasını düzelt">
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="taskQueryApply">Sırala ve bütçele</button>
+        </div>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Seçilen dosya ve sayfalardan boyut sınırlı, önizlenebilir AI bağlam paketi hazırlayın</h1>
+          <p class="pl-muted ax-small">AI’a yanlış veya gereksiz dosyaları bağlam olarak verip zaman ve kota kaybetmeyin. <b>Context Kit</b>, göreve göre ilgili parçaları sıralar, sırları maskeler ve boyut sınırı içinde dışa aktarır.</p>
+          <ol class="ax-ul">
+            <li><b>Klasör/sayfa seçin:</b> Dosya veya web sayfası kesitlerini ekleyin; <code>node_modules</code>, <code>.git</code>, <code>.env</code> ve derlenmiş çıktılar otomatik hariç tutulur.</li>
+            <li><b>Göreve göre sıralama:</b> Tüm depoyu otomatik göndermez; görevinizle alakalı dosya ve parçaları token/bayt bütçesi içinde seçer (<b>paket boyutunda ≥%40 azalma</b>).</li>
+            <li><b>Sır filtresi ve enjeksiyon koruması:</b> API anahtarları, parolalar ve e-posta/telefon verileri maskelenir; <b>kaynak içi istem enjeksiyonları talimat sayılmaz</b>, güvenilmeyen veri olarak işaretlenir.</li>
+            <li><b>İsteğe bağlı MyMind:</b> Kısa bağlam özeti ve öncelikli dosya önerisi üretir.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="add">Dosya / sayfa ekle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek görev ve 8 kaynak</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ax-split" id="sourceSplit">
+        <div class="ax-listcol ax-card">
+          <div class="ax-bar">
+            <div class="pl-segment" role="radiogroup" aria-label="Kaynak filtresi">
+              <button type="button" role="radio" data-filter="tumu" aria-checked="true">Tümü</button>
+              <button type="button" role="radio" data-filter="dahil">Pakette</button>
+              <button type="button" role="radio" data-filter="haric">Hariç / Elenen</button>
+              <button type="button" role="radio" data-filter="guvenlik">Sır / Enjeksiyon</button>
+            </div>
+          </div>
+          <ul class="ax-list" id="sourceList" role="listbox" aria-label="Kaynak dosyalar ve sayfalar"></ul>
+        </div>
+        <div class="ax-detail ax-card" id="sourceDetail" aria-label="Seçili kaynak önizlemesi ve sır/enjeksiyon denetimi"></div>
+      </section>
+    </div>
+
+    <!-- Boyut Sınırlı Bağlam Paketi Önizleme ve Dışa Aktarım -->
+    <div class="ax-view ax-panels" id="view-preview" hidden>
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar">
+          <div>
+            <h2 class="pl-h3 ax-h">Boyut sınırlı AI bağlam paketi ve dosya ağacı önizlemesi</h2>
+            <p class="pl-muted ax-small">Kaynak içi istem enjeksiyonları talimat sayılmaz; tüm kaynaklar güvenilmeyen veri sınırlarıyla (UNTRUSTED_DATA) sarılır ve maskelenmiş olarak dışa aktarılır.</p>
+          </div>
+          <span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="exportMdBtn">Paketi dışa aktar (.md)</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportXmlBtn">XML paket (.xml)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportJsonBtn">JSON paket (.json)</button>
+        </div>
+        <div class="ax-block">
+          <span class="ax-lbl">Seçilen Bağlam Dosya Ağacı (Hariç Tutulanlar ve Sır/Enjeksiyon İşaretleriyle)</span>
+          <pre class="ax-code" id="treePreviewBox"></pre>
+        </div>
+        <div class="ax-capgrid">
+          <div class="ax-block">
+            <span class="ax-lbl">Markdown Bağlam Paketi Önizlemesi (.md)</span>
+            <pre class="ax-code" id="mdPreviewBox"></pre>
+          </div>
+          <div class="ax-block">
+            <span class="ax-lbl">XML Bağlam Paketi Önizlemesi (.xml)</span>
+            <pre class="ax-code" id="xmlPreviewBox"></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve Ayarlar -->
+    <div class="ax-view ax-panels" id="view-settings" hidden>
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Ölçüler ve doğrulama</h2>
+        <p class="pl-muted ax-small">Notion doğrulama ölçütü: test görevinde gerekli bağlam kapsaması ≥ %90; paket boyutunda ≥ %40 azalma hedefi.</p>
+        <div class="ax-metrics" id="metrics"></div>
+        <p class="pl-muted ax-small" id="goldInfo"></p>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Boyut sınırı ve hariç tutma kuralları</h2>
+        <div class="pl-field">
+          <label class="pl-field__label" for="maxTokensInput">Paket üst sınırı (tahmini token, 100–64000)</label>
+          <input class="pl-input" id="maxTokensInput" type="number" min="100" max="64000" step="50">
+        </div>
+        <div class="pl-field">
+          <label class="pl-field__label" for="maxBytesInput">Paket üst sınırı (bayt, 400–256000)</label>
+          <input class="pl-input" id="maxBytesInput" type="number" min="400" max="256000" step="200">
+        </div>
+        <div class="pl-field">
+          <label class="pl-field__label" for="excludeInput">Hariç tutma kuralları (virgülle ayrılmış glob)</label>
+          <input class="pl-input" id="excludeInput" maxlength="400" spellcheck="false">
+        </div>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveBudgetBtn">Bütçe ve kuralları uygula</button>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ax-small">İsteğe bağlıdır; göreve göre dosya/parça sıralaması ve kısa bağlam özeti üretir. Tüm depoyu otomatik göndermez; her istek ayrı onaylanır.</p>
+        <label class="ax-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="ax-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="ax-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar"><h2 class="pl-h3 ax-h">Yedekleme ve güvenlik ilkesi</h2><span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button>
+        </div>
+        <ul class="ax-ul">
+          <li id="untrustedInfo"></li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ax-foot pl-muted">Context Kit 0.1.0 · PluginLabs · sır maskeleme + istem enjeksiyonu işaretleme · boyut sınırlı bağlam paketi</footer>
+  </main>
+
+  <dialog class="pl-modal ax-dialog ax-dialog--wide" id="srcDialog" aria-labelledby="srcTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="srcTitleH">Dosya veya sayfa kaynağı ekle</h2><p class="pl-muted ax-tight">Kaynak kodu, yapılandırma kesitini veya belge/web sayfası metnini yapıştırın. Sırlar otomatik maskelenir ve kaynak içi talimatlar veri olarak işaretlenir.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <textarea class="pl-input ax-area ax-area--dlg" id="srcText" spellcheck="false" aria-label="Dosya veya sayfa içeriği" maxlength="150000" placeholder="export async function refreshSessionToken() { ... }"></textarea>
+      <div class="ax-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="srcPath">Göreli dosya yolu veya ad</label><input class="pl-input" id="srcPath" maxlength="240" spellcheck="false" placeholder="ör. src/auth/retry.js"></div>
+        <div class="pl-field"><label class="pl-field__label" for="srcTitle">Başlık / açıklama</label><input class="pl-input" id="srcTitle" maxlength="180" placeholder="ör. Oturum Yenileme Yardımcıları"></div>
+        <div class="pl-field ax-capgrid__wide"><label class="pl-field__label" for="srcUrl">Sayfa adresi (isteğe bağlı, http/https)</label><input class="pl-input" id="srcUrl" maxlength="1000" spellcheck="false" placeholder="https://…"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="srcCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="srcRun">Kaynağı ekle ve filtrele</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ax-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ax-tight">Göreve göre dosya/parça sıralaması ve kısa bağlam özeti üretmek için yerel Hub bağlantısı.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="ax-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

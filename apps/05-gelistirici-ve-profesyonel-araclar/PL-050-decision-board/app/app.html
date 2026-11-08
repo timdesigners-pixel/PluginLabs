@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision Board</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">DB</span>
+      <div class="ax-product__text"><b>Decision Board</b><span>Kaynaklı karar matrisi</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 50">50</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn is-active" type="button" data-nav="matrix" role="tab">Karar Matrisi<span class="pl-badge" id="traceBadge">%100</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="analysis" role="tab">Artı/Eksi ve Denetim<span class="pl-badge" id="issueBadge">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="log" role="tab">Karar Günlüğü ve Ayarlar<span class="pl-badge" id="logBadge">0</span></button>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- 1) Karar Matrisi -->
+    <div class="ax-view ax-work" id="view-matrix">
+      <div class="ax-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="addOptBtn">+ Seçenek ekle</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="addCritBtn">+ Kriter ekle</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek karar panosu yükle</button>
+        <span class="ax-grow"></span>
+        <span class="pl-muted ax-small" id="leaderHint"></span>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Seçenekleri kaynaklı bir karar matrisinde karşılaştırın</h1>
+          <p class="pl-muted ax-small">Araç, hizmet veya iş kararı için seçenekleri, kriterleri ve ağırlıkları tek panoda toplayın; her puanın hangi veri ve ağırlıktan türediğini (%100 izlenebilirlik) görün ve karar gerekçesini saklayın.</p>
+          <ol class="ax-ul">
+            <li><b>Kaynaklı puan türetimi:</b> Her hücrede ham puan (1–10), kriter ağırlık payı (%), ağırlıklı katkı ve dayandığı veri/kaynak açıkça görünür.</li>
+            <li><b>%100 izlenebilirlik ölçütü:</b> Kaynağı veya veri gerekçesi eksik hiçbir hücreyle karar günlüğü kesinleştirilemez.</li>
+            <li><b>Eksik kriter ve çelişki denetimi:</b> Puan-kanıt çelişkileri, ağırlık duyarlılığı ve eksik kriterler otomatik denetlenir; MyMind kullanıcı tercihleri yerine modelin değerlerini dayatmaz.</li>
+            <li><b>Uzman sınırı:</b> Finansal, vergisel ve hukuki kararlar için uzman incelemesi (mali müşavir / avukat) yerine geçmez.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek karar panosu yükle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" id="startAddOptBtn">İlk seçeneği ekle</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="ax-disclaimer" id="specialistBanner" hidden></div>
+
+      <section class="ax-split" id="matrixSplit">
+        <div class="ax-listcol ax-card" id="matrixCol">
+          <div class="ax-bar">
+            <input class="pl-input ax-board-title" id="boardTitleInput" maxlength="180" aria-label="Karar panosu başlığı">
+            <select class="pl-input ax-domain-sel" id="boardDomainSel" aria-label="Karar alanı">
+              <option value="tedarik">Araç / Hizmet Seçimi</option>
+              <option value="teknik">Teknik / Mimari Karar</option>
+              <option value="urun">Ürün / Özellik Kararı</option>
+              <option value="finans-hukuk">Finansal / Hukuki Etki (Uzman Gerekir)</option>
+            </select>
+          </div>
+          <div class="ax-matrix-wrap" id="matrixWrap"></div>
+        </div>
+        <div class="ax-detail ax-card" id="cellDetail" aria-label="Seçili hücre ve puan türetimi"></div>
+      </section>
+    </div>
+
+    <!-- 2) Artı/Eksi, Duyarlılık ve Eksik Kriter / Çelişki Denetimi -->
+    <div class="ax-view ax-panels" id="view-analysis" hidden>
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar">
+          <div>
+            <h2 class="pl-h3 ax-h">Eksik Kriter, Çelişki ve Duyarlılık Denetimi</h2>
+            <p class="pl-muted ax-small">Yapay zekâ ve kural motoru yalnız gözden kaçan kriterleri ve puan-kanıt çelişkilerini önerir; <b>kullanıcı tercihleri yerine modelin değerlerini dayatmaz</b>.</p>
+          </div>
+          <span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="runAiBtn">MyMind ile Eksik Kriter ve Çelişki İncele</button>
+        </div>
+        <div id="issuesContainer" class="ax-stack"></div>
+      </section>
+
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Seçeneklere Göre Kaynaklı Artılar (+) ve Eksiler (-)</h2>
+        <div id="prosConsContainer" class="ax-pros-grid"></div>
+      </section>
+    </div>
+
+    <!-- 3) Karar Günlüğü (ADR) ve Ayarlar -->
+    <div class="ax-view ax-panels" id="view-log" hidden>
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Kararı Kesinleştir ve Karar Günlüğüne Kaydet</h2>
+        <p class="pl-muted ax-small">Notion doğrulama ölçütü: <b>Karar gerekçelerinin %100'ü izlenebilir olmalıdır.</b> Tüm hücrelerin veri gerekçesi ve kaynağı tam olduğunda karar anlık matris görüntüsüyle günlüğe kaydedilir.</p>
+        <div class="ax-fields">
+          <div class="pl-field">
+            <label class="pl-field__label" for="decOptionSel">Seçilen Seçenek</label>
+            <select class="pl-input" id="decOptionSel"></select>
+          </div>
+          <div class="pl-field">
+            <label class="pl-field__label" for="decTraceStatus">İzlenebilirlik Durumu</label>
+            <input class="pl-input" id="decTraceStatus" readonly>
+          </div>
+          <div class="pl-field ax-fields__wide">
+            <label class="pl-field__label" for="decRationale">Karar Gerekçesi ve Ödünleşim Notu (Zorunlu)</label>
+            <textarea class="pl-input ax-area" id="decRationale" rows="3" maxlength="1000" placeholder="Hangi ağırlıklar ve kaynaklar bu kararı belirledi? Varsa kabul edilen eksiler nelerdir?"></textarea>
+          </div>
+        </div>
+        <div class="ax-bar">
+          <button class="pl-btn pl-btn--primary" type="button" id="recordDecBtn">Karar Günlüğüne Kaydet</button>
+          <span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="mdBtn">Karar Günlüğü ADR (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">Karar Matrisi (.csv)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON Yedek</button>
+        </div>
+      </section>
+
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Tarihçeli Karar Günlüğü (<span id="logCountInline">0</span> kayıt)</h2>
+        <div id="decisionLogList" class="ax-stack"></div>
+      </section>
+
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay Zekâ ve Şifreli Depolama Ayarları</h2>
+        <p class="pl-muted ax-small">MyMind ya da yerel model yalnız bu bilgisayarda (loopback) çalışır ve her istek ayrı onaylanır. Modelin kazanan seçenek veya ağırlık dayatmaları otomatik olarak reddedilir.</p>
+        <label class="ax-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="ax-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="ax-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+        <p class="pl-muted ax-small" id="vaultInfo"></p>
+      </section>
+    </div>
+
+    <footer class="ax-foot pl-muted">Decision Board 0.1.0 · PluginLabs · %100 izlenebilir karar matrisi · model değer dayatmaz · finansal/hukuki uzman süreci yerine geçmez</footer>
+  </main>
+
+  <!-- Seçenek Ekle Dialog -->
+  <dialog class="pl-modal ax-dialog" id="optDialog" aria-labelledby="optDlgTitle">
+    <div class="pl-modal__head"><h2 class="pl-h3" id="optDlgTitle">Yeni Seçenek Ekle</h2></div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="newOptName">Seçenek Adı</label><input class="pl-input" id="newOptName" maxlength="120" placeholder="ör. Yönetilen MariaDB Kümesi"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newOptSummary">Kısa Açıklama</label><input class="pl-input" id="newOptSummary" maxlength="300" placeholder="ör. Çok bölgeli yedekli kurulum"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newOptEv">Başlangıç Veri Gerekçesi</label><input class="pl-input" id="newOptEv" maxlength="300" value="Ön teknik inceleme notu"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newOptSrc">Başlangıç Kaynağı</label><input class="pl-input" id="newOptSrc" maxlength="160" value="Ekip Ön Değerlendirme Raporu"></div>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="optCancel">Vazgeç</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="optSave">Seçeneği Ekle</button>
+    </div>
+  </dialog>
+
+  <!-- Kriter Ekle Dialog -->
+  <dialog class="pl-modal ax-dialog" id="critDialog" aria-labelledby="critDlgTitle">
+    <div class="pl-modal__head"><h2 class="pl-h3" id="critDlgTitle">Yeni Kriter ve Ağırlık Ekle</h2></div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="newCritName">Kriter Adı</label><input class="pl-input" id="newCritName" maxlength="120" placeholder="ör. Felaket Kurtarma Süresi (RTO)"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newCritWeight">Ağırlık (1–10)</label><input class="pl-input" id="newCritWeight" type="number" min="1" max="10" value="7"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newCritEv">Başlangıç Veri Gerekçesi</label><input class="pl-input" id="newCritEv" maxlength="300" value="SLA dokümanı üzerinden doğrulandı"></div>
+      <div class="pl-field"><label class="pl-field__label" for="newCritSrc">Başlangıç Kaynağı</label><input class="pl-input" id="newCritSrc" maxlength="160" value="Tedarikçi Teknik Ek-2"></div>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="critCancel">Vazgeç</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="critSave">Kriteri Ekle</button>
+    </div>
+  </dialog>
+
+  <!-- MyMind Dialog -->
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head">
+      <div>
+        <h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2>
+        <p class="pl-muted ax-tight">Eksik kriter ve puan-kanıt çelişkisi denetimi yerel PluginLabs Hub (127.0.0.1:47632) ile çalıştırılabilir.</p>
+      </div>
+    </div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub İstemci Anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button>
+      <button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button>
+    </div>
+  </dialog>
+
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

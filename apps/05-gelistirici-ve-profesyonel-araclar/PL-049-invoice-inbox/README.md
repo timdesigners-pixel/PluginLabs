@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-049` · `invoice-inbox` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması hazır** — kaynak [app/](app/README.md); iş akışı [app/ci/](app/ci/pluginlabs-dagitim-invoice-inbox-windows.yml) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P2 · L |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-invoice-inbox-windows.yml)) |
 | Codex projesi | `PL-049 · Invoice Inbox` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,18 @@ Belge başına kredi + Pro aylık kota; küçük ekip lisansı.
 ## Öncelik ve efor
 
 P2 · L; Finansal Asistan’a veri besleyen modül, ayrı finans defteri oluşturmaz.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **kullanıcının yüklediği belgeyi aç; satıcı, tarih, vergi ve toplamı taslak çıkar; insan onayı sonrası CSV’ye aktar; ilk sürüm iki belge şablonu.** Şablon 1 (GİB e-Arşiv / e-Fatura metin, HTML ve UBL-TR XML) ve Şablon 2 (Perakende satış fişi / serbest meslek makbuzu) belgeleri dosya olarak (`.txt`, `.xml`, `.html`), panodan ya da yapıştırılarak alınır; satıcı unvanı, fatura/fiş no, düzenleme tarihi, son ödeme tarihi, kalemler, ara toplam, KDV ve genel toplam taslak olarak çıkarılır.
+
+Yapay zekânın rolü (Notion): **OCR ve alan çıkarımı; toplam/kalem tutarlılığı deterministik hesapla kontrol edilir.** Her belgede kalemler toplamının ara toplama ve `Ara Toplam + KDV = Genel Toplam` eşitliğinin uyumu kuruş hassasiyetiyle deterministik olarak denetlenir. İsteğe bağlı MyMind (PluginLabs Hub) ya da yerel model çağrıları her seferinde onaylıdır ve yanıt yine aynı deterministik matematik kontrolünden geçer.
+
+Teknik sınır ve doğrulama ölçütü (Notion): **Finansal belge şifreli; muhasebe kaydı veya vergi beyannamesi otomatik gönderilmez; kimlik verisi kırpma seçeneği; örnek belgelerde toplam/tarih alanı ≥%98 doğruluk; belirsiz alanlar zorunlu incelemeli.** 11 haneli TCKN, TR IBAN ve kredi kartı numaraları isteğe bağlı kırpılır; veriler Windows DPAPI (`safeStorage`) ile şifrelenir; tutarsız veya vadesi belirsiz belgeler düzeltilmeden ya da yazılı inceleme notu verilmeden onaylanamaz. Yalnız insan onaylı belgeler Finansal Asistan uyumlu CSV'ye aktarılır.
+
+![Invoice Inbox — inceleme kuyruğu ve deterministik toplam doğrulaması](app/docs/screenshots/masaustu-01-inceleme-kuyrugu.png)
+
+Kapsam dışı (bu sürüm): doğrudan kamera/taranmış görüntü OCR motoru, e-Beyanname/muhasebe entegrasyonu, Chrome eklentisi, Linux/macOS paketleri. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

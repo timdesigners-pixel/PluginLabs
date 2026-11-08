@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-044` · `design-token-scout` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows masaüstü uygulaması hazır** — kaynak [`app/`](app/README.md) (çekirdek birim testleri + gerçek Electron duman testi + Windows ekran görüntüleri); dağıtım iş akışı [`app/ci/`](app/ci/pluginlabs-dagitim-design-token-scout-windows.yml) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-design-token-scout-windows.yml)) |
 | Codex projesi | `PL-044 · Design Token Scout` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,18 @@ Bireysel Pro; ekip tasarım sistemi paketi.
 ## Öncelik ve efor
 
 P1 · M; 1001 Designs çıktı üretir, bu araç var olan sistemi belgeler.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **seçili sayfadaki computed style örneklerinden renk/font/spacing adayları çıkar; kullanıcı onayıyla token JSON üret.** Sayfa veya bileşenin computed style JSON çıktısı, CSS kuralları ya da HTML kesitleri yapıştırılarak, panodan ya da `.css`/`.json`/`.html` dosyasından alınır; renk (`hex`/`rgb`/`hsl`), tipografi (`font-family`, boyut, ağırlık, satır yüksekliği), boşluk (`padding`, `margin`, `gap`) ve köşe yarıçapı (`border-radius`) değerleri çıkarılır.
+
+Yapay zekânın rolü (Notion): **yakın değerleri kümeler ve olası token hiyerarşisi önerir.** Kural tabanlı kümeleme her zaman çalışır (RGB Öklid mesafesi ve piksel toleransı ile `#7c6cff`/`#7d6dff` veya `15px`/`16px` gibi yakın sapmaları tek adayda birleştirir); MyMind (PluginLabs Hub) ya da yerel model isteğe bağlıdır, yalnız loopback üzerinden ve her istekte kullanıcı onayıyla semantik token hiyerarşisi (`color.surface.card`, `space.md`) önerir.
+
+Teknik sınır ve doğrulama ölçütü (Notion): **yalnız erişilen sayfa ve hak sahibi olunan tasarımda kullanılır; tasarım kopyalama yerine sistem çıkarma; dinamik durumlar (`hover`, `focus`, koyu tema) ayrıca örneklenir.** Örnek 5 sayfada kullanılan 22 ana tasarım değerinin %100’ü kapsanır (hedef ≥ %90) ve kümeleme ile token tekrarında %26,3 düşüş sağlanır. Yalnız kullanıcı onayıyla W3C Design Tokens JSON (`$value`, `$type`), CSS `:root` değişkenleri ve Markdown belgesi dışa aktarılır.
+
+![Design Token Scout — token adayları ve kümeleme](app/docs/screenshots/masaustu-01-token-adaylari.png)
+
+Kapsam dışı (bu sürüm): canlı Chrome sekmesi seçici eklentisi (Manifest V3), doğrudan Figma bağlayıcısı, Linux/macOS paketleri. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

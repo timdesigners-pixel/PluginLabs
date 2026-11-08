@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permission Radar</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="pr" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar pr-side" aria-label="Ana menü">
+    <div class="pr-brand" aria-label="PluginLabs Apps"><span class="pr-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="pr-apps">APPS</span></div>
+    <div class="pr-product">
+      <span class="pl-applogo" aria-hidden="true">PR</span>
+      <div class="pr-product__text"><b>Permission Radar</b><span>Eklenti izin envanteri</span></div>
+      <span class="pr-product__no pl-num" aria-label="Sıra numarası 47">47</span>
+    </div>
+    <div class="pr-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem pr-navbtn" type="button" data-nav="inventory" role="tab">İzin kartları<span class="pl-badge" id="extCount">0</span></button>
+      <button class="pl-navitem pr-navbtn" type="button" data-nav="changes" role="tab">Değişim geçmişi<span class="pl-badge" id="diffCount">0</span></button>
+      <button class="pl-navitem pr-navbtn" type="button" data-nav="settings" role="tab">Doğruluk ve politika</button>
+    </div>
+    <div class="pr-mini" id="sideInfo"></div>
+    <div class="pr-side__foot">
+      <button class="pl-navitem pr-navbtn" type="button" id="openMymind"><span class="pr-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="pr-main">
+    <!-- İzin kartları -->
+    <div class="pr-view pr-work" id="view-inventory">
+      <div class="pr-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="openInspectModal">manifest.json incele / güncelle</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="sample">Örnek eklenti envanteri</button>
+        <span class="pr-grow"></span>
+        <span class="pl-badge pl-badge--accent">Zararlı yazılım tespiti iddiası taşımaz</span>
+      </div>
+
+      <section class="pr-empty-start" id="emptyPanel" hidden>
+        <div class="pr-card pr-start__card">
+          <h1 class="pl-h3 pr-h">Tarayıcı eklentilerinin izinlerini okunabilir bir envantere dönüştürün</h1>
+          <p class="pl-muted pr-small">Permission Radar, eklenti <code>manifest.json</code> bildirimlerini anlaşılır Türkçe izin kartlarına dönüştürür, bilinmeyen kapsamları açıkça etiketler, sürüm güncellemelerinde yeni eklenen izinleri gösterir ve Chrome yönetim ekranına yönlendirir.</p>
+          <ol class="pr-ul">
+            <li><b>Okunabilir izin kartları</b>: <code>permissions</code>, <code>optional_permissions</code>, <code>host_permissions</code> ve <code>content_scripts</code> kapsamlarını sade Türkçeye çevirir.</li>
+            <li><b>Bilinmeyen kapsamların açık etiketlenmesi</b>: Sözlükte yer almayan veya özel izinler gizlenmez; <b>Bilinmeyen kapsam</b> olarak açıkça işaretlenir.</li>
+            <li><b>Sürüm değişim geçmişi</b>: Aynı eklentinin yeni bir sürümü incelendiğinde hangi izinlerin yeni eklendiğini veya kaldırıldığını karşılaştırır.</li>
+            <li><b>Sorumluluk sınırı</b>: Zararlı yazılım tespiti yaptığı iddiası taşımaz; diğer eklentilerin iç çalışma verisine eriştiği varsayılmaz.</li>
+          </ol>
+          <div class="pr-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek test eklentilerini yükle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" id="emptyInspectBtn">manifest.json yapıştır</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="pr-split" id="invSplit">
+        <div class="pr-listcol pr-card">
+          <div class="pr-bar"><span class="pl-muted pr-small" id="invListInfo">0 eklenti</span></div>
+          <ul class="pr-list" id="extList" role="listbox" aria-label="Eklentiler"></ul>
+        </div>
+        <div class="pr-detail pr-card" id="extDetail" aria-label="Seçili eklenti izin kartları"></div>
+      </section>
+    </div>
+
+    <!-- Değişim geçmişi -->
+    <div class="pr-view pr-panels" id="view-changes" hidden>
+      <section class="pr-card pr-card--wide">
+        <h2 class="pl-h3 pr-h">Sürümler arası izin değişim geçmişi</h2>
+        <p class="pl-muted pr-small">Eklenti güncellemelerinde yeni eklenen veya kaldırılan izin kapsamları aşağıda listelenir.</p>
+        <div id="diffTimeline"></div>
+      </section>
+    </div>
+
+    <!-- Doğruluk ve politika -->
+    <div class="pr-view pr-panels" id="view-settings" hidden>
+      <section class="pr-card pr-card--wide">
+        <h2 class="pl-h3 pr-h">Doğrulama ölçütleri</h2>
+        <p class="pl-muted pr-small">Notion doğrulama ölçütü: <b>test eklentilerinde izin açıklamasının doğruluğu</b> ve <b>bilinmeyen kapsamın açık etiketlenmesi</b>.</p>
+        <div class="pr-metrics" id="metrics"></div>
+      </section>
+
+      <section class="pr-card">
+        <h2 class="pl-h3 pr-h">Yapay zekâ izin açıklayıcısı (Loopback)</h2>
+        <p class="pl-muted pr-small">İzinlerin birlikte ne anlama geldiğini açıklar; zararlı yazılım tespiti iddiası taşımaz.</p>
+        <label class="pr-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="pr-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="pr-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+
+      <section class="pr-card">
+        <h2 class="pl-h3 pr-h">Ekip politika raporu ve dışa aktarma</h2>
+        <p class="pl-muted pr-small">Envanteri ve izin değişim geçmişini CSV, Markdown politika raporu veya JSON yedek olarak kaydedin.</p>
+        <div class="pr-row">
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="csvBtn">Envanter CSV (.csv)</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="mdBtn">Politika raporu (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button>
+        </div>
+        <p class="pl-muted pr-small" id="vaultInfo"></p>
+      </section>
+    </div>
+
+    <footer class="pr-foot pl-muted">Permission Radar 0.1.0 · PluginLabs · okunabilir izin kartları · bilinmeyen kapsam açık etiketli · zararlı yazılım tespiti iddiası taşımaz</footer>
+  </main>
+
+  <!-- manifest.json inceleme penceresi -->
+  <dialog class="pl-modal pr-dialog pr-dialog--wide" id="inspectDialog" aria-labelledby="inspectTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="inspectTitleH">Eklenti manifest.json incele veya sürüm güncelle</h2><p class="pl-muted pr-tight">Aynı eklenti kimliğiyle yeni bir sürüm yapıştırırsanız izin değişim geçmişi otomatik hesaplanır.</p></div></div>
+    <div class="pl-modal__body pr-stack">
+      <div class="pl-field"><label class="pl-field__label" for="inspectId">Eklenti kimliği (isteğe bağlı, sürüm takibi için)</label><input class="pl-input" id="inspectId" maxlength="80" placeholder="Örn: ext-odak-okuyucu"></div>
+      <div class="pl-field"><label class="pl-field__label" for="inspectJson">manifest.json içeriği</label><textarea class="pl-input pr-area" id="inspectJson" rows="8" spellcheck="false"></textarea></div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="inspectCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="inspectRunBtn">İzin kartlarına dönüştür</button></div>
+  </dialog>
+
+  <dialog class="pl-modal pr-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted pr-tight">İzin kombinasyonlarını sade Türkçeyle açıklamak için Hub istemci anahtarını girin.</p></div></div>
+    <div class="pl-modal__body pr-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub istemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted pr-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="pr-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="pr-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

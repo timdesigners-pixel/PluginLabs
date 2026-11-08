@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Switchboard</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ms" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ms-side" aria-label="Ana menü">
+    <div class="ms-brand" aria-label="PluginLabs Apps"><span class="ms-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ms-apps">APPS</span></div>
+    <div class="ms-product">
+      <span class="pl-applogo" aria-hidden="true">MS</span>
+      <div class="ms-product__text"><b>Model Switchboard</b><span>Maliyet ve karşılaştırma</span></div>
+      <span class="ms-product__no pl-num" aria-label="Sıra numarası 46">46</span>
+    </div>
+    <div class="ms-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ms-navbtn" type="button" data-nav="arena" role="tab">Yan yana değerlendirme<span class="pl-badge" id="runCount">0</span></button>
+      <button class="pl-navitem ms-navbtn" type="button" data-nav="catalog" role="tab">Katalog ve anahtarlar<span class="pl-badge" id="catalogCount">4</span></button>
+      <button class="pl-navitem ms-navbtn" type="button" data-nav="advisor" role="tab">Görev model önerisi</button>
+      <button class="pl-navitem ms-navbtn" type="button" data-nav="settings" role="tab">Bütçe ve ölçüler</button>
+    </div>
+    <div class="ms-mini" id="sideInfo"></div>
+    <div class="ms-side__foot">
+      <button class="pl-navitem ms-navbtn" type="button" id="openMymind"><span class="ms-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ms-main">
+    <!-- Yan yana değerlendirme -->
+    <div class="ms-view ms-work" id="view-arena">
+      <div class="ms-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="openNewCompare">Yeni karşılaştırma görevi</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="sample">Örnek benchmarkları yükle</button>
+        <span class="ms-grow"></span>
+        <div class="ms-budget-chip" id="budgetChip"></div>
+      </div>
+
+      <section class="ms-empty-start" id="emptyPanel" hidden>
+        <div class="ms-card ms-start__card">
+          <h1 class="pl-h3 ms-h">Model sağlayıcılarını, maliyetlerini ve yanıtlarını karşılaştırın</h1>
+          <p class="pl-muted ms-small">Model Switchboard resmi API anahtarıyla tek panelde iki sağlayıcının (OpenAI ve Anthropic) tarihli katalog fiyatlarını, görev başı gerçek maliyet tahminini ve yan yana yanıt değerlendirmesini sunar. Tüketici web hesabı çerezi kullanılmaz; kullanıcı bütçe tavanı aşımı engellenir.</p>
+          <ol class="ms-ul">
+            <li><b>Tarihli model kataloğu</b>: Her modelin 1M girdi/çıktı token fiyatı ve doğrulama tarihi görünür (%100 maliyet görünürlüğü).</li>
+            <li><b>Kullanıcı bütçe tavanı</b>: Görev çalıştırılmadan önce tahmini maliyet bütçe tavanıyla karşılaştırılır; tavanı aşan istek engellenir (aşım hedefi: 0).</li>
+            <li><b>Yan yana değerlendirme</b>: Aynı görevde iki modelin gecikmesi (ms), token kullanımı, gerçek maliyeti ($) ve rubrik kalite puanı karşılaştırılır.</li>
+            <li><b>Kayıtlı testlere bağlı öneri</b>: Görev türüne göre en uygun model, kayıtlı benchmark sonuçlarına bağlanarak önerilir.</li>
+          </ol>
+          <div class="ms-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek benchmark görevleriyle dene</button>
+            <button class="pl-btn pl-btn--ghost" type="button" id="emptyNewBtn">Yeni görev oluştur</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ms-split" id="arenaSplit">
+        <div class="ms-listcol ms-card">
+          <div class="ms-bar"><span class="pl-muted ms-small" id="arenaListInfo">0 görev</span></div>
+          <ul class="ms-list" id="runList" role="listbox" aria-label="Karşılaştırma görevleri"></ul>
+        </div>
+        <div class="ms-detail ms-card" id="runDetail" aria-label="Seçili karşılaştırma"></div>
+      </section>
+    </div>
+
+    <!-- Katalog ve anahtarlar -->
+    <div class="ms-view ms-panels" id="view-catalog" hidden>
+      <section class="ms-card">
+        <h2 class="pl-h3 ms-h">1 · Resmi API anahtarı kasası (OpenAI)</h2>
+        <p class="pl-muted ms-small">Yalnız resmi API anahtarı kabul edilir; tüketici web hesabı çerezi (cookie/session) reddedilir. Anahtar Windows kasasında (DPAPI) şifreli saklanır; API faturası sağlayıcı tarafından ayrıca ücretlendirilir.</p>
+        <div class="ms-tokrow">
+          <div class="pl-field"><label class="pl-field__label" for="openaiKey">OpenAI resmi API anahtarı</label><input class="pl-input" id="openaiKey" type="password" maxlength="200" autocomplete="off" spellcheck="false" placeholder="sk-proj-…"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="openaiSave">Kaydet</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="openaiForget">Kaldır</button>
+        </div>
+        <p class="pl-muted ms-small" id="openaiKeyInfo"></p>
+      </section>
+
+      <section class="ms-card">
+        <h2 class="pl-h3 ms-h">2 · Resmi API anahtarı kasası (Anthropic)</h2>
+        <p class="pl-muted ms-small">İlk sürüm iki resmi sağlayıcıyı destekler. Tüketici web oturumu çerezleri güvenlik ve sözleşme sınırı gereği engellenir.</p>
+        <div class="ms-tokrow">
+          <div class="pl-field"><label class="pl-field__label" for="anthropicKey">Anthropic resmi API anahtarı</label><input class="pl-input" id="anthropicKey" type="password" maxlength="200" autocomplete="off" spellcheck="false" placeholder="sk-ant-…"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="anthropicSave">Kaydet</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="anthropicForget">Kaldır</button>
+        </div>
+        <p class="pl-muted ms-small" id="anthropicKeyInfo"></p>
+      </section>
+
+      <section class="ms-card ms-card--wide">
+        <div class="ms-bar"><h2 class="pl-h3 ms-h">Tarihli model fiyat kataloğu (USD / 1M token)</h2><span class="ms-grow"></span><span class="pl-badge pl-badge--success">Tüketici çerezi: 0</span></div>
+        <div id="catalogTableWrap"></div>
+      </section>
+    </div>
+
+    <!-- Görev model önerisi -->
+    <div class="ms-view ms-panels" id="view-advisor" hidden>
+      <section class="ms-card ms-card--wide">
+        <div class="ms-bar">
+          <div>
+            <h2 class="pl-h3 ms-h">Görev türüne göre model önerisi</h2>
+            <p class="pl-muted ms-small">Notion yapay zekâ rolü: görev türüne göre model önerir; hız/kalite ölçümünü kayıtlı test sonucuna bağlar.</p>
+          </div>
+          <span class="ms-grow"></span>
+          <select class="pl-input ms-select" id="advisorTaskSelect" aria-label="Görev türü"></select>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="askAdvisorAiBtn">MyMind ile öneri al</button>
+        </div>
+        <div id="advisorSummaryBox"></div>
+        <div id="advisorAiBox"></div>
+      </section>
+    </div>
+
+    <!-- Bütçe ve ölçüler -->
+    <div class="ms-view ms-panels" id="view-settings" hidden>
+      <section class="ms-card ms-card--wide">
+        <h2 class="pl-h3 ms-h">Doğrulama ölçütleri</h2>
+        <p class="pl-muted ms-small">Notion doğrulama ölçütü: <b>görev başına gerçek maliyet görünürlüğü %100</b> ve <b>bütçe tavanı aşımı sıfır hedefi</b>.</p>
+        <div class="ms-metrics" id="metrics"></div>
+      </section>
+
+      <section class="ms-card">
+        <h2 class="pl-h3 ms-h">Kullanıcı bütçe tavanı (USD)</h2>
+        <p class="pl-muted ms-small">Toplam harcama + yeni görev tahmini bu tavanı aşarsa karşılaştırma çalıştırılmaz ve bütçe aşımı engellenir.</p>
+        <div class="ms-tokrow">
+          <div class="pl-field"><label class="pl-field__label" for="budgetCapInput">Bütçe tavanı (USD)</label><input class="pl-input" id="budgetCapInput" type="number" step="0.001" min="0" max="1000"></div>
+          <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="saveBudgetBtn">Tavanı kaydet</button>
+        </div>
+        <p class="pl-muted ms-small" id="budgetStatusText"></p>
+      </section>
+
+      <section class="ms-card">
+        <h2 class="pl-h3 ms-h">Yapay zekâ öneri motoru (Loopback)</h2>
+        <p class="pl-muted ms-small">İsteğe bağlıdır; her istek ayrı onaylanır ve yalnız bu bilgisayara (127.0.0.1 / localhost) gider.</p>
+        <label class="ms-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="ms-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (LM Studio, Ollama…)</span></label>
+        <div class="ms-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+
+      <section class="ms-card ms-card--wide">
+        <div class="ms-bar"><h2 class="pl-h3 ms-h">Dışa aktarma ve gizlilik</h2><span class="ms-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">CSV (.csv)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Markdown (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button></div>
+        <ul class="ms-ul">
+          <li>Her karşılaştırma kaydında girdi/çıktı token sayısı, model birim fiyatı, fiyat doğrulama tarihi ve görev toplam maliyeti görünür (%100 maliyet görünürlüğü).</li>
+          <li>Tüketici web hesabı çerezi kullanılmaz; sağlayıcı API faturası kendi hesabınızdan ayrıca ücretlendirilir.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="ms-foot pl-muted">Model Switchboard 0.1.0 · PluginLabs · tarihli fiyat kataloğu · %100 maliyet görünürlüğü · bütçe tavanı aşımı 0 · tüketici çerezi kullanılmaz</footer>
+  </main>
+
+  <!-- Yeni karşılaştırma görevi penceresi -->
+  <dialog class="pl-modal ms-dialog ms-dialog--wide" id="cmpDialog" aria-labelledby="cmpTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="cmpTitleH">Yeni yan yana karşılaştırma görevi</h2><p class="pl-muted ms-tight">Aynı görevde iki sağlayıcı/modeli karşılaştırın. Görev çalıştırılmadan önce tahmini maliyet hesaplanır ve bütçe tavanı denetlenir.</p></div></div>
+    <div class="pl-modal__body ms-stack">
+      <div class="ms-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="cmpTaskType">Görev türü</label><select class="pl-input" id="cmpTaskType"></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="cmpTitle">Görev başlığı</label><input class="pl-input" id="cmpTitle" maxlength="140" placeholder="Örn: Birim test üretimi ve hata analizi"></div>
+        <div class="pl-field"><label class="pl-field__label" for="cmpModelA">Model A (1. sağlayıcı)</label><select class="pl-input" id="cmpModelA"></select></div>
+        <div class="pl-field"><label class="pl-field__label" for="cmpModelB">Model B (2. sağlayıcı)</label><select class="pl-input" id="cmpModelB"></select></div>
+      </div>
+      <div class="pl-field"><label class="pl-field__label" for="cmpPrompt">Görev istemi (Prompt)</label><textarea class="pl-input ms-area" id="cmpPrompt" rows="3" maxlength="20000" placeholder="İki modele aynı anda verilecek görev metnini yazın…"></textarea></div>
+      <div class="pl-field"><label class="pl-field__label" for="cmpCriteria">Değerlendirme ölçütleri (virgülle)</label><input class="pl-input" id="cmpCriteria" maxlength="200" placeholder="fonksiyon, hata, test"></div>
+      <div class="ms-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="cmpOutA">Model A yanıtı (veya boş bırakın: şablon yanıt)</label><textarea class="pl-input ms-area" id="cmpOutA" rows="3"></textarea></div>
+        <div class="pl-field"><label class="pl-field__label" for="cmpOutB">Model B yanıtı (veya boş bırakın: şablon yanıt)</label><textarea class="pl-input ms-area" id="cmpOutB" rows="3"></textarea></div>
+      </div>
+      <div class="ms-block ms-estbox" id="cmpEstimateBox"></div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="cmpCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="cmpRunBtn">Maliyeti doğrula ve karşılaştır</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ms-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ms-tight">Kayıtlı benchmark sonuçlarına bağlı model önerisi için yerel PluginLabs Hub anahtarını girin.</p></div></div>
+    <div class="pl-modal__body ms-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub istemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ms-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="ms-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ms-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

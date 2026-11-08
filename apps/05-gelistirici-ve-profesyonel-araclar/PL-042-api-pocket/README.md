@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-042` · `api-pocket` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması hazır** — kaynak [app/](app/README.md) (birim testleri + gerçek Electron duman testi + ekran görüntüleri); dağıtım iş akışı [`app/ci/`](app/ci/pluginlabs-dagitim-api-pocket-windows.yml) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-api-pocket-windows.yml)) |
 | Codex projesi | `PL-042 · API Pocket` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -57,6 +57,18 @@ Sırlar işletim sistemi kasasında; üretim ortamına yazan yöntemlerde ek ön
 
 P1 · M; sınırsız üretim otomasyonundan uzak dar araç.
 
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **istek şablonu, ortam değişkenleri, yanıt biçimleme ve örnek veri; ilk sürüm GET ve kullanıcı başlatmalı istek.** `{{BASE_URL}}`, `{{PROJECT_ID}}`, `{{API_KEY}}` yer tutucularıyla şablonlu çağrılar yapılır; JSON yanıtı girintili biçimlendirilir ve her alanın yolu, tipi ve örnek değeri listelenir.
+
+Yapay zekânın rolü (Notion): **istek taslağı ve yanıt alanlarını açıklar; doğru API belgesi varsa bağlar.** Kural tabanlı alan açıklamaları çevrimdışı çalışır; isteğe bağlı MyMind veya yerel model ile alanlar açıklanır ve yanıtta olmayan uydurma alanlar denetimde reddedilir.
+
+Teknik sınır ve doğrulama ölçütü (Notion): **sırlar işletim sistemi kasasında; üretim ortamına yazan yöntemlerde ek önizleme; örnek API’de ilk doğru istek ≤2 dk; sırların günlükte görünmesi sıfır.**
+
+![API Pocket — istek şablonu ve biçimlendirilmiş yanıt alanları](app/docs/screenshots/masaustu-01-istek-ve-yanit.png)
+
+Ayrıntı: [app/README.md](app/README.md).
+
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 
 - Dal adı: `codex/PL-042-<konu>` veya `claude/PL-042-<konu>`; iki ajan aynı dalda aynı anda çalışmaz.
@@ -76,7 +88,7 @@ Aşağıdaki metin `resources/notion-catalog.json` (Notion anlık görüntüsü,
 - **MVP ve temel akış:** İstek şablonu, ortam değişkenleri, yanıt biçimleme ve örnek veri; ilk sürüm GET ve kullanıcı başlatmalı istek.
 - **Yapay zekânın rolü:** İstek taslağı ve yanıt alanlarını açıklar; doğru API belgesi varsa bağlar.
 - **Teknik bağımlılık ve sınır:** Sırlar işletim sistemi kasasında; üretim ortamına yazan yöntemlerde ek önizleme. Tarayıcı CORS sınırları için masaüstü ajanı gerekebilir.
-- **Gelir hipotezi:** Ücretsiz koleksiyon; Pro ekip şeması ve test reçeteleri.
+- **Gelir hipotezi:** Freemium koleksiyon; Pro ekip şeması ve test reçeteleri.
 - **Doğrulama ölçütü:** Örnek API’de ilk doğru istek ≤2 dk; sırların günlükte görünmesi sıfır.
 - **Öncelik ve efor:** P1 · M; sınırsız üretim otomasyonundan uzak dar araç.
 

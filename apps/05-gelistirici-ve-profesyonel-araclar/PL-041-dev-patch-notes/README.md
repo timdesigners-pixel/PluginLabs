@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-041` · `dev-patch-notes` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması hazır** — kaynak [app/](app/README.md) (birim testleri + gerçek Electron duman testi + ekran görüntüleri); dağıtım iş akışı [`app/ci/`](app/ci/pluginlabs-dagitim-dev-patch-notes-windows.yml) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P1 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3), tarayıcı yan paneli |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-dev-patch-notes-windows.yml)) |
 | Codex projesi | `PL-041 · Dev Patch Notes` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,18 @@ Freemium bireysel; ekip başına Pro ve özel şablonlar.
 ## Öncelik ve efor
 
 P1 · M; geliştiricinin onayladığı yayın notu aracı.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **seçilen git diff/commit listesini içe al; değişiklikleri özellik/düzeltme başlıklarına ayır, kaynak commit bağlantısıyla düzenlenebilir not üret.** `git log`, `git log --oneline` ve `git diff` metinleri ayrıştırılarak Kırıcı Değişiklikler, Özellikler, Hata Düzeltmeleri, Güvenlik, Dokümantasyon ve Bakım başlıklarına ayrılır; her madde kaynak commit SHA ve depo bağlantısıyla eşlenir.
+
+Yapay zekânın rolü (Notion): **kod farkından davranış değişikliği taslağı çıkarır; test geçişi veya performans artışı kanıtsız yazılmaz.** Kanıtı olmayan "tüm testler geçti" veya "performansta %X artış" iddiaları otomatik temizlenir ve engellenir; MyMind yanıtlarındaki uydurma commit SHA ve kanıtsız iddialar denetimde reddedilir.
+
+Teknik sınır ve doğrulama ölçütü (Notion): **yalnız seçili depo/veri; API anahtarı ve sır taraması; otomatik commit, push ve yayın yok; uydurma teslim iddiası sıfır.**
+
+![Dev Patch Notes — kaynak commit bağlantılı sürüm notu düzenleyici](app/docs/screenshots/masaustu-02-surum-duzenleyici.png)
+
+Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

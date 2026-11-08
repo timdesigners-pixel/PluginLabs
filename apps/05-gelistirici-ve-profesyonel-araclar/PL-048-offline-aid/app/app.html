@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline Aid</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="oa" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar oa-side" aria-label="Ana menü">
+    <div class="oa-brand" aria-label="PluginLabs Apps"><span class="oa-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="oa-apps">APPS</span></div>
+    <div class="oa-product">
+      <span class="pl-applogo" aria-hidden="true">OA</span>
+      <div class="oa-product__text"><b>Offline Aid</b><span>Yerel metin yardımcısı</span></div>
+      <span class="oa-product__no pl-num" aria-label="Sıra numarası 48">48</span>
+    </div>
+    <div class="oa-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem oa-navbtn" type="button" data-nav="tasks" role="tab">Metin görevleri<span class="pl-badge" id="taskCount">0</span></button>
+      <button class="pl-navitem oa-navbtn" type="button" data-nav="models" role="tab">Yerel model ve donanım</button>
+      <button class="pl-navitem oa-navbtn" type="button" data-nav="settings" role="tab">Gecikme raporu ve dışa aktarma</button>
+    </div>
+    <div class="oa-mini" id="sideInfo"></div>
+    <div class="oa-side__foot">
+      <button class="pl-navitem oa-navbtn" type="button" id="openMymind"><span class="oa-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="oa-main">
+    <!-- Metin görevleri -->
+    <div class="oa-view oa-work" id="view-tasks">
+      <div class="oa-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="openNewTaskBtn">Yeni çevrimdışı metin görevi</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="sample">Örnek çevrimdışı görevleri yükle</button>
+        <span class="oa-grow"></span>
+        <span class="pl-badge pl-badge--success">Dışa giden model isteği: 0</span>
+        <span class="pl-badge pl-badge--accent">Çevrimdışı tüm riskleri yok etmez</span>
+      </div>
+
+      <section class="oa-empty-start" id="emptyPanel" hidden>
+        <div class="oa-card oa-start__card">
+          <h1 class="pl-h3 oa-h">Uyumlu yerel modellerle metin özetleme ve düzenleme işlemlerini cihazda çalıştırın</h1>
+          <p class="pl-muted oa-small">Offline Aid, hassas veya bağlantısız ortamda metin özetleme, anahtar madde çıkarma, sadeleştirme ve eylem listesi çıkarma görevlerini dış ağa çıkmadan (<b>dışa giden model isteği: 0</b>) cihazınızda çalıştırır.</p>
+          <ol class="oa-ul">
+            <li><b>Onaylı yerel model ailesi ve modelsiz alternatif</b>: İlk sürüm tek onaylı model ailesini (Qwen 2.5 Instruct GGUF) ve düşük donanım / ağsız çalışma için yerleşik <b>modelsiz kural tabanlı yedek motoru</b> sunar.</li>
+            <li><b>Cihaz kaynak kontrolü ve şeffaflık</b>: Model lisansı, RAM/VRAM gereksinimi, güncelleme kaynağı ve donanım bazlı gecikme süresi (<code>ms</code>) açıkça görünür.</li>
+            <li><b>Hassas veri maskeleme ve sınır bilinci</b>: İsteğe bağlı yerel LLM çıkarımından önce e-posta, telefon ve IBAN bilgileri maskelenir; çevrimdışı diye tüm risklerin yok olduğu iddia edilmez.</li>
+          </ol>
+          <div class="oa-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="sample">Örnek çevrimdışı görevleri yükle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" id="emptyNewTaskBtn">Yeni metin görevi başlat</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="oa-split" id="taskSplit">
+        <div class="oa-listcol oa-card">
+          <div class="oa-bar"><span class="pl-muted oa-small" id="taskListInfo">0 görev</span></div>
+          <ul class="oa-list" id="taskList" role="listbox" aria-label="Çevrimdışı görevler"></ul>
+        </div>
+        <div class="oa-detail oa-card" id="taskDetail" aria-label="Seçili görev çıktısı ve donanım gecikmesi"></div>
+      </section>
+    </div>
+
+    <!-- Yerel model ve donanım -->
+    <div class="oa-view oa-panels" id="view-models" hidden>
+      <section class="oa-card oa-card--wide">
+        <h2 class="pl-h3 oa-h">Cihaz kaynak kontrolü (RAM / CPU uyumluluğu)</h2>
+        <p class="pl-muted oa-small">Cihaz donanımınız taranır; yetersiz RAM durumunda düşük donanım uyarısı verilir ve modelsiz alternatif önerilir.</p>
+        <div class="oa-block" id="hwBanner"></div>
+      </section>
+
+      <section class="oa-card oa-card--wide">
+        <h2 class="pl-h3 oa-h">Onaylı yerel model ailesi ve modelsiz yedek motor</h2>
+        <p class="pl-muted oa-small">Her modelin lisansı, en az RAM/VRAM gereksinimi, nicemleme (quantization) düzeyi ve güncelleme kaynağı aşağıda görünür.</p>
+        <div class="oa-modelgrid" id="modelGrid"></div>
+      </section>
+    </div>
+
+    <!-- Gecikme raporu ve dışa aktarma -->
+    <div class="oa-view oa-panels" id="view-settings" hidden>
+      <section class="oa-card oa-card--wide">
+        <h2 class="pl-h3 oa-h">Doğrulama ölçütleri ve donanım bazlı gecikme özeti</h2>
+        <p class="pl-muted oa-small">Notion doğrulama ölçütü: <b>ağsız testte görev tamamlama; dışa giden model isteği sıfır; donanım bazlı gecikme raporu</b>.</p>
+        <div class="oa-metrics" id="metrics"></div>
+        <div class="oa-block oa-block--warn" id="riskDisclaimerBox"></div>
+      </section>
+
+      <section class="oa-card">
+        <h2 class="pl-h3 oa-h">Yerel çıkarım sunucusu (Loopback — dış ağ kapalı)</h2>
+        <p class="pl-muted oa-small">Yalnız bu bilgisayardaki (<code>127.0.0.1</code> / <code>localhost</code>) adresler kabul edilir; dış ağ adresleri engellenir.</p>
+        <label class="oa-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub yerel motoru (127.0.0.1:47632)</span></label>
+        <label class="oa-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model sunucusu</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="oa-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Yerel sunucu adresi (yalnız loopback)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Yerel model kodu</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Adresi doğrula ve kaydet</button>
+        </div>
+      </section>
+
+      <section class="oa-card">
+        <h2 class="pl-h3 oa-h">Dışa aktarma ve yerel kasa</h2>
+        <p class="pl-muted oa-small">Tamamlanan görevleri ve donanım bazlı gecikme raporunu TXT, Markdown veya JSON yedek olarak dışa aktarın.</p>
+        <div class="oa-row">
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="txtBtn">Çıktıları indir (.txt)</button>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="mdBtn">Donanım gecikme raporu (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button>
+        </div>
+        <p class="pl-muted oa-small" id="vaultInfo"></p>
+      </section>
+    </div>
+
+    <footer class="oa-foot pl-muted">Offline Aid 0.1.0 · PluginLabs · dışa giden model isteği 0 · görünür model lisansı ve RAM/VRAM · çevrimdışı tüm riskleri yok etmez</footer>
+  </main>
+
+  <!-- Yeni çevrimdışı metin görevi penceresi -->
+  <dialog class="pl-modal oa-dialog oa-dialog--wide" id="taskDialog" aria-labelledby="taskDialogTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="taskDialogTitle">Yeni çevrimdışı metin özetleme / düzenleme görevi</h2><p class="pl-muted oa-tight">Metni ağsız kural motoruyla anında veya onaylı yerel LLM ile cihazda işleyin.</p></div></div>
+    <div class="pl-modal__body oa-stack">
+      <div class="oa-row">
+        <div class="pl-field oa-grow"><label class="pl-field__label" for="taskTitle">Görev başlığı</label><input class="pl-input" id="taskTitle" maxlength="120" placeholder="Örn: Saha bakım raporu özeti"></div>
+        <div class="pl-field"><label class="pl-field__label" for="taskMode">İşlem türü</label>
+          <select class="pl-input" id="taskMode">
+            <option value="ozet">Kısa özet çıkarma</option>
+            <option value="maddeler">Anahtar maddeleri ayıklama</option>
+            <option value="duzenleme">Metin sadeleştirme ve düzenleme</option>
+            <option value="eylem">Yapılacak eylem maddelerini çıkarma</option>
+          </select>
+        </div>
+      </div>
+      <div class="pl-field"><label class="pl-field__label" for="taskInput">Metin içeriği (e-posta, telefon ve IBAN otomatik maskelenir)</label><textarea class="pl-input oa-area" id="taskInput" rows="7"></textarea></div>
+    </div>
+    <div class="pl-modal__foot">
+      <button class="pl-btn pl-btn--ghost" type="button" id="taskCancel">Vazgeç</button>
+      <button class="pl-btn pl-btn--secondary" type="button" id="runRuleBtn">Modelsiz motorla çalıştır (Ağsız)</button>
+      <button class="pl-btn pl-btn--primary" type="button" id="runLlmBtn">Yerel modelle çalıştır (Loopback)</button>
+    </div>
+  </dialog>
+
+  <dialog class="pl-modal oa-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted oa-tight">Cihazdaki PluginLabs Hub yerel motoru için istemci anahtarını girin.</p></div></div>
+    <div class="pl-modal__body oa-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub istemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted oa-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="oa-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="oa-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access Lens</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ax" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ax-side" aria-label="Ana menü">
+    <div class="ax-brand" aria-label="PluginLabs Apps"><span class="ax-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ax-apps">APPS</span></div>
+    <div class="ax-product">
+      <span class="pl-applogo" aria-hidden="true">AL</span>
+      <div class="ax-product__text"><b>Access Lens</b><span>WCAG 2.2 denetimi</span></div>
+      <span class="ax-product__no pl-num" aria-label="Sıra numarası 43">43</span>
+    </div>
+    <div class="ax-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="audit" role="tab">Denetim ve öğe<span class="pl-badge" id="openCount">0</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="manual" role="tab">Manuel kontroller<span class="pl-badge" id="manualCount">0/4</span></button>
+      <button class="pl-navitem ax-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ax-mini" id="sideInfo"></div>
+    <div class="ax-side__foot">
+      <button class="pl-navitem ax-navbtn" type="button" id="openMymind"><span class="ax-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ax-main">
+    <!-- Denetim ve öğe -->
+    <div class="ax-view ax-work" id="view-audit">
+      <div class="ax-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" data-act="snippet">HTML/CSS kesiti denetle</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-act="clipboard">Panodan denetle</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="files">Dosya aç (.html/.css)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="sample">Örnek fixture’lar</button>
+        <select class="pl-input ax-select" id="auditSelect" aria-label="Denetlenen kesit"></select>
+        <span class="ax-grow"></span>
+        <span class="pl-badge pl-badge--info" id="engineBadge">WCAG 2.2 · AccessLens-Rules 1.0.0</span>
+      </div>
+
+      <section class="ax-empty-start" id="emptyPanel" hidden>
+        <div class="ax-card ax-start__card">
+          <h1 class="pl-h3 ax-h">Erişilebilirlik sorunlarını erken görün</h1>
+          <p class="pl-muted ax-small">Seçtiğiniz sayfa kesitinde veya bileşende <b>kontrast</b>, <b>etiket</b>, <b>odak sırası</b> ve <b>semantik yapı</b> uyarılarını raporlar; sorun seçildiğinde ilgili öğeyi ve satır numarasını vurgular.</p>
+          <ol class="ax-ul">
+            <li>HTML veya CSS kesitini <b>yapıştırın</b>, <b>panodan</b> alın ya da <code>.html</code> / <code>.css</code> dosyası seçin.</li>
+            <li>Her bulgu için <b>WCAG 2.2 kural kodu</b>, <b>satır numarası</b>, <b>seçici</b> ve <b>düzeltme taslağı</b> üretilir; bulguya tıkladığınızda kaynakta ilgili öğe vurgulanır.</li>
+            <li>İsteğe bağlı <b>MyMind</b> ya da yerel model ile sorunu sade dille açıklatıp düzeltme taslağı alabilirsiniz.</li>
+            <li><b>Sertifika uyarısı:</b> Otomatik kural motoru çıktısı erişilebilirlik sertifikası değildir; klavye ve ekran okuyucu manuel kontrolleri ayrıca yapılmalıdır.</li>
+          </ol>
+          <div class="ax-row">
+            <button class="pl-btn pl-btn--primary" type="button" data-act="snippet">HTML/CSS kesiti denetle</button>
+            <button class="pl-btn pl-btn--ghost" type="button" data-act="sample">Örnek fixture’lar (4 kesit)</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ax-split" id="auditSplit">
+        <div class="ax-listcol ax-card">
+          <div class="ax-bar">
+            <div class="pl-segment" role="radiogroup" aria-label="Kategori süzgeci">
+              <button type="button" role="radio" data-cat="tumu" aria-checked="true">Tümü</button>
+              <button type="button" role="radio" data-cat="kontrast">Kontrast</button>
+              <button type="button" role="radio" data-cat="etiket">Etiket</button>
+              <button type="button" role="radio" data-cat="odak">Odak</button>
+              <button type="button" role="radio" data-cat="semantik">Semantik</button>
+            </div>
+          </div>
+          <ul class="ax-list" id="issueList" role="listbox" aria-label="Erişilebilirlik bulguları"></ul>
+        </div>
+        <div class="ax-detail ax-card" id="issueDetail" aria-label="Seçili bulgu ve ilgili öğe"></div>
+      </section>
+    </div>
+
+    <!-- Manuel klavye ve ekran okuyucu kontrolleri -->
+    <div class="ax-view ax-panels" id="view-manual" hidden>
+      <section class="ax-card ax-card--wide">
+        <div class="pl-callout pl-callout--warning" id="certDisclaimerBox">
+          <div><b>Otomatik puan erişilebilirlik sertifikası değildir:</b> Kural motoru (<code id="engineInline">AccessLens-Rules 1.0.0</code>, <span id="standardInline">WCAG 2.2 (AA / AAA)</span>) yalnız statik olarak saptanabilen kontrast, etiket, odak ve semantik örüntüleri yakalar. Gerçek erişilebilirlik kabulü için aşağıdaki klavye ve ekran okuyucu kontrollerini elle tamamlayın.</div>
+        </div>
+        <h2 class="pl-h3 ax-h">Klavye ve ekran okuyucu manuel kontrol listesi</h2>
+        <div class="ax-stack" id="manualList"></div>
+      </section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="ax-view ax-panels" id="view-settings" hidden>
+      <section class="ax-card ax-card--wide">
+        <h2 class="pl-h3 ax-h">Ölçüler ve doğrulama</h2>
+        <p class="pl-muted ax-small">Notion doğrulama ölçütü: bilinen fixture’larda kurala göre doğru bulgu; kritik yanlış olumlu &lt; %5 hedefi. Standart sürümü ve kural motoru çıktısı aşağıda açıkça raporlanır.</p>
+        <div class="ax-metrics" id="metrics"></div>
+        <p class="pl-muted ax-small" id="goldInfo"></p>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Denetim düzeyi</h2>
+        <div class="pl-field">
+          <label class="pl-field__label" for="levelSelect">WCAG 2.2 hedef düzeyi</label>
+          <select class="pl-input" id="levelSelect">
+            <option value="AA">WCAG 2.2 AA (Asgari — 4.5:1 / 3:1)</option>
+            <option value="AAA">WCAG 2.2 AAA (Gelişmiş — 7:1 / 4.5:1)</option>
+          </select>
+        </div>
+        <p class="pl-muted ax-small">Düzey değiştirildiğinde yüklü kesitler yeni kontrast eşiğine göre yeniden değerlendirilir.</p>
+      </section>
+      <section class="ax-card">
+        <h2 class="pl-h3 ax-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ax-small">İsteğe bağlıdır; sorunu sade dille açıklar ve düzeltme taslağı önerir. Otomatik puanı sertifika gibi sunmaz. Her istek ayrı onaylanır.</p>
+        <label class="ax-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632); Hub istemci anahtarı gerekir.</span></label>
+        <label class="ax-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — bu bilgisayardaki OpenAI uyumlu sunucu (LM Studio, Ollama…).</span></label>
+        <div class="ax-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi (yalnız 127.0.0.1 / localhost)</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ax-card ax-card--wide">
+        <div class="ax-bar"><h2 class="pl-h3 ax-h">Dışa aktarma ve gizlilik</h2><span class="ax-grow"></span>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="mdBtn">Denetim raporu (.md)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="csvBtn">Bulgular tablosu (.csv)</button>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="backupBtn">JSON yedek</button>
+        </div>
+        <ul class="ax-ul">
+          <li>Standart sürümü (<b>WCAG 2.2</b>) ve kural motoru (<b>AccessLens-Rules 1.0.0</b>) her ekranda ve dışa aktarılan raporda görünür.</li>
+          <li>Modele yalnız seçili bulgunun kural kodu ve ilgili öğe kesiti gönderilir; e-posta, bağlantı ve gizli anahtarlar <code>⟦…⟧</code> ile maskelenir.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ax-foot pl-muted">Access Lens 0.1.0 · PluginLabs · WCAG 2.2 · AccessLens-Rules 1.0.0 · otomatik denetim sertifika değildir</footer>
+  </main>
+
+  <dialog class="pl-modal ax-dialog ax-dialog--wide" id="snipDialog" aria-labelledby="snipTitleH">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="snipTitleH">HTML / CSS kesiti denetle</h2><p class="pl-muted ax-tight">Denetlemek istediğiniz sayfa kesitini veya bileşen kodunu yapıştırın.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <textarea class="pl-input ax-area ax-area--dlg" id="snipSource" spellcheck="false" aria-label="HTML veya CSS kodu" maxlength="120000" placeholder="<button><svg></svg></button>"></textarea>
+      <div class="ax-capgrid">
+        <div class="pl-field"><label class="pl-field__label" for="snipTitle">Kesit başlığı</label><input class="pl-input" id="snipTitle" maxlength="200" placeholder="ör. Kayıt formu"></div>
+        <div class="pl-field"><label class="pl-field__label" for="snipUrl">Kaynak adresi (isteğe bağlı, http/https)</label><input class="pl-input" id="snipUrl" maxlength="1000" spellcheck="false" placeholder="https://…"></div>
+      </div>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="snipCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="snipRun">Denetimi çalıştır</button></div>
+  </dialog>
+
+  <dialog class="pl-modal ax-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div class="pl-modal__icon ax-mymind-icon"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 3v4M21 5h-4"/></svg></div>
+      <div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ax-tight">Bulguları sade dille açıklamak ve düzeltme taslağı üretmek için yerel Hub bağlantısı.</p></div></div>
+    <div class="pl-modal__body ax-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">İstemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ax-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="ax-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ax-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

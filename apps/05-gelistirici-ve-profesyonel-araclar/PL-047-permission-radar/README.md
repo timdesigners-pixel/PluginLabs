@@ -6,11 +6,11 @@
 | --- | --- |
 | Kimlik | `PL-047` · `permission-radar` |
 | Kategori | 05 · Geliştirici ve profesyonel araçlar — PL-041–050 |
-| Durum | Yeni fikir |
+| Durum | 07.11.2026: **0.1.0 Windows uygulaması hazır** — [permission-radar-v0.1.0](https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/permission-radar-v0.1.0) (`pluginlabs-dagitim`, Windows runner: test + duman testi + SHA256 + BUILD-INFO + Windows ekran görüntüleri); kaynak [app/](app/README.md) · Notion durumu: Yeni fikir |
 | Öncelik / efor | P2 · M |
 | Hedef platformlar | Windows, Linux, macOS, Chrome |
 | Dağıtım biçimi | masaüstü uygulaması, Chrome eklentisi (Manifest V3) |
-| Geliştirme deposu | Henüz yok — bu klasör ürünün ön geliştirme alanıdır (bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)) |
+| Geliştirme deposu | Henüz yok — kaynak bu klasörün [`app/`](app/README.md) alt klasöründe (ön geliştirme alanı; bkz. [repo hiyerarşisi](../../../docs/REPO-HIYERARSISI.md)); Windows derlemesi ve sürüm dosyaları `pluginlabs-dagitim` deposunda (iş akışı: [`app/ci/`](app/ci/pluginlabs-dagitim-permission-radar-windows.yml)) |
 | Codex projesi | `PL-047 · Permission Radar` — ikinci klasör: PluginLabs |
 | Notion kaynağı | [Notion](https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1) |
 
@@ -56,6 +56,16 @@ Test eklentilerinde izin açıklamasının doğruluğu; bilinmeyen kapsamın aç
 ## Öncelik ve efor
 
 P2 · M; API kısıtları nedeniyle ilk hafta yapılabilirlik deneyi.
+
+## 0.1.0 sürümü (Windows)
+
+Notion MVP akışı: **izin verildiğinde eklenti izinlerini okunabilir kartlara dönüştür; değişim geçmişi ve Chrome’un yönetim ekranına yönlendirme.** Eklenti `manifest.json` bildirimlerini (`permissions`, `optional_permissions`, `host_permissions`, `content_scripts`) sade Türkçe izin kartlarına dönüştürür, sürümler arası izin değişim geçmişini (`+` yeni eklenen / `-` kaldırılan izinler) hesaplar ve `chrome://extensions/?id=<kimlik>` yönetim ekranına yönlendirir.
+
+Yapay zekânın rolü ve teknik sınır (Notion): **izinlerin ne anlama geldiğini açıklar; zararlı yazılım tespiti yaptığı iddiası taşımaz; diğer eklentilerin iç verisine eriştiği varsayılmaz.** Doğrulama ölçütü: **test eklentilerinde izin açıklamasının doğruluğu (%100); bilinmeyen kapsamın açık etiketlenmesi (%100).** İsteğe bağlı onaylı MyMind (PluginLabs Hub) ya da yerel model (loopback) açıklamasında olası zararlı yazılım/virüs iddiaları denetimde filtrelenir. Dışa aktarma: CSV envanteri, Markdown ekip politika raporu ve JSON yedek.
+
+![Permission Radar — okunabilir Türkçe izin kartları ve açık etiketlenen bilinmeyen kapsam](app/docs/screenshots/masaustu-01-izin-kartlari.png)
+
+Kapsam dışı (bu sürüm): diğer eklentilerin çalışma zamanı iç verisine erişim, zararlı yazılım taraması, Chrome eklentisi paketi, Linux/macOS paketleri. Ayrıntı: [app/README.md](app/README.md).
 
 ## Geliştirme ve ortak çalışma (Codex + Claude Code)
 

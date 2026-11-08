@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Pocket</title>
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="ap" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar ap-side" aria-label="Ana menü">
+    <div class="ap-brand" aria-label="PluginLabs Apps"><span class="ap-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="ap-apps">APPS</span></div>
+    <div class="ap-product">
+      <span class="pl-applogo" aria-hidden="true">AP</span>
+      <div class="ap-product__text"><b>API Pocket</b><span>Şablonlu hızlı API istemcisi</span></div>
+      <span class="ap-product__no pl-num" aria-label="Sıra numarası 42">42</span>
+    </div>
+    <div class="ap-navs" role="tablist" aria-label="Bölümler">
+      <button class="pl-navitem ap-navbtn" type="button" data-nav="requests" role="tab">İstek şablonları ve yanıt<span class="pl-badge" id="tplCount">0</span></button>
+      <button class="pl-navitem ap-navbtn" type="button" data-nav="env" role="tab">Ortam değişkenleri ve kasa<span class="pl-badge" id="envCount">0</span></button>
+      <button class="pl-navitem ap-navbtn" type="button" data-nav="settings" role="tab">Ölçüler ve ayarlar</button>
+    </div>
+    <div class="ap-mini" id="sideInfo"></div>
+    <div class="ap-side__foot">
+      <button class="pl-navitem ap-navbtn" type="button" id="openMymind"><span class="ap-mymind-dot" aria-hidden="true"></span>MyMind bağlantısı<span class="pl-badge" id="mymindState">Kapalı</span></button>
+    </div>
+  </nav>
+
+  <main class="ap-main">
+    <!-- İstek şablonları ve yanıt -->
+    <div class="ap-view ap-work" id="view-requests">
+      <div class="ap-toolbar">
+        <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="newReqBtn">Yeni istek şablonu</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="sampleBtn">Örnek koleksiyon</button>
+        <span class="ap-grow"></span>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="curlBtn">cURL kopyala (maskeli)</button>
+        <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="exportMdBtn">Markdown (.md)</button>
+        <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="exportColBtn">Koleksiyon (.json)</button>
+      </div>
+
+      <section class="ap-split" id="reqSplit">
+        <div class="ap-listcol ap-card">
+          <div class="ap-bar"><b class="ap-lbl">Koleksiyon</b><span class="ap-grow"></span><span class="pl-muted ap-small" id="reqSummary">0 şablon</span></div>
+          <ul class="ap-list" id="reqList" role="listbox" aria-label="İstek şablonları"></ul>
+        </div>
+        <div class="ap-detail ap-card" id="reqDetail" aria-label="Seçili istek ve yanıt"></div>
+      </section>
+    </div>
+
+    <!-- Ortam değişkenleri ve kasa -->
+    <div class="ap-view ap-work" id="view-env" hidden>
+      <div class="ap-toolbar">
+        <b class="pl-h3 ap-h">Ortam Değişkenleri ve İşletim Sistemi Kasası (DPAPI)</b>
+        <span class="ap-grow"></span>
+        <span class="pl-muted ap-small">Sırlar kasada şifreli saklanır; günlüklerde ve dışa aktarmada ⟦GİZLİ:...⟧ olarak görünür (sızıntı 0).</span>
+      </div>
+      <section class="ap-envwrap" id="envWrap"></section>
+    </div>
+
+    <!-- Ölçüler ve ayarlar -->
+    <div class="ap-view ap-panels" id="view-settings" hidden>
+      <section class="ap-card ap-card--wide">
+        <h2 class="pl-h3 ap-h">Doğrulama ölçütleri</h2>
+        <p class="pl-muted ap-small">Notion doğrulama ölçütü: örnek API'de ilk doğru istek ≤2 dk; sırların günlükte görünmesi sıfır; üretim ortamına yazan yöntemlerde ek önizleme.</p>
+        <div class="ap-metrics" id="metrics"></div>
+      </section>
+      <section class="ap-card">
+        <h2 class="pl-h3 ap-h">Güvenlik ve yazma önizlemesi</h2>
+        <label class="ap-check"><input type="checkbox" id="setConfirmWrite"> <span><b>Yazan yöntemlerde (POST/PUT/PATCH/DELETE) ek önizleme onayı iste</b> — gönderilmeden önce çözülmüş URL ve maskeli başlıklar/gövde onaylanır.</span></label>
+        <p class="pl-muted ap-small">Sırlar işletim sistemi kasasında (DPAPI) şifreli tutulur ve hiçbir günlük/dışa aktarma dosyasına açık yazılmaz.</p>
+      </section>
+      <section class="ap-card">
+        <h2 class="pl-h3 ap-h">Yapay zekâ motoru</h2>
+        <p class="pl-muted ap-small">İsteğe bağlıdır; yanıt alanlarını açıklar ve bağlı API belgesi varsa ilişkilendirir; kasadaki sırlar modele gönderilmez.</p>
+        <label class="ap-check"><input type="radio" name="provider" value="hub"> <span><b>MyMind</b> — PluginLabs Hub (127.0.0.1:47632)</span></label>
+        <label class="ap-check"><input type="radio" name="provider" value="yerel"> <span><b>Yerel model</b> — OpenAI uyumlu yerel sunucu (127.0.0.1 / localhost)</span></label>
+        <div class="ap-localbox" id="localBox">
+          <div class="pl-field"><label class="pl-field__label" for="localUrl">Sunucu adresi</label><input class="pl-input" id="localUrl" maxlength="200" spellcheck="false" placeholder="http://127.0.0.1:1234"></div>
+          <div class="pl-field"><label class="pl-field__label" for="localModel">Model adı</label><input class="pl-input" id="localModel" maxlength="80" spellcheck="false"></div>
+          <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="saveLocal">Kaydet</button>
+        </div>
+      </section>
+      <section class="ap-card ap-card--wide">
+        <h2 class="pl-h3 ap-h">Gizlilik ve kasa durumu</h2>
+        <ul class="ap-ul">
+          <li><code>{{API_KEY}}</code> gibi sırlar yalnız istek ağa çıkarken ana süreçte çözülür; arayüze ve günlüklere <code>⟦GİZLİ:API_KEY⟧</code> olarak yansır.</li>
+          <li id="vaultInfo"></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="ap-foot pl-muted">API Pocket 0.1.0 · PluginLabs · sırlar işletim sistemi kasasında · günlükte sır sızıntısı 0 · yazma yöntemlerinde ek önizleme</footer>
+  </main>
+
+  <dialog class="pl-modal ap-dialog" id="mymindDialog" aria-labelledby="mymindTitle">
+    <div class="pl-modal__head"><div><h2 class="pl-h3" id="mymindTitle">MyMind bağlantısı</h2><p class="pl-muted ap-tight">API yanıt alanlarını açıklar ve varsa doğru API belgesiyle bağlar.</p></div></div>
+    <div class="pl-modal__body ap-stack">
+      <div class="pl-field"><label class="pl-field__label" for="mymindKey">Hub istemci anahtarı</label><input class="pl-input" id="mymindKey" type="password" maxlength="190" autocomplete="off" spellcheck="false"></div>
+      <p class="pl-muted ap-tight" id="mymindInfo"></p>
+    </div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="mymindForget">Anahtarı kaldır</button><button class="pl-btn pl-btn--ghost" type="button" id="mymindCancel">Kapat</button><button class="pl-btn pl-btn--primary" type="button" id="mymindSave">Kaydet</button></div>
+  </dialog>
+
+  <div class="ap-busy" id="busy" hidden><span class="pl-spinner" aria-hidden="true"></span><span id="busyText">Çalışıyor…</span></div>
+  <div class="ap-toasts" id="toasts" aria-live="polite"></div>
+</div>
+<script src="src/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
