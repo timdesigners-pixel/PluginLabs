@@ -103,7 +103,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "v0.9.6 · Windows Rust/WebView2; Telegram mesaj geçmişi ve oturum sırası; 47 Rust, 11 betik, 8 soğuk açılış ve gerçek EXE kabulü geçti; Hub 0.5.1 kataloğunda",
+      "status": "09.11.2026: v0.9.7 ürün release'ine Windows kurulum + taşınabilir exe eklendi (leo-helper Actions 42611020132, CI derlemesi; yerel EXE kabulü ve Hub kataloğu güncellemesi bekliyor, Hub hâlâ 0.9.6 dağıtıyor) · v0.9.6 · Windows Rust/WebView2; Telegram mesaj geçmişi ve oturum sırası; 47 Rust, 11 betik, 8 soğuk açılış ve gerçek EXE kabulü geçti; Hub 0.5.1 kataloğunda",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -2449,7 +2449,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.2 · Windows/Chrome; gerçek Hub taban modeliyle sohbet doğrulandı; özel model eğitimi ayrı devam ediyor",
+      "status": "09.11.2026: v0.1.3 ürün release'ine Windows kurulum + taşınabilir exe + Chrome zip eklendi (mymind-ai Actions 42610966036, CI derlemesi; yerel EXE kabulü ve Hub kataloğu güncellemesi bekliyor, Hub hâlâ 0.1.2 dağıtıyor) · v0.1.2 · Windows/Chrome; gerçek Hub taban modeliyle sohbet doğrulandı; özel model eğitimi ayrı devam ediyor",
       "priority": null,
       "effort": null,
       "platforms": {
