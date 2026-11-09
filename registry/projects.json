@@ -226,7 +226,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut ayrıntılı proje planı",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması, kapalı pilot yayımlandı (finansal-asistan v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut ayrıntılı proje planı",
       "priority": "P1",
       "effort": "L",
       "platforms": {
@@ -255,7 +255,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-006",
@@ -267,7 +272,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması + Chrome eklentisi yayımlandı (note-master v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut fikir · Proje ve Fikirler notu",
       "priority": "P1",
       "effort": "S",
       "platforms": {
@@ -297,7 +302,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-007",
@@ -309,7 +319,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut fikir · Proje ve Fikirler notu",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması + Chrome eklentisi yayımlandı (musebook v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut fikir · Proje ve Fikirler notu",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -338,7 +348,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/musebook/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-008",
@@ -391,7 +406,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut fikir · uygulama keşif/paketleme yönü",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması + Chrome eklentisi yayımlandı (what-the-app v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut fikir · uygulama keşif/paketleme yönü",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -420,7 +435,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/what-the-app/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-010",
@@ -432,7 +452,7 @@
         "slug": "mevcut-urunler-ve-fikirler",
         "title": "01 · Mevcut ürünler ve fikirler — PL-001–010"
       },
-      "status": "Mevcut proje ve görev kayıtları · geçmiş ilerleme, canlı doğrulama yok",
+      "status": "30.10.2026: v0.1.0 Binbir Dizayn Stüdyo Windows uygulaması yayımlandı (1001-designs studyo-v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut proje ve görev kayıtları · geçmiş ilerleme, canlı doğrulama yok",
       "priority": "P2",
       "effort": "XL",
       "platforms": {
@@ -462,7 +482,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981edbfa2cdc55d867114",
+      "release": {
+        "tag": "studyo-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/1001-designs/releases/tag/studyo-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-011",
@@ -474,7 +499,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut kişisel kullanım fikri · ürünleşme önerisi",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması yayımlandı (whatsapp-chat-viewer v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut kişisel kullanım fikri · ürünleşme önerisi",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -503,7 +528,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/whatsapp-chat-viewer/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-012",
@@ -515,7 +545,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut fikir · doğrulanmış çalışan ürün sayılmaz",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması yayımlandı (dilekce-olustur v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut fikir · doğrulanmış çalışan ürün sayılmaz",
       "priority": "P2",
       "effort": "L",
       "platforms": {
@@ -544,7 +574,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/dilekce-olustur/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-013",
@@ -556,7 +591,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut isim/fikir · bu kapsam yeni öneri",
+      "status": "30.10.2026: v0.1.0 Windows uygulaması yayımlandı (gadget-dunyasi-companion v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut isim/fikir · bu kapsam yeni öneri",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -585,7 +620,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/gadget-dunyasi-companion/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-014",
@@ -597,7 +637,7 @@
         "slug": "kisisel-arsiv-ve-chrome-araclari",
         "title": "02 · Kişisel arşiv ve Chrome araçları — PL-011–020"
       },
-      "status": "Mevcut Instagram kaydedilenleri düzenleme görevi",
+      "status": "31.10.2026: v0.1.0 Windows uygulaması yayımlandı (social-saves-organizer v0.1.0; 08.11.2026 GitHub release doğrulaması) · Notion: Mevcut Instagram kaydedilenleri düzenleme görevi",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -626,7 +666,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981caa69dd557ce408743",
+      "release": {
+        "tag": "v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/social-saves-organizer/releases/tag/v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-015",
@@ -1477,7 +1522,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "release": {
+        "tag": "meeting-trace-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/meeting-trace-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-036",
@@ -1650,7 +1700,7 @@
         "slug": "arastirma-yazma-ve-bilgi-akislari",
         "title": "04 · Araştırma, yazma ve bilgi akışları — PL-031–040"
       },
-      "status": "Yeni fikir",
+      "status": "07.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim insight-table-v0.1.0; kaynak PluginLabs apps/…/PL-040-insight-table/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1673,7 +1723,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981c08edfda43643b31fc",
+      "release": {
+        "tag": "insight-table-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/insight-table-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-041",
@@ -1685,7 +1740,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "07.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim dev-patch-notes-v0.1.0; kaynak PluginLabs apps/…/PL-041-dev-patch-notes/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1709,7 +1764,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "dev-patch-notes-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/dev-patch-notes-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-042",
@@ -1721,7 +1781,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim api-pocket-v0.1.0; kaynak PluginLabs apps/…/PL-042-api-pocket/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1744,7 +1804,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "api-pocket-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/api-pocket-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-043",
@@ -1756,7 +1821,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "07.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim access-lens-v0.1.0; kaynak PluginLabs apps/…/PL-043-access-lens/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1779,7 +1844,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "access-lens-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/access-lens-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-044",
@@ -1791,7 +1861,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "07.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim design-token-scout-v0.1.0; kaynak PluginLabs apps/…/PL-044-design-token-scout/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -1814,7 +1884,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "design-token-scout-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/design-token-scout-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-045",
@@ -1826,7 +1901,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim context-kit-v0.1.0; kaynak PluginLabs apps/…/PL-045-context-kit/app) · Notion: Yeni fikir",
       "priority": "P0",
       "effort": "M",
       "platforms": {
@@ -1849,7 +1924,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "context-kit-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/context-kit-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-046",
@@ -1861,7 +1941,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim model-switchboard-v0.1.0; kaynak PluginLabs apps/…/PL-046-model-switchboard/app) · Notion: Yeni fikir",
       "priority": "P2",
       "effort": "L",
       "platforms": {
@@ -1884,7 +1964,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "model-switchboard-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/model-switchboard-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-047",
@@ -1896,7 +1981,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim permission-radar-v0.1.0; kaynak PluginLabs apps/…/PL-047-permission-radar/app) · Notion: Yeni fikir",
       "priority": "P2",
       "effort": "M",
       "platforms": {
@@ -1919,7 +2004,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "permission-radar-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/permission-radar-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-048",
@@ -1931,7 +2021,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim offline-aid-v0.1.0; kaynak PluginLabs apps/…/PL-048-offline-aid/app) · Notion: Yeni fikir",
       "priority": "P2",
       "effort": "L",
       "platforms": {
@@ -1954,7 +2044,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "offline-aid-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/offline-aid-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-049",
@@ -1966,7 +2061,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim invoice-inbox-v0.1.0; kaynak PluginLabs apps/…/PL-049-invoice-inbox/app) · Notion: Yeni fikir",
       "priority": "P2",
       "effort": "L",
       "platforms": {
@@ -1989,7 +2084,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "invoice-inbox-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/invoice-inbox-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-050",
@@ -2001,7 +2101,7 @@
         "slug": "gelistirici-ve-profesyonel-araclar",
         "title": "05 · Geliştirici ve profesyonel araçlar — PL-041–050"
       },
-      "status": "Yeni fikir",
+      "status": "08.11.2026: 0.1.0 Windows uygulaması yayımlandı (pluginlabs-dagitim decision-board-v0.1.0; kaynak PluginLabs apps/…/PL-050-decision-board/app) · Notion: Yeni fikir",
       "priority": "P1",
       "effort": "M",
       "platforms": {
@@ -2024,7 +2124,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1"
+      "notionUrl": "https://app.notion.com/p/4038aa13d8f981059dfad209ce1240d1",
+      "release": {
+        "tag": "decision-board-v0.1.0",
+        "url": "https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/decision-board-v0.1.0",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-051",
