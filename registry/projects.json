@@ -2222,19 +2222,21 @@
         "slug": "hub-disi-urun-depolari",
         "title": "06 · Bağımsız ürün depoları — PL-051–053"
       },
-      "status": "Bağımsız ürün deposu mevcut (private) · “01 · PluginLabs & Yazılım” sayfasında adı geçiyor · özellik listesi depodan doğrulanacak",
+      "status": "31.10.2026: v0.4.1 Windows x64 taşınabilir paket (WPF/WebView2 zip) + Android test APK yayımlandı (mutfak-atolyesi v0.4.1; 09.11.2026 GitHub release doğrulaması) · Bağımsız ürün deposu mevcut (private) · “01 · PluginLabs & Yazılım” sayfasında adı geçiyor · özellik listesi depodan doğrulanacak",
       "priority": null,
       "effort": null,
       "platforms": {
-        "windows": false,
+        "windows": true,
         "linux": false,
         "macos": false,
         "chrome": false,
         "web": true
       },
-      "platformText": "Web (Codex: PL · Web · Mutfak Atölyesi)",
+      "platformText": "Web + Windows x64 (WPF/WebView2) + Android test APK (Codex: PL · Web · Mutfak Atölyesi)",
       "formFactors": [
-        "web uygulaması"
+        "web uygulaması",
+        "masaüstü uygulaması",
+        "Android uygulaması (test APK)"
       ],
       "summary": null,
       "repo": {
@@ -2250,7 +2252,12 @@
         "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
-      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3"
+      "notionUrl": "https://app.notion.com/p/4088aa13d8f981c4989de0a071b81ef3",
+      "release": {
+        "tag": "v0.4.1",
+        "url": "https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1",
+        "platform": "windows"
+      }
     },
     {
       "id": "PL-054",
