@@ -1,5 +1,7 @@
 # Rust frontend sözleşmesi · 0.3.0
 
+Yayın öncesi kurtarma düzeltmesi: `snapshot.recovery` nesnesi `missingMedia:[{id,name}]` ve `message` döndürür; her medya öğesinde `missing:boolean` vardır. Eksik dosya proje/medya metadata'sını silmez ve açılışı engellemez. İlgili render isteği açık hatayla reddedilir. Yeniden açılışta yarım kalan işler otomatik çalışmaz; eksik tamamlanmış çıktı `failed` olur. Kuyruk/çalışma/tamamlama/iptal metadata'sı atomik oturum kaydına yazılır.
+
 Sahiplik: `ui/` diğer Kurgu sohbeti; `src-tauri/` motor sohbeti. Komutlar Tauri invoke ile çağrılır; frontend dosya/shell/token erişimi yapmaz.
 
 - `snapshot()` → `{project,media,jobs,capabilities}`. Project version 2, name/width/height/fps/clips/subtitles. Clip camelCase: id, mediaId, start, in, duration, layer, volume, fade, speed, brightness, contrast, saturation, blur, x,y,scale,opacity,keyframes,nodes. Süreler saniye; kayıt/render doğrulamasında FPS ızgarasına oturur.

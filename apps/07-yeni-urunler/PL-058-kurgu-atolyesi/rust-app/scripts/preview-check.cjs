@@ -44,6 +44,6 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'docs','screenshots')
  assert.ok(geometry.scroll<=geometry.client+1,'Küçük masaüstünde yatay taşma olmamalı');
  await page.screenshot({path:path.join(out,'rust-edit-1320.png')});
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
- await fs.writeFile(path.join(root,'docs','PREVIEW-EVIDENCE.json'),JSON.stringify({date:'2026-11-04',platform:'Windows x64 / Tauri 2 / WebView2',url:page.url(),capabilities:snapshot.capabilities,results,commandPalette:'passed',nodeDrag:'passed',slider:'passed',layout1320:'passed',externalRequests:external,errors,scope:'UI preview; sample scene/measurements. No AI inference, GPU telemetry or professional codec export claimed.'},null,2));
+ await fs.writeFile(path.join(root,'docs','PREVIEW-EVIDENCE.json'),JSON.stringify({date:new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'}),buildProfile:process.env.KURGU_BUILD_PROFILE||'development',sourceCommit:process.env.KURGU_SOURCE_COMMIT||null,platform:'Windows x64 / Tauri 2 / WebView2',url:page.url(),capabilities:snapshot.capabilities,results,commandPalette:'passed',nodeDrag:'passed',slider:'passed',layout1320:'passed',externalRequests:external,errors,scope:'UI preview; sample scene/measurements. No AI inference, GPU telemetry or professional codec export claimed.'},null,2));
  console.log(JSON.stringify({passed:results.length+5,screenshots:out,errors}));await browser.close();
 })().catch(e=>{console.error(e);process.exitCode=1;});
