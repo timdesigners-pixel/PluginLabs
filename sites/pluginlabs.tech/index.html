@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PluginLabs Tech — Yerel öncelikli uygulama ekosistemi</title>
+  <meta name="description" content="PluginLabs ekosisteminin mimarisi: loopback yerel API, izin ve onay modeli, MyMind yerel AI, sağlayıcı SDK, doğrulamalı dağıtım ve PluginLabs Advanced tasarım sistemi.">
+  <meta name="theme-color" content="#050b14">
+  <link rel="canonical" href="https://pluginlabs.tech/">
+  <meta property="og:title" content="PluginLabs Tech — Yerel öncelikli uygulama ekosistemi">
+  <meta property="og:description" content="Mimari, güvenlik modeli, MyMind ve tasarım sistemi.">
+  <meta property="og:url" content="https://pluginlabs.tech/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/pl-tokens.css">
+  <link rel="stylesheet" href="assets/pl-components.css">
+  <link rel="stylesheet" href="assets/pl-advanced.css">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="pl-site" data-pl data-pl-theme="dark" data-pl-surface="hud" data-pl-product="hub" lang="tr">
+  <a class="pl-site-skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="pl-site-nav">
+    <div class="pl-site-wrap pl-site-nav__in">
+      <a class="pl-site-brand" href="/" aria-label="PluginLabs Tech ana sayfa">
+        <span class="pl-site-logo" aria-hidden="true">p<span>l</span></span>PluginLabs<span class="pl-site-brand__tag">TECH</span>
+      </a>
+      <nav class="pl-site-nav__links" id="pl-nav-links" aria-label="Ana gezinme" data-pl-spy>
+        <ul class="pl-site-links">
+          <li><a class="pl-site-link" href="#mimari">Mimari</a></li>
+          <li><a class="pl-site-link" href="#guvenlik">Güvenlik</a></li>
+          <li><a class="pl-site-link" href="#mymind">MyMind</a></li>
+          <li><a class="pl-site-link" href="#tasarim">Tasarım sistemi</a></li>
+          <li><a class="pl-site-link" href="#platformlar">Platformlar</a></li>
+        </ul>
+      </nav>
+      <div class="pl-site-nav__end">
+        <button class="pl-site-search" type="button" data-pl-open-cmdk aria-label="Komut paletini aç">
+          <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span class="pl-site-search__text">Ara</span><span class="pl-kbd">Ctrl K</span>
+        </button>
+        <a class="pl-btn pl-btn--primary pl-site-nav__cta" href="https://pluginlabs.dev/">Belgelere git</a>
+        <button class="pl-iconbtn pl-iconbtn--outline pl-site-menubtn" type="button" data-pl-menu aria-controls="pl-nav-links" aria-expanded="false" aria-label="Menüyü aç">
+          <svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="icerik">
+    <!-- Kahraman -->
+    <section class="pl-site-hero" aria-labelledby="baslik">
+      <div class="pl-site-wrap pl-site-hero__grid">
+        <div class="pl-site-hero__copy">
+          <span class="pl-site-eyebrow"><span class="pl-dot" aria-hidden="true"></span>Ekosistem teknolojisi</span>
+          <h1 class="pl-site-display" id="baslik">Yerel öncelikli<br><span>bir uygulama ekosistemi.</span></h1>
+          <p class="pl-site-lead">PluginLabs; masaüstü uygulamalarını, tarayıcı eklentilerini ve yerel bir AI'ı tek bir güven sınırı içinde birleştirir. Her şey bu bilgisayarda çalışır, her yazma işlemi onaya gelir.</p>
+          <div class="pl-site-actions">
+            <a class="pl-btn pl-btn--primary pl-btn--lg" href="#mimari">Mimariyi incele</a>
+            <a class="pl-btn pl-btn--secondary pl-btn--lg" href="https://pluginlabs.dev/#baslarken">API ile başla</a>
+          </div>
+        </div>
+
+        <section class="pl-hudframe" aria-label="Teknik sınırlar">
+          <div class="pl-hudframe__title">Teknik sınırlar <span>Hub 0.5.2</span></div>
+          
+          <div class="pl-site-tablewrap" style="border:0">
+            <table class="pl-hudtable">
+              <thead><tr><th scope="col">Bileşen</th><th scope="col">Değer</th><th scope="col">Kural</th></tr></thead>
+              <tbody>
+                <tr><td>Hub API</td><td>127.0.0.1:47632</td><td><span class="pl-hudtag">Yalnız loopback</span></td></tr>
+                <tr><td>MyMind motoru</td><td>127.0.0.1:8765</td><td><span class="pl-hudtag">Oturum anahtarı</span></td></tr>
+                <tr><td>Sağlayıcı kirası</td><td>90 sn / 30 sn</td><td><span class="pl-hudtag">HMAC</span></td></tr>
+                <tr><td>Onay süresi</td><td>5 dk</td><td><span class="pl-hudtag pl-hudtag--warn">Masaüstü onayı</span></td></tr>
+                <tr><td>Kanal verisi</td><td>8.000 karakter</td><td><span class="pl-hudtag">30 / dk</span></td></tr>
+                <tr><td>Kaynak paketi</td><td>2 MB JSON</td><td><span class="pl-hudtag pl-hudtag--err">Kod çalıştırılmaz</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Metrikler -->
+    <section class="pl-site-section--tight" aria-label="Ekosistem sayıları">
+      <div class="pl-site-wrap pl-site-hudgrid">
+        <div class="pl-hudframe"><div class="pl-hudframe__title">Ürün</div><div class="pl-hudmetric pl-hudmetric--cyan"><span class="pl-hudmetric__ic"><svg class="pl-ico pl-ico--24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span class="pl-hudmetric__val" data-pl-stat="urun">59</span><span class="pl-hudmetric__lbl">7 kategoride</span></div></div>
+        <div class="pl-hudframe"><div class="pl-hudframe__title">Hub kataloğu</div><div class="pl-hudmetric"><span class="pl-hudmetric__ic"><svg class="pl-ico pl-ico--24" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/></svg></span><span class="pl-hudmetric__val" data-pl-stat="katalogKaydi">95</span><span class="pl-hudmetric__lbl">Doğrulamalı kayıt</span></div></div>
+        <div class="pl-hudframe"><div class="pl-hudframe__title">Tasarım sistemi</div><div class="pl-hudmetric pl-hudmetric--cyan"><span class="pl-hudmetric__ic"><svg class="pl-ico pl-ico--24" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span><span class="pl-hudmetric__val">181</span><span class="pl-hudmetric__lbl">Komponent</span></div></div>
+        <div class="pl-hudframe"><div class="pl-hudframe__title">MyMind bağlamı</div><div class="pl-hudmetric pl-hudmetric--amber"><span class="pl-hudmetric__ic"><svg class="pl-ico pl-ico--24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span><span class="pl-hudmetric__val">4.096</span><span class="pl-hudmetric__lbl">Token · yerel</span></div></div>
+      </div>
+    </section>
+
+    <!-- Mimari -->
+    <section class="pl-site-section" id="mimari" data-pl-cmd="Mimari" aria-labelledby="mimari-baslik">
+      <div class="pl-site-wrap">
+        <div class="pl-site-head">
+          <span class="pl-site-eyebrow">Mimari</span>
+          <h2 class="pl-site-h2" id="mimari-baslik">Merkezde Hub, çevresinde bağımsız ürünler.</h2>
+          <p class="pl-site-lead">Her ürün kendi deposunda, kendi yayın döngüsüyle gelişir. Hub; kurulumu, izinleri ve ürünler arası iletişimi tek noktadan yönetir.</p>
+        </div>
+        <div class="pl-site-arch" role="group" aria-label="Katmanlı mimari şeması">
+          <div class="pl-site-arch__row" style="--n:3">
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 1 · Ürünler</span><h3 class="pl-site-h3">Masaüstü uygulamaları</h3><span class="pl-site-mono">Electron · Rust/Tauri · Rust/WebView2</span></div>
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 1 · Ürünler</span><h3 class="pl-site-h3">Tarayıcı eklentileri</h3><span class="pl-site-mono">Manifest V3 · Browser Bridge</span></div>
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 1 · Ürünler</span><h3 class="pl-site-h3">Widget ve balonlar</h3><span class="pl-site-mono">Yüzen pencere · kısayol</span></div>
+          </div>
+          <div class="pl-site-arch__row">
+            <div class="pl-card pl-site-arch__node is-core"><span class="pl-label">Katman 2 · Çekirdek</span><h3 class="pl-site-h3">PluginLabs Hub</h3><span class="pl-site-mono">Electron 33 · Node 24 · yerel HTTP API 127.0.0.1:47632 · istemci anahtarları (plh_…) · masaüstü onay kuyruğu</span></div>
+          </div>
+          <div class="pl-site-arch__row" style="--n:4">
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 3</span><h3 class="pl-site-h3">MyMind</h3><span class="pl-site-mono">/v1/chat/completions · /v1/mymind/run</span></div>
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 3</span><h3 class="pl-site-h3">Sağlayıcılar</h3><span class="pl-site-mono">/v1/providers/register · /v1/actions/invoke</span></div>
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 3</span><h3 class="pl-site-h3">Kanallar</h3><span class="pl-site-mono">/v1/channels · /v1/stream (SSE)</span></div>
+            <div class="pl-card pl-site-arch__node"><span class="pl-label">Katman 3</span><h3 class="pl-site-h3">Dağıtım</h3><span class="pl-site-mono">GitHub Releases · SHA-256 · boyut sınırı</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Güvenlik -->
+    <section class="pl-site-section pl-site-section--band" id="guvenlik" data-pl-cmd="Güvenlik modeli" aria-labelledby="guvenlik-baslik">
+      <div class="pl-site-wrap">
+        <div class="pl-site-head">
+          <span class="pl-site-eyebrow">Güvenlik modeli</span>
+          <h2 class="pl-site-h2" id="guvenlik-baslik">Altı kural, hiçbir istisna.</h2>
+          <p class="pl-site-lead">Güven sınırı bilgisayarın kendisidir. Aşağıdaki kurallar Hub kodunda uygulanır ve otomatik testlerle denetlenir.</p>
+        </div>
+        <div class="pl-site-grid" style="--cols:3">
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg></span><h3 class="pl-site-h3">Yalnız loopback</h3><p>API yalnız literal 127.0.0.1 üzerinde dinler. Host başlığı denetlenir; Origin taşıyan tarayıcı istekleri reddedilir.</p></article>
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span><h3 class="pl-site-h3">Özetle saklanan anahtar</h3><p>İstemci anahtarı bir kez gösterilir; Hub yalnız SHA-256 özetini tutar. HTTP API yönetici anahtarı üretemez.</p></article>
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><h3 class="pl-site-h3">Masaüstü onayı</h3><p>İndirme, uygulama başlatma ve her yazma işlemi masaüstünde onaya gider. Onaylar 5 dakikada düşer; API kendi isteğini onaylayamaz.</p></article>
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></span><h3 class="pl-site-h3">Doğrulanan sağlayıcı</h3><p>Sağlayıcılar loopback callback ve oturum sırrıyla challenge/HMAC doğrular; 90 saniyelik kira 30 saniyede yenilenir.</p></article>
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="m9 12 2 2 4-4"/></svg></span><h3 class="pl-site-h3">Doğrulanan paket</h3><p>HTTPS indirme, sabitlenmiş SHA-256 ve dosya boyutu, arşiv çıkarma sınırları. Başarısız güncelleme mevcut sürümü korur.</p></article>
+          <article class="pl-card pl-site-feature"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg></span><h3 class="pl-site-h3">Veri, kod değil</h3><p>Kaynak paketleri en fazla 2 MB JSON'dur; içerik veri olarak saklanır, script, HTML ya da kabuk komutu olarak çalıştırılmaz.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MyMind -->
+    <section class="pl-site-section" id="mymind" data-pl-cmd="MyMind teknik özellikleri" aria-labelledby="mymind-baslik">
+      <div class="pl-site-wrap pl-site-split" style="align-items:start">
+        <div class="pl-site-head" style="margin:0">
+          <span class="pl-site-eyebrow">MyMind · ortak AI yeteneği</span>
+          <h2 class="pl-site-h2" id="mymind-baslik">Tek model adı, değiştirilebilir motor.</h2>
+          <p class="pl-site-lead">Uygulamalar modeli her zaman <span class="pl-site-mono">mymind-lite</span> adıyla çağırır. Hub arkada katalogdaki modeli ya da senin içe aktardığın GGUF modelini çalıştırır; istemcide değişiklik gerekmez.</p>
+          <p class="pl-muted">Bu sürümde streaming, görüntü girdisi, eğitim, ince ayar ve otomatik araç çalıştırma yoktur.</p>
+        </div>
+        <section class="pl-hudframe" aria-label="MyMind teknik özellikleri">
+          <div class="pl-hudframe__title">MyMind Lite <span>OpenAI uyumlu</span></div>
+          <table class="pl-hudtable">
+            <tbody>
+              <tr><td>Model</td><td>Qwen3 0.6B Q8_0 · Apache-2.0</td></tr>
+              <tr><td>Motor</td><td>llama.cpp b11669 · MIT</td></tr>
+              <tr><td>Boyut</td><td>~640 MB model · ~20 MB motor</td></tr>
+              <tr><td>Bağlam / çıktı</td><td>4.096 / 512 token</td></tr>
+              <tr><td>Eşzamanlılık</td><td>1 istek · 120 sn sınırı</td></tr>
+              <tr><td>Sıcaklık</td><td>0–1 · varsayılan 0,4</td></tr>
+              <tr><td>Özel model</td><td>GGUF · 1 MB–8 GB · SHA256SUMS</td></tr>
+              <tr><td>Hazır görev</td><td>12 görev · /v1/mymind/run</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </section>
+
+    <!-- Tasarım sistemi -->
+    <section class="pl-site-section pl-site-section--band" id="tasarim" data-pl-cmd="Tasarım sistemi" aria-labelledby="tasarim-baslik">
+      <div class="pl-site-wrap">
+        <div class="pl-site-split" style="align-items:start">
+          <div class="pl-site-head" style="margin:0">
+            <span class="pl-site-eyebrow">PluginLabs Advanced 2.0</span>
+            <h2 class="pl-site-h2" id="tasarim-baslik">Bir katman, yeniden boyama değil.</h2>
+            <p class="pl-site-lead">Tasarım sistemi yalnız <span class="pl-site-mono">[data-pl]</span> kapsayıcısında devreye girer; tokenlar <span class="pl-site-mono">--pl-</span>, sınıflar <span class="pl-site-mono">pl-</span> önekli ve <span class="pl-site-mono">@layer pl</span> içindedir. Mevcut ekranlar bozulmaz.</p>
+            <div class="pl-site-actions"><a class="pl-btn pl-btn--secondary" href="https://pluginlabs.dev/#tasarim-sistemi">Kullanım kılavuzu</a></div>
+          </div>
+          <div class="pl-site-grid" style="--cols:2">
+            <div class="pl-site-stat"><b>79</b><span class="pl-label">Temel komponent · PLC</span></div>
+            <div class="pl-site-stat"><b>102</b><span class="pl-label">Advanced komponent · PLA</span></div>
+            <div class="pl-site-stat"><b>6</b><span class="pl-label">Yüzey teması</span></div>
+            <div class="pl-site-stat"><b>12</b><span class="pl-label">Ekran şablonu</span></div>
+          </div>
+        </div>
+        <h3 class="pl-site-h3" style="margin:48px 0 16px">Ürün aksanları</h3>
+        <div class="pl-site-grid" style="--cols:4" role="list" aria-label="Ürün aksan renkleri">
+          <div class="pl-site-prod" role="listitem" data-pl-product="hub"><span class="pl-site-prod__ico" aria-hidden="true">PL</span><div><div class="pl-site-prod__name">Hub</div><div class="pl-site-prod__sub pl-site-mono">hub · Iris</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="leo"><span class="pl-site-prod__ico" aria-hidden="true">LH</span><div><div class="pl-site-prod__name">Leo Helper</div><div class="pl-site-prod__sub pl-site-mono">leo · Cyan</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="mindpalace"><span class="pl-site-prod__ico" aria-hidden="true">MP</span><div><div class="pl-site-prod__name">Mind Palace</div><div class="pl-site-prod__sub pl-site-mono">mindpalace · Lavanta</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="replicator"><span class="pl-site-prod__ico" aria-hidden="true">DR</span><div><div class="pl-site-prod__name">Design Replicator</div><div class="pl-site-prod__sub pl-site-mono">replicator · Pembe</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="mutfak"><span class="pl-site-prod__ico" aria-hidden="true">MA</span><div><div class="pl-site-prod__name">Mutfak Atölyesi</div><div class="pl-site-prod__sub pl-site-mono">mutfak · Turuncu</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="flowdock"><span class="pl-site-prod__ico" aria-hidden="true">FD</span><div><div class="pl-site-prod__name">Flow Dock</div><div class="pl-site-prod__sub pl-site-mono">flowdock · Teal</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="tweakster"><span class="pl-site-prod__ico" aria-hidden="true">TW</span><div><div class="pl-site-prod__name">Tweakster</div><div class="pl-site-prod__sub pl-site-mono">tweakster · Limon</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="extman"><span class="pl-site-prod__ico" aria-hidden="true">EM</span><div><div class="pl-site-prod__name">Extension Manager</div><div class="pl-site-prod__sub pl-site-mono">extman · Mavi</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="mymind"><span class="pl-site-prod__ico" aria-hidden="true">MM</span><div><div class="pl-site-prod__name">MyMind</div><div class="pl-site-prod__sub pl-site-mono">mymind · Altın</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="scrapper"><span class="pl-site-prod__ico" aria-hidden="true">US</span><div><div class="pl-site-prod__name">Ultimate Scrapper</div><div class="pl-site-prod__sub pl-site-mono">scrapper · Mercan</div></div></div>
+          <div class="pl-site-prod" role="listitem" data-pl-product="wishlist"><span class="pl-site-prod__ico" aria-hidden="true">MW</span><div><div class="pl-site-prod__name">MyWishlist</div><div class="pl-site-prod__sub pl-site-mono">wishlist · Gül</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platformlar -->
+    <section class="pl-site-section" id="platformlar" data-pl-cmd="Platform desteği" aria-labelledby="platform-baslik">
+      <div class="pl-site-wrap">
+        <div class="pl-site-head">
+          <span class="pl-site-eyebrow">Platformlar</span>
+          <h2 class="pl-site-h2" id="platform-baslik">Nerede çalışıyor?</h2>
+          <p class="pl-site-lead">Ürün sayıları <span class="pl-site-mono">registry/projects.json</span> kaydından üretilir. Android desteği yoktur; ayrı mimari kararı gerektirir.</p>
+        </div>
+        <div class="pl-site-tablewrap">
+          <table class="pl-table pl-site-matrix">
+            <caption class="pl-site-sr">Platform başına ürün sayısı ve Hub desteği</caption>
+            <thead><tr><th scope="col">Platform</th><th scope="col">Ürün sayısı</th><th scope="col">PluginLabs Hub</th><th scope="col">MyMind motoru</th></tr></thead>
+            <tbody>
+              <tr><td class="is-strong">Windows x64</td><td class="pl-site-mono" data-pl-stat="windows">0</td><td><span class="pl-hudtag">NSIS + taşınabilir</span></td><td><span class="pl-hudtag pl-hudtag--warn">Katalogda</span></td></tr>
+              <tr><td class="is-strong">Linux x64</td><td class="pl-site-mono" data-pl-stat="linux">0</td><td><span class="pl-hudtag">AppImage</span></td><td><span class="pl-hudtag">Doğrulandı</span></td></tr>
+              <tr><td class="is-strong">macOS</td><td class="pl-site-mono" data-pl-stat="macos">0</td><td><span class="pl-hudtag pl-hudtag--err">Yok</span></td><td><span class="pl-hudtag pl-hudtag--err">Yok</span></td></tr>
+              <tr><td class="is-strong">Chrome</td><td class="pl-site-mono" data-pl-stat="chrome">0</td><td><span class="pl-hudtag">Browser Bridge</span></td><td>—</td></tr>
+              <tr><td class="is-strong">Web</td><td class="pl-site-mono" data-pl-stat="web">0</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="pl-site-section">
+      <div class="pl-site-wrap">
+        <div class="pl-site-cta">
+          <div class="pl-stack" style="gap:10px">
+            <h2 class="pl-site-h2">Kendi uygulamanı ekosisteme bağla.</h2>
+            <p class="pl-site-lead">Sağlayıcı SDK'sı ile işlevlerini Hub'a kaydet, MyMind'ı ve kanalları kullan.</p>
+          </div>
+          <a class="pl-btn pl-btn--primary pl-btn--lg" href="https://pluginlabs.dev/">Belgelere git<svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pl-site-foot">
+    <div class="pl-site-wrap">
+      <div class="pl-site-foot__grid">
+        <div class="pl-site-foot__col" style="gap:14px">
+          <a class="pl-site-brand" href="/"><span class="pl-site-logo" aria-hidden="true">p<span>l</span></span>PluginLabs</a>
+          <p class="pl-muted" style="max-width:300px">Yerel öncelikli uygulama ekosistemi: Hub, MyMind ve PluginLabs Advanced.</p>
+        </div>
+        <nav class="pl-site-foot__col" aria-label="Teknoloji"><span class="pl-label">Teknoloji</span><a href="#mimari">Mimari</a><a href="#guvenlik">Güvenlik</a><a href="#mymind">MyMind</a><a href="#tasarim">Tasarım sistemi</a></nav>
+        <nav class="pl-site-foot__col" aria-label="Ürün"><span class="pl-label">Ürün</span><a href="https://getpluginlabs.com/#urunler">Ürün kataloğu</a><a href="https://getpluginlabs.com/#indir">Hub'ı indir</a></nav>
+        <nav class="pl-site-foot__col" aria-label="Geliştirici"><span class="pl-label">Geliştirici</span><a href="https://pluginlabs.dev/#baslarken">Hızlı başlangıç</a><a href="https://pluginlabs.dev/#uc-noktalar">Yerel API</a><a href="https://pluginlabs.dev/#saglayici">Sağlayıcı SDK</a></nav>
+      </div>
+      <div class="pl-site-foot__bar">
+        <span>© 2026 PluginLabs</span>
+        <nav class="pl-site-family" aria-label="PluginLabs siteleri"><a href="https://getpluginlabs.com/">getpluginlabs.com</a><a href="https://pluginlabs.tech/" aria-current="true">pluginlabs.tech</a><a href="https://pluginlabs.dev/">pluginlabs.dev</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="pl-site-dialog" id="pl-cmdk" aria-label="Komut paleti">
+    <div class="pl-cmdk">
+      <div class="pl-cmdk__input"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" role="combobox" aria-expanded="true" aria-controls="pl-cmdk-liste" aria-label="Bölüm, ürün veya komut ara" placeholder="Bölüm, ürün veya komut ara"><span class="pl-kbd">Esc</span></div>
+      <div class="pl-cmdk__list" id="pl-cmdk-liste" role="listbox" aria-label="Sonuçlar"></div>
+      <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gez</span><span><span class="pl-kbd">↵</span> aç</span><span><span class="pl-kbd">Esc</span> kapat</span></div>
+    </div>
+  </dialog>
+
+  <script>
+    window.PL_SITE = {
+      komutlar: [
+        { grup: "Eylemler", ad: "Yerel API başvurusunu aç", url: "https://pluginlabs.dev/#uc-noktalar", ipucu: "pluginlabs.dev" },
+        { grup: "Eylemler", ad: "Hub'ı indir", url: "https://getpluginlabs.com/#indir", ipucu: "getpluginlabs.com" }
+      ],
+      urunUrl: function () { return "https://getpluginlabs.com/#urunler"; }
+    };
+  </script>
+  <script src="assets/veri.js"></script>
+  <script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PluginLabs" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/pl_background</item>
+        <item name="android:statusBarColor">@color/pl_background</item>
+        <item name="android:navigationBarColor">@color/pl_background</item>
+        <item name="android:colorAccent">@color/pl_accent</item>
+    </style>
+
+    <style name="Theme.PluginLabs.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/pl_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.PluginLabs</item>
+    </style>
+</resources>

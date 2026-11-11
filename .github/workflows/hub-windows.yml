@@ -63,6 +63,14 @@ jobs:
           Get-ChildItem -File | Where-Object Name -ne 'SHA256SUMS.txt' | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content -Encoding utf8 SHA256SUMS.txt
           Get-Content SHA256SUMS.txt
           Pop-Location
+      # Yayın yapılmadığında paketler indirilebilir iş akışı çıktısı olarak yüklenir.
+      - name: Önizleme paketleri
+        if: inputs.publish != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: PluginLabs-Hub-${{ env.VER }}-windows
+          path: release/*
+          retention-days: 7
       - name: Yayımla
         if: inputs.publish == 'true'
         shell: pwsh

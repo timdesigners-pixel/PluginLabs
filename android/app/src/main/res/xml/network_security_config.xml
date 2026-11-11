@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Masaüstü köprüsü aynı ağdaki bilgisayara (özel IPv4) düz HTTP ile bağlanır; içerik uçtan uca
+     AES-256-GCM ile şifrelidir. BridgeClient yalnız özel ağ adreslerini, ApkInstaller yalnız HTTPS'i kabul eder. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

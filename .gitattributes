@@ -1,3 +1,11 @@
 # Üretilen dosyalar her platformda LF kalmalı (design-tokens testi bayt bayt karşılaştırır)
 ui/design-tokens.css text eol=lf
 ui/themes.css text eol=lf
+
+# Web siteleri: üretilen dosyalar her platformda aynı bayt olmalı
+sites/**/*.html text eol=lf
+sites/**/*.css text eol=lf
+sites/**/*.js text eol=lf
+sites/**/*.svg text eol=lf
+sites/**/*.md text eol=lf
+design-system/pluginlabs-advanced/assets/*.css text eol=lf

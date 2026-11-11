@@ -59,6 +59,7 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
   const operations = {
     snapshot: () => hub.snapshot(),
     readProduct: (id) => hub.readProduct(id),
+    setAppFeatures: (id, values) => hub.setAppFeatures(id, values),
     saveProduct: (id, data) => hub.saveProduct(id, data),
     idea: (id) => {
       const item = require("../resources/notion-catalog.json").items.find(
@@ -68,6 +69,10 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
       return item;
     },
     createBrowser: (name, id) => hub.extensions.createBrowser(name, id),
+    bridgeEnable: (enabled) => hub.bridge.setEnabled(enabled),
+    bridgePair: () => hub.bridge.startPairing(),
+    bridgeDecide: (id, allow) => hub.bridge.decide(id, allow),
+    bridgeRevoke: (id) => hub.bridge.revoke(id),
     browserAction: (client, id, action) =>
       hub.extensions.request(client, id, action),
     connectAppExtensions: async () => {

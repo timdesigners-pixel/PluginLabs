@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Hub koyu tema: ui/design-tokens.css ile aynı değerler -->
+    <color name="pl_background">#101214</color>
+    <color name="pl_surface">#191C1F</color>
+    <color name="pl_accent">#C1F78A</color>
+    <color name="pl_on_accent">#152013</color>
+</resources>

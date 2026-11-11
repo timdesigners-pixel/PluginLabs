@@ -245,6 +245,7 @@ function actionHTML(item, installed, job, different) {
   const menu = [
     mi("info", "Detaylı bilgi"),
     installed ? mi("manage", "Ayarlar ve paket bilgisi") : "",
+    state.appFeatures?.[item.id] ? mi("features", "Özellikleri aç/kapa") : "",
     item.repo || item.source ? mi("openSource", "Kaynağı gör ↗") : "",
   ].join("");
   return `<div class="pl-split app-split">${main}<button class="pl-btn pl-btn--primary pl-btn--sm" data-split-toggle aria-haspopup="menu" aria-expanded="false" aria-label="${esc(item.name)} için diğer seçenekler">${chevIco}</button><div class="pl-menu split-menu" role="menu" aria-label="${esc(item.name)}" hidden>${menu}</div></div>`;
@@ -618,7 +619,7 @@ function render() {
         "Her uygulama için ayrı anahtar, belirli izinler ve görünür işlemler.",
         button("＋ İstemci oluştur", "newClient", "", "primary"),
       ) +
-      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>Kanallar ve köprüler (${(state.channels || []).length})</h2></div>${channelsHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
+      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${bridgeHTML()}${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>Kanallar ve köprüler (${(state.channels || []).length})</h2></div>${channelsHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
       heading(
@@ -686,6 +687,31 @@ function clientsTable() {
     )
     .join("")}</tbody></table></section>`;
 }
+function bridgeHTML() {
+  const b = state.mobileBridge;
+  if (!b) return "";
+  const left = b.pairing ? Math.max(0, Math.round((b.pairing.expiresAt - Date.now()) / 60000)) : 0;
+  const addr = b.addresses.length ? b.addresses.map((a) => `${esc(a)}:${b.port}`).join(" · ") : "Ağ adresi bulunamadı";
+  const requests = b.requests
+    .map(
+      (r) =>
+        `<div class="pl-perm"><div class="pl-row"><b style="color:var(--pl-fg-1)">${esc(r.name)} eşleşmek istiyor</b></div><p>Telefonda görünen karşılaştırma kodu bu kodla aynıysa onaylayın: <span class="pl-num" style="font-size:22px;color:var(--pl-fg-1)">${esc(r.compare)}</span></p><div class="pl-row" style="justify-content:flex-end"><button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="bridgeReject" data-id="${esc(r.id)}">Reddet</button><button class="pl-btn pl-btn--primary pl-btn--sm" data-action="bridgeApprove" data-id="${esc(r.id)}">Onayla</button></div></div>`,
+    )
+    .join("");
+  const devices = b.devices.length
+    ? b.devices
+        .map(
+          (d) =>
+            `<div class="list-row"><div class="grow"><h3>${esc(d.name)}</h3><p>Eşleşme: ${date(d.createdAt)}${d.lastSeen ? ` · Son bağlantı: ${date(d.lastSeen)}` : ""}</p></div><button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="bridgeRevoke" data-id="${esc(d.id)}">Eşleşmeyi kaldır</button></div>`,
+        )
+        .join("")
+    : "<p>Eşleşmiş telefon yok.</p>";
+  return `<section class="card" id="mobile-bridge"><div class="page-heading" style="margin-bottom:0"><div><h2>Telefon köprüsü</h2><p style="margin-top:9px">PluginLabs Hub Android, aynı Wi-Fi ağındayken bu bilgisayarın durumunu görür, uygulama özelliklerini değiştirir ve kurulum ister. Kurulumlar burada onay bekler.</p></div><label class="pl-switch"><input type="checkbox" role="switch" data-bridge-switch aria-label="Telefon köprüsü" ${b.enabled ? "checked" : ""}></label></div>${
+    b.running
+      ? `<div class="code">Adres: ${addr}${b.pairing ? `<br>Eşleştirme kodu: <span class="pl-num" style="font-size:20px;letter-spacing:.2em">${esc(b.pairing.code)}</span> · ${left} dk geçerli` : ""}</div><div class="button-row">${button(b.pairing ? "Yeni kod al" : "Telefonu eşleştir", "bridgePair", "", "primary")}</div>${requests}<div class="row-heading"><h3>Eşleşmiş telefonlar (${b.devices.length})</h3></div>${devices}`
+      : `<p>Kapalı. Açınca yalnız eşleştirilmiş ve onayladığınız telefonlar bağlanabilir; yerel API yine yalnız bu bilgisayarda kalır.</p>`
+  }</section>`;
+}
 function pendingHTML() {
   const pending = state.pending.filter((p) => p.status === "pending");
   const gl =
@@ -736,7 +762,22 @@ function manage(id) {
     )
     .join("");
   showModal(
-    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
+    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}${state.appFeatures?.[id] ? button("Özellikler", "features", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
+  );
+}
+function features(id) {
+  const item = state.catalog.find((i) => i.id === id),
+    f = state.appFeatures?.[id];
+  if (!item || !f) return;
+  const platformLabel = { win32: "Windows", android: "Android" };
+  const rows = f.definitions
+    .map(
+      (d) =>
+        `<label class="pl-setting"><span class="pl-setting__text"><b>${esc(d.name)}</b><span class="pl-muted">${esc(d.description)} · ${d.platforms.map((p) => platformLabel[p] || p).join(", ")}</span></span><span class="pl-switch"><input type="checkbox" role="switch" name="${esc(d.id)}" aria-label="${esc(d.name)}" ${f.values[d.id] ? "checked" : ""}></span></label>`,
+    )
+    .join("");
+  showModal(
+    `<div class="modal-title"><h2>${esc(item.name)} · Özellikler</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Açılan veya kapatılan özellikleri uygulama Hub'dan okur. MyMind gönderim onayı ve veri azaltma kapatılamaz.</p><form id="features-form" data-id="${esc(id)}">${rows}<div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}<button class="pl-btn pl-btn--primary">Kaydet</button></div></form>`,
   );
 }
 async function run(action, id, fn) {
@@ -843,6 +884,7 @@ document.addEventListener("click", async (e) => {
       `<div class="modal-title"><h2>PluginLabs Pro</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Pro planı henüz yayında değil. Hesap, ücretli mağaza ve bulut eşitleme planlandı; şu an Hub tamamen yerel çalışır ve hiçbir veri hesaba bağlanmaz.</p><div class="notice">Pro yayına girdiğinde bu düğme plan seçimini açacak.</div><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
     );
   if (action === "manage") return manage(id);
+  if (action === "features") return features(id);
   if (action === "openProduct") return openProduct(id);
   if (action === "pairBrowser") return pairBrowser();
   if (action === "idea") return showIdea(id);
@@ -878,6 +920,14 @@ document.addEventListener("click", async (e) => {
       toast(
         "Yükleme başlatıldı. İlerlemeyi İşlem geçmişi bölümünden izleyebilirsiniz.",
       );
+    } else if (action === "bridgePair") {
+      await call("bridgePair");
+    } else if (action === "bridgeApprove" || action === "bridgeReject") {
+      await call("bridgeDecide", id, action === "bridgeApprove");
+      toast(action === "bridgeApprove" ? "Telefon eşleşti" : "Eşleştirme reddedildi");
+    } else if (action === "bridgeRevoke") {
+      await call("bridgeRevoke", id);
+      toast("Telefon eşleşmesi kaldırıldı");
     } else if (action === "toggle") {
       await call("toggle", id, !state.installed[id].enabled);
       closeModal();
@@ -975,6 +1025,17 @@ document.addEventListener("submit", async (e) => {
       tokenOnce = created.token;
       $("#modal-content").innerHTML =
         `<div class="modal-title"><h2>Uygulama anahtarı hazır</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Bu anahtar yalnızca şimdi gösterilir. Güvenli biçimde kaydedin ve uygulamanızın ortam değişkenine veya anahtar kasasına ekleyin.</p><div class="code">${esc(tokenOnce)}</div><div class="button-row">${button("Anahtarı kopyala", "copyToken")}${button("Tamam", "closeModal", "", "primary")}</div>`;
+    });
+  }
+  if (form.id === "features-form") {
+    const id = form.dataset.id,
+      values = {};
+    for (const d of state.appFeatures[id].definitions)
+      values[d.id] = form.elements.namedItem(d.id).checked;
+    await run("features", id, async () => {
+      await call("setAppFeatures", id, values);
+      closeModal();
+      toast("Özellik ayarları kaydedildi");
     });
   }
   if (form.id === "resource-form") {
@@ -1527,6 +1588,14 @@ document.addEventListener("change", (e) => {
   if (so) {
     sortMode = so.value;
     render();
+    return;
+  }
+  const bs = e.target.closest?.("[data-bridge-switch]");
+  if (bs) {
+    run("bridgeEnable", "", async () => {
+      await call("bridgeEnable", bs.checked);
+      toast(bs.checked ? "Telefon köprüsü açıldı" : "Telefon köprüsü kapatıldı");
+    });
     return;
   }
   const xs = e.target.closest?.("[data-ext-switch]");

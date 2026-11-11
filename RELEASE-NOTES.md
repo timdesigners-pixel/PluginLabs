@@ -1,3 +1,15 @@
+# 0.6.0 · 11.11.2026
+
+**Telefon köprüsü.** PluginLabs Hub Android, aynı Wi-Fi ağındaki masaüstü Hub'a bağlanır: bilgisayarın durumu, kurulu uygulamalar ve MyMind motoru telefonda görünür; uygulama özellikleri telefondan değiştirilir; kurulum istekleri masaüstünde onay bekler. Köprü varsayılan kapalıdır (API ve izinler → Telefon köprüsü). Eşleşme 6 haneli tek kullanımlık kod, iki ekranda aynı görünen 4 haneli karşılaştırma kodu ve masaüstü onayıyla yapılır; sonrasındaki tüm trafik AES-256-GCM ile şifrelidir. Yerel API yine yalnız 127.0.0.1'de dinler.
+
+**Uygulama özelliklerini aç/kapa.** Uygulama kataloğunda menüden “Özellikleri aç/kapa” (ör. Leo Helper: otomatik kod girişi, pano izleme, şart ayıklama, Scrapper köprüsü, kısayollar, MyMind). Uygulamalar değerleri `GET /v1/apps/features?app=<id>` ile okur.
+
+**PluginLabs Hub Android 0.2.0 (test).** Açılış ekranı, katalog ve SHA-256 doğrulamalı APK kurulumu, cihaz bilgileri, masaüstü eşleşmesi, özellikler, eklentiler, MyMind ve abonelik ekranları.
+
+Testler: `npm test` 47/47, `npm run test:ui` (Linux Xvfb, Electron 33). Paketler imzasızdır.
+
+---
+
 # 0.5.1
 
 PluginLabs Hub 0.5.1 kataloğu Leo Helper 0.9.6'ya günceller. Leo'nun Telegram mesaj geçmişi ve aynı profil için oturum sırası bu sürümde kullanılabilir. Hub, genel dağıtımdan Leo 0.9.6 ile MyMind AI 0.1.2 paketlerini indirdi ve boyutlarını ve SHA256 özetlerini doğruladı. 0.5.0 ile eklenen 11 ürün katalogda yer alır.
