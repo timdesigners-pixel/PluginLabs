@@ -56,6 +56,16 @@ Chromium (Playwright), Linux, 1440×900 tam sayfa ve 390×844 telefon; `c94a6d7`
 
 Komut paleti: ![](../docs/screenshots/sites/getpluginlabs.com-komut-paleti.png)
 
-## Yayın
+## Yayın (GitHub Pages)
 
-Alan adları ve barındırma bu depoda yapılandırılmamıştır. Her site klasörü bağımsız bir statik proje olarak (ör. Netlify, Vercel, GitHub Pages) kök dizini o klasör olacak şekilde yayımlanır.
+`.github/workflows/pages.yml`, `main` dalına `sites/**` değişikliği geldiğinde (ya da elle çalıştırıldığında) üç siteyi tek Pages yayınında birleştirir:
+
+| Yol | Site |
+| --- | --- |
+| `/` | getpluginlabs.com |
+| `/tech/` | pluginlabs.tech |
+| `/dev/` | pluginlabs.dev |
+
+`scripts/sites-pages.cjs` alan adlarına giden bağlantıları göreli yollara çevirir. Yerelde: `node scripts/sites-pages.cjs _site`.
+
+Bir depo yalnız tek bir özel alan adı taşıyabilir. Üç alan adının her birine ayrı site bağlamak için her site klasörü ayrı bir depoda (ya da başka bir statik barındırmada) yayımlanmalıdır.

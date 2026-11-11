@@ -59,3 +59,12 @@ test("ürün verisi kayıttaki tüm ürünleri içerir", () => {
   assert.equal(json.urunler.length, kayit.projects.length);
   assert.ok(json.urunler.every((u) => u.ad && u.harf && (u.urun || u.renk)));
 });
+
+test("GitHub Pages dönüşümü alan adı bağlantısı bırakmaz", () => {
+  const { donustur, YERLESIM } = require("../scripts/sites-pages.cjs");
+  for (const { site, yol } of YERLESIM) {
+    const html = donustur(fs.readFileSync(path.join(KOK, site, "index.html"), "utf8"), yol);
+    assert.equal(/https:\/\/(getpluginlabs\.com|pluginlabs\.(tech|dev))\//.test(html), false, site);
+    assert.equal(html.includes('href="/"'), false, site);
+  }
+});
