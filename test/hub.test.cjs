@@ -501,3 +501,31 @@ test("zip app installs into content/ and launches the declared file only", async
     assert.throws(() => hub.appFile("zip-app"));
   }
 });
+test("app feature switches: validated, persisted and readable by apps", async (t) => {
+  const hub = await fixture(t);
+  const snap = hub.snapshot().appFeatures["leo-helper"];
+  assert.equal(snap.values.autoSubmit, false);
+  assert.equal(snap.values.termsExtraction, true);
+  const resolved = await hub.setAppFeatures("leo-helper", { autoSubmit: true, mymind: false });
+  assert.equal(resolved.autoSubmit, true);
+  assert.equal(resolved.mymind, false);
+  await assert.rejects(hub.setAppFeatures("leo-helper", { unknown: true }));
+  await assert.rejects(hub.setAppFeatures("leo-helper", { autoSubmit: "yes" }));
+  await assert.rejects(hub.setAppFeatures("no-such-app", { mymind: true }));
+  const saved = JSON.parse(await fs.readFile(path.join(hub.root, "state.json"), "utf8"));
+  assert.equal(saved.features["leo-helper"].autoSubmit, true);
+  const base = `http://127.0.0.1:${hub.port}`;
+  assert.equal((await fetch(base + "/v1/apps/features?app=leo-helper")).status, 401);
+  const { token } = await hub.createClient("Leo", ["catalog.read"]);
+  const res = await fetch(base + "/v1/apps/features?app=leo-helper", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.features.autoSubmit, true);
+  assert.equal(body.features.clipboardWatch, false);
+  const missing = await fetch(base + "/v1/apps/features?app=no-such-app", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  assert.equal(missing.status, 404);
+});

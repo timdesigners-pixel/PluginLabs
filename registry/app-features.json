@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "note": "Uygulama özellik anahtarları. Masaüstü Hub (Uygulama → Özellikler) ve Android Hub aynı tanımları gösterir. Uygulama kendi değerini Hub'dan okur; okuyamazsa 'default' geçerlidir. Güvenlik onayları (MyMind gönderim onayı, veri azaltma) burada kapatılamaz.",
+  "apps": {
+    "leo-helper": [
+      {
+        "id": "autoSubmit",
+        "name": "Otomatik kod girişi",
+        "description": "Yeni kod gelince seçili hedef sitelere kendiliğinden girilir.",
+        "default": false,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "clipboardWatch",
+        "name": "Panoyu izle",
+        "description": "Kopyalanan Telegram mesajı işlenir (Android'de uygulama açılınca).",
+        "default": false,
+        "platforms": [
+          "win32",
+          "android"
+        ]
+      },
+      {
+        "id": "termsExtraction",
+        "name": "Kod şartlarını ayıkla",
+        "description": "Bonus, minimum yatırım, çevrim ve süre mesajdan okunur.",
+        "default": true,
+        "platforms": [
+          "win32",
+          "android"
+        ]
+      },
+      {
+        "id": "scrapperBridge",
+        "name": "Scrapper köprüsü",
+        "description": "Alınan kodların şartları Scrapper işlem geçmişiyle kıyaslanır.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "globalHotkeys",
+        "name": "Genel kısayollar",
+        "description": "Ctrl+Alt+P hızlı panel, Ctrl+Alt+Esc otomatik girişi durdurur.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "autoCopy",
+        "name": "Tek kodu otomatik kopyala",
+        "description": "Paylaşılan mesajda alınmaya uygun tek kod varsa panoya kopyalanır.",
+        "default": true,
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "id": "mymind",
+        "name": "MyMind yardımı",
+        "description": "Belirsiz sonuçta MyMind'a sorulur; her gönderim onay ister.",
+        "default": true,
+        "platforms": [
+          "win32",
+          "android"
+        ]
+      }
+    ],
+    "pluginlabs-scrapper": [
+      {
+        "id": "scheduledTasks",
+        "name": "Zamanlanmış görevler",
+        "description": "Kayıtlı kazıma görevleri belirlenen saatlerde çalışır.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "leoBridge",
+        "name": "Leo Helper köprüsü",
+        "description": "Leo'nun istediği işlem geçmişi görevleri çalıştırılır.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "mymind",
+        "name": "MyMind yardımı",
+        "description": "Seçici önerisi ve veri dönüştürmede MyMind kullanılır; her gönderim onay ister.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      }
+    ],
+    "mywishlist": [
+      {
+        "id": "priceAlerts",
+        "name": "Fiyat düşüşü uyarıları",
+        "description": "Takip edilen ürünlerin fiyatı düşünce uyarı verir.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      },
+      {
+        "id": "mymind",
+        "name": "MyMind yardımı",
+        "description": "Sağ tıkla ekleme ve ürün tanımada MyMind kullanılır; her gönderim onay ister.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      }
+    ],
+    "mind-palace": [
+      {
+        "id": "mymind",
+        "name": "MyMind yardımı",
+        "description": "Not ve görev önerilerinde MyMind kullanılır; her gönderim onay ister.",
+        "default": true,
+        "platforms": [
+          "win32"
+        ]
+      }
+    ]
+  }
+}
