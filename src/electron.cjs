@@ -69,6 +69,10 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
       return item;
     },
     createBrowser: (name, id) => hub.extensions.createBrowser(name, id),
+    bridgeEnable: (enabled) => hub.bridge.setEnabled(enabled),
+    bridgePair: () => hub.bridge.startPairing(),
+    bridgeDecide: (id, allow) => hub.bridge.decide(id, allow),
+    bridgeRevoke: (id) => hub.bridge.revoke(id),
     browserAction: (client, id, action) =>
       hub.extensions.request(client, id, action),
     connectAppExtensions: async () => {

@@ -1,4 +1,4 @@
-# PluginLabs Hub · Android (test sürümü 0.1.0)
+# PluginLabs Hub · Android (test sürümü 0.2.0)
 
 PluginLabs Hub'ın telefon uygulaması. Masaüstü Hub'ın kataloğunu, tasarım çizgisini ve MyMind kurallarını Android'e taşır.
 
@@ -44,10 +44,16 @@ Bugün kayıtlı APK'lar: Leo Helper mobil yardımcı 0.1.0 ve Mutfak Atölyesi 
 ## Mimari
 - Yerel Java kabuğu (`MainActivity`) + `WebView` içinde PluginLabs Advanced tokenlarıyla yazılmış arayüz (`assets/web`). Arayüz yalnız `appassets.androidplatform.net` kökeninden yüklenir; başka adrese gezinme engellenir, dış bağlantılar tarayıcıda açılır. CSP yalnız uygulamanın kendi dosyalarına izin verir.
 - Arayüzün çağırabildiği köprü (`HubBridge`) dardır: cihaz bilgisi okuma, doğrulamalı APK kurulumu, paylaşma ve dış bağlantı açma. Anahtar ya da belirteç arayüze verilmez.
-- İzinler: `INTERNET`, `ACCESS_NETWORK_STATE`, `REQUEST_INSTALL_PACKAGES`. Yedekleme kapalı, düz HTTP kapalı.
+- İzinler: `INTERNET`, `ACCESS_NETWORK_STATE`, `REQUEST_INSTALL_PACKAGES`. Yedekleme kapalı. Düz HTTP yalnız masaüstü köprüsü için kullanılır (içerik şifreli, yalnız yerel ağ).
 
-## Henüz yapılmayanlar (onay bekleyen ikinci aşama)
-- **Masaüstü eşleştirme ve masaüstü verisi:** Masaüstü Hub'ın yerel API'si yalnız `127.0.0.1` üzerinden açıktır. Telefonun masaüstü verisini görmesi için masaüstü tarafında kullanıcının açtığı, tek kullanımlık kodla eşleşen, yalnız okuma yetkili bir "mobil köprü" gerekir. Bu, Hub'ın güvenlik sınırını değiştirdiği için ayrıca onaylanmalı.
-- **MyMind istekleri:** Telefon, MyMind'ı yalnız eşleşmiş masaüstü Hub üzerinden kullanacak; eşleştirme gelince açılır.
+## Masaüstü eşleşmesi
+Cihazlar → Masaüstü Hub: masaüstündeki adres ve 6 haneli kod yazılır, iki ekranda aynı karşılaştırma kodu görülünce masaüstünde onaylanır. Sonra telefon masaüstü durumunu ve kurulu uygulamaları gösterir, Özellikler ekranında masaüstü değerlerini değiştirir, katalogdan "Masaüstüne kur" isteği gönderir (masaüstünde onay ister). Eşleşme anahtarı Android Keystore ile şifrelenip saklanır; istemci yalnız özel ağ (192.168.x, 10.x, 172.16–31.x) adreslerine bağlanır.
+
+| Eşleştir | Karşılaştırma kodu | Masaüstü durumu | Masaüstü özellikleri |
+| --- | --- | --- | --- |
+| ![](../docs/screenshots/android/09-masaustu-eslestir.png) | ![](../docs/screenshots/android/10-karsilastirma-kodu.png) | ![](../docs/screenshots/android/11-masaustu-durumu.png) | ![](../docs/screenshots/android/12-masaustu-ozellikleri.png) |
+
+## Henüz yapılmayanlar
+- **MyMind istekleri:** telefondan MyMind'a görev gönderme eşleşmiş masaüstü üzerinden bir sonraki adımda açılacak; şu an yalnız motor durumu görünür.
 - **Abonelik ödemesi:** Fiyat ve Google Play Faturalandırma kararı verilmedi; düğme kapalı.
 - **İmzalı sürüm:** Test APK'sı hata ayıklama anahtarıyla imzalanır. Mağaza/yayın için ayrı imza anahtarı gerekir.

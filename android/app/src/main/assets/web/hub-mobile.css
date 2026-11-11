@@ -173,3 +173,5 @@ body { margin: 0; }
   .pl-m-app *, .pl-m-app *::before, .pl-m-app *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 .pl-m-back { align-self: flex-start; }
+.pl-m-compare { font-family: var(--pl-font-mono); font-size: 44px; font-weight: 600; letter-spacing: .3em; color: var(--pl-fg-1); text-align: center; padding: 8px 0; }
+.pl-m-error { color: var(--pl-danger) !important; }

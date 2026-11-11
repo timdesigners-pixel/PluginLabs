@@ -45,7 +45,10 @@
     installs: {},
     featureApp: "",
     features: {},
+    desktop: { info: { paired: false }, status: null, features: null, pairing: null, error: "" },
   };
+  const pendingCalls = new Map();
+  let callSeq = 0;
 
   // ---------- Yardımcılar ----------
   function esc(v) {
@@ -111,6 +114,35 @@
     toastTimer = setTimeout(() => (t.hidden = true), 3200);
   }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // ---------- Masaüstü köprüsü ----------
+  function desktopCall(op, args = {}) {
+    if (!native) return Promise.reject(new Error("Yalnız Android uygulamasında"));
+    const reqId = `r${++callSeq}`;
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        pendingCalls.delete(reqId);
+        reject(new Error("Masaüstü yanıt vermedi"));
+      }, 20000);
+      pendingCalls.set(reqId, { resolve, reject, timer });
+      call("desktopCall", reqId, op, JSON.stringify(args));
+    });
+  }
+  function readDesktopInfo() {
+    state.desktop.info = callJson("desktopInfo") || { paired: false };
+  }
+  async function refreshDesktop() {
+    if (!state.desktop.info.paired) return;
+    try {
+      const [status, features] = await Promise.all([desktopCall("status"), desktopCall("features.get")]);
+      state.desktop.status = status;
+      state.desktop.features = features;
+      state.desktop.error = "";
+    } catch (e) {
+      state.desktop.error = e.message;
+    }
+  }
+  const deskInstalled = (id) => state.desktop.status?.installed?.find((x) => x.id === id);
 
   // ---------- Veri ----------
   function readDevice() {
@@ -183,8 +215,11 @@
     {
       label: "Bağlı cihazlar kontrol ediliyor",
       run: async () => {
-        state.pairing = load(KEYS.pairing, { desktop: null });
-        return state.pairing.desktop ? `Masaüstü: ${state.pairing.desktop.name}` : "Eşleşmiş masaüstü yok";
+        readDesktopInfo();
+        if (!state.desktop.info.paired) return "Eşleşmiş masaüstü yok";
+        await Promise.race([refreshDesktop(), wait(2500)]);
+        const st = state.desktop.status;
+        return st ? `Masaüstü: ${st.hub.host} · Hub ${st.hub.version}` : `Masaüstü: ${state.desktop.info.address} · bağlanılamadı`;
       },
     },
     {
@@ -301,11 +336,19 @@
         button: a.source ? `<button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="external" data-url="${esc(a.source)}">Kaynağı aç</button>` : "",
       };
     }
+    if (state.desktop.info.paired && state.desktop.status) {
+      const d = deskInstalled(i.id);
+      if (d) return { note: `Masaüstünde kurulu · v${d.version}${d.enabled ? "" : " · kapalı"}`, button: "" };
+      return {
+        note: "Masaüstüne kurulur; masaüstünde onay ister",
+        button: `<button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="desk-install" data-id="${esc(i.id)}">Masaüstüne kur</button>`,
+      };
+    }
     if (i.kind === "engine" || i.kind === "model") {
       return { note: "Masaüstü Hub'da MyMind için kurulur", button: "" };
     }
     if (EXT_KINDS.includes(i.kind)) {
-      return { note: "Masaüstü Hub eklentisi · eşleşince buradan kurulur", button: "" };
+      return { note: "Masaüstü Hub eklentisi · masaüstü eşleşince buradan kurulur", button: "" };
     }
     return {
       note: "Masaüstü Hub'dan kurulur",
@@ -406,20 +449,7 @@
       </div>`
       : `<div class="pl-m-card"><div class="pl-m-card__head"><h2>Bu telefon</h2><span class="pl-status">Önizleme</span></div><p>Cihaz bilgisi yalnız Android uygulamasında okunur.</p></div>`;
 
-    const desk = state.pairing?.desktop;
-    const desktop = desk
-      ? `<div class="pl-m-card"><div class="pl-m-card__head"><h2>${esc(desk.name)}</h2><span class="pl-status pl-status--online">Eşleşti</span></div></div>`
-      : `
-      <div class="pl-m-card">
-        <div class="pl-m-card__head"><h2>Masaüstü Hub</h2><span class="pl-status pl-status--warning">Eşleşmedi</span></div>
-        <p>Masaüstündeki kurulu uygulamalar, sürümler, MyMind motoru ve disk durumu eşleştirmeden sonra burada görünür. Masaüstü Hub şu an yalnız kendi bilgisayarından (127.0.0.1) erişime açık; telefon eşleştirmesi güvenlik onayından sonra açılacak.</p>
-        <ol class="pl-m-steps">
-          <li>Masaüstünde Hub → Ayarlar → Mobil cihazlar</li>
-          <li>“Telefonu eşleştir” ile tek kullanımlık kod al</li>
-          <li>Kodu bu ekrana gir; yalnız okuma izni verilir</li>
-        </ol>
-        <button class="pl-btn pl-btn--primary pl-btn--block" disabled>Eşleştir · yakında</button>
-      </div>`;
+    const desktop = desktopCard();
 
     return `
       ${head("Cihazlar", "Bu telefon, masaüstü Hub ve bağlı diğer cihazlar.")}
@@ -429,18 +459,77 @@
       <div class="pl-m-empty">Bağlı başka cihaz yok.</div>`;
   }
 
+  function desktopCard() {
+    const D = state.desktop;
+    if (!D.info.paired) {
+      const p = D.pairing;
+      if (p && p.state === "compare") {
+        return `
+      <div class="pl-m-card pl-m-card--hero">
+        <div class="pl-m-card__head"><h2>Karşılaştırma kodu</h2><span class="pl-status pl-status--syncing">Onay bekleniyor</span></div>
+        <p>Masaüstü Hub'da aynı kod görünüyorsa orada <strong>Onayla</strong>'ya bas.</p>
+        <div class="pl-m-compare" aria-live="polite">${esc(p.value)}</div>
+        <button class="pl-btn pl-btn--ghost" data-act="desk-cancel">Vazgeç</button>
+      </div>`;
+      }
+      const err = p && p.state !== "compare" && p.state !== "busy" ? { rejected: "Masaüstünde reddedildi.", expired: "Süre doldu; yeni kod al.", cancelled: "Eşleştirme iptal edildi.", error: p.error || "Eşleşme başarısız." }[p.state] : "";
+      return `
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>Masaüstü Hub</h2><span class="pl-status pl-status--warning">Eşleşmedi</span></div>
+        <p>Masaüstünde Hub → API ve izinler → <strong>Telefon köprüsü</strong>'nü aç, “Telefonu eşleştir” de. Görünen adresi ve 6 haneli kodu buraya yaz. Telefon ve bilgisayar aynı Wi-Fi ağında olmalı.</p>
+        <label class="pl-field"><span class="pl-field__label">Masaüstü adresi</span><input class="pl-input" id="desk-addr" inputmode="decimal" autocomplete="off" placeholder="192.168.1.20:47633" value="${esc(D.info.address || "")}" /></label>
+        <label class="pl-field"><span class="pl-field__label">Eşleştirme kodu</span><input class="pl-input" id="desk-code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6 haneli kod" /></label>
+        ${err ? `<p class="pl-m-error">${esc(err)}</p>` : ""}
+        <button class="pl-btn pl-btn--primary pl-btn--block" data-act="desk-pair" ${p && p.state === "busy" ? "disabled" : ""}>${p && p.state === "busy" ? "Bağlanıyor…" : "Eşleştir"}</button>
+      </div>`;
+    }
+    const st = D.status;
+    if (!st) {
+      return `
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>Masaüstü Hub</h2><span class="pl-status pl-status--error">Bağlanılamadı</span></div>
+        <p>${esc(D.error || "Masaüstüne ulaşılamadı.")} Bilgisayarın açık, Hub'ın çalıştığından ve aynı ağda olduğundan emin ol.</p>
+        <dl class="pl-m-kv"><dt>Adres</dt><dd>${esc(D.info.address)}</dd></dl>
+        <div class="pl-row"><button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="desk-refresh">Yeniden dene</button><button class="pl-btn pl-btn--ghost pl-btn--sm" data-act="desk-unpair">Eşleşmeyi kaldır</button></div>
+      </div>`;
+    }
+    const os = { win32: "Windows", linux: "Linux", darwin: "macOS" }[st.hub.platform] || st.hub.platform;
+    const apps = st.installed.filter((a) => a.kind === "app");
+    return `
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>${esc(st.hub.host)}</h2><span class="pl-status pl-status--online">Bağlı</span></div>
+        <dl class="pl-m-kv">
+          <dt>PluginLabs Hub</dt><dd>v${esc(st.hub.version)}</dd>
+          <dt>Sistem</dt><dd>${esc(os)} ${esc(st.hub.release)}</dd>
+          <dt>İşlemci</dt><dd>${esc(st.system.cpus)} çekirdek</dd>
+          <dt>MyMind motoru</dt><dd>${st.model.running ? "Çalışıyor" : "Kapalı"}</dd>
+          <dt>Süren işlem</dt><dd>${esc(st.jobs)}</dd>
+          <dt>Onay bekleyen</dt><dd>${esc(st.pending)}</dd>
+        </dl>
+        ${meter("Bellek (RAM)", st.system.memTotal - st.system.memFree, st.system.memTotal)}
+        ${st.system.disk ? meter("Hub diski", st.system.disk.total - st.system.disk.free, st.system.disk.total) : ""}
+        <div class="pl-row"><button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="desk-refresh">Yenile</button><button class="pl-btn pl-btn--ghost pl-btn--sm" data-act="desk-unpair">Eşleşmeyi kaldır</button></div>
+      </div>
+      <div class="pl-m-section-label">Masaüstündeki uygulamalar (${apps.length})</div>
+      ${
+        apps.length
+          ? `<div class="pl-m-card">${apps.map((a) => `<div class="pl-m-setting"><span class="pl-m-setting__text"><strong>${esc(a.name)}</strong><span>v${esc(a.version)}</span></span>${a.enabled ? `<span class="pl-badge pl-badge--success">Etkin</span>` : `<span class="pl-badge">Kapalı</span>`}</div>`).join("")}</div>`
+          : `<div class="pl-m-empty">Masaüstü Hub'a kurulu uygulama yok.</div>`
+      }`;
+  }
+
   function sw(id, label, help, checked, disabled = false) {
     return `<label class="pl-m-setting"><span class="pl-m-setting__text"><strong>${esc(label)}</strong>${help ? `<span>${esc(help)}</span>` : ""}</span><span class="pl-switch"><input type="checkbox" data-setting="${esc(id)}" ${checked ? "checked" : ""} ${disabled ? "disabled" : ""} aria-label="${esc(label)}" /></span></label>`;
   }
 
   function renderMyMind() {
     const m = state.mymind;
-    const desk = state.pairing?.desktop;
+    const deskSt = state.desktop.status;
     const apps = mymindApps();
     return `
       ${head("MyMind AI", "Ortak yapay zekâ yeteneği: izinler, gizlilik ve kullanım.")}
       <div class="pl-m-card pl-m-card--mymind">
-        <div class="pl-m-card__head"><h2>Bağlantı</h2>${desk ? `<span class="pl-status pl-status--online">Hazır</span>` : `<span class="pl-status pl-status--warning">Masaüstü bekleniyor</span>`}</div>
+        <div class="pl-m-card__head"><h2>Bağlantı</h2>${deskSt ? (deskSt.model.running ? `<span class="pl-status pl-status--online">Hazır</span>` : `<span class="pl-status pl-status--warning">Masaüstünde model kapalı</span>`) : `<span class="pl-status pl-status--warning">Masaüstü bekleniyor</span>`}</div>
         <dl class="pl-m-kv">
           <dt>Durum</dt><dd>${m.enabled ? "Etkin" : "Kapalı"}</dd>
           <dt>Model</dt><dd>My Mind Lite · masaüstü Hub</dd>
@@ -503,9 +592,29 @@
         ${rows}
       </div>
       ${leoCard}
+      ${desktopFeatures(item)}`;
+  }
+
+  function desktopFeatures(item) {
+    const D = state.desktop;
+    const values = D.features?.[item.id];
+    if (!D.info.paired || !values) {
+      return `
       <div class="pl-m-card">
-        <div class="pl-m-card__head"><h2>Masaüstü</h2><span class="pl-status pl-status--warning">Eşleşme bekleniyor</span></div>
-        <p>Windows'a özel ayarlar masaüstü Hub'da (Uygulama → Özellikleri aç/kapa) değiştirilir. Telefon ile masaüstü eşleşince bu ayarlar iki yönde eşitlenecek.</p>
+        <div class="pl-m-card__head"><h2>Masaüstü</h2><span class="pl-status pl-status--warning">${D.info.paired ? "Bağlanılamadı" : "Eşleşme bekleniyor"}</span></div>
+        <p>Masaüstündeki değerleri buradan değiştirmek için Cihazlar → Masaüstü Hub ekranından eşleştir.</p>
+      </div>`;
+    }
+    const label = { win32: "Windows", android: "Android" };
+    const rows = item.features
+      .filter((f) => f.platforms.includes("win32"))
+      .map((f) => sw(`desk:${f.id}`, f.name, `${f.description} · ${f.platforms.map((p) => label[p] || p).join(", ")}`, values[f.id]))
+      .join("");
+    return `
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>Masaüstündeki değerler</h2><span class="pl-status pl-status--online">${esc(D.status?.hub.host || "Bağlı")}</span></div>
+        <p>Buradaki değişiklik masaüstü Hub'a hemen yazılır.</p>
+        ${rows}
       </div>`;
   }
 
@@ -601,6 +710,38 @@
     else if (act === "cancel") call("cancelInstall", btn.dataset.id);
     else if (act === "open") call("openApp", btn.dataset.pkg);
     else if (act === "perm") call("openInstallSettings");
+    else if (act === "desk-pair") {
+      const addr = $("#desk-addr").value.trim();
+      const code = $("#desk-code").value.trim();
+      if (!/^\d{1,3}(\.\d{1,3}){3}(:\d{2,5})?$/.test(addr)) return toast("Adresi 192.168.1.20:47633 biçiminde yaz.");
+      if (!/^\d{6}$/.test(code)) return toast("Kod 6 haneli olmalı.");
+      if (!native) return toast("Eşleştirme yalnız Android uygulamasında yapılır.");
+      state.desktop.info.address = addr;
+      state.desktop.pairing = { state: "busy" };
+      render();
+      call("desktopPair", addr, code);
+    } else if (act === "desk-cancel") {
+      call("desktopCancelPair");
+      state.desktop.pairing = { state: "cancelled" };
+      render();
+    } else if (act === "desk-refresh") {
+      btn.disabled = true;
+      refreshDesktop().then(() => {
+        render();
+        toast(state.desktop.status ? "Masaüstü bilgileri yenilendi." : "Masaüstüne ulaşılamadı.");
+      });
+    } else if (act === "desk-unpair") {
+      if (!window.confirm("Bu telefonun masaüstü eşleşmesi kaldırılsın mı? Masaüstünde de 'Eşleşmeyi kaldır' demen önerilir.")) return;
+      call("desktopUnpair");
+      state.desktop = { info: { paired: false }, status: null, features: null, pairing: null, error: "" };
+      render();
+    } else if (act === "desk-install") {
+      btn.disabled = true;
+      desktopCall("install", { id: btn.dataset.id })
+        .then(() => toast("İstek gönderildi; masaüstünde API ve izinler ekranından onayla."))
+        .catch((e) => toast(e.message))
+        .finally(() => refreshDesktop().then(render));
+    }
     else if (act === "features") {
       state.featureApp = btn.dataset.id;
       go("features");
@@ -635,7 +776,8 @@
         /* yok say */
       }
       loadMyMind();
-      state.pairing = { desktop: null };
+      call("desktopUnpair");
+      state.desktop = { info: { paired: false }, status: null, features: null, pairing: null, error: "" };
       render();
       toast("Yerel ayarlar sıfırlandı.");
     }
@@ -659,6 +801,21 @@
     if (!key) return;
     const m = state.mymind;
     if (key === "confirmEach" || key === "minimizeData") return;
+    if (key.startsWith("desk:")) {
+      const app = state.featureApp, fid = key.slice(5), val = e.target.checked;
+      e.target.disabled = true;
+      desktopCall("features.set", { app, values: { [fid]: val } })
+        .then((v) => {
+          state.desktop.features[app] = v;
+          toast("Masaüstüne kaydedildi.");
+        })
+        .catch((err) => {
+          e.target.checked = !val;
+          toast(err.message);
+        })
+        .finally(() => (e.target.disabled = false));
+      return;
+    }
     if (key.startsWith("feature:")) {
       const id = state.featureApp;
       state.features[id] = { ...(state.features[id] || {}), [key.slice(8)]: e.target.checked };
@@ -754,6 +911,21 @@
           }
           render();
         }
+      } else if (ev.type === "bridgeResult") {
+        const p = pendingCalls.get(ev.reqId);
+        if (!p) return;
+        pendingCalls.delete(ev.reqId);
+        clearTimeout(p.timer);
+        ev.ok ? p.resolve(ev.data) : p.reject(new Error(ev.error || "Masaüstü işlemi başarısız"));
+      } else if (ev.type === "bridgePair") {
+        state.desktop.pairing = { state: ev.state, value: ev.value, error: ev.error };
+        if (ev.state === "paired") {
+          state.desktop.pairing = null;
+          readDesktopInfo();
+          toast(`Masaüstü eşleşti: ${ev.value || ""}`);
+          refreshDesktop().then(render);
+        }
+        if (state.route === "devices") render();
       } else if (ev.type === "resume") {
         if ($("#splash").hidden) {
           readDevice();

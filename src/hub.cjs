@@ -227,6 +227,7 @@ class Hub extends EventEmitter {
     this.controllers = new Map();
     this.tasks = new Set();
     this.extensions = new (require("./extensions.cjs").ExtensionManager)(this);
+    this.bridge = new (require("./mobile-bridge.cjs").MobileBridge)(this, options.bridge);
     this.appExtensions = new (require("./app-extensions.cjs").AppExtensions)(
       this,
     );
@@ -255,6 +256,8 @@ class Hub extends EventEmitter {
     if (!MODEL_SOURCES.includes(this.state.settings.modelSource))
       this.state.settings.modelSource = "catalog";
     this.catalog.push(...(this.state.customCatalog || []));
+    if (this.state.settings.mobileBridge?.enabled)
+      await this.bridge.start().catch((e) => this.log(`Telefon köprüsü açılamadı: ${e.message}`));
     this.log("Merkez hazır");
     return this;
   }
@@ -326,6 +329,7 @@ class Hub extends EventEmitter {
       api: { port: this.port || null, running: !!this.server },
       version: require("../package.json").version,
       settings: publicSettings,
+      mobileBridge: this.bridge.snapshot(),
       appFeatures: Object.fromEntries(
         Object.keys(appFeatures.definitions.apps).map((id) => [
           id,
@@ -1462,6 +1466,7 @@ class Hub extends EventEmitter {
     for (const c of this.controllers.values()) c.abort();
     await Promise.allSettled([...this.tasks]);
     await this.stopModel();
+    await this.bridge.stop();
     if (this.server) {
       this.server.closeAllConnections();
       await new Promise((r) => this.server.close(r));

@@ -619,7 +619,7 @@ function render() {
         "Her uygulama için ayrı anahtar, belirli izinler ve görünür işlemler.",
         button("＋ İstemci oluştur", "newClient", "", "primary"),
       ) +
-      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>Kanallar ve köprüler (${(state.channels || []).length})</h2></div>${channelsHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
+      `<section class="card"><div class="page-heading" style="margin-bottom:0"><div><h2>Yerel API</h2><p style="margin-top:9px">http://127.0.0.1:${state.api.port || 47632}/v1</p></div><span class="api-status"><i class="status-dot"></i>${state.api.running ? "Dinliyor" : "Çevrimdışı"}</span></div><div class="code">Authorization: Bearer &lt;uygulamaya özel anahtar&gt;<br>OpenAI uyumlu: POST /v1/chat/completions</div><p>API yalnızca bu cihazda dinler. Tarayıcı kaynakları engellenir. SDK: sdk/client.cjs · Diğer uygulamalar adaptörleriyle bağlanır.</p></section>${bridgeHTML()}${hudPanel()}<div class="row-heading"><h2>Bekleyen işlem onayları</h2></div>${pendingHTML()}<div class="row-heading"><h2>Kanallar ve köprüler (${(state.channels || []).length})</h2></div>${channelsHTML()}<div class="row-heading"><h2>İstemciler (${state.clients.length})</h2></div>${clientsTable()}<div class="row-heading"><h2>Bağlı işlev sağlayıcıları (${state.providers.length})</h2></div><section class="card">${state.providers.length ? state.providers.map((p) => `<div class="list-row"><div class="grow"><h3>${esc(p.name)}</h3><p>${p.actions.map((a) => `${esc(a.label)} (${a.write ? "onaylı" : "okuma"})`).join(" · ")}</p></div><span class="badge online">● Bağlı</span></div>`).join("") : "<p>Çevrimiçi sağlayıcı bulunamadı. SDK ile kayıt olan uygulamalar burada görünür.</p>"}</section>`;
   if (page === "settings")
     html =
       heading(
@@ -686,6 +686,31 @@ function clientsTable() {
         `<tr><td>${esc(c.name)}<br><small class="pl-muted pl-num">${esc(c.namespace || "")}</small></td><td title="${esc(c.scopes.join(" · "))}">${c.scopes.length ? c.scopes.length + " izin" : "—"}</td><td>${date(c.createdAt)}</td><td><span class="pl-hudtag">Etkin</span></td><td>${button("Erişimi iptal et", "revokeClient", c.id, "danger")}</td></tr>`,
     )
     .join("")}</tbody></table></section>`;
+}
+function bridgeHTML() {
+  const b = state.mobileBridge;
+  if (!b) return "";
+  const left = b.pairing ? Math.max(0, Math.round((b.pairing.expiresAt - Date.now()) / 60000)) : 0;
+  const addr = b.addresses.length ? b.addresses.map((a) => `${esc(a)}:${b.port}`).join(" · ") : "Ağ adresi bulunamadı";
+  const requests = b.requests
+    .map(
+      (r) =>
+        `<div class="pl-perm"><div class="pl-row"><b style="color:var(--pl-fg-1)">${esc(r.name)} eşleşmek istiyor</b></div><p>Telefonda görünen karşılaştırma kodu bu kodla aynıysa onaylayın: <span class="pl-num" style="font-size:22px;color:var(--pl-fg-1)">${esc(r.compare)}</span></p><div class="pl-row" style="justify-content:flex-end"><button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="bridgeReject" data-id="${esc(r.id)}">Reddet</button><button class="pl-btn pl-btn--primary pl-btn--sm" data-action="bridgeApprove" data-id="${esc(r.id)}">Onayla</button></div></div>`,
+    )
+    .join("");
+  const devices = b.devices.length
+    ? b.devices
+        .map(
+          (d) =>
+            `<div class="list-row"><div class="grow"><h3>${esc(d.name)}</h3><p>Eşleşme: ${date(d.createdAt)}${d.lastSeen ? ` · Son bağlantı: ${date(d.lastSeen)}` : ""}</p></div><button class="pl-btn pl-btn--ghost pl-btn--sm" data-action="bridgeRevoke" data-id="${esc(d.id)}">Eşleşmeyi kaldır</button></div>`,
+        )
+        .join("")
+    : "<p>Eşleşmiş telefon yok.</p>";
+  return `<section class="card" id="mobile-bridge"><div class="page-heading" style="margin-bottom:0"><div><h2>Telefon köprüsü</h2><p style="margin-top:9px">PluginLabs Hub Android, aynı Wi-Fi ağındayken bu bilgisayarın durumunu görür, uygulama özelliklerini değiştirir ve kurulum ister. Kurulumlar burada onay bekler.</p></div><label class="pl-switch"><input type="checkbox" role="switch" data-bridge-switch aria-label="Telefon köprüsü" ${b.enabled ? "checked" : ""}></label></div>${
+    b.running
+      ? `<div class="code">Adres: ${addr}${b.pairing ? `<br>Eşleştirme kodu: <span class="pl-num" style="font-size:20px;letter-spacing:.2em">${esc(b.pairing.code)}</span> · ${left} dk geçerli` : ""}</div><div class="button-row">${button(b.pairing ? "Yeni kod al" : "Telefonu eşleştir", "bridgePair", "", "primary")}</div>${requests}<div class="row-heading"><h3>Eşleşmiş telefonlar (${b.devices.length})</h3></div>${devices}`
+      : `<p>Kapalı. Açınca yalnız eşleştirilmiş ve onayladığınız telefonlar bağlanabilir; yerel API yine yalnız bu bilgisayarda kalır.</p>`
+  }</section>`;
 }
 function pendingHTML() {
   const pending = state.pending.filter((p) => p.status === "pending");
@@ -895,6 +920,14 @@ document.addEventListener("click", async (e) => {
       toast(
         "Yükleme başlatıldı. İlerlemeyi İşlem geçmişi bölümünden izleyebilirsiniz.",
       );
+    } else if (action === "bridgePair") {
+      await call("bridgePair");
+    } else if (action === "bridgeApprove" || action === "bridgeReject") {
+      await call("bridgeDecide", id, action === "bridgeApprove");
+      toast(action === "bridgeApprove" ? "Telefon eşleşti" : "Eşleştirme reddedildi");
+    } else if (action === "bridgeRevoke") {
+      await call("bridgeRevoke", id);
+      toast("Telefon eşleşmesi kaldırıldı");
     } else if (action === "toggle") {
       await call("toggle", id, !state.installed[id].enabled);
       closeModal();
@@ -1555,6 +1588,14 @@ document.addEventListener("change", (e) => {
   if (so) {
     sortMode = so.value;
     render();
+    return;
+  }
+  const bs = e.target.closest?.("[data-bridge-switch]");
+  if (bs) {
+    run("bridgeEnable", "", async () => {
+      await call("bridgeEnable", bs.checked);
+      toast(bs.checked ? "Telefon köprüsü açıldı" : "Telefon köprüsü kapatıldı");
+    });
     return;
   }
   const xs = e.target.closest?.("[data-ext-switch]");

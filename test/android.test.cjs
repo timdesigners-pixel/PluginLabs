@@ -32,7 +32,11 @@ test("android manifest: yalnız gerekli izinler, yedekleme kapalı, düz HTTP yo
     "android.permission.REQUEST_INSTALL_PACKAGES",
   ]);
   assert.match(m, /android:allowBackup="false"/);
-  assert.match(read("android/app/src/main/res/xml/network_security_config.xml"), /cleartextTrafficPermitted="false"/);
+  // Düz HTTP yalnız masaüstü köprüsü için açık; istemci yalnız özel ağ adresine bağlanır ve içerik şifrelidir.
+  const bridge = read("android/app/src/main/java/com/pluginlabs/hub/BridgeClient.java");
+  assert.match(bridge, /isSiteLocalAddress\(\)/);
+  assert.match(bridge, /AES\/GCM\/NoPadding/);
+  assert.match(bridge, /AndroidKeyStore/);
 });
 
 test("android kurulum: SHA-256, boyut sınırı ve izinli sunucu denetimi var", () => {

@@ -30,22 +30,25 @@ import java.util.Locale;
  * Yalnız okuma amaçlı cihaz bilgisi, doğrulamalı APK kurulumu ve dış bağlantı açma sunar.
  * Anahtar, belirteç veya kişisel dosya içeriği arayüze verilmez.
  */
-final class HubBridge implements ApkInstaller.Listener {
+final class HubBridge implements ApkInstaller.Listener, BridgeClient.Listener {
     private final MainActivity activity;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ApkInstaller installer;
+    private final BridgeClient desktop;
     private volatile WebView webView;
 
     HubBridge(MainActivity activity, WebView webView) {
         this.activity = activity;
         this.webView = webView;
         this.installer = new ApkInstaller(activity.getApplicationContext(), this);
+        this.desktop = new BridgeClient(activity.getApplicationContext(), this);
         ApkInstaller.setResultListener(this);
     }
 
     void dispose() {
         ApkInstaller.setResultListener(null);
         installer.shutdown();
+        desktop.shutdown();
         webView = null;
     }
 
@@ -209,6 +212,35 @@ final class HubBridge implements ApkInstaller.Listener {
             Intent send = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, body);
             activity.startActivity(Intent.createChooser(send, "Paylaş"));
         });
+    }
+
+    // ---------- Masaüstü köprüsü ----------
+
+    @JavascriptInterface
+    public String desktopInfo() {
+        return desktop.info().toString();
+    }
+
+    @JavascriptInterface
+    public void desktopPair(String address, String code) {
+        desktop.pair(address, code, Build.MANUFACTURER + " " + Build.MODEL);
+    }
+
+    @JavascriptInterface
+    public void desktopCancelPair() {
+        desktop.cancelPairing();
+    }
+
+    @JavascriptInterface
+    public void desktopCall(String reqId, String op, String argsJson) {
+        if (reqId == null || reqId.length() > 40 || op == null || !op.matches("[a-z.]{2,30}")) return;
+        if (argsJson != null && argsJson.length() > 8000) return;
+        desktop.call(reqId, op, argsJson);
+    }
+
+    @JavascriptInterface
+    public void desktopUnpair() {
+        desktop.unpair();
     }
 
     void emitResume() {

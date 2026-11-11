@@ -103,6 +103,22 @@ Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağla
 
 </details>
 
+## Telefon köprüsü
+
+PluginLabs Hub Android, aynı Wi-Fi ağındaki bu bilgisayara bağlanır: durum, kurulu uygulamalar ve MyMind motoru telefonda görünür; uygulama özellikleri telefondan değiştirilir; kurulum istekleri burada onay bekler.
+
+1. **API ve izinler → Telefon köprüsü**'nü aç, **Telefonu eşleştir** de.
+2. Telefonda **Cihazlar → Masaüstü Hub**: gösterilen adresi ve 6 haneli kodu yaz.
+3. İki ekranda aynı 4 haneli karşılaştırma kodu görünüyorsa masaüstünde **Onayla**.
+
+Köprü varsayılan kapalıdır ve ayrı bir sunucudur (47633); yerel API yine yalnız 127.0.0.1'de dinler. Eşleşmeden sonra trafik AES-256-GCM ile şifrelidir, eski veya tekrarlanan istekler reddedilir. Eşleşme masaüstünden tek tıkla kaldırılır.
+
+| Masaüstü: eşleştirme kodu | Masaüstü: onay | Telefon: masaüstü durumu |
+| --- | --- | --- |
+| ![Kod](docs/screenshots/telefon-koprusu/bridge-1-kod.png) | ![Onay](docs/screenshots/telefon-koprusu/bridge-2-onay.png) | ![Telefon](docs/screenshots/android/11-masaustu-durumu.png) |
+
+> Masaüstü görüntüleri: 11.11.2026, Linux Xvfb, Electron 33, geçici veri. Telefon görüntüsü arayüz dosyalarından Chromium ile, gerçek masaüstü köprüsüne bağlıyken alındı.
+
 ## Uygulama özelliklerini aç/kapa
 
 Uygulama kataloğunda bir uygulamanın menüsünden **Özellikleri aç/kapa** seçilir (ör. Leo Helper: otomatik kod girişi, pano izleme, şart ayıklama, Scrapper köprüsü, kısayollar, MyMind). Tanımlar `registry/app-features.json` içindedir; telefon Hub'ı aynı listeyi gösterir. Uygulamalar değerleri `GET /v1/apps/features?app=<id>` ile okur (`catalog.read` izni). MyMind gönderim onayı ve veri azaltma kapatılamaz.
