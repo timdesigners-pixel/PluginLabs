@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "note": "Android APK kayıtları. Bir kayıt yalnız url, size ve sha256 gerçek release dosyasından doğrulandıktan sonra 'verified' olur; aksi halde uygulama kurulum düğmesini kapalı gösterir.",
+  "apk": [
+    {
+      "id": "mutfak-atolyesi",
+      "package": "",
+      "version": "0.4.1",
+      "status": "pending",
+      "url": "",
+      "size": 0,
+      "sha256": "",
+      "source": "https://github.com/timdesigners-pixel/mutfak-atolyesi/releases/tag/v0.4.1",
+      "reason": "Android test APK ürün deposunda yayımlandı; dağıtım deposuna aynalanıp SHA-256 doğrulanınca kurulum açılır."
+    }
+  ]
+}

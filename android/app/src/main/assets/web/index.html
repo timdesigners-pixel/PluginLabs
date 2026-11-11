@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'" />
+    <meta name="theme-color" content="#101214" />
+    <title>PluginLabs Hub</title>
+    <link rel="stylesheet" href="vendor/pl-tokens.css" />
+    <link rel="stylesheet" href="vendor/pl-components.css" />
+    <link rel="stylesheet" href="hub-mobile-tokens.css" />
+    <link rel="stylesheet" href="hub-mobile.css" />
+  </head>
+  <body>
+    <div id="app" class="pl-m-app" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+      <section id="splash" class="pl-m-splash" role="status" aria-live="polite" aria-label="PluginLabs Hub hazırlanıyor">
+        <div class="pl-m-brand pl-m-splash__brand">
+          <span class="pl-m-logo" aria-hidden="true">p<span>l</span></span>
+          <div><span class="pl-m-brand__name">PluginLabs</span><small class="pl-m-brand__tag">APPS</small></div>
+        </div>
+        <div class="pl-m-product">
+          <span class="pl-applogo" aria-hidden="true">Hub</span>
+          <div>
+            <div class="pl-m-product__name">PluginLabs Hub</div>
+            <div class="pl-m-product__sub">Mobil uygulama merkezi</div>
+          </div>
+          <span class="pl-m-product__no">00</span>
+        </div>
+        <div class="pl-m-splash__status">
+          <div class="pl-m-splash__row">
+            <span id="splash-step" class="pl-m-splash__step">Başlatılıyor…</span>
+            <span id="splash-pct" class="pl-m-splash__pct">%0</span>
+          </div>
+          <div class="pl-progress" role="progressbar" aria-label="Hazırlık" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="splash-bar"><span></span></div>
+          <div id="splash-detail" class="pl-m-splash__detail"></div>
+          <ol id="splash-list" class="pl-m-splash__list"></ol>
+        </div>
+        <div id="splash-foot" class="pl-m-splash__foot">PLUGINLABS HUB · ANDROID</div>
+      </section>
+
+      <div id="shell" class="pl-m-shell" hidden>
+        <header class="pl-m-top">
+          <div class="pl-m-brand">
+            <span class="pl-m-logo" aria-hidden="true">p<span>l</span></span>
+            <div><span class="pl-m-brand__name">PluginLabs</span><small class="pl-m-brand__tag">APPS</small></div>
+          </div>
+          <button class="pl-m-iconbtn" id="open-palette" type="button" aria-label="Ara ve git">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </header>
+        <main id="view" class="pl-m-main" tabindex="-1"></main>
+        <nav class="pl-m-nav" aria-label="Ana menü">
+          <button type="button" data-route="catalog">
+            <span class="pl-m-nav__pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg></span>Uygulamalar
+          </button>
+          <button type="button" data-route="devices">
+            <span class="pl-m-nav__pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h7"/><rect x="17" y="8" width="5" height="12" rx="1.2"/></svg></span>Cihazlar
+          </button>
+          <button type="button" data-route="mymind">
+            <span class="pl-m-nav__pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span>MyMind
+          </button>
+          <button type="button" data-route="account">
+            <span class="pl-m-nav__pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.2 7.5-5.2s6.1 1.6 7.5 5.2"/></svg></span>Hesap
+          </button>
+        </nav>
+      </div>
+
+      <div id="palette" class="pl-m-palette" hidden role="dialog" aria-modal="true" aria-label="Ara ve git">
+        <div class="pl-m-palette__box">
+          <input id="palette-input" class="pl-input" type="search" placeholder="Uygulama veya ekran ara" autocomplete="off" />
+          <div id="palette-list" class="pl-m-palette__list"></div>
+        </div>
+      </div>
+      <div id="toast" class="pl-m-toast" role="status" hidden></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

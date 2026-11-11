@@ -1,0 +1,67 @@
+name: Android APK
+on:
+  pull_request:
+    paths:
+      - 'android/**'
+      - 'scripts/android-sync.cjs'
+      - 'src/catalog.cjs'
+      - 'ui/pl/**'
+      - '.github/workflows/android.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'scripts/android-sync.cjs'
+      - 'src/catalog.cjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Katalog ve tasarım dosyalarını hazırla
+        run: node scripts/android-sync.cjs
+      - name: Test APK derle
+        working-directory: android
+        run: gradle --no-daemon assembleDebug
+      - name: SHA256 ve BUILD-INFO
+        run: |
+          mkdir -p out
+          VERSION=$(grep -m1 'versionName "' android/app/build.gradle | sed -E 's/.*"(.*)".*/\1/')
+          NAME="PluginLabs-Hub-Android-${VERSION}-test.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "out/${NAME}"
+          (cd out && sha256sum "${NAME}" > SHA256SUMS)
+          {
+            echo "product: PluginLabs Hub Android"
+            echo "version: ${VERSION}-test"
+            echo "commit: ${GITHUB_SHA}"
+            echo "ref: ${GITHUB_REF}"
+            echo "built: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "runner: ${RUNNER_OS} / $(java -version 2>&1 | head -1)"
+            echo "signing: debug (test; Play Store için değil)"
+          } > out/BUILD-INFO.txt
+          cat out/SHA256SUMS out/BUILD-INFO.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pluginlabs-hub-android-test
+          path: out/
+          retention-days: 30

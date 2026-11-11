@@ -103,6 +103,12 @@ Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağla
 
 </details>
 
+## Android (test sürümü)
+
+Telefon uygulaması `android/` klasöründedir: 4 sn açılış ekranı, katalogdan doğrulamalı APK kurulumu, cihaz bilgileri, MyMind ve abonelik ekranları. Ayrıntı ve ekranlar: [android/README.md](android/README.md).
+
+![Android · Uygulamalar](docs/screenshots/android/02-uygulamalar.png)
+
 ## Başlatma
 
 Node 24 LTS ve npm gerekir:

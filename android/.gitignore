@@ -1,0 +1,8 @@
+.gradle/
+build/
+local.properties
+*.apk
+*.keystore
+# android-sync.cjs ile üretilir
+app/src/main/assets/web/vendor/
+app/src/main/assets/web/catalog.json
