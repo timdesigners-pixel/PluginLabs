@@ -37,6 +37,7 @@
       "src/**",
       "ui/**",
       "resources/**",
+      "registry/app-features.json",
       "sdk/**",
       "README.md",
       "package.json",
