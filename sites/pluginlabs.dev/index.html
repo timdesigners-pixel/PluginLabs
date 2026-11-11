@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PluginLabs Dev — Geliştirici belgeleri</title>
+  <meta name="description" content="PluginLabs Hub yerel API'si, istemci anahtarları, izinler, MyMind, kanallar, sağlayıcı SDK'sı ve PluginLabs Advanced tasarım sistemi için geliştirici belgeleri.">
+  <meta name="theme-color" content="#090d18">
+  <link rel="canonical" href="https://pluginlabs.dev/">
+  <meta property="og:title" content="PluginLabs Dev — Geliştirici belgeleri">
+  <meta property="og:description" content="Yerel API, SDK, MyMind ve tasarım sistemi belgeleri.">
+  <meta property="og:url" content="https://pluginlabs.dev/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/pl-tokens.css">
+  <link rel="stylesheet" href="assets/pl-components.css">
+  <link rel="stylesheet" href="assets/pl-advanced.css">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="pl-site" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <a class="pl-site-skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="pl-site-nav">
+    <div class="pl-site-wrap pl-site-nav__in">
+      <a class="pl-site-brand" href="/" aria-label="PluginLabs Dev ana sayfa">
+        <span class="pl-site-logo" aria-hidden="true">p<span>l</span></span>PluginLabs<span class="pl-site-brand__tag">DEV</span>
+      </a>
+      <nav class="pl-site-nav__links" id="pl-nav-links" aria-label="Ana gezinme">
+        <ul class="pl-site-links">
+          <li><a class="pl-site-link" href="#baslarken">Başlarken</a></li>
+          <li><a class="pl-site-link" href="#uc-noktalar">API</a></li>
+          <li><a class="pl-site-link" href="#saglayici">SDK</a></li>
+          <li><a class="pl-site-link" href="#tasarim-sistemi">Tasarım sistemi</a></li>
+          <li><a class="pl-site-link" href="https://github.com/timdesigners-pixel/PluginLabs" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+      <div class="pl-site-nav__end">
+        <button class="pl-site-search" type="button" data-pl-open-cmdk aria-label="Belgelerde ara">
+          <svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span class="pl-site-search__text">Belgelerde ara</span><span class="pl-kbd">Ctrl K</span>
+        </button>
+        <button class="pl-iconbtn pl-iconbtn--outline pl-site-menubtn" type="button" data-pl-menu aria-controls="pl-nav-links" aria-expanded="false" aria-label="Menüyü aç">
+          <svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="pl-site-wrap pl-site-docs">
+    <nav class="pl-site-docs__side" aria-label="Belge içindekiler" data-pl-spy>
+      <div class="pl-site-docs__group"><span class="pl-label">Başlarken</span>
+        <a class="pl-navitem" href="#genel-bakis">Genel bakış</a>
+        <a class="pl-navitem" href="#baslarken">Hızlı başlangıç</a>
+        <a class="pl-navitem" href="#kimlik">Kimlik doğrulama</a>
+        <a class="pl-navitem" href="#izinler">İzinler</a>
+      </div>
+      <div class="pl-site-docs__group"><span class="pl-label">API</span>
+        <a class="pl-navitem" href="#uc-noktalar">Uç noktalar</a>
+        <a class="pl-navitem" href="#mymind">MyMind</a>
+        <a class="pl-navitem" href="#kanallar">Kanallar ve canlı akış</a>
+      </div>
+      <div class="pl-site-docs__group"><span class="pl-label">Uygulamanı bağla</span>
+        <a class="pl-navitem" href="#saglayici">Sağlayıcı SDK</a>
+        <a class="pl-navitem" href="#paketler">Kaynak paketleri</a>
+        <a class="pl-navitem" href="#katalog">Hub kataloğuna ekle</a>
+      </div>
+      <div class="pl-site-docs__group"><span class="pl-label">Arayüz</span>
+        <a class="pl-navitem" href="#tasarim-sistemi">Tasarım sistemi</a>
+      </div>
+      <div class="pl-site-docs__group"><span class="pl-label">Başvuru</span>
+        <a class="pl-navitem" href="#sinirlar">Sınırlar ve hatalar</a>
+      </div>
+    </nav>
+
+    <main class="pl-site-prose" id="icerik">
+      <section id="genel-bakis" data-pl-cmd="Genel bakış" aria-labelledby="h-genel">
+        <span class="pl-badge pl-badge--accent" style="width:fit-content">Hub 0.5.2 · Yerel API v1</span>
+        <h1 class="pl-site-display" id="h-genel" style="font-size:clamp(32px,4.6vw,48px)">PluginLabs geliştirici belgeleri</h1>
+        <p class="pl-site-lead">Uygulamanı PluginLabs Hub'a bağla: kataloğu oku, kullanıcı onayıyla indirme başlat, MyMind'a metin gönder, diğer uygulamalarla kanallar üzerinden veri paylaş ve kendi işlevlerini sağlayıcı olarak kaydet.</p>
+        <div class="pl-site-grid" style="--cols:3">
+          <a class="pl-card pl-card--interactive pl-site-feature" href="#baslarken" style="text-decoration:none"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></span><b class="pl-site-h3">Hızlı başlangıç</b><span class="pl-muted">İlk isteğini 5 dakikada gönder.</span></a>
+          <a class="pl-card pl-card--interactive pl-site-feature" href="#uc-noktalar" style="text-decoration:none"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><b class="pl-site-h3">API başvurusu</b><span class="pl-muted">Tüm yollar, yöntemler ve izinler.</span></a>
+          <a class="pl-card pl-card--interactive pl-site-feature" href="#saglayici" style="text-decoration:none"><span class="pl-site-feature__ico"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></span><b class="pl-site-h3">Sağlayıcı SDK</b><span class="pl-muted">Uygulamanın işlevlerini Hub'a aç.</span></a>
+        </div>
+      </section>
+
+      <section id="baslarken" data-pl-cmd="Hızlı başlangıç" aria-labelledby="h-basla">
+        <h2 id="h-basla">Hızlı başlangıç</h2>
+        <ol>
+          <li>PluginLabs Hub'ı <a class="pl-link" href="https://getpluginlabs.com/#indir">getpluginlabs.com</a> adresinden indirip aç.</li>
+          <li><b>API ve izinler → İstemci oluştur</b> ekranında uygulamana gereken izinleri seç. Anahtar (<code>plh_…</code>) yalnız bir kez gösterilir.</li>
+          <li>Anahtarı işletim sisteminin kimlik bilgisi kasasına kaydet ve ortam değişkeni olarak ver.</li>
+          <li>SDK'yı (<code>sdk/client.cjs</code>) projene kopyala ya da aynı HTTP sözleşmesini kendi dilinde uygula.</li>
+        </ol>
+        <div class="pl-site-codetabs">
+          <div class="pl-tabs" role="tablist" aria-label="Örnek dili">
+            <button class="pl-tab is-active" role="tab" id="t-node" aria-selected="true" aria-controls="p-node" type="button">Node.js</button>
+            <button class="pl-tab" role="tab" id="t-curl" aria-selected="false" aria-controls="p-curl" tabindex="-1" type="button">curl</button>
+            <button class="pl-tab" role="tab" id="t-py" aria-selected="false" aria-controls="p-py" tabindex="-1" type="button">Python</button>
+          </div>
+          <div class="pl-code">
+            <div class="pl-code__head"><span class="pl-label">ilk-istek</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre id="p-node" role="tabpanel" aria-labelledby="t-node" tabindex="0"><span class="t-k">const</span> { PluginLabsClient } = <span class="t-f">require</span>(<span class="t-s">"./sdk/client.cjs"</span>);
+<span class="t-k">const</span> client = <span class="t-k">new</span> <span class="t-f">PluginLabsClient</span>({ token: process.env.PLUGINLABS_TOKEN });
+
+<span class="t-c">// MyMind'a metin gönder (izin: mymind.chat)</span>
+<span class="t-k">const</span> yanit = <span class="t-k">await</span> client.<span class="t-f">chat</span>([
+  { role: <span class="t-s">"user"</span>, content: <span class="t-s">"Bu metni özetle: ..."</span> },
+]);
+console.<span class="t-f">log</span>(yanit.choices[<span class="t-n">0</span>].message.content);</pre>
+<pre id="p-curl" role="tabpanel" aria-labelledby="t-curl" tabindex="0" hidden><span class="t-c"># Kataloğu oku (izin: catalog.read)</span>
+curl -s http://127.0.0.1:<span class="t-n">47632</span>/v1/catalog \
+  -H <span class="t-s">"Authorization: Bearer $PLUGINLABS_TOKEN"</span></pre>
+<pre id="p-py" role="tabpanel" aria-labelledby="t-py" tabindex="0" hidden><span class="t-k">import</span> json, os, urllib.request
+
+istek = urllib.request.<span class="t-f">Request</span>(
+    <span class="t-s">"http://127.0.0.1:47632/v1/chat/completions"</span>,
+    data=json.<span class="t-f">dumps</span>({<span class="t-s">"model"</span>: <span class="t-s">"mymind-lite"</span>, <span class="t-s">"max_tokens"</span>: <span class="t-n">256</span>,
+                     <span class="t-s">"messages"</span>: [{<span class="t-s">"role"</span>: <span class="t-s">"user"</span>, <span class="t-s">"content"</span>: <span class="t-s">"Merhaba"</span>}]}).<span class="t-f">encode</span>(),
+    headers={<span class="t-s">"Authorization"</span>: <span class="t-s">"Bearer "</span> + os.environ[<span class="t-s">"PLUGINLABS_TOKEN"</span>],
+             <span class="t-s">"Content-Type"</span>: <span class="t-s">"application/json"</span>},
+)
+<span class="t-f">print</span>(json.<span class="t-f">load</span>(urllib.request.<span class="t-f">urlopen</span>(istek, timeout=<span class="t-n">150</span>)))</pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="kimlik" data-pl-cmd="Kimlik doğrulama" aria-labelledby="h-kimlik">
+        <h2 id="h-kimlik">Kimlik doğrulama</h2>
+        <p>Her istek <code>Authorization: Bearer plh_…</code> başlığı taşır. API yalnız literal <code>127.0.0.1</code> üzerinde, varsayılan <code>47632</code> portunda dinler; <code>Host</code> başlığı denetlenir.</p>
+        <div class="pl-callout pl-callout--danger" role="note"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div><div class="pl-callout__title">Anahtarı tarayıcıya koyma</div><code>Origin</code> başlığı taşıyan tarayıcı istekleri reddedilir. Anahtarı ön yüz JavaScript'ine, web sayfalarına ya da günlüklere yazma. Kaybolursa Hub'dan iptal edip yenisini üret.</div></div>
+        <ul>
+          <li>Hub anahtarın yalnız SHA-256 özetini saklar.</li>
+          <li>HTTP API yönetici anahtarı oluşturamaz ve kendi isteğini onaylayamaz.</li>
+          <li>Tarayıcı eklentileri için tek istisna <code>POST /v1/browser/sync</code>'tir: <code>browser.manage</code> izinli, kayıtlı eklenti kimliğine bağlanmış anahtar gerekir.</li>
+        </ul>
+      </section>
+
+      <section id="izinler" data-pl-cmd="İzinler" aria-labelledby="h-izin">
+        <h2 id="h-izin">İzinler</h2>
+        <p>İstemci oluştururken yalnız gereken izinleri seç. Yazma etkisi olan işlemler izin olsa bile masaüstünde ayrıca onaylanır.</p>
+        <div class="pl-site-tablewrap">
+          <table class="pl-table">
+            <thead><tr><th scope="col">İzin</th><th scope="col">Ne sağlar</th><th scope="col">Onay</th></tr></thead>
+            <tbody>
+              <tr><td class="is-strong"><code>catalog.read</code></td><td>Katalog, kurulu ürünler ve fikir kartları</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>resources.read</code></td><td>Etkin kaynak paketlerinin verileri</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>jobs.read</code></td><td>İndirme ve kurulum işlerinin durumu</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>downloads.request</code></td><td>Katalogdan indirme isteği</td><td><span class="pl-badge pl-badge--warning">Masaüstü</span></td></tr>
+              <tr><td class="is-strong"><code>apps.launch</code></td><td>Kurulu uygulamayı başlatma</td><td><span class="pl-badge pl-badge--warning">Masaüstü</span></td></tr>
+              <tr><td class="is-strong"><code>actions.invoke</code></td><td>Kayıtlı sağlayıcı işlemlerini çağırma</td><td><span class="pl-badge pl-badge--warning">Yazmada</span></td></tr>
+              <tr><td class="is-strong"><code>providers.register</code></td><td>Uygulamayı sağlayıcı olarak kaydetme</td><td>Callback doğrulaması</td></tr>
+              <tr><td class="is-strong"><code>mymind.chat</code></td><td>Sohbet, model listesi ve hazır görevler</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>channels.read</code></td><td>Kanalları okuma ve canlı akış</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>channels.publish</code></td><td>Kendi ad alanında kanal yayınlama</td><td>—</td></tr>
+              <tr><td class="is-strong"><code>browser.manage</code></td><td>Browser Bridge eşitlemesi</td><td>Eklenti kimliği</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="pl-muted"><code>actions.invoke</code> izni, kayıtlı tüm okuma işlemlerine erişim verir; yazma işlemleri tek tek onaya gider.</p>
+      </section>
+
+      <section id="uc-noktalar" data-pl-cmd="Uç noktalar" aria-labelledby="h-uc">
+        <h2 id="h-uc">Uç noktalar</h2>
+        <p>Taban adres <code>http://127.0.0.1:47632</code>. Gövdeler JSON'dur; hata durumunda yanıt <code>{"error": "…"}</code> biçimindedir.</p>
+        <div class="pl-site-tablewrap">
+          <table class="pl-table">
+            <thead><tr><th scope="col">Yöntem</th><th scope="col">Yol</th><th scope="col">İzin / davranış</th></tr></thead>
+            <tbody>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/health</code></td><td>Asgari servis bilgisi</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/catalog</code>, <code>/v1/installed</code></td><td><code>catalog.read</code></td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/ideas</code></td><td><code>catalog.read</code> · ürün fikir kartları</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/resources</code>, <code>/v1/resources/:id</code></td><td><code>resources.read</code></td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/jobs</code></td><td><code>jobs.read</code></td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/downloads</code> <span class="pl-muted">{id}</span></td><td><code>downloads.request</code> · masaüstü onayı</td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/apps/launch</code> <span class="pl-muted">{id}</span></td><td><code>apps.launch</code> · masaüstü onayı</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/requests/:id</code></td><td>İsteği oluşturan istemci</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/providers</code></td><td><code>actions.invoke</code></td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/providers/register</code></td><td><code>providers.register</code> · callback doğrulaması</td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/actions/invoke</code> <span class="pl-muted">{provider, action, input}</span></td><td><code>actions.invoke</code> · yazmada onay</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/models</code></td><td><code>mymind.chat</code></td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/chat/completions</code></td><td><code>mymind.chat</code> · OpenAI uyumlu, non-stream</td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/mymind/capabilities</code></td><td><code>mymind.chat</code></td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/mymind/run</code> <span class="pl-muted">{task, input}</span></td><td><code>mymind.chat</code></td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/channels</code>, <code>/v1/channels/:ad</code></td><td><code>channels.read</code></td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/channels/:ad</code></td><td><code>channels.publish</code></td></tr>
+              <tr><td><span class="pl-site-method">GET</span></td><td><code>/v1/stream?channels=a,b</code></td><td><code>channels.read</code> · Server-Sent Events</td></tr>
+              <tr><td><span class="pl-site-method pl-site-method--post">POST</span></td><td><code>/v1/browser/sync</code></td><td><code>browser.manage</code> · eklenti kimliği</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Onay gerektiren istekler hemen bir istek kimliği döndürür; sonucu <code>GET /v1/requests/:id</code> ile izle. İstek kuyrukları bellektedir ve Hub yeniden başladığında kaybolur.</p>
+      </section>
+
+      <section id="mymind" data-pl-cmd="MyMind API" aria-labelledby="h-mymind">
+        <h2 id="h-mymind">MyMind</h2>
+        <p>Model adı her zaman <code>mymind-lite</code>'tır. Kullanıcı kendi GGUF modelini içe aktarsa bile istemcide değişiklik gerekmez. <code>temperature</code> 0–1 arasında iletilir; verilmezse 0,4 kullanılır.</p>
+        <h3 id="h-gorevler">Hazır görevler</h3>
+        <p><code>POST /v1/mymind/run</code> ile istem yazmadan doğrulanmış görevleri çalıştır. Kullanılabilir görevleri <code>GET /v1/mymind/capabilities</code> döndürür.</p>
+        <div class="pl-code">
+          <div class="pl-code__head"><span class="pl-label">mymind-run.cjs</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre><span class="t-k">const</span> { ready, tasks } = <span class="t-k">await</span> client.mymind.<span class="t-f">capabilities</span>();
+<span class="t-k">if</span> (ready) {
+  <span class="t-k">const</span> ozet = <span class="t-k">await</span> client.mymind.<span class="t-f">run</span>(<span class="t-s">"summarize"</span>, { text: notMetni, sentences: <span class="t-n">3</span> });
+}</pre>
+        </div>
+        <div class="pl-site-tablewrap">
+          <table class="pl-table">
+            <thead><tr><th scope="col">Görev</th><th scope="col">Görev</th><th scope="col">Görev</th></tr></thead>
+            <tbody>
+              <tr><td><code>summarize</code></td><td><code>rewrite</code></td><td><code>classify-tags</code></td></tr>
+              <tr><td><code>extract-codes</code></td><td><code>translate</code></td><td><code>plan-day</code></td></tr>
+              <tr><td><code>break-down-task</code></td><td><code>outfit-suggest</code></td><td><code>menu-plan</code></td></tr>
+              <tr><td><code>price-compare-note</code></td><td><code>expense-categorize</code></td><td><code>answer-from-text</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pl-callout pl-callout--accent" role="note"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><div><div class="pl-callout__title">Arayüz kuralı</div>MyMind çıktısını kullanıcıya gösterirken her zaman <b>MyMind</b> rozetini ve kaynağını göster. Yalnız işin gerektirdiği metni gönder.</div></div>
+      </section>
+
+      <section id="kanallar" data-pl-cmd="Kanallar ve canlı akış" aria-labelledby="h-kanal">
+        <h2 id="h-kanal">Kanallar ve canlı akış</h2>
+        <p>Kanallar uygulamalar arası küçük, süreli veri köprüleridir. Ad biçimi <code>&lt;ad-alanı&gt;.&lt;kanal&gt;</code> (örn. <code>leo-helper.son-kod</code>); bir istemci yalnız kendi ad alanına yazar ve <code>share</code> ile en fazla 8 ad alanıyla paylaşır.</p>
+        <div class="pl-code">
+          <div class="pl-code__head"><span class="pl-label">kanal.cjs</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre><span class="t-c">// Yayınla (channels.publish) — ttlSeconds: 5–86400, varsayılan 3600</span>
+<span class="t-k">await</span> client.<span class="t-f">publish</span>(<span class="t-s">"ornek-uygulama.durum"</span>, { hazir: <span class="t-k">true</span> }, { ttlSeconds: <span class="t-n">600</span>, share: [<span class="t-s">"mind-palace"</span>] });
+
+<span class="t-c">// Canlı dinle (channels.read) — dönen işlev akışı kapatır</span>
+<span class="t-k">const</span> kapat = client.<span class="t-f">subscribe</span>([<span class="t-s">"ornek-uygulama.durum"</span>], (kayit) =&gt; console.<span class="t-f">log</span>(kayit));</pre>
+        </div>
+        <p class="pl-muted">Sınırlar: kayıt başına 8.000 karakter, 6 derinlik, 40 anahtar; istemci başına 16, toplam 64 kanal; dakikada 30 yayın.</p>
+      </section>
+
+      <section id="saglayici" data-pl-cmd="Sağlayıcı SDK" aria-labelledby="h-sag">
+        <h2 id="h-sag">Sağlayıcı SDK</h2>
+        <p>Uygulamanın işlevlerini Hub'a açmak için <code>ProviderAgent</code> kullan. Ajan 127.0.0.1 üzerinde rastgele bir portta callback sunucusu açar, Hub'ın challenge isteğini HMAC ile yanıtlar ve kaydını 30 saniyede bir yeniler (90 saniyelik kira).</p>
+        <div class="pl-code">
+          <div class="pl-code__head"><span class="pl-label">saglayici.cjs</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre><span class="t-c">// İzinler: providers.register + actions.invoke</span>
+<span class="t-k">const</span> { PluginLabsClient, ProviderAgent } = <span class="t-f">require</span>(<span class="t-s">"./sdk/client.cjs"</span>);
+<span class="t-k">const</span> client = <span class="t-k">new</span> <span class="t-f">PluginLabsClient</span>({ token: process.env.PLUGINLABS_TOKEN });
+
+<span class="t-k">const</span> saglayici = <span class="t-k">await new</span> <span class="t-f">ProviderAgent</span>(client, {
+  id: <span class="t-s">"ornek-uygulama"</span>,
+  name: <span class="t-s">"Örnek PluginLabs uygulaması"</span>,
+  actions: [
+    { id: <span class="t-s">"status"</span>, label: <span class="t-s">"Uygulama durumu"</span>, write: <span class="t-k">false</span>,
+      run: <span class="t-k">async</span> () =&gt; ({ ready: <span class="t-k">true</span> }) },
+    { id: <span class="t-s">"save-draft"</span>, label: <span class="t-s">"Taslak kaydet"</span>, write: <span class="t-k">true</span>,
+      run: <span class="t-k">async</span> (input) =&gt; <span class="t-f">taslakKaydet</span>(input.text) },
+  ],
+}).<span class="t-f">start</span>();
+
+<span class="t-c">// Başka bir istemciden çağır: yazma işlemi masaüstünde onaya gider</span>
+<span class="t-k">await</span> client.<span class="t-f">invoke</span>(<span class="t-s">"ornek-uygulama"</span>, <span class="t-s">"status"</span>, {});</pre>
+        </div>
+        <ul>
+          <li><code>write: true</code> olan her işlem tek tek kullanıcı onayına gider.</li>
+          <li>Sağlayıcı kendi girdi doğrulamasını ve yetki denetimini de uygulamalıdır.</li>
+          <li>Bağlanmış olmak, diğer uygulamaların verilerine erişim sağlamaz.</li>
+        </ul>
+      </section>
+
+      <section id="paketler" data-pl-cmd="Kaynak paketleri" aria-labelledby="h-paket">
+        <h2 id="h-paket">Kaynak paketleri</h2>
+        <p>Veri ve görünüm paketleri <code>.plpack</code> uzantılı JSON dosyalarıdır. Örnek: <code>resources/example.plpack</code>.</p>
+        <ul>
+          <li>Türler: <code>asset</code>, <code>template</code>, <code>library</code>, <code>plugin</code>.</li>
+          <li>Kimlik <code>custom-</code> ile başlar; sürüm semantik sürümdür.</li>
+          <li>En fazla 2 MB; ayarlar kısa metin ve onay kutusudur.</li>
+          <li>İçerik veri olarak saklanır; script, HTML ya da kabuk komutu olarak çalıştırılmaz.</li>
+        </ul>
+      </section>
+
+      <section id="katalog" data-pl-cmd="Hub kataloğuna ekle" aria-labelledby="h-katalog">
+        <h2 id="h-katalog">Hub kataloğuna ekle</h2>
+        <p>Her PluginLabs uygulaması Hub'dan kurulabilir olmalıdır. Yayın akışı:</p>
+        <ol class="pl-stack" style="gap:8px">
+          <li>Windows taşınabilir EXE'yi herkese açık <code>pluginlabs-dagitim</code> deposunda <code>&lt;katalog-id&gt;-v&lt;sürüm&gt;</code> etiketiyle yayımla.</li>
+          <li><code>src/catalog.cjs</code> kaydına sürümü, dosya boyutunu ve SHA-256 özetini yaz.</li>
+          <li>README'ye güncel, gerçek ekran görüntülerini ekle; Hub'ı yeni katalogla yayımla.</li>
+        </ol>
+        <div class="pl-code">
+          <div class="pl-code__head"><span class="pl-label">src/catalog.cjs</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre>{
+  id: <span class="t-s">"ornek-uygulama"</span>,
+  name: <span class="t-s">"Örnek Uygulama"</span>,
+  kind: <span class="t-s">"app"</span>,
+  version: <span class="t-s">"0.1.0"</span>,
+  platform: <span class="t-s">"win32"</span>,
+  format: <span class="t-s">"exe"</span>,
+  size: <span class="t-n">8493056</span>,
+  sha256: <span class="t-s">"&lt;64 karakterlik özet&gt;"</span>,
+  url: <span class="t-f">dist</span>(<span class="t-s">"ornek-uygulama"</span>, <span class="t-s">"0.1.0"</span>, <span class="t-s">"OrnekUygulama-0.1.0-portable.exe"</span>),
+}</pre>
+        </div>
+      </section>
+
+      <section id="tasarim-sistemi" data-pl-cmd="Tasarım sistemi kullanımı" aria-labelledby="h-tasarim">
+        <h2 id="h-tasarim">Tasarım sistemi</h2>
+        <p>PluginLabs arayüzleri <b>PluginLabs Advanced</b> tasarım sistemini kullanır: 181 komponent, 6 yüzey teması, 11 ürün aksanı. Sistem bir katmandır; yalnız <code>[data-pl]</code> kapsayıcısında devreye girer ve mevcut stillerinle çakışmaz.</p>
+        <div class="pl-code">
+          <div class="pl-code__head"><span class="pl-label">index.html</span><button class="pl-iconbtn pl-iconbtn--sm" type="button" data-pl-copy aria-label="Kodu kopyala"><svg class="pl-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+<pre><span class="t-c">&lt;!-- Sıra sabittir --&gt;</span>
+&lt;<span class="t-k">link</span> rel=<span class="t-s">"stylesheet"</span> href=<span class="t-s">"pl/pl-tokens.css"</span>&gt;
+&lt;<span class="t-k">link</span> rel=<span class="t-s">"stylesheet"</span> href=<span class="t-s">"pl/pl-components.css"</span>&gt;
+&lt;<span class="t-k">link</span> rel=<span class="t-s">"stylesheet"</span> href=<span class="t-s">"pl/pl-advanced.css"</span>&gt;
+
+&lt;<span class="t-k">div</span> data-pl data-pl-theme=<span class="t-s">"dark"</span> data-pl-product=<span class="t-s">"leo"</span> lang=<span class="t-s">"tr"</span>&gt;
+  &lt;<span class="t-k">button</span> class=<span class="t-s">"pl-btn pl-btn--primary"</span>&gt;Eklentiyi kur&lt;/<span class="t-k">button</span>&gt;
+&lt;/<span class="t-k">div</span>&gt;</pre>
+        </div>
+        <p>Canlı örnek: aynı komponent, farklı ürün aksanı.</p>
+        <div class="pl-card pl-row" style="flex-wrap:wrap;gap:12px">
+          <span data-pl-product="hub"><button class="pl-btn pl-btn--primary" type="button">Hub</button></span>
+          <span data-pl-product="leo"><button class="pl-btn pl-btn--primary" type="button">Leo Helper</button></span>
+          <span data-pl-product="mindpalace"><button class="pl-btn pl-btn--primary" type="button">Mind Palace</button></span>
+          <span data-pl-product="flowdock"><button class="pl-btn pl-btn--primary" type="button">Flow Dock</button></span>
+          <span data-pl-product="scrapper"><button class="pl-btn pl-btn--primary" type="button">Scrapper</button></span>
+          <span data-pl-product="tweakster"><button class="pl-btn pl-btn--primary" type="button">Tweakster</button></span>
+        </div>
+        <ul>
+          <li>Renk, boşluk, köşe ve süre değerleri yalnız <code>var(--pl-…)</code>; sabit hex yazma.</li>
+          <li>Her ekranda tek birincil buton; yıkıcı eylemin adı <b>Arşivle</b>, toast'ta <b>Geri al</b>.</li>
+          <li>Her uygulamada <span class="pl-kbd">Ctrl</span> <span class="pl-kbd">K</span> komut paleti bulunur; odak halkası asla kaldırılmaz.</li>
+          <li>Türkçe biçimler: <code>01.11.2026</code>, <code>1.249,90 ₺</code>, <code>%12</code>.</li>
+        </ul>
+        <p>Ayrıntılar: <a class="pl-link" href="https://pluginlabs.tech/#tasarim">pluginlabs.tech · Tasarım sistemi</a></p>
+      </section>
+
+      <section id="sinirlar" data-pl-cmd="Sınırlar ve hatalar" aria-labelledby="h-sinir">
+        <h2 id="h-sinir">Sınırlar ve hatalar</h2>
+        <div class="pl-site-tablewrap">
+          <table class="pl-table">
+            <thead><tr><th scope="col">Konu</th><th scope="col">Değer</th></tr></thead>
+            <tbody>
+              <tr><td class="is-strong">MyMind bağlam / çıktı</td><td class="pl-site-mono">4.096 / 512 token</td></tr>
+              <tr><td class="is-strong">MyMind eşzamanlılık</td><td class="pl-site-mono">1 istek · 120 sn</td></tr>
+              <tr><td class="is-strong">SDK istek zaman aşımı</td><td class="pl-site-mono">150 sn</td></tr>
+              <tr><td class="is-strong">Sağlayıcı istek gövdesi</td><td class="pl-site-mono">150.000 bayt</td></tr>
+              <tr><td class="is-strong">Onay geçerliliği</td><td class="pl-site-mono">5 dk</td></tr>
+              <tr><td class="is-strong">Canlı akış</td><td class="pl-site-mono">En fazla 32 kanal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Hata yanıtı tek alan taşır: <code>{"error": "API yolu bulunamadı"}</code>. HTTP durum kodu nedeni belirtir: <code>400</code> geçersiz girdi, <code>401/403</code> anahtar veya izin, <code>404</code> yol yok.</p>
+      </section>
+    </main>
+
+    <nav class="pl-site-docs__toc" aria-label="Bu sayfada" data-pl-spy>
+      <span class="pl-label" style="margin-bottom:6px">Bu sayfada</span>
+      <a href="#genel-bakis">Genel bakış</a>
+      <a href="#baslarken">Hızlı başlangıç</a>
+      <a href="#kimlik">Kimlik doğrulama</a>
+      <a href="#izinler">İzinler</a>
+      <a href="#uc-noktalar">Uç noktalar</a>
+      <a href="#mymind">MyMind</a>
+      <a href="#kanallar">Kanallar</a>
+      <a href="#saglayici">Sağlayıcı SDK</a>
+      <a href="#paketler">Kaynak paketleri</a>
+      <a href="#katalog">Kataloğa ekle</a>
+      <a href="#tasarim-sistemi">Tasarım sistemi</a>
+      <a href="#sinirlar">Sınırlar</a>
+    </nav>
+  </div>
+
+  <footer class="pl-site-foot">
+    <div class="pl-site-wrap">
+      <div class="pl-site-foot__grid">
+        <div class="pl-site-foot__col" style="gap:14px">
+          <a class="pl-site-brand" href="/"><span class="pl-site-logo" aria-hidden="true">p<span>l</span></span>PluginLabs</a>
+          <p class="pl-muted" style="max-width:300px">Hub yerel API'si, SDK ve tasarım sistemi belgeleri.</p>
+        </div>
+        <nav class="pl-site-foot__col" aria-label="Belgeler"><span class="pl-label">Belgeler</span><a href="#baslarken">Hızlı başlangıç</a><a href="#uc-noktalar">Uç noktalar</a><a href="#saglayici">Sağlayıcı SDK</a></nav>
+        <nav class="pl-site-foot__col" aria-label="Kaynaklar"><span class="pl-label">Kaynaklar</span><a href="https://github.com/timdesigners-pixel/PluginLabs" rel="noopener">GitHub</a><a href="https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases" rel="noopener">Dağıtım sürümleri</a></nav>
+        <nav class="pl-site-foot__col" aria-label="PluginLabs"><span class="pl-label">PluginLabs</span><a href="https://getpluginlabs.com/">Hub'ı indir</a><a href="https://pluginlabs.tech/">Ekosistem</a></nav>
+      </div>
+      <div class="pl-site-foot__bar">
+        <span>© 2026 PluginLabs · Hub MIT lisanslıdır</span>
+        <nav class="pl-site-family" aria-label="PluginLabs siteleri"><a href="https://getpluginlabs.com/">getpluginlabs.com</a><a href="https://pluginlabs.tech/">pluginlabs.tech</a><a href="https://pluginlabs.dev/" aria-current="true">pluginlabs.dev</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="pl-site-dialog" id="pl-cmdk" aria-label="Belgelerde ara">
+    <div class="pl-cmdk">
+      <div class="pl-cmdk__input"><svg class="pl-ico pl-ico--20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" role="combobox" aria-expanded="true" aria-controls="pl-cmdk-liste" aria-label="Belge, uç nokta veya izin ara" placeholder="Belge, uç nokta veya izin ara"><span class="pl-kbd">Esc</span></div>
+      <div class="pl-cmdk__list" id="pl-cmdk-liste" role="listbox" aria-label="Sonuçlar"></div>
+      <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑</span><span class="pl-kbd">↓</span> gez</span><span><span class="pl-kbd">↵</span> aç</span><span><span class="pl-kbd">Esc</span> kapat</span></div>
+    </div>
+  </dialog>
+
+  <script>
+    window.PL_SITE = {
+      komutlar: [
+        { grup: "Uç noktalar", ad: "POST /v1/chat/completions", url: "#mymind", ipucu: "mymind.chat" },
+        { grup: "Uç noktalar", ad: "POST /v1/mymind/run", url: "#mymind", ipucu: "mymind.chat" },
+        { grup: "Uç noktalar", ad: "POST /v1/actions/invoke", url: "#saglayici", ipucu: "actions.invoke" },
+        { grup: "Uç noktalar", ad: "POST /v1/providers/register", url: "#saglayici", ipucu: "providers.register" },
+        { grup: "Uç noktalar", ad: "GET /v1/stream", url: "#kanallar", ipucu: "channels.read" },
+        { grup: "Uç noktalar", ad: "POST /v1/downloads", url: "#uc-noktalar", ipucu: "downloads.request" },
+        { grup: "Eylemler", ad: "Hub'ı indir", url: "https://getpluginlabs.com/#indir", ipucu: "getpluginlabs.com" },
+        { grup: "Eylemler", ad: "Ekosistem mimarisi", url: "https://pluginlabs.tech/#mimari", ipucu: "pluginlabs.tech" }
+      ],
+      urunUrl: function () { return "https://getpluginlabs.com/#urunler"; }
+    };
+  </script>
+  <script src="assets/veri.js"></script>
+  <script src="assets/site.js"></script>
+</body>
+</html>

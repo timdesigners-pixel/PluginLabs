@@ -10,3 +10,4 @@ dependency-audit.json
 registry/local-paths.json
 logs/
 .claude/settings.local.json
+_site/
