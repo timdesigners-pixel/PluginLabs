@@ -59,6 +59,7 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
   const operations = {
     snapshot: () => hub.snapshot(),
     readProduct: (id) => hub.readProduct(id),
+    setAppFeatures: (id, values) => hub.setAppFeatures(id, values),
     saveProduct: (id, data) => hub.saveProduct(id, data),
     idea: (id) => {
       const item = require("../resources/notion-catalog.json").items.find(

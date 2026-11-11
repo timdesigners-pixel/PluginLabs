@@ -173,6 +173,29 @@ final class HubBridge implements ApkInstaller.Listener {
         });
     }
 
+    /**
+     * Özellik ayarlarını bir PluginLabs uygulamasına gönderir. Alan uygulama değişikliği
+     * uygulamadan önce kullanıcıdan onay ister; bu yüzden niyet yalnız öneri taşır.
+     */
+    @JavascriptInterface
+    public void sendFeatures(String packageName, String json) {
+        if (packageName == null || !packageName.startsWith("com.pluginlabs.")
+                || !packageName.matches("[A-Za-z0-9_.]{3,120}")) return;
+        if (json == null || json.length() > 4000) return;
+        main.post(() -> {
+            Intent i = new Intent("com.pluginlabs.APPLY_FEATURES")
+                    .setPackage(packageName)
+                    .putExtra("com.pluginlabs.extra.FEATURES", json)
+                    .putExtra("com.pluginlabs.extra.SOURCE", BuildConfig.APPLICATION_ID)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                activity.startActivity(i);
+            } catch (Exception ignored) {
+                onEvent(ApkInstaller.event("", "error", "Uygulama ayarları alamadı"));
+            }
+        });
+    }
+
     @JavascriptInterface
     public void openExternal(String url) {
         main.post(() -> activity.openExternal(Uri.parse(url)));

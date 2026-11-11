@@ -245,6 +245,7 @@ function actionHTML(item, installed, job, different) {
   const menu = [
     mi("info", "Detaylı bilgi"),
     installed ? mi("manage", "Ayarlar ve paket bilgisi") : "",
+    state.appFeatures?.[item.id] ? mi("features", "Özellikleri aç/kapa") : "",
     item.repo || item.source ? mi("openSource", "Kaynağı gör ↗") : "",
   ].join("");
   return `<div class="pl-split app-split">${main}<button class="pl-btn pl-btn--primary pl-btn--sm" data-split-toggle aria-haspopup="menu" aria-expanded="false" aria-label="${esc(item.name)} için diğer seçenekler">${chevIco}</button><div class="pl-menu split-menu" role="menu" aria-label="${esc(item.name)}" hidden>${menu}</div></div>`;
@@ -736,7 +737,22 @@ function manage(id) {
     )
     .join("");
   showModal(
-    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
+    `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}${state.appFeatures?.[id] ? button("Özellikler", "features", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
+  );
+}
+function features(id) {
+  const item = state.catalog.find((i) => i.id === id),
+    f = state.appFeatures?.[id];
+  if (!item || !f) return;
+  const platformLabel = { win32: "Windows", android: "Android" };
+  const rows = f.definitions
+    .map(
+      (d) =>
+        `<label class="pl-setting"><span class="pl-setting__text"><b>${esc(d.name)}</b><span class="pl-muted">${esc(d.description)} · ${d.platforms.map((p) => platformLabel[p] || p).join(", ")}</span></span><span class="pl-switch"><input type="checkbox" role="switch" name="${esc(d.id)}" aria-label="${esc(d.name)}" ${f.values[d.id] ? "checked" : ""}></span></label>`,
+    )
+    .join("");
+  showModal(
+    `<div class="modal-title"><h2>${esc(item.name)} · Özellikler</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Açılan veya kapatılan özellikleri uygulama Hub'dan okur. MyMind gönderim onayı ve veri azaltma kapatılamaz.</p><form id="features-form" data-id="${esc(id)}">${rows}<div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}<button class="pl-btn pl-btn--primary">Kaydet</button></div></form>`,
   );
 }
 async function run(action, id, fn) {
@@ -843,6 +859,7 @@ document.addEventListener("click", async (e) => {
       `<div class="modal-title"><h2>PluginLabs Pro</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Pro planı henüz yayında değil. Hesap, ücretli mağaza ve bulut eşitleme planlandı; şu an Hub tamamen yerel çalışır ve hiçbir veri hesaba bağlanmaz.</p><div class="notice">Pro yayına girdiğinde bu düğme plan seçimini açacak.</div><div class="modal-actions">${button("Tamam", "closeModal", "", "primary")}</div>`,
     );
   if (action === "manage") return manage(id);
+  if (action === "features") return features(id);
   if (action === "openProduct") return openProduct(id);
   if (action === "pairBrowser") return pairBrowser();
   if (action === "idea") return showIdea(id);
@@ -975,6 +992,17 @@ document.addEventListener("submit", async (e) => {
       tokenOnce = created.token;
       $("#modal-content").innerHTML =
         `<div class="modal-title"><h2>Uygulama anahtarı hazır</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Bu anahtar yalnızca şimdi gösterilir. Güvenli biçimde kaydedin ve uygulamanızın ortam değişkenine veya anahtar kasasına ekleyin.</p><div class="code">${esc(tokenOnce)}</div><div class="button-row">${button("Anahtarı kopyala", "copyToken")}${button("Tamam", "closeModal", "", "primary")}</div>`;
+    });
+  }
+  if (form.id === "features-form") {
+    const id = form.dataset.id,
+      values = {};
+    for (const d of state.appFeatures[id].definitions)
+      values[d.id] = form.elements.namedItem(d.id).checked;
+    await run("features", id, async () => {
+      await call("setAppFeatures", id, values);
+      closeModal();
+      toast("Özellik ayarları kaydedildi");
     });
   }
   if (form.id === "resource-form") {

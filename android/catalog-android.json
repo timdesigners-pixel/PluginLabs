@@ -3,6 +3,17 @@
   "note": "Android APK kayıtları. Bir kayıt yalnız url, size ve sha256 gerçek release dosyasından doğrulandıktan sonra 'verified' olur; aksi halde uygulama kurulum düğmesini kapalı gösterir.",
   "apk": [
     {
+      "id": "leo-helper",
+      "package": "com.pluginlabs.leohelper",
+      "version": "0.1.0",
+      "status": "pending",
+      "url": "",
+      "size": 0,
+      "sha256": "",
+      "source": "https://github.com/timdesigners-pixel/leo-helper",
+      "reason": "Leo Helper mobil yardımcı APK'sı hazır; GitHub release'i yayımlanıp SHA-256 kaydedilince buradan kurulur."
+    },
+    {
       "id": "mutfak-atolyesi",
       "package": "",
       "version": "0.4.1",

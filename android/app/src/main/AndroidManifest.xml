@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!-- Yalnız PluginLabs uygulamalarının kurulu olup olmadığını görmek için -->
+    <queries>
+        <package android:name="com.pluginlabs.leohelper" />
+        <package android:name="com.pluginlabs.leohelper.test" />
+    </queries>
+
     <application
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"

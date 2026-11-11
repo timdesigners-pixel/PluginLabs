@@ -15,13 +15,22 @@ PluginLabs Hub'ın telefon uygulaması. Masaüstü Hub'ın kataloğunu, tasarım
 - **MyMind AI:** Etkinleştirme, zorunlu onay ve veri azaltma, yanıt dili, geçmiş, uygulama bazında izinler, aylık kullanım.
 - **Hesap ve abonelik:** Geçerli plan, Pro plan içeriği, abonelik durumu, uygulama sürümü.
 
+## Özellik aç/kapa ve eklentiler
+- **Özellikler** filtresi ve her uygulamadaki **Özellikler** düğmesi, `registry/app-features.json` tanımlarını gösterir (masaüstü Hub ile aynı liste). Değerler bu telefonda saklanır.
+- Leo Helper telefonda kuruluysa **Leo Helper'a uygula** Android'e uyan ayarları gönderir; Leo değişikliği onay almadan uygulamaz.
+- **Eklentiler** filtresi Hub eklentilerini (eklenti, kütüphane, şablon, tema) listeler. Bunlar masaüstü Hub'a kurulur; telefondan kurulum masaüstü eşleşmesiyle açılacak.
+
+| Özellik filtresi | Leo Helper özellikleri | Eklentiler |
+| --- | --- | --- |
+| ![Özellikler](../docs/screenshots/android/06-ozellik-filtresi.png) | ![Leo özellikleri](../docs/screenshots/android/07-leo-ozellikleri.png) | ![Eklentiler](../docs/screenshots/android/08-eklentiler.png) |
+
 ## APK kurulumu nasıl çalışır
 1. Katalog kaydında `url`, `size` ve `sha256` bulunmalı (`android/catalog-android.json`, durum `verified`).
 2. Uygulama dosyayı yalnız HTTPS ile ve yalnız GitHub release sunucularından indirir; yönlendirmelerin her adımı denetlenir, boyut sınırı 400 MB.
 3. Boyut ve SHA-256 tutmazsa dosya silinir, kurulum yapılmaz.
 4. Doğrulanan paket Android paket yükleyicisine verilir; son onay her zaman Android'in kendi ekranındadır.
 
-Bugün kayıtlı APK: Mutfak Atölyesi 0.4.1 — dağıtım deposuna aynalanıp SHA-256 doğrulanana kadar düğmesi "Kaynağı aç" olarak kalır.
+Bugün kayıtlı APK'lar: Leo Helper mobil yardımcı 0.1.0 ve Mutfak Atölyesi 0.4.1 — release ve SHA-256 kaydı gelene kadar düğmeleri "Kaynağı aç" olarak kalır.
 
 ## Derleme
 - GitHub: `Android APK` iş akışı (`.github/workflows/android.yml`) test APK'sını, `SHA256SUMS` ve `BUILD-INFO.txt` ile birlikte iş akışı çıktısı olarak üretir.

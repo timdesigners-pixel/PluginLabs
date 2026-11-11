@@ -172,3 +172,4 @@ body { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .pl-m-app *, .pl-m-app *::before, .pl-m-app *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+.pl-m-back { align-self: flex-start; }

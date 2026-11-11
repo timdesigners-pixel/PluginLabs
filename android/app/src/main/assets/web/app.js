@@ -4,7 +4,9 @@
   "use strict";
 
   const SPLASH_MS = 4000;
-  const KEYS = { mymind: "pl.mymind.v1", pairing: "pl.pairing.v1", usage: "pl.mymind.usage.v1" };
+  const KEYS = { mymind: "pl.mymind.v1", pairing: "pl.pairing.v1", usage: "pl.mymind.usage.v1", features: "pl.features.v1" };
+  const LEO_PACKAGES = ["com.pluginlabs.leohelper", "com.pluginlabs.leohelper.test"];
+  const EXT_KINDS = ["plugin", "library", "template", "asset"];
   const PRODUCT_ACCENT = {
     "leo-helper": "leo",
     "mind-palace": "mindpalace",
@@ -22,6 +24,7 @@
     devices: "Cihazlar",
     mymind: "MyMind AI",
     account: "Hesap ve abonelik",
+    features: "Özellikler",
   };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -40,6 +43,8 @@
     mymind: null,
     pairing: null,
     installs: {},
+    featureApp: "",
+    features: {},
   };
 
   // ---------- Yardımcılar ----------
@@ -171,6 +176,7 @@
       label: "MyMind AI ayarları yükleniyor",
       run: async () => {
         loadMyMind();
+        state.features = load(KEYS.features, {});
         return state.mymind.enabled ? "Etkin · her gönderimde onay · veri azaltma" : "Kapalı";
       },
     },
@@ -254,6 +260,8 @@
       if (state.filter === "apk" && !a) return false;
       if (state.filter === "desktop" && !(i.kind === "app" && i.platform === "win32")) return false;
       if (state.filter === "ai" && !["engine", "model"].includes(i.kind)) return false;
+      if (state.filter === "ext" && !EXT_KINDS.includes(i.kind)) return false;
+      if (state.filter === "features" && !i.features) return false;
       if (q && !`${i.name} ${i.description}`.toLocaleLowerCase("tr-TR").includes(q)) return false;
       return true;
     });
@@ -296,6 +304,9 @@
     if (i.kind === "engine" || i.kind === "model") {
       return { note: "Masaüstü Hub'da MyMind için kurulur", button: "" };
     }
+    if (EXT_KINDS.includes(i.kind)) {
+      return { note: "Masaüstü Hub eklentisi · eşleşince buradan kurulur", button: "" };
+    }
     return {
       note: "Masaüstü Hub'dan kurulur",
       button: i.url ? `<button class="pl-btn pl-btn--ghost pl-btn--sm" data-act="share" data-id="${esc(i.id)}">Bağlantıyı paylaş</button>` : "",
@@ -318,6 +329,8 @@
       apk: items.filter((i) => apkInfo(i)).length,
       desktop: items.filter((i) => i.kind === "app" && i.platform === "win32").length,
       ai: items.filter((i) => ["engine", "model"].includes(i.kind)).length,
+      ext: items.filter((i) => EXT_KINDS.includes(i.kind)).length,
+      features: items.filter((i) => i.features).length,
     };
     const verified = items.filter((i) => apkInfo(i)?.status === "verified").length;
     const list = filterItems();
@@ -341,7 +354,7 @@
         <input class="pl-input" id="q" type="search" placeholder="Uygulama ara" value="${esc(state.query)}" aria-label="Uygulama ara" />
       </div>
       <div class="pl-m-filters" role="group" aria-label="Filtre">
-        ${chip("all", "Tümü")}${chip("apk", "Android")}${chip("desktop", "Masaüstü")}${chip("ai", "MyMind AI")}
+        ${chip("all", "Tümü")}${chip("apk", "Android")}${chip("features", "Özellikler")}${chip("ext", "Eklentiler")}${chip("desktop", "Masaüstü")}${chip("ai", "MyMind AI")}
       </div>
       <div class="pl-m-list">
         ${
@@ -356,7 +369,7 @@
               <div class="pl-m-item__title"><strong>${esc(i.name)}</strong><span class="pl-m-item__ver">v${esc(apkInfo(i)?.version || i.version)}</span>${platformBadge(i)}${i.prerelease ? `<span class="pl-badge pl-badge--info">Önizleme</span>` : ""}</div>
               <p class="pl-m-item__desc">${esc(i.description)}</p>
               ${act.progress !== undefined ? `<div class="pl-progress pl-progress--sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${act.progress}" data-progress="${act.progress}"><span></span></div>` : ""}
-              <div class="pl-m-item__foot"><span class="pl-m-item__note">${esc(act.note)}</span>${act.button}</div>
+              <div class="pl-m-item__foot"><span class="pl-m-item__note">${esc(act.note)}</span><span class="pl-row">${i.features ? `<button class="pl-btn pl-btn--secondary pl-btn--sm" data-act="features" data-id="${esc(i.id)}">Özellikler</button>` : ""}${act.button}</span></div>
             </div>
           </article>`;
                 })
@@ -456,6 +469,46 @@
       </div>`;
   }
 
+  function featureValues(item) {
+    const saved = state.features[item.id] || {};
+    return Object.fromEntries(item.features.map((f) => [f.id, typeof saved[f.id] === "boolean" ? saved[f.id] : f.default]));
+  }
+
+  function leoPackage() {
+    return LEO_PACKAGES.find((p) => call("packageVersion", p)) || "";
+  }
+
+  function renderFeatures() {
+    const item = state.catalog.items.find((i) => i.id === state.featureApp && i.features);
+    if (!item) return renderCatalog();
+    const values = featureValues(item);
+    const label = { win32: "Windows", android: "Android" };
+    const rows = item.features
+      .map((f) => sw(`feature:${f.id}`, f.name, `${f.description} · ${f.platforms.map((p) => label[p] || p).join(", ")}`, values[f.id]))
+      .join("");
+    const isLeo = item.id === "leo-helper";
+    const pkg = isLeo ? leoPackage() : "";
+    const leoCard = isLeo
+      ? `<div class="pl-m-card">
+          <div class="pl-m-card__head"><h2>Bu telefondaki Leo Helper</h2>${pkg ? `<span class="pl-status pl-status--online">Kurulu</span>` : `<span class="pl-status">Kurulu değil</span>`}</div>
+          <p>Android'e uyan özellikler Leo Helper'a gönderilir; Leo değişikliği uygulamadan önce onay ister.</p>
+          <button class="pl-btn pl-btn--primary pl-btn--block" data-act="push-features" data-id="${esc(item.id)}" ${pkg ? "" : "disabled"}>Leo Helper'a uygula</button>
+        </div>`
+      : "";
+    return `
+      <button class="pl-btn pl-btn--ghost pl-btn--sm pl-m-back" data-act="back-catalog">← Uygulamalar</button>
+      ${head(`${item.name} · Özellikler`, "Aç/kapa ayarları masaüstü ve telefon Hub'da aynı tanımları kullanır.")}
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>Özellikler</h2><span class="pl-badge">${item.features.length}</span></div>
+        ${rows}
+      </div>
+      ${leoCard}
+      <div class="pl-m-card">
+        <div class="pl-m-card__head"><h2>Masaüstü</h2><span class="pl-status pl-status--warning">Eşleşme bekleniyor</span></div>
+        <p>Windows'a özel ayarlar masaüstü Hub'da (Uygulama → Özellikleri aç/kapa) değiştirilir. Telefon ile masaüstü eşleşince bu ayarlar iki yönde eşitlenecek.</p>
+      </div>`;
+  }
+
   function renderAccount() {
     const a = state.app;
     return `
@@ -503,10 +556,10 @@
     const view = $("#view");
     const r = state.route;
     view.innerHTML =
-      r === "devices" ? renderDevices() : r === "mymind" ? renderMyMind() : r === "account" ? renderAccount() : renderCatalog();
+      r === "devices" ? renderDevices() : r === "mymind" ? renderMyMind() : r === "account" ? renderAccount() : r === "features" ? renderFeatures() : renderCatalog();
     view.querySelectorAll("[data-progress]").forEach((el) => setProgress(el, Number(el.dataset.progress)));
     document.querySelectorAll(".pl-m-nav button").forEach((b) => {
-      if (b.dataset.route === r) b.setAttribute("aria-current", "page");
+      if (b.dataset.route === r || (r === "features" && b.dataset.route === "catalog")) b.setAttribute("aria-current", "page");
       else b.removeAttribute("aria-current");
     });
     document.title = `${ROUTES[r]} · PluginLabs Hub`;
@@ -548,6 +601,19 @@
     else if (act === "cancel") call("cancelInstall", btn.dataset.id);
     else if (act === "open") call("openApp", btn.dataset.pkg);
     else if (act === "perm") call("openInstallSettings");
+    else if (act === "features") {
+      state.featureApp = btn.dataset.id;
+      go("features");
+    } else if (act === "back-catalog") go("catalog");
+    else if (act === "push-features") {
+      const item = state.catalog.items.find((i) => i.id === btn.dataset.id);
+      const pkg = leoPackage();
+      if (!item || !pkg) return;
+      const values = featureValues(item);
+      const androidOnly = Object.fromEntries(item.features.filter((f) => f.platforms.includes("android")).map((f) => [f.id, values[f.id]]));
+      call("sendFeatures", pkg, JSON.stringify({ app: item.id, features: androidOnly }));
+      toast("Leo Helper açılıyor; onaylayınca ayarlar uygulanır.");
+    }
     else if (act === "external") {
       if (native) call("openExternal", btn.dataset.url);
       else window.open(btn.dataset.url, "_blank", "noopener");
@@ -593,6 +659,12 @@
     if (!key) return;
     const m = state.mymind;
     if (key === "confirmEach" || key === "minimizeData") return;
+    if (key.startsWith("feature:")) {
+      const id = state.featureApp;
+      state.features[id] = { ...(state.features[id] || {}), [key.slice(8)]: e.target.checked };
+      save(KEYS.features, state.features);
+      return;
+    }
     if (key.startsWith("app:")) m.apps[key.slice(4)] = e.target.checked;
     else if (key === "language") m.language = e.target.value;
     else m[key] = e.target.checked;

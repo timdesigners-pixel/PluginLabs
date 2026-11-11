@@ -52,3 +52,19 @@ test("android arayüz: açılış en az 4 sn, CSP ve marka", () => {
   assert.match(html, /APPS/);
   assert.doesNotMatch(js, /api[_-]?key\s*[:=]\s*["'][^"']+/i);
 });
+
+test("özellik kaydı: tanımlar geçerli, Android katalogu taşır", () => {
+  const defs = require("../registry/app-features.json");
+  for (const [app, list] of Object.entries(defs.apps)) {
+    assert.ok(/^[a-z0-9-]+$/.test(app));
+    const ids = list.map((f) => f.id);
+    assert.strictEqual(new Set(ids).size, ids.length, app);
+    for (const f of list) {
+      assert.strictEqual(typeof f.default, "boolean");
+      assert.ok(f.platforms.length && f.platforms.every((p) => ["win32", "android"].includes(p)));
+    }
+  }
+  const leo = buildCatalog().items.find((i) => i.id === "leo-helper");
+  assert.ok(leo.features.some((f) => f.id === "autoSubmit"));
+  assert.strictEqual(leo.android.status, "pending");
+});

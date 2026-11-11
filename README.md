@@ -103,6 +103,14 @@ Uygulamaya özel erişim anahtarları, işlem onayları ve bağlı işlev sağla
 
 </details>
 
+## Uygulama özelliklerini aç/kapa
+
+Uygulama kataloğunda bir uygulamanın menüsünden **Özellikleri aç/kapa** seçilir (ör. Leo Helper: otomatik kod girişi, pano izleme, şart ayıklama, Scrapper köprüsü, kısayollar, MyMind). Tanımlar `registry/app-features.json` içindedir; telefon Hub'ı aynı listeyi gösterir. Uygulamalar değerleri `GET /v1/apps/features?app=<id>` ile okur (`catalog.read` izni). MyMind gönderim onayı ve veri azaltma kapatılamaz.
+
+![Leo Helper özellikleri](docs/screenshots/hub-ozellikler/desktop-ozellikler.png)
+
+> 11.11.2026, Linux Xvfb, Electron 33, geçici veriyle gerçek uygulama penceresi.
+
 ## Android (test sürümü)
 
 Telefon uygulaması `android/` klasöründedir: 4 sn açılış ekranı, katalogdan doğrulamalı APK kurulumu, cihaz bilgileri, MyMind ve abonelik ekranları. Ayrıntı ve ekranlar: [android/README.md](android/README.md).

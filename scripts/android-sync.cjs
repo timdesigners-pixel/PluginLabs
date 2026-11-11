@@ -16,6 +16,7 @@ function buildCatalog() {
   const pkg = require(path.join(root, "package.json"));
   const apk = JSON.parse(fs.readFileSync(path.join(root, "android/catalog-android.json"), "utf8")).apk;
   const apkById = new Map(apk.map((a) => [a.id, a]));
+  const features = require(path.join(root, "src/app-features.cjs"));
 
   const seen = new Set();
   const items = [];
@@ -36,6 +37,7 @@ function buildCatalog() {
       repo: it.repo || "",
       prerelease: !!it.prerelease,
       android: a ? androidEntry(a) : null,
+      features: features.list(it.id) || null,
     });
   }
   for (const a of apk) {

@@ -10,6 +10,7 @@ const fs = require("node:fs/promises"),
   { Transform } = require("node:stream"),
   { pipeline } = require("node:stream/promises");
 const { catalog: defaults, DIST } = require("./catalog.cjs");
+const appFeatures = require("./app-features.cjs");
 // Özel (kapalı) My Mind modeli: kullanıcının içe aktardığı GGUF dosyası. Katalog dışıdır,
 // internetten indirilmez; Hub onu aynı `mymind-lite` API adıyla sunar.
 const CUSTOM_MODEL_MIN = 1024 * 1024,
@@ -325,7 +326,24 @@ class Hub extends EventEmitter {
       api: { port: this.port || null, running: !!this.server },
       version: require("../package.json").version,
       settings: publicSettings,
+      appFeatures: Object.fromEntries(
+        Object.keys(appFeatures.definitions.apps).map((id) => [
+          id,
+          {
+            definitions: appFeatures.list(id),
+            values: appFeatures.resolve(id, this.state.features?.[id]),
+          },
+        ]),
+      ),
     };
+  }
+  async setAppFeatures(id, values) {
+    appFeatures.validate(id, values);
+    this.state.features = this.state.features || {};
+    this.state.features[id] = { ...this.state.features[id], ...values };
+    await this.save();
+    this.log(`${id}: özellik ayarları güncellendi`);
+    return appFeatures.resolve(id, this.state.features[id]);
   }
   async install(id) {
     if (this.closed) fail("Merkez kapanıyor", 503);
@@ -1304,6 +1322,11 @@ class Hub extends EventEmitter {
     } else if (req.method === "GET" && url.pathname === "/v1/catalog") {
       this.authenticate(req, "catalog.read");
       out = this.snapshot().catalog;
+    } else if (req.method === "GET" && url.pathname === "/v1/apps/features") {
+      this.authenticate(req, "catalog.read");
+      const id = url.searchParams.get("app") || "";
+      appFeatures.validate(id, {});
+      out = { app: id, features: appFeatures.resolve(id, this.state.features?.[id]) };
     } else if (req.method === "GET" && url.pathname === "/v1/installed") {
       this.authenticate(req, "catalog.read");
       out = this.state.installed;
