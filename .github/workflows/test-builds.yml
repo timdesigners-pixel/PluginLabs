@@ -1,0 +1,106 @@
+name: Test sürümü (Windows + Android)
+# Bu dala gönderim yapılınca Hub Windows (kurulum + taşınabilir exe) ve Hub Android APK'sı derlenir,
+# SHA256SUMS ile "ön sürüm" (prerelease) olarak yayımlanır; "son sürüm" olarak işaretlenmez.
+# Hub'ın güncelleme denetimi ön sürümleri son sürüm saymaz. Paketler imzasızdır.
+on:
+  push:
+    branches: ['claude/hub-test-builds']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Derle
+        run: npm run build:win
+      - name: Paketle
+        shell: pwsh
+        run: |
+          $exes = Get-ChildItem dist -File | Where-Object { $_.Extension -eq '.exe' -and $_.Name -notmatch 'uninstall' }
+          if ($exes.Count -ne 2) { throw "2 exe bekleniyordu: $($exes.Name -join ', ')" }
+          New-Item -ItemType Directory -Force out | Out-Null
+          foreach ($f in $exes) { Copy-Item $f.FullName out/ }
+      - uses: actions/cache/save@v4
+        with:
+          path: out
+          key: hub-win-${{ github.run_id }}
+          enableCrossOsArchive: true
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - run: node scripts/android-sync.cjs
+      - name: Test APK derle
+        working-directory: android
+        run: gradle --no-daemon assembleDebug
+      - name: Paketle
+        run: |
+          v=$(grep -m1 'versionName "' android/app/build.gradle | sed -E 's/.*"(.*)".*/\1/')
+          mkdir -p out-android
+          cp android/app/build/outputs/apk/debug/app-debug.apk "out-android/PluginLabs-Hub-Android-${v}-test.apk"
+      - uses: actions/cache/save@v4
+        with:
+          path: out-android
+          key: hub-android-${{ github.run_id }}
+  publish:
+    needs: [windows, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: out
+          key: hub-win-${{ github.run_id }}
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: out-android
+          key: hub-android-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - name: Ön sürüm yayımla
+        run: |
+          mkdir dist && cp out/* out-android/* dist/
+          cd dist
+          sha256sum * > SHA256SUMS.txt
+          {
+            echo "PluginLabs Hub test paketleri (ön sürüm, son sürüm değildir)."
+            echo
+            echo "- Kaynak commit: ${GITHUB_SHA}"
+            echo "- Windows 0.6.0: npm test geçti; kurulum ve taşınabilir exe imzasız."
+            echo "- Android 0.2.0: hata ayıklama anahtarıyla imzalı test APK'sı."
+            echo "- Yeni: telefon köprüsü, uygulama özelliklerini aç/kapa."
+            echo
+            echo '```'
+            cat SHA256SUMS.txt
+            echo '```'
+          } > ../NOTES.md
+          TAG="hub-test-$(date -u +%Y%m%d)-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" * --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --latest=false --title "PluginLabs Hub test · Windows 0.6.0 + Android 0.2.0 · $TAG" --notes-file ../NOTES.md
