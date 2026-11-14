@@ -68,7 +68,7 @@ const catalog = [
     format: "exe",
     file: "MyWishlist.exe",
     size: 12715008,
-    sha256: "6ba2c6b81551bec8373364f0894ed356dccc852557bfc1cb6660804349a6ec78",
+    sha256: "3a4fe942a977acd0d37c7621340c8ccebae7f7ea14387fc0df24a875d558e8f1",
     url: dist("mywishlist", "0.2.0", "MyWishlist-0.2.0-portable.exe"),
     distAsset: "^MyWishlist-[0-9.]+-portable\\.exe$",
     repo: "timdesigners-pixel/mywishlist",
