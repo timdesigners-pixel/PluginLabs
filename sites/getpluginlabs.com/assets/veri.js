@@ -12,14 +12,14 @@ window.PL_VERI = {
  "istatistik": {
   "urun": 59,
   "kategori": 7,
-  "hubUygulama": 38,
+  "hubUygulama": 40,
   "hubKurulabilir": 57,
   "windows": 59,
   "linux": 52,
   "macos": 52,
   "chrome": 44,
   "web": 1,
-  "katalogKaydi": 95
+  "katalogKaydi": 97
  },
  "kategoriler": [
   {
@@ -160,7 +160,7 @@ window.PL_VERI = {
     "chrome"
    ],
    "surum": "0.1.0",
-   "hub": "onizleme",
+   "hub": "uygulama",
    "urun": null,
    "renk": 6,
    "harf": "NM"
@@ -236,7 +236,7 @@ window.PL_VERI = {
     "chrome"
    ],
    "surum": "0.1.0",
-   "hub": "onizleme",
+   "hub": "uygulama",
    "urun": null,
    "renk": 2,
    "harf": "1D"

@@ -126,6 +126,47 @@ const catalog = [
     repo: "timdesigners-pixel/finansal-asistan",
   },
   {
+    id: "note-master",
+    name: "Note Master",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Kaynaklı hızlı not ve hızlı görev: panodan alıntı (kaynak zorunlu, alıntı sınırı), #etiket, Türkçe arama, her zaman üstte hızlı not widget'ı (Ctrl+Shift+Space), Markdown/JSON dışa aktarma ve MyMind ile onaylı görev/özet taslağı.",
+    platform: "win32",
+    format: "exe",
+    file: "NoteMaster.exe",
+    size: 81513763,
+    sha256: "c1b57488f42d917ceff546d7935b80af36c3010ede1ff26777fd353b65d5ef29",
+    url: dist(
+      "note-master",
+      "0.1.0",
+      "NoteMaster-0.1.0-Windows-Portable-x64.exe",
+    ),
+    distAsset: "Windows-Portable-x64\\.exe$",
+    // Dağıtım paketi PluginLabs 08bc607 (apps/01-…/PL-006-note-master/app) kaynağından derlendi.
+    source: "https://github.com/timdesigners-pixel/PluginLabs/tree/08bc607c557a53125fcfc5c6e6fec2ac9fc9837a/apps/01-mevcut-urunler-ve-fikirler/PL-006-note-master/app",
+  },
+  {
+    id: "binbir-dizayn-studyo",
+    name: "Binbir Dizayn Stüdyo",
+    kind: "app",
+    version: "0.1.0",
+    description:
+      "Design Replicator'ın 1001 bileşenlik referans kütüphanesini çevrimdışı gezer: 42 kategori, 14 palet, Türkçe arama, canlı önizleme, HTML/CSS/JS kodu, tek dosya HTML kaydetme, favoriler ve görselden renk paleti.",
+    platform: "win32",
+    format: "exe",
+    file: "BinbirDizaynStudyo.exe",
+    size: 81689339,
+    sha256: "10368cdad2be2a3d1a0c00796bbf9033867e142b43a6b09056e7be81923957b5",
+    // Ürün deposu herkese açık; dosya doğrudan ürün release'inden indirilir (güncelleme denetimi yok: distAsset tanımsız).
+    url: gh(
+      "timdesigners-pixel/1001-designs",
+      "studyo-v0.1.0",
+      "BinbirDizaynStudyo-0.1.0-Windows-Portable-x64.exe",
+    ),
+    repo: "timdesigners-pixel/1001-designs",
+  },
+  {
     id: "flow-dock",
     name: "Flow Dock",
     kind: "app",
