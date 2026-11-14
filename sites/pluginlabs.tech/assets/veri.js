@@ -1054,7 +1054,7 @@ window.PL_VERI = {
     "macos",
     "chrome"
    ],
-   "surum": "0.1.0",
+   "surum": "0.2.0",
    "hub": "uygulama",
    "urun": "wishlist",
    "renk": null,
