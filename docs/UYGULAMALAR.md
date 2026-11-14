@@ -9,8 +9,8 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | Uygulama | Sürüm | Nereden |
 | --- | --- | --- |
 | Flow Dock (PL-001) | v0.2.0 ön sürüm (Rust/Tauri, kurulum + taşınabilir); Windows 11 geçti, Server 2025 açılışı başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| Leo Helper (PL-002) | **v0.9.6** (Windows kurulum ve taşınabilir EXE, Telegram mesaj geçmişi) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.6 |
-| Mind Palace (PL-003) | **v1.12.0** (kurulum + taşınabilir .exe) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
+| Leo Helper (PL-002) | **v0.9.7** (Windows kurulum ve taşınabilir EXE) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.7 |
+| Mind Palace (PL-003) | **v1.11.1** (kurulum + taşınabilir .exe). `v1.12.0` etiketi var ama release'i yayımlanmadı (14.11.2026 doğrulandı) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.1 |
 | The Ultimate Scrapper (PL-004) | **v0.8.0** (PluginLabs Scrapper; Leo köprüsü, Alışveriş + Veri Kazıma Stüdyosu + Site Rehberi) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | Finansal Asistan (PL-005) | v0.1.0 (Windows, kapalı pilot) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | MyWishlist (PL-054) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome zip) | https://github.com/timdesigners-pixel/mywishlist/releases/tag/v0.1.0 |
@@ -56,15 +56,15 @@ Windows sürümü GitHub release olarak yayımlanmış uygulamalar (paketler imz
 | The Ultimate Upscaler (PL-056) | v0.1.0 (Tauri; kurulum + taşınabilir exe + Chrome eklentisi zip) | https://github.com/timdesigners-pixel/ultimate-upscaler/releases/tag/v0.1.0 |
 | Tork (PL-057) | **v0.1.0** (Tauri/Rust; taşınabilir exe + `tork-cli` + SHA256SUMS + BUILD-INFO; Hub kataloğunda) | https://github.com/timdesigners-pixel/tork/releases/tag/v0.1.0 |
 | Kurgu Atölyesi (PL-058) | **v0.3.1** ön sürüm (Tauri/Rust; gerçek FFmpeg MP4 render, kurtarma, MyMind metin taslağı) | https://github.com/timdesigners-pixel/pluginlabs-dagitim/releases/tag/kurgu-atolyesi-v0.3.1 |
-| MyMind AI (PL-059) | **v0.1.2** (Tauri/Rust masaüstü + Chrome MV3 eklentisi) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.2 |
+| MyMind AI (PL-059) | **v0.1.3** (Tauri/Rust masaüstü + Chrome MV3 eklentisi) | https://github.com/timdesigners-pixel/mymind-ai/releases/tag/v0.1.3 |
 
 Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanımı) `main` dalındadır: `npm ci && npm run test:agent`. Eski `wip-agent-inapp` dalı bunun taslağıydı; `main` onu aşmıştır.
 
 ## Özet
 
-- **Tüm Uygulamalar Yayında:** PL-001 – PL-059 (59/59 ürünün tamamı) resmi Windows sürümleriyle yayımlandı ve GitHub Release paketlerine sahiptir.
+- **Tüm Uygulamalar Yayında:** PL-001 – PL-059 (59/59 ürünün tamamı) resmi Windows sürümleriyle yayımlandı ve GitHub Release paketlerine sahiptir (14.11.2026: 59 ürünün release'leri GitHub'da yeniden doğrulandı; kurulum + taşınabilir exe + SHA256 var).
 - **PL-040 – PL-050 Serisi:** `pluginlabs-dagitim` deposunda v0.1.0 Windows sürümleri (hem Installer hem Portable) olarak yayımlandı ve tüm SHA256 doğrulamalarıyla PluginLabs Hub (`src/catalog.cjs`) kataloğuna entegre edildi.
-- **Hub Kataloğu Entegrasyonu:** Tüm 59 ürün hem taşınabilir hem de kurulum paketleriyle Hub üzerinden indirilebilir, doğrulanabilir ve çalıştırılabilir durumdadır.
+- **Hub Kataloğu Entegrasyonu:** 14.11.2026 itibarıyla `src/catalog.cjs` PL-001–005, PL-025–050 ve PL-053–059'u içerir. PL-006–024, PL-051 ve PL-052 Windows release'leri yayında olsa da Hub kataloğunda yalnız önizleme kartı (`pl-0XX`, `product-preview`) olarak duruyor; kurulabilir paket kaydı yok (MUST HAVE #7 açığı).
 - **Yerel ve CI Doğrulaması:** Tüm uygulamalar birim testleri (10/10 veya 11/11), Electron masaüstü duman testleri ve Playwright UI ekran görüntüleri ile doğrulanmıştır.
 
 ## Tüm liste (PL-001 … PL-059)
@@ -72,8 +72,8 @@ Mind Palace'ın ajan kipi (araç çağırma, görsel girdi, bilgisayar kullanım
 | ID | Ad | Durum | Bağlantı |
 | --- | --- | --- | --- |
 | PL-001 | Flow Dock | **v0.2.0 ön sürüm**, imzasız; Windows 11 native geçti, Server 2025 başarısız | https://github.com/timdesigners-pixel/flow-dock/releases/tag/v0.2.0 |
-| PL-002 | Leo Helper | Windows uygulaması · **v0.9.6** (mesaj geçmişi, Scrapper köprüsü, imzasız paket) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.6 |
-| PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.12.0** | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.12.0 |
+| PL-002 | Leo Helper | Windows uygulaması · **v0.9.7** (mesaj geçmişi, Scrapper köprüsü, imzasız paket) | https://github.com/timdesigners-pixel/leo-helper/releases/tag/v0.9.7 |
+| PL-003 | Mind Palace Plugin Hub | Çalışan Windows uygulaması · **v1.11.1** (v1.12.0 etiketi var, release yayımlanmadı: 30.10.2026 yayın işi `test:sync-native` adımında düştü; 14.11.2026 yeniden deneme Actions runner'ı başlamadığı için başarısız) | https://github.com/timdesigners-pixel/mind-palace/releases/tag/v1.11.1 |
 | PL-004 | The Ultimate Scrapper | Chrome eklentisi + Windows uygulaması · **v0.8.0** (PluginLabs Scrapper; imzasız önizleme) | https://github.com/timdesigners-pixel/the-ultimate-scrapper/releases/tag/v0.8.0 |
 | PL-005 | Finansal Asistan | Windows uygulaması · **v0.1.0** (kapalı pilot, imzasız) | https://github.com/timdesigners-pixel/finansal-asistan/releases/tag/v0.1.0 |
 | PL-006 | Note Master | Chrome eklentisi + Windows uygulaması · **v0.1.0** (imzasız önizleme) | https://github.com/timdesigners-pixel/note-master/releases/tag/v0.1.0 |
