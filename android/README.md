@@ -1,4 +1,4 @@
-# PluginLabs Hub · Android (test sürümü 0.2.0)
+# PluginLabs Hub · Android (test sürümü 0.3.0)
 
 PluginLabs Hub'ın telefon uygulaması. Masaüstü Hub'ın kataloğunu, tasarım çizgisini ve MyMind kurallarını Android'e taşır.
 
@@ -14,6 +14,15 @@ PluginLabs Hub'ın telefon uygulaması. Masaüstü Hub'ın kataloğunu, tasarım
 - **Cihazlar:** Bu telefonun modeli, Android sürümü, pil, depolama, RAM, ağ ve ekran bilgisi. Masaüstü Hub ve diğer cihazlar eşleştirme sonrası listelenir.
 - **MyMind AI:** Etkinleştirme, zorunlu onay ve veri azaltma, yanıt dili, geçmiş, uygulama bazında izinler, aylık kullanım.
 - **Hesap ve abonelik:** Geçerli plan, Pro plan içeriği, abonelik durumu, uygulama sürümü.
+
+## Tablet
+Ekran 720 piksel genişliği geçince (tabletler, katlanabilir telefonun açık hâli) alt menü sol kenarda dikey menü şeridine döner; kartlar ve uygulama listesi ekran genişliğine göre iki ya da üç sütuna yayılır. Arama kutusu ve komut paleti okunur genişlikte kalır, açılış ekranı ortalanır. Yatay telefonda alt menü incelir. Döndürme serbesttir; telefon ve tablet aynı APK'yı kullanır.
+
+| Tablet yatay · Uygulamalar | Tablet dikey · Uygulamalar | Tablet yatay · Hesap |
+| --- | --- | --- |
+| ![Tablet yatay](../docs/screenshots/android/09-tablet-yatay-uygulamalar.png) | ![Tablet dikey](../docs/screenshots/android/10-tablet-dikey-uygulamalar.png) | ![Tablet hesap](../docs/screenshots/android/11-tablet-yatay-hesap.png) |
+
+> Tablet görüntüleri arayüz dosyalarından 1280×800 ve 800×1280 boyutunda Chromium ile alındı; gerçek tablet görüntüsü henüz alınmadı.
 
 ## Özellik aç/kapa ve eklentiler
 - **Özellikler** filtresi ve her uygulamadaki **Özellikler** düğmesi, `registry/app-features.json` tanımlarını gösterir (masaüstü Hub ile aynı liste). Değerler bu telefonda saklanır.
