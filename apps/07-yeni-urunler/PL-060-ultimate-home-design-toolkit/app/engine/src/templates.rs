@@ -119,7 +119,7 @@ fn add(s: &mut Scene, level: &str, cat: &str, x: f64, y: f64, rot: f64) {
     let n = s.objects.len() + 1;
     let h = s.standard.net_height;
     let z = if item.mount < 0.0 { h - 900.0 } else { item.mount };
-    s.objects.push(Object { id: format!("N{n}"), name: item.name.into(), mesh: format!("cat:{cat}"), level: level.into(), position: [x, y, z], rotation: rot, scale: [1.0; 3], material: None, price: item.price, quantity: 1 });
+    s.objects.push(Object { id: format!("N{n}"), name: item.name.into(), mesh: format!("cat:{cat}"), level: level.into(), position: [x, y, z], rotation: rot, scale: [1.0; 3], material: None, price: item.price, quantity: 1, motor: None });
 }
 
 fn op(s: &mut Scene, wall: &str, std: &str, offset: f64, sill: Option<f64>) {

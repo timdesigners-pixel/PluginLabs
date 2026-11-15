@@ -367,6 +367,55 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let (o_txt, m_txt) = obj::export(&s, &m, &format!("{base}.mtl"));
             Ok(json!({"obj": o_txt, "mtl": m_txt, "triangles": m.triangle_count(), "basename": base}))
         }
+        "motor_defaults" => Ok(crate::motors::defaults()),
+        "motor_preview" => {
+            let kind: String = arg(&v, "kind")?;
+            let g = crate::motors::generate(&kind, v.get("params").cloned().unwrap_or(json!({})), "onizleme")?;
+            let base = templates::default_materials();
+            let groups: Vec<Value> = g
+                .mesh
+                .groups
+                .iter()
+                .map(|gr| {
+                    let mat = g.materials.iter().chain(base.iter()).find(|m| m.id == gr.material).cloned().unwrap_or_default();
+                    let pos: Vec<f32> = g.mesh.indices[gr.start as usize..(gr.start + gr.count) as usize].iter().flat_map(|&i| g.mesh.positions[i as usize].map(|x| x.round())).collect();
+                    json!({"material": gr.material, "color": mat.color, "opacity": mat.opacity, "positions": pos})
+                })
+                .collect();
+            Ok(json!({"groups": groups, "size": g.size, "price": g.price, "name": g.name, "triangles": g.triangles}))
+        }
+        "motor" => {
+            let mut s = scene_of(&v)?;
+            let kind: String = arg(&v, "kind")?;
+            let params = v.get("params").cloned().unwrap_or(json!({}));
+            let mut k = s.meshes.len() + 1;
+            let id = loop {
+                let c = format!("motor{k}");
+                if !s.meshes.iter().any(|m| m.id == c) {
+                    break c;
+                }
+                k += 1;
+            };
+            let g = crate::motors::generate(&kind, params.clone(), &id)?;
+            for m in &g.materials {
+                if !s.materials.iter().any(|x| x.id == m.id) {
+                    s.materials.push(m.clone());
+                }
+            }
+            let at: [f64; 2] = opt(&v, "at").unwrap_or([1500.0, 1500.0]);
+            let level: String = opt(&v, "level").unwrap_or_else(|| "L0".into());
+            let mut n = s.objects.len() + 1;
+            let oid = loop {
+                let c = format!("N{n}");
+                if !s.objects.iter().any(|o| o.id == c) {
+                    break c;
+                }
+                n += 1;
+            };
+            s.objects.push(crate::model::Object { id: oid.clone(), name: g.name.clone(), mesh: id.clone(), level, position: [at[0], at[1], g.mount], rotation: opt(&v, "rotation").unwrap_or(0.0), price: g.price, motor: Some(json!({"kind": kind, "params": params})), ..Default::default() });
+            s.meshes.push(g.mesh);
+            Ok(json!({"scene": s, "object": oid, "mesh": id, "size": g.size, "price": g.price, "triangles": g.triangles}))
+        }
         "save_scene" => Ok(json!({"text": scene_file::save(&scene_of(&v)?)?})),
         "load_scene" => {
             let text: String = arg(&v, "text")?;
@@ -469,6 +518,10 @@ mod tests {
         assert!(cam["fov"].as_f64().unwrap() > 60.0);
         let chk = ok(&call("check", &json!({"scene": s}).to_string()));
         assert!(chk.as_array().unwrap().iter().any(|x| x["text"].as_str().unwrap().contains("merdiven")));
+        let m = ok(&call("motor", &json!({"scene": s, "kind": "perde", "params": {"kind": "tul", "width": 2000}, "at": [3000, 300]}).to_string()));
+        let s = m["scene"].clone();
+        assert_eq!(s["objects"].as_array().unwrap().last().unwrap()["motor"]["kind"], "perde");
+        assert!(ok(&call("motor_preview", &json!({"kind": "havuz", "params": {"shape": "oval"}}).to_string()))["triangles"].as_u64().unwrap() > 50);
         let mesh = ok(&call("mesh", &json!({"scene": s, "options": {"roof": false}}).to_string()));
         assert!(mesh["triangles"].as_u64().unwrap() > 100);
     }

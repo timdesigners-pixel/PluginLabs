@@ -293,10 +293,12 @@ pub struct Object {
     pub material: Option<String>,
     pub price: f64,
     pub quantity: u32,
+    /// Tasarım motoruyla üretildiyse motor adı ve parametreleri (yeniden düzenleme için).
+    pub motor: Option<serde_json::Value>,
 }
 impl Default for Object {
     fn default() -> Self {
-        Object { id: String::new(), name: String::new(), mesh: String::new(), level: "L0".into(), position: [0.0; 3], rotation: 0.0, scale: [1.0; 3], material: None, price: 0.0, quantity: 1 }
+        Object { id: String::new(), name: String::new(), mesh: String::new(), level: "L0".into(), position: [0.0; 3], rotation: 0.0, scale: [1.0; 3], material: None, price: 0.0, quantity: 1, motor: None }
     }
 }
 

@@ -12,6 +12,7 @@ pub mod geom;
 pub mod measure;
 pub mod mesh;
 pub mod model;
+pub mod motors;
 pub mod modules;
 pub mod plan;
 pub mod obj;
