@@ -16,6 +16,12 @@ Görüntüler `scripts/ui-check.cjs` ile alınmıştır: Linux, Chromium 1600×9
 | ![Maliyet](docs/screenshots/07-maliyet.png) **Maliyet ve ölçekleme** — kalite düzeyi, bölge/işçilik endeksi, düzenlenebilir birim fiyatlar | ![Fonksiyonlar](docs/screenshots/08-fonksiyonlar.png) **Fonksiyonlar** — kullanıcı tanımlı ölçü/maliyet formülleri |
 | ![Özet](docs/screenshots/09-ozet.png) **5 · Özet** — proje kontrolü, dışa aktarma | ![MyMind](docs/screenshots/10-mymind.png) **MyMind** — onaylı, veri azaltılmış öneri |
 
+| ![Ürün kütüphanesi](docs/screenshots/12-urun-kutuphanesi.png) **Ürün kütüphanesi** — 59 hazır model, izometrik küçük resim | ![Kaplama kütüphanesi](docs/screenshots/13-kaplama-kutuphanesi.png) **Kaplama kütüphanesi** — yeni kaplama, m² fiyatı |
+| ![Boyutlandırma](docs/screenshots/14-boyutlandirma.png) **Boyutlandırma** — özellikler paneli ve köşe tutamakları | ![Perde motoru](docs/screenshots/15-motor-perde.png) **Perde motoru** |
+| ![Halı motoru](docs/screenshots/16-motor-hali.png) **Halı motoru** | ![Havuz](docs/screenshots/17-motor-havuz.png) **Havuz oluşturucu** |
+| ![Yatak](docs/screenshots/18-motor-yatak.png) **Yatak · baza · başlık · nevresim** | ![İzometrik kesit](docs/screenshots/19-izometrik-kesit.png) **İzometrik kesit** ve gökyüzü ayarları |
+| ![Görselden referans](docs/screenshots/20-gorselden-referans.png) **Görselden referans** — palet, ışık, en yakın ürünler | |
+
 ### Render motoru çıktıları (örnek proje, 1280×720)
 
 Aynı motorun yerel derlemesiyle (`cargo run --release --example render_cli`, Linux, 4 iş parçacığı) alınmıştır.
@@ -23,6 +29,7 @@ Aynı motorun yerel derlemesiyle (`cargo run --release --example render_cli`, Li
 | | |
 |---|---|
 | ![Gündüz](docs/screenshots/render-perspektif-gunduz.png) Perspektif · gündüz · 64 örnek | ![Gün batımı](docs/screenshots/render-perspektif-gun-batimi.png) Perspektif · gün batımı · 64 örnek |
+| ![İzometrik 4K](docs/screenshots/render-izometrik-kesit-4k.png) İzometrik kesit · 3840×2160 · 16 örnek · 81 sn | |
 | ![Kuşbakışı](docs/screenshots/render-kusbakisi.png) Kuşbakışı kesit · 48 örnek | ![İç mekân](docs/screenshots/render-ic-mekan.png) İç mekân · 96 örnek |
 
 ## Akış
@@ -32,6 +39,19 @@ Aynı motorun yerel derlemesiyle (`cargo run --release --example render_cli`, Li
 3. **İç plan** — 10 cm bölme (90° hizalı), tek tıkla mahal algılama (net m² ve net ölçü), standart kapılar (90×235, 100×235) ve pencereler (100/200/250/400/600×235, 140×140, 70×70), kapı açılımı, parapet, mutfak/banyo/mobilya kataloğu, merdiven (üst döşemede boşluk otomatik), dış cephe kaplaması (taş, ahşap, alüminyum kompozit) ve boyası, revizyon notları, canlı alan hesabı ve yerleşim kontrolü. Taşıyıcı perdeye açıklık konamaz.
 4. **3B ve render** — dış/iç görünüm, katlar, kesit, ön/arka/sağ/sol cephe, kuşbakışı, perspektif; gündüz, gün batımı ve akşam atmosferi; iç cephe boyası; HD render (PNG).
 5. **Özet** — proje kontrolü, mahal tablosu, tahmini toplam, dışa aktarma (.uhds, PNG plan, OBJ+MTL, render, yazdır/PDF).
+
+## Kütüphaneler, motorlar ve araçlar
+
+- **Ürün kütüphanesi** — 59 parametrik hazır model (oturma, yatak, depolama, mutfak, banyo, aydınlatma, elektronik, tablo, dış mekân) ve içe aktarılan OBJ modelleri; arama, grup süzgeci, “Plana yerleştir”.
+- **Kaplama kütüphanesi** — zemin, iç duvar, cephe boyası, cephe kaplaması, mobilya/tekstil; yeni kaplama (renk, pürüzlülük, metalik, m² fiyatı). “Uygula” ile mahale (zemin), duvara ya da nesneye tıklanır. m² fiyatlı zemin ve cephe kaplamaları maliyete kalem olarak girer.
+- **Boyutlandırma ve ölçekleme** — Özellikler panelinde genişlik/derinlik/yükseklik (cm), oranı koru, açı, zeminden yükseklik, adet, kaplama, çoğalt; planda köşe tutamakları (Shift: oranı koru).
+- **Yapı araçları** — 10 / 12,5 / 20 cm duvar çizimi, bölmeyi sürükleyerek taşıma, kalınlık düzenleme, ölçü aracı (kalıcı ölçü çizgisi), kolon, merdiven, 5 kapı ve 11 pencere ölçüsü.
+- **Tasarım motorları** — perde (cins, pile sıklığı/derinliği, saydamlık, desen, korniş/rustik/düz kemer/kavisli kemer), halı (4 şekil, 5 desen), yatak (3 baza × 5 başlık + nevresim), nevresim (yatak ölçüsüne uyum), havuz (4 şekil). Canlı önizleme, ölçü ve fiyat; “Oluştur ve plana ekle”.
+- **Gökyüzü ve atmosfer** — saat, mevsim, bulut, pus; güneş konumu hesaplanır.
+- **Render** — perspektif ve izometrik (kesit dahil), Taslak/İyi/Final/Ultra, 8K'ya kadar çıktı (4K ve üzeri masaüstünde).
+- **Görselden referans** — renk paleti, ışık düzeni, en yakın kaplamalar, kamera önerisi ve en yakın ürünler; yerelde çalışır, uygulama geri alınabilir. Ürün eşleştirme renk ve oran tabanlı bir ön sürümdür.
+
+Durum ve eksikler: [docs/roadmap.md](docs/roadmap.md) · Varsayımlar ve açık kararlar: [docs/assumptions.md](docs/assumptions.md)
 
 Ayrıca: **Ölçü ve metraj** (mm/cm/m/ft/in), **Maliyet ve ölçekleme**, **Fonksiyonlar**, **3B kütüphane (OBJ)**, **MyMind**, Ctrl+K komut paleti, Ctrl+Z geri alma, otomatik kayıt ve “Projeye devam et”.
 
@@ -45,8 +65,10 @@ Ayrıca: **Ölçü ve metraj** (mm/cm/m/ft/in), **Maliyet ve ölçekleme**, **Fo
 | `cost.rs` | Kalem bazlı maliyet (fire, miktar indirimi, kalite düzeyi, bölge/işçilik endeksi, KDV, beklenmeyen gider), alan eğrisi, seri üretim ölçeklemesi, esneklik |
 | `formula.rs` | Güvenli formül dili (kullanıcı fonksiyonları): uzunluk/derinlik sınırlı, kod çalıştırma yok |
 | `mesh.rs` | Kabuk duvarları (iç/dış malzeme), döşemeler, merdiven boşluğu, doğrama ve kapı kanatları, katalog nesneleri |
-| `render.rs` | SAH BVH, yol izleme, güneş/gökyüzü/lamba doğrudan ışığı, cam, metal/parlak yüzey, ACES, kılavuzlu gürültü azaltma, çok iş parçacığı |
+| `render.rs` | SAH BVH, yol izleme, perspektif ve izometrik izdüşüm, gökyüzü motoru (saat, mevsim, bulut, pus), 8K'ya kadar çıktı, güneş/gökyüzü/lamba doğrudan ışığı, cam, metal/parlak yüzey, ACES, kılavuzlu gürültü azaltma, çok iş parçacığı |
 | `obj.rs` | OBJ/MTL içe aktarma (negatif indeks, çokgen, birim ve Z-yukarı dönüşümü, sınırlar) ve dışa aktarma |
+| `motors.rs` | Perde, halı, yatak (baza + başlık), nevresim ve havuz motorları: parametreden üçgen ağı, malzeme, ölçü, fiyat |
+| `reference.rs` | Görselden referans: palet, ışık sınıfı, gökyüzü/pozlama önerisi, en yakın kaplama ve ürünler |
 | `scene_file.rs` | `.uhds` yerel sahne dosyası: `UHDS/1 sha256=… bytes=…` başlığı + JSON; bütünlük ve sürüm denetimi |
 | `api.rs` | Arayüzün tek giriş noktası `call(komut, json)` |
 
@@ -60,7 +82,7 @@ Ayrıca: **Ölçü ve metraj** (mm/cm/m/ft/in), **Maliyet ve ölçekleme**, **Fo
 ## Geliştirme
 
 ```bash
-cargo test -p uhd-engine --release        # motor testleri (42)
+cargo test -p uhd-engine --release        # motor testleri (52)
 bash scripts/build-wasm.sh                # tarayıcı önizleme motoru → ui/engine/
 node scripts/ui-check.cjs [klasör]        # Chromium arayüz denetimi + ekran görüntüleri (DSF=2 ile 2x)
 npm ci && npx tauri build                 # Windows: NSIS kurulum + taşınabilir exe
