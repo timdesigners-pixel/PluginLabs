@@ -32,6 +32,13 @@ const fn it(id: &'static str, name: &'static str, group: &'static str, size: [f6
 pub fn items() -> Vec<CatalogItem> {
     let mut v = vec![
         it("kanepe-3", "Üçlü kanepe", "Oturma", [2200.0, 920.0, 850.0], 38_000.0, &["salon"]),
+        it("kanepe-2", "İkili kanepe", "Oturma", [1600.0, 900.0, 850.0], 27_000.0, &["salon", "calisma"]),
+        it("kose-koltuk", "Köşe koltuk", "Oturma", [2600.0, 1800.0, 850.0], 52_000.0, &["salon"]),
+        it("puf", "Puf", "Oturma", [600.0, 600.0, 420.0], 3_400.0, &["salon", "yatak"]),
+        it("bar-taburesi", "Bar taburesi", "Oturma", [400.0, 400.0, 750.0], 2_600.0, &["mutfak", "salon"]),
+        it("konsol", "Konsol", "Depolama", [1200.0, 400.0, 800.0], 7_800.0, &["antre", "salon"]),
+        it("boy-aynasi", "Boy aynası", "Dekor", [600.0, 60.0, 1700.0], 2_900.0, &["antre", "yatak", "giyinme"]),
+        it("kolon", "Kolon 30 × 30", "Yapı", [300.0, 300.0, 2850.0], 0.0, &["salon"]),
         it("berjer", "Berjer", "Oturma", [850.0, 850.0, 900.0], 14_500.0, &["salon", "yatak", "calisma"]),
         it("orta-sehpa", "Orta sehpa", "Masa", [1100.0, 600.0, 420.0], 6_500.0, &["salon"]),
         it("tv-unitesi", "TV ünitesi", "Depolama", [1800.0, 450.0, 520.0], 11_000.0, &["salon"]),
@@ -78,7 +85,7 @@ pub fn parts(id: &str) -> Vec<Part> {
     let [w, d, h] = item.size;
     let (hw, hd) = (w / 2.0, d / 2.0);
     match id {
-        "kanepe-3" => vec![
+        "kanepe-3" | "kanepe-2" => vec![
             bx(-hw + 60.0, 0.0, -hd + 60.0, -hw + 120.0, 120.0, -hd + 120.0, "siyah-mat"),
             bx(hw - 120.0, 0.0, -hd + 60.0, hw - 60.0, 120.0, -hd + 120.0, "siyah-mat"),
             bx(-hw + 60.0, 0.0, hd - 120.0, -hw + 120.0, 120.0, hd - 60.0, "siyah-mat"),
@@ -98,7 +105,20 @@ pub fn parts(id: &str) -> Vec<Part> {
             bx(-hw, 420.0, -hd + 180.0, -hw + 130.0, 640.0, hd, "kumas-lacivert"),
             bx(hw - 130.0, 420.0, -hd + 180.0, hw, 640.0, hd, "kumas-lacivert"),
         ],
-        "orta-sehpa" | "yemek-masasi" | "calisma-masasi" => {
+        "kose-koltuk" => vec![
+            bx(-hw, 0.0, -hd, hw, 120.0, -hd + 950.0, "siyah-mat"),
+            bx(-hw, 120.0, -hd, hw, 420.0, -hd + 950.0, "kumas-gri"),
+            bx(-hw, 120.0, -hd + 950.0, -hw + 950.0, 420.0, hd, "kumas-gri"),
+            bx(-hw, 420.0, -hd, hw, h, -hd + 220.0, "kumas-gri"),
+            bx(-hw, 420.0, -hd + 220.0, -hw + 180.0, 640.0, hd, "kumas-gri"),
+            bx(hw - 180.0, 420.0, -hd + 220.0, hw, 640.0, -hd + 950.0, "kumas-gri"),
+            bx(-hw + 300.0, 420.0, -hd + 230.0, -hw + 760.0, 760.0, -hd + 380.0, "kumas-lacivert"),
+            bx(hw - 760.0, 420.0, -hd + 230.0, hw - 300.0, 760.0, -hd + 380.0, "kumas-lacivert"),
+        ],
+        "puf" => vec![bx(-hw + 40.0, 0.0, -hd + 40.0, hw - 40.0, 60.0, hd - 40.0, "siyah-mat"), bx(-hw, 60.0, -hd, hw, h, hd, "kumas-lacivert")],
+        "boy-aynasi" => vec![bx(-hw, 0.0, -hd, hw, h, hd - 10.0, "siyah-mat"), bx(-hw + 30.0, 30.0, hd - 10.0, hw - 30.0, h - 30.0, hd, "ayna")],
+        "kolon" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "beton")],
+        "orta-sehpa" | "yemek-masasi" | "calisma-masasi" | "bar-taburesi" => {
             let top = if id == "orta-sehpa" { 40.0 } else { 36.0 };
             let mat = if id == "calisma-masasi" { "ahsap-mese" } else { "ahsap-ceviz" };
             let leg = 50.0;
@@ -118,7 +138,7 @@ pub fn parts(id: &str) -> Vec<Part> {
             bx(-hw + 10.0, 0.0, hd - 40.0, -hw + 40.0, 430.0, hd - 10.0, "siyah-mat"),
             bx(hw - 40.0, 0.0, hd - 40.0, hw - 10.0, 430.0, hd - 10.0, "siyah-mat"),
         ],
-        "tv-unitesi" | "komodin" | "ayakkabilik" => vec![
+        "tv-unitesi" | "komodin" | "ayakkabilik" | "konsol" => vec![
             bx(-hw, 60.0, -hd, hw, h, hd, if id == "komodin" { "ahsap-ceviz" } else { "lake-antrasit" }),
             bx(-hw + 30.0, 0.0, -hd + 30.0, hw - 30.0, 60.0, hd - 30.0, "siyah-mat"),
             bx(-hw + 20.0, h * 0.5, hd, hw - 20.0, h * 0.5 + 8.0, hd + 4.0, "metal-krom"),

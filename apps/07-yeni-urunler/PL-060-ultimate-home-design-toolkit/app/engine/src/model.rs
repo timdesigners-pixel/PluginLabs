@@ -29,6 +29,8 @@ pub struct Scene {
     pub facade: String,
     /// İç cephe boyası (malzeme kimliği).
     pub interior: String,
+    /// Plan üzerindeki kalıcı ölçü çizgileri.
+    pub dimensions: Vec<Dimension>,
 }
 
 impl Default for Scene {
@@ -51,6 +53,7 @@ impl Default for Scene {
             project_no: String::new(),
             facade: "beton-kabuk".into(),
             interior: "boya-beyaz".into(),
+            dimensions: vec![],
         }
     }
 }
@@ -102,6 +105,16 @@ impl Default for Module {
     fn default() -> Self {
         Module { id: String::new(), length: 10, floor: 0, position: [0.0, 0.0], rotated: false, on: None }
     }
+}
+
+/// Ölçü aracıyla bırakılan çizgi (mm).
+#[derive(Clone, Debug, Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct Dimension {
+    pub id: String,
+    pub level: String,
+    pub a: P2,
+    pub b: P2,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, Default)]

@@ -34,7 +34,8 @@
       <button class="pl-navitem uh-navbtn" type="button" data-view="olcu">Ölçü ve metraj</button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="maliyet">Maliyet ve ölçekleme</button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="fonksiyon">Fonksiyonlar<span class="pl-badge" id="fnCount">0</span></button>
-      <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">3B kütüphane (OBJ)<span class="pl-badge" id="objCount">0</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">Ürün kütüphanesi<span class="pl-badge" id="objCount">0</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="kaplama">Kaplama kütüphanesi<span class="pl-badge" id="matCount">0</span></button>
     </div>
     <div class="uh-mini" id="sideInfo"></div>
     <div class="uh-side__foot">
@@ -149,7 +150,7 @@
           <div class="uh-canvashint" id="hintP">Araç seçin ve doğrudan planda çalışın. Kaydırmak için sağ tuş ya da boşluk + sürükle; yakınlaştırmak için tekerlek.</div>
         </div>
         <aside class="uh-panel" aria-label="Seçili eleman ve canlı hesap">
-          <h3 class="uh-h3">Seçili eleman</h3>
+          <h3 class="uh-h3">Özellikler</h3>
           <div id="inspector" class="uh-inspector"><p class="uh-small">Bir duvar, oda, kapı/pencere veya nesneye tıklayın.</p></div>
           <h3 class="uh-h3">Canlı alan hesabı</h3>
           <div class="uh-stats" id="liveStats"></div>
@@ -324,11 +325,15 @@
       </div>
     </section>
 
-    <!-- Kütüphane -->
-    <section class="uh-view" id="view-kutuphane" data-title="3B kütüphane">
+    <!-- Ürün kütüphanesi -->
+    <section class="uh-view" id="view-kutuphane" data-title="Ürün kütüphanesi">
       <div class="uh-page">
-        <div class="uh-head"><h1 class="uh-h1">3B kütüphane</h1></div>
-        <p class="uh-lead">Wavefront OBJ modellerini (isteğe bağlı MTL malzemeleriyle) içe aktarın; modeller sahneye nesne olarak eklenir, render ve OBJ dışa aktarmaya katılır.</p>
+        <div class="uh-head"><h1 class="uh-h1">Ürün kütüphanesi</h1><span class="uh-grow"></span>
+          <div class="pl-inputwrap uh-search"><input class="pl-input" id="libSearch" type="search" placeholder="Ürün ara…" aria-label="Ürün ara"></div></div>
+        <p class="uh-lead">Hazır parametrik modeller ve içe aktardığınız OBJ modelleri. Bir ürünü seçip plana yerleştirin; ölçüsünü planda köşe tutamaklarından ya da Özellikler panelinden değiştirin.</p>
+        <div class="uh-chips" id="libGroups" role="tablist" aria-label="Ürün grupları"></div>
+        <div class="uh-libgrid" id="libGrid"></div>
+        <h2 class="uh-h3">Kendi modelleriniz (OBJ)</h2>
         <div class="uh-card uh-card--flat">
           <div class="uh-row uh-wrap">
             <label class="pl-field"><span class="pl-field__label">Model birimi</span><select class="pl-select" id="objUnit"><option value="m">metre</option><option value="cm">santimetre</option><option value="mm">milimetre</option><option value="in">inç</option><option value="ft">feet</option></select></label>
@@ -338,10 +343,29 @@
           </div>
           <div id="objResult" class="uh-small" role="status"></div>
         </div>
-        <h2 class="uh-h3">İçe aktarılan modeller</h2>
-        <div class="uh-tablewrap"><table class="pl-table" id="objList"></table></div>
-        <h2 class="uh-h3">Parametrik katalog</h2>
-        <div class="uh-tablewrap"><table class="pl-table" id="catList"></table></div>
+        <div class="uh-libgrid" id="objGrid"></div>
+      </div>
+    </section>
+
+    <!-- Kaplama kütüphanesi -->
+    <section class="uh-view" id="view-kaplama" data-title="Kaplama kütüphanesi">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Kaplama kütüphanesi</h1></div>
+        <p class="uh-lead">Zemin, duvar, cephe ve mobilya kaplamaları. “Uygula” ile kaplamayı seçin, sonra planda bir mahale, duvara ya da nesneye tıklayın. m² fiyatı olan zemin ve cephe kaplamaları maliyete otomatik eklenir.</p>
+        <div class="uh-chips" id="matCats" role="tablist" aria-label="Kaplama türleri"></div>
+        <div class="uh-matgrid" id="matGrid"></div>
+        <h2 class="uh-h3">Yeni kaplama</h2>
+        <div class="uh-card uh-card--flat">
+          <div class="uh-matform">
+            <label class="pl-field"><span class="pl-field__label">Ad</span><input class="pl-input" id="matName" maxlength="60" placeholder="Ör. Doğal taş · bazalt"></label>
+            <label class="pl-field"><span class="pl-field__label">Tür</span><select class="pl-select" id="matCat"><option value="zemin">Zemin</option><option value="ic-boya">İç cephe boyası</option><option value="cephe">Dış cephe boyası</option><option value="kaplama">Cephe kaplaması</option><option value="mobilya">Mobilya</option></select></label>
+            <label class="pl-field"><span class="pl-field__label">Renk</span><input class="pl-input uh-color" type="color" id="matColor" value="#8a7f72"></label>
+            <label class="pl-field"><span class="pl-field__label">Pürüzlülük <output id="matRoughOut">0,60</output></span><input type="range" min="0.02" max="1" step="0.01" value="0.6" id="matRough"></label>
+            <label class="pl-field"><span class="pl-field__label">Metalik <output id="matMetalOut">0,00</output></span><input type="range" min="0" max="1" step="0.01" value="0" id="matMetal"></label>
+            <label class="pl-field"><span class="pl-field__label">m² fiyatı (₺)</span><input class="pl-input" type="number" min="0" step="10" value="0" id="matPrice"></label>
+            <button class="pl-btn pl-btn--primary" type="button" id="btnMatAdd">Kaplamayı ekle</button>
+          </div>
+        </div>
       </div>
     </section>
 

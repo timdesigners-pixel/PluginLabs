@@ -345,13 +345,14 @@ pub fn interior_point(poly: &[P2]) -> P2 {
 }
 
 /// Yeni bölme duvarı (10 cm, 90° hizalı).
-pub fn partition(scene: &Scene, a: P2, b: P2, id: String) -> Result<Wall, String> {
+pub fn partition(scene: &Scene, a: P2, b: P2, id: String, thickness: Option<f64>) -> Result<Wall, String> {
     let a = snap_point(a, None, 100.0);
     let b = snap_point(b, Some(a), 100.0);
     if geom::dist(a, b) < 200.0 {
         return Err("Bölme en az 20 cm olmalı".into());
     }
-    Ok(Wall { id, a, b, thickness: scene.standard.partition, ..Default::default() })
+    let t = thickness.filter(|t| t.is_finite()).map(|t| t.clamp(50.0, 400.0)).unwrap_or(scene.standard.partition);
+    Ok(Wall { id, a, b, thickness: t, ..Default::default() })
 }
 
 #[cfg(test)]
@@ -379,7 +380,7 @@ mod tests {
     #[test]
     fn partition_splits_rooms_and_doors_do_not_leak() {
         let mut s = module_scene();
-        let w = partition(&s, [6000.0, 0.0], [6020.0, 4000.0], "B1".into()).unwrap();
+        let w = partition(&s, [6000.0, 0.0], [6020.0, 4000.0], "B1".into(), None).unwrap();
         assert_eq!(w.b, [6000.0, 4000.0]);
         s.levels[0].walls.push(w);
         let o = place_opening(&s.levels[0], "ic-kapi", [6000.0, 2000.0], "K1".into()).unwrap();

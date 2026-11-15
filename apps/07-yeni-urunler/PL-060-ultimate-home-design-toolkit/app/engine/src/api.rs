@@ -107,6 +107,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
         }
         "catalog" => Ok(json!({
             "furniture": catalog::items(),
+            "previews": catalog::items().iter().map(|i| (i.id.to_string(), catalog::parts(i.id).iter().map(|p| json!({"min": p.min, "max": p.max, "material": p.material})).collect::<Vec<_>>())).collect::<std::collections::BTreeMap<_, _>>(),
             "modules": modules::specs(),
             "openings": plan::standard_openings(),
             "roomKinds": plan::ROOM_KINDS.iter().map(|(k, l)| json!({"id": k, "label": l})).collect::<Vec<_>>(),
@@ -202,7 +203,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                 }
                 k += 1;
             };
-            let w = plan::partition(&s, a, b, id)?;
+            let w = plan::partition(&s, a, b, id, opt(&v, "thickness"))?;
             s.levels.iter_mut().find(|l| l.id == level).ok_or("Kat bulunamadı")?.walls.push(w.clone());
             finish(s, json!({"wall": w}))
         }

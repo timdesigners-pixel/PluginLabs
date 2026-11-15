@@ -105,7 +105,7 @@ export class PlanCanvas {
   }
 
   setScene(scene) { this.scene = scene; if (!this.fitted && this.c.width > 10) this.fit(); this.draw(); }
-  setLevel(id) { this.level = id; this.sel = null; this.draw(); }
+  setLevel(id) { if (id !== this.level) this.sel = null; this.level = id; this.draw(); }
   setTool(t) { this.tool = t; this.wallStart = null; this.draw(); }
 
   bounds() {
@@ -147,6 +147,12 @@ export class PlanCanvas {
     return q;
   }
 
+  snap50(p, from) {
+    const q = [Math.round(p[0] / 50) * 50, Math.round(p[1] / 50) * 50];
+    if (from) { if (Math.abs(q[0] - from[0]) >= Math.abs(q[1] - from[1])) q[1] = from[1]; else q[0] = from[0]; }
+    return q;
+  }
+
   /* ---------- isabet testi ---------- */
   hitObject(p) {
     const s = this.scene;
@@ -173,6 +179,28 @@ export class PlanCanvas {
       return [(x1 - x0) * o.scale[0], (z1 - z0) * o.scale[2]];
     }
     return [500, 500];
+  }
+  /** Nesnenin temel (ölçeksiz) plan ölçüsü. */
+  objBase(o) {
+    const [w, d] = this.objSize(o);
+    return [w / (o.scale[0] || 1), d / (o.scale[2] || 1)];
+  }
+  objCorners(o) {
+    const [w, d] = this.objSize(o);
+    const a = (o.rotation * Math.PI) / 180;
+    return [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]].map(([x, z]) => [o.position[0] + x * Math.cos(a) - z * Math.sin(a), o.position[1] + x * Math.sin(a) + z * Math.cos(a)]);
+  }
+  /** Seçili nesnenin köşe tutamağı (boyutlandırma). */
+  hitHandle(p) {
+    if (!this.sel || this.sel.type !== "object") return null;
+    const o = this.scene.objects.find((x) => x.id === this.sel.id);
+    if (!o || o.level !== this.level) return null;
+    const r = 9 / this.view.s;
+    return this.objCorners(o).some((c) => Math.hypot(p[0] - c[0], p[1] - c[1]) <= r) ? o : null;
+  }
+  hitDimension(p) {
+    for (const d of this.scene.dimensions || []) if (d.level === this.level && distSeg(p, d.a, d.b) < 7 / this.view.s) return { type: "dimension", id: d.id };
+    return null;
   }
   hitOpening(p) {
     const l = this.levelObj();
@@ -244,14 +272,37 @@ export class PlanCanvas {
     }
     const t = this.tool;
     if (t.type === "select") {
-      const h = this.hitNote(p) || this.hitObject(p) || this.hitOpening(p) || this.hitWall(p) || this.hitRoom(p);
+      const ho = this.hitHandle(p);
+      if (ho) {
+        this.drag = { kind: "scale", id: ho.id, base: this.objBase(ho), moved: false };
+        this.c.setPointerCapture(e.pointerId);
+        return;
+      }
+      const h = this.hitNote(p) || this.hitDimension(p) || this.hitObject(p) || this.hitOpening(p) || this.hitWall(p) || this.hitRoom(p);
       this.sel = h;
       this.on("select", h);
       if (h && h.type === "object") {
         const o = this.scene.objects.find((x) => x.id === h.id);
         this.drag = { kind: "object", id: h.id, start: p, pos: [...o.position], moved: false };
         this.c.setPointerCapture(e.pointerId);
+      } else if (h && h.type === "wall") {
+        const w = this.levelObj().walls.find((x) => x.id === h.id);
+        if (w && !w.generated) {
+          this.drag = { kind: "wall", id: h.id, start: p, a: [...w.a], b: [...w.b], moved: false };
+          this.c.setPointerCapture(e.pointerId);
+        }
       }
+    } else if (t.type === "measure") {
+      const q = this.snap50(p, e.shiftKey ? this.wallStart : null);
+      if (!this.wallStart) this.wallStart = q;
+      else {
+        const a = this.wallStart;
+        this.wallStart = null;
+        if (Math.hypot(q[0] - a[0], q[1] - a[1]) >= 50) this.on("dimension", { a, b: q });
+      }
+    } else if (t.type === "paint") {
+      const h = this.hitObject(p) || this.hitWall(p) || this.hitRoom(p);
+      this.on("paint", { hit: h, material: t.value });
     } else if (t.type === "wall") {
       if (!this.wallStart) this.wallStart = this.snap(p);
       else {
@@ -286,6 +337,25 @@ export class PlanCanvas {
       const o = this.scene.objects.find((x) => x.id === d.id);
       o.position = [Math.round((d.pos[0] + p[0] - d.start[0]) / 50) * 50, Math.round((d.pos[1] + p[1] - d.start[1]) / 50) * 50, o.position[2]];
       d.moved = true;
+    } else if (d && d.kind === "scale") {
+      const o = this.scene.objects.find((x) => x.id === d.id);
+      const a = (-o.rotation * Math.PI) / 180;
+      const dx = p[0] - o.position[0], dy = p[1] - o.position[1];
+      const lx = Math.abs(dx * Math.cos(a) - dy * Math.sin(a)), lz = Math.abs(dx * Math.sin(a) + dy * Math.cos(a));
+      const cl = (v) => Math.max(0.2, Math.min(5, Math.round(v * 100) / 100));
+      let sx = cl((Math.round((lx * 2) / 50) * 50) / d.base[0]), sz = cl((Math.round((lz * 2) / 50) * 50) / d.base[1]);
+      if (e.shiftKey) { const k = Math.max(sx, sz); o.scale = [k, k, k]; } else o.scale = [sx, o.scale[1], sz];
+      d.moved = true;
+    } else if (d && d.kind === "wall") {
+      const w = this.levelObj().walls.find((x) => x.id === d.id);
+      const len = Math.hypot(d.b[0] - d.a[0], d.b[1] - d.a[1]) || 1;
+      const n = [-(d.b[1] - d.a[1]) / len, (d.b[0] - d.a[0]) / len];
+      const k = Math.round(((p[0] - d.start[0]) * n[0] + (p[1] - d.start[1]) * n[1]) / 100) * 100;
+      if (k !== 0 || d.moved) {
+        w.a = [d.a[0] + n[0] * k, d.a[1] + n[1] * k];
+        w.b = [d.b[0] + n[0] * k, d.b[1] + n[1] * k];
+        d.moved = true;
+      }
     }
     this.draw();
   }
@@ -298,7 +368,8 @@ export class PlanCanvas {
     if (d.kind === "module" && d.moved) {
       const m = this.scene.modules.find((x) => x.id === d.id);
       this.on("move_module", { id: d.id, position: m.position });
-    } else if (d.kind === "object" && d.moved) this.on("object_moved", { id: d.id });
+    } else if ((d.kind === "object" || d.kind === "scale") && d.moved) this.on("object_moved", { id: d.id });
+    else if (d.kind === "wall" && d.moved) this.on("wall_moved", { id: d.id });
   }
 
   wheel(e) {
@@ -525,6 +596,45 @@ export class PlanCanvas {
         this.label(txt, this.sx(m[0]), this.sy(m[1]), { size: 9, mono: true, color: w.structural ? C.bg0 : C.fg3, bg: w.structural ? null : C.bg0 });
       }
     }
+    // seçili nesne: boyutlandırma tutamakları ve ölçü etiketi
+    if (this.sel && this.sel.type === "object") {
+      const o = s.objects.find((x) => x.id === this.sel.id);
+      if (o && o.level === this.level) {
+        const cs = this.objCorners(o);
+        for (const c of cs) {
+          ctx.fillStyle = C.bg0;
+          ctx.strokeStyle = C.accent;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.rect(this.sx(c[0]) - 5, this.sy(c[1]) - 5, 10, 10);
+          ctx.fill();
+          ctx.stroke();
+        }
+        const [w, d] = this.objSize(o);
+        const top = Math.min(...cs.map((c) => this.sy(c[1])));
+        this.label(`${fmt(w / 10, 0)} × ${fmt(d / 10, 0)} cm`, this.sx(o.position[0]), top - 14, { mono: true, size: 10, color: C.fg1, bg: C.bg2 });
+      }
+    }
+    // ölçü çizgileri
+    const dimLine = (a, b, sel) => {
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      if (len < 1) return;
+      const n = [-(b[1] - a[1]) / len, (b[0] - a[0]) / len];
+      ctx.strokeStyle = sel ? C.accent : C.warning;
+      ctx.lineWidth = sel ? 2 : 1.2;
+      ctx.beginPath();
+      ctx.moveTo(this.sx(a[0]), this.sy(a[1]));
+      ctx.lineTo(this.sx(b[0]), this.sy(b[1]));
+      for (const q of [a, b]) { ctx.moveTo(this.sx(q[0]) - n[0] * 6, this.sy(q[1]) - n[1] * 6); ctx.lineTo(this.sx(q[0]) + n[0] * 6, this.sy(q[1]) + n[1] * 6); }
+      ctx.stroke();
+      this.label(`${fmt(len / 1000, 2)} m`, this.sx((a[0] + b[0]) / 2), this.sy((a[1] + b[1]) / 2), { mono: true, size: 10, color: C.fg1, bg: C.bg2 });
+    };
+    for (const d of s.dimensions || []) if (d.level === this.level) dimLine(d.a, d.b, this.sel && this.sel.type === "dimension" && this.sel.id === d.id);
+    if (this.tool.type === "measure" && this.hover) {
+      const q = this.snap50(this.hover);
+      if (this.wallStart) dimLine(this.wallStart, q, true);
+      else { ctx.fillStyle = C.warning; ctx.beginPath(); ctx.arc(this.sx(q[0]), this.sy(q[1]), 4, 0, Math.PI * 2); ctx.fill(); }
+    }
     // notlar
     (s.notes || []).filter((n) => n.level === this.level).forEach((n, i) => {
       const x = this.sx(n.position[0]), y = this.sy(n.position[1]);
@@ -546,7 +656,7 @@ export class PlanCanvas {
       if (this.wallStart) {
         const a = this.wallStart;
         ctx.strokeStyle = C.accent;
-        ctx.lineWidth = Math.max(2, 100 * this.view.s);
+        ctx.lineWidth = Math.max(2, (this.tool.thickness || 100) * this.view.s);
         ctx.beginPath();
         ctx.moveTo(this.sx(a[0]), this.sy(a[1]));
         ctx.lineTo(this.sx(p[0]), this.sy(p[1]));

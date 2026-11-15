@@ -137,6 +137,42 @@ pub fn estimate_with(scene: &Scene, m: &MeasureReport, tier: Tier) -> CostReport
             lines.push(CostLine { id: id.into(), name: name.into(), group: "Doğrama".into(), unit: "sabit".into(), quantity: 1.0, quantity_with_waste: 1.0, material: r2(v), labour: 0.0, discount: 0.0, total: r2(v), note: String::new() });
         }
     }
+    // Kaplama kütüphanesi: zemin kaplamaları (mahal alanı × m² fiyatı, %8 fire)
+    let mut floors: std::collections::BTreeMap<String, f64> = Default::default();
+    for l in &scene.levels {
+        for r in &l.rooms {
+            if let Some(rm) = m.rooms.iter().find(|x| x.id == r.id) {
+                *floors.entry(r.floor.clone()).or_default() += rm.area_m2;
+            }
+        }
+    }
+    for (mat_id, area) in floors {
+        let Some(mat) = scene.material(&mat_id) else { continue };
+        if mat.price_m2 <= 0.0 || area <= 0.0 {
+            continue;
+        }
+        let qw = area * 1.08;
+        let v = qw * mat.price_m2 * tier.multiplier() * region;
+        lines.push(CostLine { id: format!("zemin-{mat_id}"), name: format!("Zemin kaplaması · {}", mat.name), group: "Kaplama".into(), unit: "m²".into(), quantity: r2(area), quantity_with_waste: r2(qw), material: r2(v), labour: 0.0, discount: 0.0, total: r2(v), note: "Kaplama kütüphanesi fiyatı".into() });
+    }
+    // Kaplama kütüphanesi: dış cephe kaplamaları (duvar yüzeyi − açıklıklar, %5 fire)
+    let mut clad: std::collections::BTreeMap<String, f64> = Default::default();
+    for l in &scene.levels {
+        for w in l.walls.iter().filter(|w| w.outside != 0 && !w.outer.is_empty()) {
+            let h = w.shell.map(|s| s[1] - s[0]).unwrap_or_else(|| w.h(l));
+            let ops: f64 = l.openings.iter().filter(|o| o.wall == w.id).map(|o| o.width * o.height).sum();
+            *clad.entry(w.outer.clone()).or_default() += (w.length() * h - ops).max(0.0) / crate::units::MM2_PER_M2;
+        }
+    }
+    for (mat_id, area) in clad {
+        let Some(mat) = scene.material(&mat_id) else { continue };
+        if mat.price_m2 <= 0.0 || area <= 0.0 {
+            continue;
+        }
+        let qw = area * 1.05;
+        let v = qw * mat.price_m2 * tier.multiplier() * region;
+        lines.push(CostLine { id: format!("cephe-{mat_id}"), name: mat.name.clone(), group: "Kaplama".into(), unit: "m²".into(), quantity: r2(area), quantity_with_waste: r2(qw), material: r2(v), labour: 0.0, discount: 0.0, total: r2(v), note: "Kaplama kütüphanesi fiyatı".into() });
+    }
     // Kullanıcı maliyet fonksiyonları
     for f in scene.functions.iter().filter(|f| f.enabled && f.kind == FunctionKind::Cost) {
         match formula::evaluate(&f.expr, &vars) {
@@ -340,7 +376,8 @@ mod tests {
         for i in 0..4 {
             l.walls.push(Wall { id: format!("W{i}"), a: pts[i], b: pts[(i + 1) % 4], thickness: 200.0, ..Default::default() });
         }
-        l.rooms.push(Room { id: "R1".into(), name: "Salon".into(), kind: "salon".into(), polygon: pts.to_vec(), ..Default::default() });
+        // zemin "beton" (m² fiyatı 0): kaplama kütüphanesi satırı bu testlerde devreye girmez
+        l.rooms.push(Room { id: "R1".into(), name: "Salon".into(), kind: "salon".into(), polygon: pts.to_vec(), floor: "beton".into(), ..Default::default() });
         s.cost.rates = vec![RateItem { id: "parke".into(), name: "Parke".into(), basis: Basis::FloorArea, unit: "m²".into(), material_price: 100.0, labour_price: 50.0, waste: 0.1, breaks: vec![(10.0, 0.05)], ..Default::default() }];
         s.cost.vat = 0.2;
         s.cost.contingency = 0.1;
@@ -392,6 +429,21 @@ mod tests {
         assert!(sc.units[2].per_unit < sc.units[1].per_unit);
         assert!(sc.tiers[0].total < sc.tiers[1].total && sc.tiers[1].total < sc.tiers[2].total);
         assert!(sc.elasticity > 0.5 && sc.elasticity < 1.5, "{}", sc.elasticity);
+    }
+
+    #[test]
+    fn material_library_prices_feed_cost() {
+        let mut s = simple();
+        s.cost.rates.clear();
+        s.levels[0].rooms[0].floor = "mermer".into(); // 2.400 ₺/m²
+        s.levels[0].walls[0].outside = 1;
+        s.levels[0].walls[0].outer = "kaplama-tas".into(); // 1.850 ₺/m²
+        let r = estimate(&s);
+        let f = r.lines.iter().find(|l| l.id == "zemin-mermer").unwrap();
+        assert_eq!(f.material, r2(12.0 * 1.08 * 2400.0));
+        let c = r.lines.iter().find(|l| l.id == "cephe-kaplama-tas").unwrap();
+        assert_eq!(c.quantity, 10.0); // 4 m × 2,5 m
+        assert_eq!(c.material, r2(10.0 * 1.05 * 1850.0));
     }
 
     #[test]

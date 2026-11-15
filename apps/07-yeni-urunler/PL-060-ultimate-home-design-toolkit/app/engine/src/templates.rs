@@ -73,8 +73,8 @@ fn rate(id: &str, name: &str, group: &str, basis: Basis, unit: &str, mat: f64, l
 
 pub fn default_rates() -> Vec<RateItem> {
     vec![
-        rate("parke", "Laminat parke (kuru alanlar)", "Zemin", Basis::Formula("floor_area - wet_area".into()), "m²", 650.0, 180.0, 0.08, vec![(100.0, 0.04), (300.0, 0.08)], true),
-        rate("seramik", "Seramik (ıslak hacimler)", "Zemin", Basis::WetArea, "m²", 750.0, 450.0, 0.10, vec![(60.0, 0.05)], true),
+        rate("parke", "Parke döşeme işçiliği (kuru alanlar)", "Zemin", Basis::Formula("floor_area - wet_area".into()), "m²", 0.0, 180.0, 0.0, vec![(100.0, 0.04), (300.0, 0.08)], true),
+        rate("seramik", "Seramik döşeme işçiliği (ıslak hacimler)", "Zemin", Basis::WetArea, "m²", 0.0, 450.0, 0.0, vec![(60.0, 0.05)], true),
         rate("supurgelik", "Süpürgelik", "Zemin", Basis::Skirting, "m", 120.0, 45.0, 0.05, vec![], true),
         rate("siva-tamir", "Alçı ve sıva onarımı", "Duvar", Basis::WallNetArea, "m²", 60.0, 90.0, 0.0, vec![], false),
         rate("boya", "İç cephe boyası (malzeme)", "Duvar", Basis::PaintLitres, "lt", 260.0, 0.0, 0.05, vec![(50.0, 0.06), (150.0, 0.12)], true),
