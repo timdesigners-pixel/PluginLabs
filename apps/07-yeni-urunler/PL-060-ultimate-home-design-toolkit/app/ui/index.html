@@ -35,6 +35,7 @@
       <button class="pl-navitem uh-navbtn" type="button" data-view="maliyet">Maliyet ve ölçekleme</button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="fonksiyon">Fonksiyonlar<span class="pl-badge" id="fnCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">Ürün kütüphanesi<span class="pl-badge" id="objCount">0</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="motor">Tasarım motorları<span class="pl-badge">5</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kaplama">Kaplama kütüphanesi<span class="pl-badge" id="matCount">0</span></button>
     </div>
     <div class="uh-mini" id="sideInfo"></div>
@@ -194,15 +195,25 @@
             <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="sol">Sol cephe</button>
             <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="kusbakisi">Kuşbakışı</button>
             <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="perspektif">Perspektif</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="izometrik">İzometrik</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="izometrik-kesit">İzometrik kesit</button>
           </div>
           <h3 class="uh-h3">Render atmosferi</h3>
           <div class="pl-segment" id="segAtm"><button type="button" class="is-active" data-a="gunduz">Gündüz</button><button type="button" data-a="gun-batimi">Gün batımı</button><button type="button" data-a="aksam">Akşam</button></div>
+          <h3 class="uh-h3">Gökyüzü ve atmosfer</h3>
+          <label class="pl-switch"><input type="checkbox" id="chkSky"> Saate göre ayarla</label>
+          <div class="uh-skygrid" id="skyBox">
+            <label class="pl-field"><span class="pl-field__label">Saat <output id="skyHourOut">13:30</output></span><input type="range" id="skyHour" min="0" max="24" step="0.25" value="13.5"></label>
+            <label class="pl-field"><span class="pl-field__label">Bulut <output id="skyCloudOut">%0</output></span><input type="range" id="skyCloud" min="0" max="1" step="0.05" value="0"></label>
+            <label class="pl-field"><span class="pl-field__label">Pus <output id="skyHazeOut">%10</output></span><input type="range" id="skyHaze" min="0" max="1" step="0.05" value="0.1"></label>
+            <label class="pl-field"><span class="pl-field__label">Mevsim</span><select class="pl-select" id="skyMonth"><option value="12">Kış (Aralık)</option><option value="3">İlkbahar (Mart)</option><option value="6" selected>Yaz (Haziran)</option><option value="9">Sonbahar (Eylül)</option></select></label>
+          </div>
           <h3 class="uh-h3">İç cephe boyası</h3>
           <div class="pl-swatches" id="interiorSwatches" role="radiogroup" aria-label="İç cephe boyası"></div>
           <h3 class="uh-h3">Render kalitesi</h3>
           <div class="uh-row">
-            <select class="pl-select" id="selRes" aria-label="Çözünürlük"><option value="960x540">960 × 540</option><option value="1280x720" selected>1280 × 720 (HD)</option><option value="1920x1080">1920 × 1080 (Full HD)</option></select>
-            <select class="pl-select" id="selSpp" aria-label="Örnek sayısı"><option value="16">Taslak · 16</option><option value="48" selected>İyi · 48</option><option value="128">Yüksek · 128</option></select>
+            <select class="pl-select" id="selRes" aria-label="Çözünürlük"><option value="960x540">960 × 540</option><option value="1280x720" selected>1280 × 720 (HD)</option><option value="1920x1080">1920 × 1080 (Full HD)</option><option value="3840x2160">3840 × 2160 (4K)</option><option value="7680x4320">7680 × 4320 (8K)</option></select>
+            <select class="pl-select" id="selSpp" aria-label="Örnek sayısı"><option value="16">Taslak · 16</option><option value="48" selected>İyi · 48</option><option value="128">Final · 128</option><option value="512">Ultra · 512</option></select>
           </div>
           <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnRender">HD render al (PNG)</button>
           <figure class="uh-renderfig" id="renderFig" hidden>
@@ -344,6 +355,23 @@
           <div id="objResult" class="uh-small" role="status"></div>
         </div>
         <div class="uh-libgrid" id="objGrid"></div>
+      </div>
+    </section>
+
+    <!-- Tasarım motorları -->
+    <section class="uh-view" id="view-motor" data-title="Tasarım motorları">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Tasarım motorları</h1><span class="uh-grow"></span>
+          <div class="pl-segment" id="motorTabs" role="tablist" aria-label="Motor"><button type="button" data-m="perde" class="is-active">Perde</button><button type="button" data-m="hali">Halı</button><button type="button" data-m="yatak">Yatak</button><button type="button" data-m="nevresim">Nevresim</button><button type="button" data-m="havuz">Havuz</button></div></div>
+        <p class="uh-lead" id="motorLead"></p>
+        <div class="uh-split2 uh-motor">
+          <div class="uh-card uh-card--flat"><div class="uh-motorform" id="motorForm"></div></div>
+          <div class="uh-card uh-card--flat uh-motorprev">
+            <canvas id="motorCanvas" width="720" height="520" role="img" aria-label="Üretilen modelin izometrik önizlemesi; ölçü ve fiyat altta yazılıdır"></canvas>
+            <div class="uh-stats" id="motorInfo"></div>
+            <button class="pl-btn pl-btn--primary pl-btn--block" type="button" id="btnMotorAdd">Oluştur ve plana ekle</button>
+          </div>
+        </div>
       </div>
     </section>
 

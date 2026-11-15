@@ -67,6 +67,33 @@ pub fn items() -> Vec<CatalogItem> {
         it("bitki", "Saksı bitkisi", "Dekor", [500.0, 500.0, 1300.0], 1_800.0, &["salon", "calisma", "antre"]),
         it("ayakkabilik", "Ayakkabılık", "Depolama", [1000.0, 380.0, 1000.0], 5_400.0, &["antre"]),
     ];
+    // konumlu ürünler: mount ≥ 0 zeminden yükseklik, -1 sarkıt (tavandan 90 cm), -2 tavana gömme
+    let m = |id, name, group, size, price, rooms, mount| CatalogItem { id, name, group, size, price, rooms, mount };
+    v.extend([
+        m("avize", "Avize", "Aydınlatma", [800.0, 800.0, 520.0], 9_800.0, &["salon", "yatak"] as &[&str], -1.0),
+        m("lambader", "Lambader", "Aydınlatma", [420.0, 420.0, 1650.0], 4_200.0, &["salon", "yatak", "calisma"], 0.0),
+        m("ankastre-spot", "Ankastre spot", "Aydınlatma", [120.0, 120.0, 14.0], 480.0, &["salon", "mutfak", "banyo", "antre"], -2.0),
+        m("aplik", "Aplik", "Aydınlatma", [160.0, 110.0, 260.0], 1_450.0, &["antre", "yatak", "banyo"], 1700.0),
+        m("masa-lambasi", "Masa lambası", "Aydınlatma", [260.0, 260.0, 460.0], 1_650.0, &["yatak", "calisma"], 550.0),
+        m("tv-55", "TV 55 inç", "Elektronik", [1230.0, 60.0, 710.0], 28_000.0, &["salon", "yatak"], 1000.0),
+        m("tv-65", "TV 65 inç", "Elektronik", [1450.0, 60.0, 830.0], 42_000.0, &["salon"], 950.0),
+        m("soundbar", "Soundbar", "Elektronik", [900.0, 100.0, 70.0], 6_500.0, &["salon"], 530.0),
+        m("hoparlor", "Kule hoparlör", "Elektronik", [250.0, 300.0, 1000.0], 9_000.0, &["salon"], 0.0),
+        m("laptop", "Dizüstü bilgisayar", "Elektronik", [340.0, 240.0, 230.0], 38_000.0, &["calisma"], 750.0),
+        m("oyun-konsolu", "Oyun konsolu", "Elektronik", [300.0, 250.0, 80.0], 21_000.0, &["salon"], 530.0),
+        m("tablo-yatay", "Tablo · yatay", "Tablo", [1000.0, 30.0, 700.0], 2_400.0, &["salon", "yatak", "antre"], 1300.0),
+        m("tablo-dikey", "Tablo · dikey", "Tablo", [500.0, 30.0, 700.0], 1_600.0, &["salon", "yatak", "antre"], 1350.0),
+        m("tablo-uclu", "Tablo · üçlü set", "Tablo", [1560.0, 30.0, 600.0], 3_900.0, &["salon", "yatak"], 1350.0),
+        m("agac", "Ağaç", "Dış mekân", [2600.0, 2600.0, 4500.0], 6_500.0, &["dis"], 0.0),
+        m("cam-agaci", "Çam ağacı", "Dış mekân", [1800.0, 1800.0, 4000.0], 5_200.0, &["dis"], 0.0),
+        m("cali", "Çalı", "Dış mekân", [900.0, 900.0, 800.0], 650.0, &["dis"], 0.0),
+        m("cim-alan", "Dekoratif çim", "Dış mekân", [3000.0, 3000.0, 25.0], 1_900.0, &["dis"], 0.0),
+        m("cakil-alan", "Dekoratif çakıl taşı", "Dış mekân", [2000.0, 2000.0, 20.0], 1_400.0, &["dis"], 0.0),
+        m("tas-yol", "Basamak taşları", "Dış mekân", [600.0, 2400.0, 30.0], 1_200.0, &["dis"], 0.0),
+        m("bahce-lambasi", "Bahçe lambası", "Dış mekân", [200.0, 200.0, 900.0], 1_850.0, &["dis"], 0.0),
+        m("sezlong", "Şezlong", "Dış mekân", [700.0, 1900.0, 380.0], 7_400.0, &["dis"], 0.0),
+        m("saksi-buyuk", "Büyük saksı", "Dış mekân", [600.0, 600.0, 1100.0], 2_100.0, &["dis"], 0.0),
+    ]);
     v.push(CatalogItem { id: "sarkit-lamba", name: "Sarkıt lamba", group: "Aydınlatma", size: [500.0, 500.0, 320.0], price: 3_500.0, rooms: &["salon", "mutfak", "yatak", "calisma", "antre"], mount: -1.0 });
     v
 }
@@ -239,6 +266,68 @@ pub fn parts(id: &str) -> Vec<Part> {
             bx(-hw * 0.6, 820.0, -hd * 0.6, hw * 0.6, 1100.0, hd * 0.6, "bitki-yesil"),
             bx(-hw * 0.35, 1100.0, -hd * 0.35, hw * 0.35, h, hd * 0.35, "bitki-yesil"),
         ],
+        "avize" => {
+            let mut v = vec![bx(-6.0, 300.0, -6.0, 6.0, 900.0, 6.0, "metal-krom"), bx(-hw, 250.0, -22.0, hw, 290.0, 22.0, "metal-krom"), bx(-22.0, 250.0, -hd, 22.0, 290.0, hd, "metal-krom")];
+            for (x, z) in [(-hw + 70.0, 0.0), (hw - 70.0, 0.0), (0.0, -hd + 70.0), (0.0, hd - 70.0), (0.0, 0.0)] {
+                v.push(bx(x - 55.0, 60.0, z - 55.0, x + 55.0, 250.0, z + 55.0, "lamba-isik"));
+            }
+            v
+        }
+        "lambader" => vec![
+            bx(-150.0, 0.0, -150.0, 150.0, 30.0, 150.0, "siyah-mat"),
+            bx(-12.0, 30.0, -12.0, 12.0, 1300.0, 12.0, "siyah-mat"),
+            bx(-hw, 1300.0, -hd, hw, h, hd, "lamba-isik"),
+        ],
+        "ankastre-spot" => vec![bx(-hw, 0.0, -hd, hw, 4.0, hd, "lamba-isik"), bx(-hw - 8.0, 4.0, -hd - 8.0, hw + 8.0, h, hd + 8.0, "pvc-beyaz")],
+        "aplik" => vec![bx(-40.0, 60.0, -hd, 40.0, 180.0, -hd + 25.0, "metal-krom"), bx(-hw, 40.0, -hd + 25.0, hw, h, hd, "lamba-isik")],
+        "masa-lambasi" => vec![bx(-70.0, 0.0, -70.0, 70.0, 25.0, 70.0, "metal-krom"), bx(-8.0, 25.0, -8.0, 8.0, 260.0, 8.0, "metal-krom"), bx(-hw, 260.0, -hd, hw, h, hd, "lamba-isik")],
+        "tv-55" | "tv-65" => vec![bx(-hw, 0.0, -hd, hw, h, hd - 8.0, "siyah-mat"), bx(-hw + 12.0, 12.0, hd - 8.0, hw - 12.0, h - 12.0, hd, "ekran")],
+        "soundbar" | "oyun-konsolu" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "siyah-mat"), bx(-hw + 20.0, h * 0.4, hd, hw - 20.0, h * 0.6, hd + 2.0, "metal-krom")],
+        "hoparlor" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-antrasit"), bx(-70.0, h - 260.0, hd, 70.0, h - 120.0, hd + 6.0, "siyah-mat"), bx(-90.0, 200.0, hd, 90.0, 560.0, hd + 6.0, "siyah-mat")],
+        "laptop" => vec![bx(-hw, 0.0, -hd, hw, 16.0, hd, "metal-krom"), bx(-hw, 16.0, -hd, hw, h, -hd + 10.0, "metal-krom"), bx(-hw + 10.0, 26.0, -hd + 10.0, hw - 10.0, h - 10.0, -hd + 12.0, "ekran")],
+        "tablo-yatay" | "tablo-dikey" => vec![
+            bx(-hw, 0.0, -hd, hw, h, hd - 6.0, "ahsap-ceviz"),
+            bx(-hw + 30.0, 30.0, hd - 6.0, hw - 30.0, h - 30.0, hd - 2.0, "tablo-c"),
+            bx(-hw + 30.0, 30.0, hd - 2.0, -hw * 0.1, h * 0.55, hd, "tablo-b"),
+            bx(-hw * 0.1, h * 0.4, hd - 2.0, hw - 30.0, h - 30.0, hd, "tablo-a"),
+        ],
+        "tablo-uclu" => (0..3)
+            .flat_map(|k| {
+                let x0 = -hw + k as f64 * 530.0;
+                let c = ["tablo-a", "tablo-b", "tablo-c"][k];
+                vec![bx(x0, 0.0, -hd, x0 + 500.0, h, hd - 6.0, "siyah-mat"), bx(x0 + 20.0, 20.0, hd - 6.0, x0 + 480.0, h - 20.0, hd, c)]
+            })
+            .collect(),
+        "agac" => vec![
+            bx(-140.0, 0.0, -140.0, 140.0, 1900.0, 140.0, "govde"),
+            bx(-hw, 1700.0, -hd, hw, 3200.0, hd, "bitki-yesil"),
+            bx(-hw * 0.75, 3200.0, -hd * 0.75, hw * 0.75, 4000.0, hd * 0.75, "yaprak-koyu"),
+            bx(-hw * 0.45, 4000.0, -hd * 0.45, hw * 0.45, h, hd * 0.45, "bitki-yesil"),
+        ],
+        "cam-agaci" => {
+            let mut v = vec![bx(-110.0, 0.0, -110.0, 110.0, 700.0, 110.0, "govde")];
+            for k in 0..6 {
+                let s = 1.0 - k as f64 / 6.5;
+                let y = 600.0 + k as f64 * (h - 600.0) / 6.0;
+                v.push(bx(-hw * s, y, -hd * s, hw * s, y + (h - 600.0) / 6.0, hd * s, if k % 2 == 0 { "yaprak-koyu" } else { "bitki-yesil" }));
+            }
+            v
+        }
+        "cali" => vec![bx(-hw, 0.0, -hd, hw, h * 0.7, hd, "yaprak-koyu"), bx(-hw * 0.7, h * 0.7, -hd * 0.7, hw * 0.7, h, hd * 0.7, "bitki-yesil")],
+        "cim-alan" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "cim")],
+        "cakil-alan" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "cakil")],
+        "tas-yol" => (0..4).map(|k| bx(-hw + 40.0 * (k % 2) as f64, 0.0, -hd + k as f64 * 620.0, hw - 40.0 * ((k + 1) % 2) as f64, h, -hd + k as f64 * 620.0 + 520.0, "cakil")).collect(),
+        "bahce-lambasi" => vec![bx(-30.0, 0.0, -30.0, 30.0, h - 180.0, 30.0, "siyah-mat"), bx(-hw * 0.7, h - 180.0, -hd * 0.7, hw * 0.7, h - 20.0, hd * 0.7, "lamba-isik"), bx(-hw, h - 20.0, -hd, hw, h, hd, "siyah-mat")],
+        "sezlong" => vec![
+            bx(-hw, 180.0, -hd + 500.0, hw, 260.0, hd, "ahsap-mese"),
+            bx(-hw, 180.0, -hd, hw, h, -hd + 520.0, "ahsap-mese"),
+            bx(-hw + 30.0, 260.0, -hd + 520.0, hw - 30.0, 320.0, hd - 30.0, "kumas-beyaz"),
+            bx(-hw + 40.0, 0.0, -hd + 80.0, -hw + 90.0, 180.0, -hd + 130.0, "ahsap-mese"),
+            bx(hw - 90.0, 0.0, -hd + 80.0, hw - 40.0, 180.0, -hd + 130.0, "ahsap-mese"),
+            bx(-hw + 40.0, 0.0, hd - 130.0, -hw + 90.0, 180.0, hd - 80.0, "ahsap-mese"),
+            bx(hw - 90.0, 0.0, hd - 130.0, hw - 40.0, 180.0, hd - 80.0, "ahsap-mese"),
+        ],
+        "saksi-buyuk" => vec![bx(-hw, 0.0, -hd, hw, 480.0, hd, "beton"), bx(-hw * 0.8, 480.0, -hd * 0.8, hw * 0.8, 850.0, hd * 0.8, "yaprak-koyu"), bx(-hw * 0.5, 850.0, -hd * 0.5, hw * 0.5, h, hd * 0.5, "bitki-yesil")],
         "sarkit-lamba" => vec![
             bx(-6.0, 260.0, -6.0, 6.0, 900.0, 6.0, "siyah-mat"),
             bx(-hw, 60.0, -hd, hw, h - 60.0, hd, "lamba-isik"),

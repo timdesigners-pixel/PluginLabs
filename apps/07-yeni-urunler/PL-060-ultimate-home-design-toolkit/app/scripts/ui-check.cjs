@@ -97,10 +97,44 @@ const server = http.createServer((req, res) => {
   await page.waitForTimeout(500);
   ok((await page.textContent("#fnList")).includes("Perde kornişi"), "Fonksiyon: eklendi");
   await shot("08-fonksiyonlar.png");
+  // tasarım motorları
+  await page.click('[data-view="motor"]');
+  await waitText("#motorInfo", /cm/);
+  ok((await page.textContent("#motorInfo")).includes("perde"), "Motor: perde önizlemesi üretildi");
+  await page.selectOption('#motorForm [data-mk="header"]', "kemer-kavisli");
+  await page.waitForTimeout(500);
+  await shot("15-motor-perde.png");
+  await page.click('#motorTabs [data-m="hali"]');
+  await page.selectOption('#motorForm [data-mk="pattern"]', "madalyon");
+  await waitText("#motorInfo", /[Hh]alı/);
+  await page.waitForTimeout(400);
+  await shot("16-motor-hali.png");
+  await page.click('#motorTabs [data-m="havuz"]');
+  await waitText("#motorInfo", /[Hh]avuz/);
+  await page.waitForTimeout(400);
+  await shot("17-motor-havuz.png");
+  await page.click('#motorTabs [data-m="yatak"]');
+  await waitText("#motorInfo", /Yatak/);
+  await page.waitForTimeout(400);
+  await shot("18-motor-yatak.png");
+  await page.click("#btnMotorAdd");
+  await page.waitForSelector("#view-plan.is-active");
+  await page.waitForTimeout(600);
+  ok((await page.inputValue('#inspector [data-f="name"]')).startsWith("Yatak"), "Motor: yatak plana eklendi ve seçildi");
+  // izometrik görünüm ve gökyüzü
+  await page.click('[data-view="uc"]');
+  await waitText("#view3dInfo", /üçgen/);
+  await page.click('[data-cam="izometrik-kesit"]');
+  await page.waitForTimeout(1500);
+  await page.check("#chkSky");
+  await page.fill("#skyHour", "17.5");
+  await page.dispatchEvent("#skyHour", "input");
+  ok((await page.textContent("#skyHourOut")) === "17:30", "Gökyüzü: saat 17:30");
+  await shot("19-izometrik-kesit.png");
   // ürün ve kaplama kütüphaneleri, boyutlandırma
   await page.click('[data-view="kutuphane"]');
   await page.waitForSelector("#libGrid .uh-libcard svg");
-  ok((await page.locator("#libGrid .uh-libcard").count()) >= 30, "Ürün kütüphanesi: en az 30 hazır model");
+  ok((await page.locator("#libGrid .uh-libcard").count()) >= 55, "Ürün kütüphanesi: en az 55 hazır model");
   await shot("12-urun-kutuphanesi.png");
   await page.click('[data-view="kaplama"]');
   await page.waitForSelector("#matGrid .uh-matcard");

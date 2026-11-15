@@ -23,6 +23,9 @@ pub fn standard_openings() -> Vec<StdOpening> {
     vec![
         d("ic-kapi", "İç kapı 90×235", 900.0),
         d("dis-kapi", "Dış kapı 100×235", 1000.0),
+        d("banyo-kapi", "Banyo kapısı 80×235", 800.0),
+        d("cift-kapi", "Çift kanat kapı 140×235", 1400.0),
+        d("surgu-kapi", "Sürgü kapı 160×235", 1600.0),
         p("p100", "Pencere 100×235", 1000.0, 2350.0, 0.0, false),
         p("p200", "Pencere 200×235", 2000.0, 2350.0, 0.0, false),
         p("p250", "Pencere 250×235", 2500.0, 2350.0, 0.0, false),
@@ -30,6 +33,10 @@ pub fn standard_openings() -> Vec<StdOpening> {
         p("p600", "Pencere 600×235", 6000.0, 2350.0, 0.0, false),
         p("p140", "Pencere 140×140", 1400.0, 1400.0, 900.0, true),
         p("p70", "Pencere 70×70", 700.0, 700.0, 1500.0, true),
+        p("p60-100", "Pencere 60×100", 600.0, 1000.0, 1200.0, true),
+        p("p100-140", "Pencere 100×140", 1000.0, 1400.0, 900.0, true),
+        p("p200-140", "Pencere 200×140", 2000.0, 1400.0, 900.0, true),
+        p("p300-140", "Pencere 300×140", 3000.0, 1400.0, 900.0, true),
     ]
 }
 

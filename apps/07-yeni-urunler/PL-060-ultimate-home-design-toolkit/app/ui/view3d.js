@@ -22,7 +22,7 @@ export class View3D {
     this.r.toneMappingExposure = 0.9;
     this.r.outputColorSpace = THREE.SRGBColorSpace;
     this.scene = new THREE.Scene();
-    this.cam = new THREE.PerspectiveCamera(45, 1, 0.05, 500);
+    this.cam = new THREE.PerspectiveCamera(45, 1, 0.05, 4000);
     this.hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.9);
     this.sun = new THREE.DirectionalLight(0xffffff, 2.2);
     this.sun.castShadow = true;
@@ -86,7 +86,7 @@ export class View3D {
       geo.setAttribute("position", new THREE.BufferAttribute(p, 3));
       geo.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(g.normals), 3));
       const col = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.SRGBColorSpace);
-      const mat = new THREE.MeshStandardMaterial({ color: col, roughness: g.roughness, metalness: g.metallic * 0.85, transparent: g.opacity < 0.99, opacity: Math.max(0.15, g.opacity) });
+      const mat = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, color: col, roughness: g.roughness, metalness: g.metallic * 0.85, transparent: g.opacity < 0.99, opacity: Math.max(0.15, g.opacity) });
       if (g.emission > 0) { mat.emissive = col.clone(); mat.emissiveIntensity = Math.min(3, g.emission / 3); }
       if (g.opacity < 0.99) mat.depthWrite = false;
       const mesh = new THREE.Mesh(geo, mat);
@@ -144,8 +144,13 @@ export class View3D {
     const v = eye.clone().sub(tgt);
     this.orbit.target.copy(tgt);
     this.orbit.dist = v.length();
+    if (c.projection === "isometric") {
+      // paralel izdüşümü çok dar açılı uzak kamerayla yaklaştır
+      c = { ...c, fov: 6 };
+      this.orbit.dist = (c.orthoHeight * MM) / 2 / Math.tan((3 * Math.PI) / 180);
+    }
     this.orbit.yaw = Math.atan2(v.x, v.z);
-    this.orbit.pitch = Math.asin(Math.max(-1, Math.min(1, v.y / this.orbit.dist)));
+    this.orbit.pitch = Math.asin(Math.max(-1, Math.min(1, v.y / v.length())));
     this.cam.fov = c.fov;
     this.cam.updateProjectionMatrix();
     this.update();
@@ -154,7 +159,7 @@ export class View3D {
   /** Render için geçerli kamera (mm). */
   getCamera() {
     const p = this.cam.position, t = this.orbit.target;
-    return { eye: [p.x / MM, p.y / MM, p.z / MM], target: [t.x / MM, t.y / MM, t.z / MM], fov: this.cam.fov };
+    return { eye: [p.x / MM, p.y / MM, p.z / MM], target: [t.x / MM, t.y / MM, t.z / MM], fov: this.cam.fov, orthoHeight: (2 * this.orbit.dist * Math.tan((this.cam.fov * Math.PI) / 360)) / MM };
   }
 
   update() {

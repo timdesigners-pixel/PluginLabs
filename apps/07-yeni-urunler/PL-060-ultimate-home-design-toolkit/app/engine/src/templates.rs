@@ -56,6 +56,14 @@ pub fn default_materials() -> Vec<Material> {
     v.push(mat("kaplama-ahsap", "Cephe kaplaması · ahşap", "kaplama", [0.52, 0.36, 0.22], 0.6, 0.0, 1_400.0));
     v.push(mat("kaplama-kompozit", "Cephe kaplaması · alüminyum kompozit", "kaplama", [0.30, 0.32, 0.35], 0.3, 0.6, 1_650.0));
     v.push(mat("beton-kabuk", "Beton kabuk", "kabuk", [0.62, 0.62, 0.60], 0.85, 0.0, 0.0));
+    v.push(mat("ekran", "Ekran", "genel", [0.02, 0.02, 0.03], 0.08, 0.0, 0.0));
+    v.push(mat("cim", "Çim", "dis", [0.20, 0.45, 0.13], 1.0, 0.0, 0.0));
+    v.push(mat("cakil", "Çakıl taşı", "dis", [0.62, 0.60, 0.57], 0.95, 0.0, 0.0));
+    v.push(mat("govde", "Ağaç gövdesi", "dis", [0.30, 0.20, 0.12], 0.9, 0.0, 0.0));
+    v.push(mat("yaprak-koyu", "Yaprak · koyu", "dis", [0.09, 0.27, 0.10], 0.85, 0.0, 0.0));
+    v.push(mat("tablo-a", "Tablo · kiremit", "dekor", [0.80, 0.36, 0.22], 0.7, 0.0, 0.0));
+    v.push(mat("tablo-b", "Tablo · gece mavisi", "dekor", [0.15, 0.30, 0.50], 0.7, 0.0, 0.0));
+    v.push(mat("tablo-c", "Tablo · kum", "dekor", [0.90, 0.80, 0.56], 0.7, 0.0, 0.0));
     let mut lamp = mat("lamba-isik", "Lamba ışığı", "isik", [1.0, 0.86, 0.66], 0.5, 0.0, 0.0);
     lamp.emission = 9.0;
     v.push(lamp);

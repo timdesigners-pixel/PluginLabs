@@ -13,7 +13,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -114,6 +114,7 @@ function refresh() {
   if (v === "fonksiyon") renderFunctions();
   if (v === "kutuphane") renderLibrary();
   if (v === "kaplama") renderMaterials();
+  if (v === "motor") renderMotor();
   if (v === "mymind") renderMyMind();
 }
 
@@ -194,10 +195,11 @@ const PLAN_TOOLS = () => {
     { title: "5 · Mutfak", items: cat(["alt-dolap", "boy-dolabi", "tezgah", "ada", "evye", "ocak", "buzdolabi", "mutfak-tezgahi"]) },
     { title: "6 · Banyo", items: cat(["dus-kabini", "klozet", "lavabo", "camasir"]) },
     { title: "7 · Mobilya", items: cat(["cift-yatak", "tek-yatak", "komodin", "gardirop", "kanepe-3", "berjer", "orta-sehpa", "yemek-masasi", "sandalye", "tv-unitesi", "calisma-masasi", "kitaplik", "ayakkabilik", "hali", "bitki", "sarkit-lamba", "merdiven"]), extra: `<p class="uh-small">Merdiven zemin kata yerleştirilir; üst döşemede boşluk otomatik açılır.</p>` },
-    { title: "8 · Dış cephe kaplama", items: [{ type: "clad", value: "kaplama-tas", label: "Taş" }, { type: "clad", value: "kaplama-ahsap", label: "Ahşap" }, { type: "clad", value: "kaplama-kompozit", label: "Alüminyum kompozit" }, { type: "clad", value: "", label: "Kaplamayı kaldır" }], extra: `<p class="uh-small">Kaplama seçin, sonra plandaki dış cephe duvarlarına tıklayın.</p>` },
-    { title: "9 · Dış cephe boyası", swatches: "facade" },
-    { title: "10 · Kaplama uygula", items: [{ type: "paint", value: S.paintMat, label: "Kaplamayı uygula" }], extra: (() => { const m = S.scene.materials.find((x) => x.id === S.paintMat); return `<div class="uh-paintnow">${m ? `<span class="pl-swatch" style="background:rgb(${m.color.map((c) => Math.round(c * 255)).join(" ")})" aria-hidden="true"></span>${esc(m.name)}` : ""}</div><button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="kaplama">Kaplama kütüphanesini aç</button><button class="uh-tool uh-tool--wide" type="button" data-view="kutuphane">Ürün kütüphanesini aç</button><p class="uh-small">Mahale tıklayınca zemin, duvara tıklayınca duvar yüzü, nesneye tıklayınca nesne kaplaması değişir.</p>`; })() },
-    { title: "11 · Revizyon notu", items: [{ type: "note", label: "Plana not ekle" }] },
+    { title: "8 · Aydınlatma, elektronik, dış mekân", items: cat(["avize", "lambader", "ankastre-spot", "aplik", "tv-55", "tablo-yatay", "agac", "cali", "cim-alan", "bahce-lambasi"]), extra: `<button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="motor">Perde, halı, yatak, havuz tasarla…</button><p class="uh-small">Tüm ürünler Ürün kütüphanesindedir.</p>` },
+    { title: "9 · Dış cephe kaplama", items: [{ type: "clad", value: "kaplama-tas", label: "Taş" }, { type: "clad", value: "kaplama-ahsap", label: "Ahşap" }, { type: "clad", value: "kaplama-kompozit", label: "Alüminyum kompozit" }, { type: "clad", value: "", label: "Kaplamayı kaldır" }], extra: `<p class="uh-small">Kaplama seçin, sonra plandaki dış cephe duvarlarına tıklayın.</p>` },
+    { title: "10 · Dış cephe boyası", swatches: "facade" },
+    { title: "11 · Kaplama uygula", items: [{ type: "paint", value: S.paintMat, label: "Kaplamayı uygula" }], extra: (() => { const m = S.scene.materials.find((x) => x.id === S.paintMat); return `<div class="uh-paintnow">${m ? `<span class="pl-swatch" style="background:rgb(${m.color.map((c) => Math.round(c * 255)).join(" ")})" aria-hidden="true"></span>${esc(m.name)}` : ""}</div><button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="kaplama">Kaplama kütüphanesini aç</button><button class="uh-tool uh-tool--wide" type="button" data-view="kutuphane">Ürün kütüphanesini aç</button><p class="uh-small">Mahale tıklayınca zemin, duvara tıklayınca duvar yüzü, nesneye tıklayınca nesne kaplaması değişir.</p>`; })() },
+    { title: "12 · Revizyon notu", items: [{ type: "note", label: "Plana not ekle" }] },
   ];
 };
 function toolLabel(t) {
@@ -443,7 +445,7 @@ function onPlanAction(kind, d) {
     const it = S.catalog.furniture.find((f) => f.id === d.cat);
     if (it.id === "merdiven" && S.level !== "L0") { toast("Merdiven yalnız zemin kata yerleştirilir", { kind: "warn" }); return; }
     const s = clone();
-    const z = it.mount < 0 ? s.standard.net_height - 900 : it.mount;
+    const z = it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
     s.objects.push({ id: nextId("N", s.objects), name: it.name, mesh: `cat:${it.id}`, level: S.level, position: [d.point[0], d.point[1], z], rotation: 0, scale: [1, 1, 1], material: null, price: it.price, quantity: 1 });
     commit(s);
     return;
@@ -496,8 +498,29 @@ async function show3d() {
   });
 }
 async function camera(name) {
+  const cut = name === "izometrik-kesit";
+  if (name.startsWith("izometrik")) {
+    if (S.v3.cut !== cut) { S.v3.cut = cut; $("#chkCut").checked = cut; const m = await B.engine("mesh", { scene: S.scene, options: meshOptions() }); V.setMesh(m); S.dirty3d = false; }
+    name = "izometrik";
+  }
   const c = await B.engine("camera_preset", { scene: S.scene, name });
+  S.proj = c.projection === "isometric" ? "isometric" : null;
   V.setCamera(c);
+}
+function skySettings() {
+  if (!$("#chkSky").checked) return null;
+  return { hour: Number($("#skyHour").value), cloud: Number($("#skyCloud").value), haze: Number($("#skyHaze").value), month: Number($("#skyMonth").value) };
+}
+function syncSky() {
+  const on = $("#chkSky").checked;
+  $("#skyBox").classList.toggle("is-off", !on);
+  const h = Number($("#skyHour").value);
+  $("#skyHourOut").textContent = `${String(Math.floor(h) % 24).padStart(2, "0")}:${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
+  $("#skyCloudOut").textContent = `%${Math.round(Number($("#skyCloud").value) * 100)}`;
+  $("#skyHazeOut").textContent = `%${Math.round(Number($("#skyHaze").value) * 100)}`;
+  // önizleme: saate en yakın ışık düzeni
+  if (on) V.setAtmosphere(h < 6 || h > 20.5 ? "aksam" : h < 7.5 || h > 17.5 ? "gun-batimi" : "gunduz");
+  else V.setAtmosphere(S.atm);
 }
 function renderInteriorSwatches() {
   $("#interiorSwatches").innerHTML = swatches("ic-", S.scene.interior, "interior").replace('<div class="pl-swatches uh-mt" role="radiogroup">', "").replace(/<\/div>$/, "");
@@ -505,13 +528,14 @@ function renderInteriorSwatches() {
 async function doRender() {
   const [w, h] = $("#selRes").value.split("x").map(Number);
   const spp = Number($("#selSpp").value);
+  if (!B.isDesktop && w > 1920) { toast("4K ve 8K çıktı masaüstü uygulamasında alınır", { kind: "warn", sub: "Tarayıcı önizlemesi tek çekirdek ve sınırlı bellekle çalışır" }); return; }
   const ov = $("#renderOverlay");
   ov.hidden = false;
   $("#renderMsg").textContent = `Render alınıyor · ${w}×${h} · ${spp} örnek. ${B.isDesktop ? "Tüm işlemci çekirdekleri kullanılıyor." : "Tarayıcı önizlemesinde tek çekirdek; taslak kalite önerilir."}`;
   $("#btnRender").classList.add("is-loading");
   try {
     const cam = V.getCamera();
-    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: 4, eye: cam.eye, target: cam.target, fov: cam.fov, mesh: meshOptions(), denoise: true } });
+    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: spp >= 128 ? 6 : 4, eye: cam.eye, target: cam.target, fov: cam.fov, projection: S.proj || "perspective", ortho_height: S.proj ? cam.orthoHeight : null, sky: skySettings(), mesh: meshOptions(), denoise: true } });
     S.lastRender = r.png;
     $("#renderImg").src = `data:image/png;base64,${r.png}`;
     $("#renderCap").textContent = `${r.width}×${r.height} · ${r.samples} örnek · ${r.triangles.toLocaleString("tr-TR")} üçgen · ${r.threads} iş parçacığı${r.ms ? ` · ${fmt(r.ms / 1000, 1)} sn` : ""}`;
@@ -619,7 +643,7 @@ function isoThumb(parts) {
   for (const p of parts) {
     const [x0, y0, z0] = p.min, [x1, y1, z1] = p.max;
     const col = (S.scene.materials.find((m) => m.id === p.material) || { color: [0.7, 0.7, 0.7] }).color;
-    const depth = x1 + z1 + y1 * 0.01;
+    const depth = x1 + z1 + y1;
     faces.push({ d: depth, k: 1.0, pts: [P3(x0, y1, z0), P3(x1, y1, z0), P3(x1, y1, z1), P3(x0, y1, z1)], col });
     faces.push({ d: depth, k: 0.78, pts: [P3(x0, y0, z1), P3(x1, y0, z1), P3(x1, y1, z1), P3(x0, y1, z1)], col });
     faces.push({ d: depth, k: 0.6, pts: [P3(x1, y0, z0), P3(x1, y0, z1), P3(x1, y1, z1), P3(x1, y1, z0)], col });
@@ -642,6 +666,144 @@ function renderLibrary() {
   $("#objGrid").innerHTML = S.scene.meshes.map((m) => `<div class="uh-libcard"><div class="uh-libcard__thumb"><span class="pl-badge">OBJ</span></div><b>${esc(m.name)}</b>
     <div class="uh-libcard__meta"><span>${(m.indices.length / 3).toLocaleString("tr-TR")} üçgen</span><span>sahnede ${S.scene.objects.filter((o) => o.mesh === m.id).length}</span></div>
     <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-place-mesh="${m.id}">Plana ekle</button></div>`).join("") || `<p class="uh-small">Henüz içe aktarılan model yok.</p>`;
+}
+
+/* ---------- Tasarım motorları ---------- */
+const hex2rgb = (h) => [1, 3, 5].map((i) => Math.round((parseInt(h.slice(i, i + 2), 16) / 255) * 1000) / 1000);
+const rgb2hex = (c) => "#" + c.map((x) => Math.round(Math.max(0, Math.min(1, x)) * 255).toString(16).padStart(2, "0")).join("");
+const R = (k, label, min, max, step, unit = "") => ({ k, label, t: "range", min, max, step, unit });
+const Sel = (k, label, opts) => ({ k, label, t: "select", opts });
+const Col = (k, label) => ({ k, label, t: "color" });
+const Chk = (k, label) => ({ k, label, t: "check" });
+const MOTORS = {
+  perde: { lead: "Perde tasarlayıcı: cins (tül, fon, tül + fon, stor), pile sıklığı ve derinliği, kemer/korniş tipi, saydamlık, desen ve renk.", fields: [
+    Sel("kind", "Cins", [["tul-fon", "Tül + fon"], ["tul", "Tül"], ["fon", "Fon"], ["stor", "Stor"]]), Sel("header", "Üst bitiş", [["rustik", "Rustik (ahşap boru)"], ["korniş", "Korniş"], ["kemer-duz", "Düz kemer"], ["kemer-kavisli", "Kavisli kemer"]]),
+    R("width", "Genişlik", 600, 6000, 50, "mm"), R("height", "Yükseklik", 1000, 3200, 50, "mm"), R("pleats", "Pile sıklığı", 3, 18, 0.5, "pile/m"), R("depth", "Pile derinliği", 20, 160, 5, "mm"),
+    R("opacity", "Tül saydamlığı (düşük = saydam)", 0.1, 0.6, 0.05), R("open", "Açıklık (fon/stor)", 0, 0.9, 0.05),
+    Sel("pattern", "Desen", [["duz", "Düz"], ["cizgili", "Çizgili"], ["bordur", "Etek bordürü"]]), Col("color", "Tül rengi"), Col("color2", "Fon rengi")] },
+  hali: { lead: "Halı motoru: şekil, ölçü, desen, iki renk, hav yüksekliği ve saçak.", fields: [
+    Sel("shape", "Şekil", [["dikdortgen", "Dikdörtgen"], ["yuvarlak", "Yuvarlak"], ["oval", "Oval"], ["yolluk", "Yolluk"]]), Sel("pattern", "Desen", [["bordur", "Bordürlü"], ["duz", "Düz"], ["cizgili", "Çizgili"], ["dama", "Dama"], ["madalyon", "Madalyon"]]),
+    R("width", "Genişlik", 600, 5000, 50, "mm"), R("length", "Boy", 600, 7000, 50, "mm"), R("pile", "Hav yüksekliği", 4, 50, 1, "mm"), Chk("fringe", "Saçaklı"), Col("color", "Ana renk"), Col("color2", "Desen rengi")] },
+  yatak: { lead: "Yatak kombinasyonu: ölçü, baza tipi, şilte, başlık formu ve nevresim takımı birlikte üretilir.", fields: [
+    Sel("width", "Genişlik", [[900, "90 cm"], [1000, "100 cm"], [1200, "120 cm"], [1400, "140 cm"], [1600, "160 cm"], [1800, "180 cm"], [2000, "200 cm"]]), Sel("length", "Boy", [[1900, "190 cm"], [2000, "200 cm"]]),
+    Sel("base", "Baza", [["sandikli", "Sandıklı"], ["ayakli", "Ayaklı"], ["dusuk", "Düşük platform"]]), Sel("headboard", "Başlık", [["kapitone", "Kapitone"], ["duz", "Düz"], ["kemerli", "Kemerli"], ["kulakli", "Kulaklı"], ["yok", "Başlıksız"]]),
+    R("mattress", "Şilte yüksekliği", 150, 380, 10, "mm"), R("headboard_height", "Başlık yüksekliği", 800, 1700, 50, "mm"), Col("base_color", "Baza rengi"), Col("headboard_color", "Başlık rengi"),
+    Chk("bedding.on", "Nevresim takımı"), Sel("bedding.pattern", "Nevresim deseni", [["duz", "Düz"], ["cizgili", "Çizgili"], ["dama", "Dama"]]), Sel("bedding.pillows", "Yastık", [[1, "1"], [2, "2"], [4, "4"], [6, "6"]]), Chk("bedding.throw", "Ayak ucu örtüsü"), Col("bedding.color", "Nevresim rengi"), Col("bedding.color2", "İkinci renk")] },
+  nevresim: { lead: "Nevresim motoru: mevcut bir yatağın ölçüsüne otomatik uyan yorgan, katlama, yastık ve örtü takımı.", fields: [
+    Sel("width", "Yatak genişliği", [[900, "90 cm"], [1000, "100 cm"], [1200, "120 cm"], [1400, "140 cm"], [1600, "160 cm"], [1800, "180 cm"], [2000, "200 cm"]]), Sel("length", "Yatak boyu", [[1900, "190 cm"], [2000, "200 cm"]]),
+    R("top", "Şilte üst kotu", 250, 800, 10, "mm"), Sel("bedding.pattern", "Desen", [["duz", "Düz"], ["cizgili", "Çizgili"], ["dama", "Dama"]]), Sel("bedding.pillows", "Yastık", [[1, "1"], [2, "2"], [4, "4"], [6, "6"]]), Chk("bedding.throw", "Ayak ucu örtüsü"), Col("bedding.color", "Ana renk"), Col("bedding.color2", "İkinci renk")] },
+  havuz: { lead: "Havuz oluşturucu: şekil, ölçü, derinlik, kenar taşı, su rengi, basamak ve aydınlatma. Havuz yapının dışına yerleştirilir.", fields: [
+    Sel("shape", "Şekil", [["dikdortgen", "Dikdörtgen"], ["oval", "Oval"], ["yuvarlak", "Yuvarlak"], ["l", "L biçimli"]]), R("width", "Genişlik", 2000, 10000, 100, "mm"), R("length", "Boy", 2000, 20000, 100, "mm"), R("depth", "Derinlik", 800, 2800, 50, "mm"),
+    R("coping", "Kenar taşı genişliği", 150, 700, 10, "mm"), Col("water", "Su rengi"), Chk("steps", "Basamak"), Chk("lights", "Havuz aydınlatması")] },
+};
+const getPath = (o, k) => k.split(".").reduce((a, p) => a[p], o);
+const setPath = (o, k, v) => { const ps = k.split("."); const last = ps.pop(); ps.reduce((a, p) => a[p], o)[last] = v; };
+function renderMotor() {
+  const kind = S.motor;
+  const def = MOTORS[kind];
+  const p = S.motorParams[kind];
+  $$("#motorTabs button").forEach((b) => b.classList.toggle("is-active", b.dataset.m === kind));
+  $("#motorLead").textContent = def.lead;
+  $("#motorForm").innerHTML = def.fields.map((f) => {
+    const v = getPath(p, f.k);
+    if (f.t === "range") return `<label class="pl-field"><span class="pl-field__label">${f.label} <output>${fmt(v, f.step < 1 ? 2 : 0)}${f.unit ? " " + f.unit : ""}</output></span><input type="range" min="${f.min}" max="${f.max}" step="${f.step}" value="${v}" data-mk="${f.k}" data-mt="range" data-unit="${f.unit}" data-step="${f.step}"></label>`;
+    if (f.t === "select") return `<label class="pl-field"><span class="pl-field__label">${f.label}</span><select class="pl-select" data-mk="${f.k}" data-mt="${typeof f.opts[0][0] === "number" ? "num" : "str"}">${f.opts.map(([val, l]) => `<option value="${val}" ${String(v) === String(val) ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
+    if (f.t === "color") return `<label class="pl-field"><span class="pl-field__label">${f.label}</span><input class="pl-input uh-color" type="color" value="${rgb2hex(v)}" data-mk="${f.k}" data-mt="color"></label>`;
+    return `<label class="pl-switch"><input type="checkbox" ${v ? "checked" : ""} data-mk="${f.k}" data-mt="check"> ${f.label}</label>`;
+  }).join("");
+  motorPreview();
+}
+function motorPreview() {
+  clearTimeout(S.motorTimer);
+  S.motorTimer = setTimeout(async () => {
+    try {
+      const r = await B.engine("motor_preview", { kind: S.motor, params: S.motorParams[S.motor] });
+      drawMotor(r);
+      $("#motorInfo").innerHTML = `<dt>Ürün</dt><dd>${esc(r.name)}</dd><dt>Ölçü (G × D × Y)</dt><dd>${r.size.map((v) => fmt(v / 10, 0)).join(" × ")} cm</dd><dt>Üçgen</dt><dd>${r.triangles.toLocaleString("tr-TR")}</dd><dt>Tahmini fiyat</dt><dd>${tl(r.price)}</dd>`;
+    } catch (e) { $("#motorInfo").innerHTML = `<dt>Hata</dt><dd>${esc(e.message)}</dd>`; }
+  }, 120);
+}
+/** Üçgen ağını izometrik olarak çizer: derinlik tamponlu yazılım rasterleştirici. */
+function drawMotor(r) {
+  const cv = $("#motorCanvas"), ctx = cv.getContext("2d");
+  const W = cv.width, H = cv.height;
+  const tris = [];
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const g of r.groups) {
+    const p = g.positions;
+    for (let i = 0; i + 8 < p.length; i += 9) {
+      const v = [0, 3, 6].map((o) => {
+        const [x, y, z] = [p[i + o], p[i + o + 1], p[i + o + 2]];
+        return [(x - z) * 0.866, (x + z) * 0.5 - y, x + y + z];
+      });
+      const a = [p[i], p[i + 1], p[i + 2]], b = [p[i + 3], p[i + 4], p[i + 5]], c = [p[i + 6], p[i + 7], p[i + 8]];
+      const e1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], e2 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+      let n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+      const l = Math.hypot(...n) || 1;
+      n = n.map((q) => Math.abs(q / l));
+      const k = Math.min(1.15, 0.45 + 0.55 * n[1] + 0.28 * n[2] + 0.1 * n[0]);
+      for (const q of v) { x0 = Math.min(x0, q[0]); x1 = Math.max(x1, q[0]); y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); }
+      tris.push({ v, col: g.color.map((cc) => Math.min(255, cc * k * 255)), sheer: g.opacity < 0.5 });
+    }
+  }
+  const img = ctx.createImageData(W, H);
+  if (!tris.length) { ctx.putImageData(img, 0, 0); return; }
+  const s = Math.min((W - 40) / (x1 - x0 || 1), (H - 40) / (y1 - y0 || 1));
+  const ox = (W - (x1 - x0) * s) / 2 - x0 * s, oy = (H - (y1 - y0) * s) / 2 - y0 * s;
+  const zb = new Float32Array(W * H).fill(-Infinity);
+  const d = img.data;
+  // önce opak yüzeyler, sonra saydam (tül, su) yüzeyler
+  tris.sort((a, b) => a.sheer - b.sheer);
+  for (const t of tris) {
+    const [A, B2, C] = t.v.map((q) => [q[0] * s + ox, q[1] * s + oy, q[2]]);
+    const area = (B2[0] - A[0]) * (C[1] - A[1]) - (B2[1] - A[1]) * (C[0] - A[0]);
+    if (Math.abs(area) < 1e-6) continue;
+    const bx0 = Math.max(0, Math.floor(Math.min(A[0], B2[0], C[0]))), bx1 = Math.min(W - 1, Math.ceil(Math.max(A[0], B2[0], C[0])));
+    const by0 = Math.max(0, Math.floor(Math.min(A[1], B2[1], C[1]))), by1 = Math.min(H - 1, Math.ceil(Math.max(A[1], B2[1], C[1])));
+    for (let y = by0; y <= by1; y++) {
+      for (let x = bx0; x <= bx1; x++) {
+        const px = x + 0.5, py = y + 0.5;
+        const w0 = ((B2[0] - px) * (C[1] - py) - (B2[1] - py) * (C[0] - px)) / area;
+        const w1 = ((C[0] - px) * (A[1] - py) - (C[1] - py) * (A[0] - px)) / area;
+        const w2 = 1 - w0 - w1;
+        if (w0 < -0.001 || w1 < -0.001 || w2 < -0.001) continue;
+        const z = w0 * A[2] + w1 * B2[2] + w2 * C[2];
+        const k = y * W + x;
+        if (z <= zb[k]) continue;
+        const o = k * 4;
+        if (t.sheer) {
+          const al = d[o + 3] ? 0.5 : 1;
+          d[o] = d[o] * (1 - al) + t.col[0] * al; d[o + 1] = d[o + 1] * (1 - al) + t.col[1] * al; d[o + 2] = d[o + 2] * (1 - al) + t.col[2] * al;
+          d[o + 3] = Math.max(d[o + 3], 150);
+        } else {
+          zb[k] = z;
+          d[o] = t.col[0]; d[o + 1] = t.col[1]; d[o + 2] = t.col[2]; d[o + 3] = 255;
+        }
+      }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+async function motorAdd() {
+  const lv = S.scene.levels.find((l) => l.id === S.level) || S.scene.levels[0];
+  let at = [1500, 1500];
+  const xs = [], ys = [];
+  for (const m of S.scene.modules) { const r = moduleRect(m, S.scene); xs.push(r[0], r[2]); ys.push(r[1], r[3]); }
+  if (S.motor === "havuz") {
+    const p = S.motorParams.havuz;
+    at = xs.length ? [Math.max(...xs) + 2500 + p.width / 2, (Math.min(...ys) + Math.max(...ys)) / 2] : [8000, 4000];
+  } else {
+    const kinds = { yatak: "yatak", nevresim: "yatak", perde: "salon", hali: "salon" };
+    const room = lv.rooms.find((r) => r.kind === kinds[S.motor]) || lv.rooms[0];
+    if (room) { const rx = room.polygon.map((q) => q[0]), ry = room.polygon.map((q) => q[1]); at = [(Math.min(...rx) + Math.max(...rx)) / 2, (Math.min(...ry) + Math.max(...ry)) / 2]; }
+  }
+  const r = await B.engine("motor", { scene: S.scene, kind: S.motor, params: S.motorParams[S.motor], level: S.motor === "havuz" ? "L0" : lv.id, at });
+  commit(r.scene);
+  P.fitted = false;
+  P.sel = { type: "object", id: r.object };
+  P.setTool({ type: "select" });
+  go("plan");
+  toast("Model plana eklendi; sürükleyerek yerine taşıyın", { sub: `${r.triangles.toLocaleString("tr-TR")} üçgen · ${tl(r.price)}` });
 }
 
 /* ---------- Kaplama kütüphanesi ---------- */
@@ -704,7 +866,7 @@ async function renderMyMind() {
 /* ---------- komut paleti ---------- */
 const COMMANDS = () => [
   ["1 · Model", () => go("model")], ["2 · Katlar", () => go("katlar")], ["3 · İç plan", () => go("plan")], ["4 · 3B ve render", () => go("uc")], ["5 · Özet ve dışa aktar", () => go("ozet")],
-  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["MyMind", () => go("mymind")],
+  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["Tasarım motorları", () => go("motor")], ["MyMind", () => go("mymind")],
   ["Örnek projeyi aç", () => loadDemo()], ["Yeni proje", () => newProject()], ["Projeyi kaydet (.uhds)", () => exportAs("uhds")], ["Proje aç", () => exportAs("open")],
   ["OBJ içe aktar", () => run(importObj)], ["OBJ dışa aktar", () => exportAs("obj")], ["HD render al", () => { go("uc"); setTimeout(doRender, 300); }], ["Geri al", () => undo()],
 ];
@@ -793,6 +955,7 @@ async function init() {
     const info = await B.engine("info");
     $("#engineInfo").textContent = `Rust motoru ${info.version} · ${B.isDesktop ? "yerel" : "WebAssembly önizleme"}`;
     S.catalog = await B.engine("catalog");
+    S.motorParams = await B.engine("motor_defaults");
   } catch (e) {
     $("#engineInfo").textContent = "Motor yüklenemedi";
     toast(e.message, { kind: "error" });
@@ -970,7 +1133,20 @@ function segment(id, key, fn) {
 }
 segment("#segView", "v", (v) => { S.v3.mode = v; if (v === "ic") { S.v3.cut = false; $("#chkCut").checked = false; S.dirty3d = true; } run(async () => { if (S.dirty3d) { const m = await B.engine("mesh", { scene: S.scene, options: meshOptions() }); V.setMesh(m); S.dirty3d = false; } await camera(v === "ic" ? "ic" : "perspektif"); }); });
 segment("#segLevels", "l", (l) => { S.v3.levels = l; S.dirty3d = true; show3d(); });
-segment("#segAtm", "a", (a) => { S.atm = a; V.setAtmosphere(a); });
+segment("#segAtm", "a", (a) => { S.atm = a; $("#chkSky").checked = false; syncSky(); });
+segment("#motorTabs", "m", (m) => { S.motor = m; renderMotor(); });
+for (const id of ["#chkSky", "#skyHour", "#skyCloud", "#skyHaze", "#skyMonth"]) $(id).addEventListener("input", syncSky);
+$("#btnMotorAdd").onclick = () => run(motorAdd);
+$("#motorForm").addEventListener("input", (e) => {
+  const t = e.target, k = t.dataset.mk;
+  if (!k) return;
+  const p = S.motorParams[S.motor];
+  const mt = t.dataset.mt;
+  const v = mt === "range" || mt === "num" ? Number(t.value) : mt === "color" ? hex2rgb(t.value) : mt === "check" ? t.checked : t.value;
+  setPath(p, k, v);
+  if (mt === "range") { const st = Number(t.dataset.step); t.closest("label").querySelector("output").textContent = `${fmt(v, st < 1 ? 2 : 0)}${t.dataset.unit ? " " + t.dataset.unit : ""}`; }
+  motorPreview();
+});
 segment("#segTier", "t", (t) => { const s = clone(); s.cost.tier = t; commit(s); });
 
 $("#btnPlaceModules").onclick = () => run(async () => {
