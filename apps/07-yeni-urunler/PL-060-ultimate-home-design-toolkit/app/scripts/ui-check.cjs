@@ -21,17 +21,27 @@ const server = http.createServer((req, res) => {
   await new Promise((r) => server.listen(0, "127.0.0.1", r));
   const base = `http://127.0.0.1:${server.address().port}/index.html`;
   fs.mkdirSync(out, { recursive: true });
-  const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+  const browser = await chromium.launch({ ...(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {}), args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
   const page = await browser.newPage({ viewport: { width: 1600, height: 960 }, deviceScaleFactor: Number(process.env.DSF || 1) });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
   const shot = async (name) => { await page.waitForTimeout(500); await page.screenshot({ path: path.join(out, name) }); console.log("ekran:", name); };
+  // CSP 'unsafe-eval' içermediği için waitForFunction yerine metin yoklaması
+  const waitText = async (sel, re, ms = 60000) => {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const t = await page.textContent(sel).catch(() => "");
+      if (re.test(t || "")) return;
+      await page.waitForTimeout(200);
+    }
+    throw new Error(`${sel} beklenen metne ulaşmadı: ${re}`);
+  };
   const ok = (cond, msg) => { if (!cond) { errors.push("DOĞRULAMA: " + msg); console.log("✗", msg); } else console.log("✓", msg); };
 
   // 1 · Model: boş proje, modül seçimi
   await page.goto(base);
-  await page.waitForFunction(() => document.querySelector("#engineInfo").textContent.includes("Rust"));
+  await waitText("#engineInfo", /Rust/);
   await page.click('[data-storey="2"]');
   await page.click('[data-inc="10"]');
   await page.click('[data-inc="10"]');
@@ -55,7 +65,7 @@ const server = http.createServer((req, res) => {
 
   // 3B
   await page.click('[data-view="uc"]');
-  await page.waitForFunction(() => /üçgen/.test(document.querySelector("#view3dInfo").textContent), null, { timeout: 60000 });
+  await waitText("#view3dInfo", /üçgen/);
   await page.waitForTimeout(800);
   await shot("04-3b-dis.png");
   await page.click('#segView [data-v="ic"]');
