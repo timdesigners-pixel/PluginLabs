@@ -10,11 +10,11 @@ window.PL_VERI = {
   "web": "Web"
  },
  "istatistik": {
-  "urun": 59,
+  "urun": 60,
   "kategori": 7,
   "hubUygulama": 38,
   "hubKurulabilir": 57,
-  "windows": 59,
+  "windows": 60,
   "linux": 52,
   "macos": 52,
   "chrome": 44,
@@ -1144,6 +1144,22 @@ window.PL_VERI = {
    "urun": "mymind",
    "renk": null,
    "harf": "MA"
+  },
+  {
+   "no": 60,
+   "id": "PL-060",
+   "slug": "ultimate-home-design-toolkit",
+   "ad": "Ultimate Home Design Toolkit",
+   "ozet": "Modüler hazır konutlar için tasarım araç seti: modül ve kat yerleşimi, 10 cm hassas iç plan, ölçü/metraj, maliyet ölçeklemesi, kullanıcı fonksiyonları, ışın izleme render, OBJ ve yerel .uhds sahne dosyası.",
+   "kategori": "07",
+   "platformlar": [
+    "windows"
+   ],
+   "surum": "0.1.0",
+   "hub": null,
+   "urun": null,
+   "renk": 4,
+   "harf": "UH"
   }
  ]
 };

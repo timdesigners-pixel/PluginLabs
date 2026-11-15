@@ -1,0 +1,107 @@
+//! Yerel sahne dosyası: `.uhds` (Ultimate Home Design Scene).
+//!
+//! Biçim: ilk satır başlık, ardından sahnenin JSON gövdesi.
+//! `UHDS/1 sha256=<64 hex> bytes=<gövde bayt sayısı>\n<json>`
+//! Gövde bütünlüğü SHA-256 ile doğrulanır; sürüm yükseltmesi `migrate` içinde yapılır.
+
+use crate::model::Scene;
+use serde::Serialize;
+use sha2::{Digest, Sha256};
+
+pub const FORMAT: &str = "UHDS";
+pub const VERSION: u32 = 1;
+pub const EXTENSION: &str = "uhds";
+pub const MAX_BYTES: usize = 256 * 1024 * 1024;
+
+#[derive(Debug, Clone, Serialize)]
+pub struct FileInfo {
+    pub version: u32,
+    pub bytes: usize,
+    pub sha256: String,
+    pub migrated: bool,
+    pub modules: usize,
+    pub levels: usize,
+    pub objects: usize,
+    pub meshes: usize,
+}
+
+fn hex(d: &[u8]) -> String {
+    d.iter().map(|b| format!("{b:02x}")).collect()
+}
+
+pub fn save(scene: &Scene) -> Result<String, String> {
+    let body = serde_json::to_string(scene).map_err(|e| e.to_string())?;
+    if body.len() > MAX_BYTES {
+        return Err("Sahne 256 MB sınırını aşıyor".into());
+    }
+    let sum = hex(&Sha256::digest(body.as_bytes()));
+    Ok(format!("{FORMAT}/{VERSION} sha256={sum} bytes={}\n{body}", body.len()))
+}
+
+pub fn load(text: &str) -> Result<(Scene, FileInfo), String> {
+    if text.len() > MAX_BYTES + 200 {
+        return Err("Dosya 256 MB sınırını aşıyor".into());
+    }
+    let (head, body) = text.split_once('\n').ok_or("Sahne dosyası başlığı eksik")?;
+    let head = head.trim_end_matches('\r');
+    let mut parts = head.split(' ');
+    let fmt = parts.next().unwrap_or("");
+    let (name, ver) = fmt.split_once('/').ok_or("Bu bir UHDS sahne dosyası değil")?;
+    if name != FORMAT {
+        return Err("Bu bir UHDS sahne dosyası değil".into());
+    }
+    let ver: u32 = ver.parse().map_err(|_| "Sürüm okunamadı")?;
+    if ver > VERSION {
+        return Err(format!("Dosya daha yeni bir sürümle kaydedilmiş (UHDS/{ver}); uygulamayı güncelleyin"));
+    }
+    let mut sum = None;
+    let mut bytes = None;
+    for p in parts {
+        if let Some(v) = p.strip_prefix("sha256=") {
+            sum = Some(v.to_string());
+        } else if let Some(v) = p.strip_prefix("bytes=") {
+            bytes = v.parse::<usize>().ok();
+        }
+    }
+    let sum = sum.ok_or("Bütünlük özeti eksik")?;
+    if bytes != Some(body.len()) {
+        return Err("Dosya eksik ya da kesilmiş (bayt sayısı uyuşmuyor)".into());
+    }
+    let actual = hex(&Sha256::digest(body.as_bytes()));
+    if actual != sum.to_lowercase() {
+        return Err("Dosya bozulmuş ya da elle değiştirilmiş (SHA-256 uyuşmuyor)".into());
+    }
+    let value: serde_json::Value = serde_json::from_str(body).map_err(|e| format!("Sahne okunamadı: {e}"))?;
+    let (value, migrated) = migrate(value, ver);
+    let scene: Scene = serde_json::from_value(value).map_err(|e| format!("Sahne yapısı geçersiz: {e}"))?;
+    let info = FileInfo { version: ver, bytes: body.len(), sha256: actual, migrated, modules: scene.modules.len(), levels: scene.levels.len(), objects: scene.objects.len(), meshes: scene.meshes.len() };
+    Ok((scene, info))
+}
+
+/// Eski sürümleri güncel modele taşır. Şimdilik tek sürüm var; alanlar varsayılanlarla dolar.
+fn migrate(v: serde_json::Value, from: u32) -> (serde_json::Value, bool) {
+    (v, from < VERSION)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn roundtrip_and_integrity() {
+        let s = crate::templates::demo_scene();
+        let text = save(&s).unwrap();
+        assert!(text.starts_with("UHDS/1 sha256="));
+        let (back, info) = load(&text).unwrap();
+        assert_eq!(back.objects.len(), s.objects.len());
+        assert_eq!(back.modules.len(), 2);
+        assert_eq!(info.version, 1);
+        assert_eq!(serde_json::to_string(&back).unwrap(), serde_json::to_string(&s).unwrap());
+        let tampered = text.replacen("Salon ve mutfak", "Salon ve mutfaK", 1);
+        assert!(load(&tampered).unwrap_err().contains("SHA-256"));
+        let cut = &text[..text.len() - 10];
+        assert!(load(cut).unwrap_err().contains("kesilmiş"));
+        assert!(load("UHDS/9 sha256=00 bytes=2\n{}").unwrap_err().contains("daha yeni"));
+        assert!(load("merhaba").is_err());
+    }
+}

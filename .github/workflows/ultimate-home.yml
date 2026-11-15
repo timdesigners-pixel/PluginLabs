@@ -1,0 +1,60 @@
+name: Ultimate Home Design Toolkit (PL-060)
+on:
+  pull_request:
+    paths:
+      - "apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/**"
+      - ".github/workflows/ultimate-home.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app
+jobs:
+  engine-and-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Rust motor testleri
+        run: cargo test -p uhd-engine --release
+      - name: WebAssembly önizleme motoru
+        run: bash scripts/build-wasm.sh
+      - name: Arayüz denetimi (Chromium, gerçek motor)
+        run: |
+          npm i --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+          node scripts/ui-check.cjs ui-check-shots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ultimate-home-ui-screenshots
+          path: apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app/ui-check-shots
+  windows:
+    runs-on: windows-latest
+    needs: engine-and-ui
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Bağımlılıklar
+        run: npm ci
+      - name: Tauri Windows derlemesi (NSIS kurulum + taşınabilir exe)
+        run: npx tauri build
+      - name: Paketleri topla, SHA256SUMS ve BUILD-INFO
+        shell: pwsh
+        run: |
+          $v = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item "src-tauri/target/release/ultimate-home.exe" "dist/UltimateHome-$v-Windows-Portable-x64.exe"
+          Get-ChildItem src-tauri/target/release/bundle/nsis/*.exe | ForEach-Object { Copy-Item $_.FullName "dist/UltimateHome-$v-Windows-Setup-x64.exe" }
+          $sums = Get-ChildItem dist/*.exe | ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name }
+          $sums | Set-Content -Encoding ascii dist/SHA256SUMS.txt
+          @{ product = "Ultimate Home Design Toolkit"; id = "PL-060"; version = $v; commit = "${{ github.sha }}"; runner = "windows-latest"; built = (Get-Date -Format o) } | ConvertTo-Json | Set-Content dist/BUILD-INFO.json
+          Get-Content dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ultimate-home-windows
+          path: apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app/dist

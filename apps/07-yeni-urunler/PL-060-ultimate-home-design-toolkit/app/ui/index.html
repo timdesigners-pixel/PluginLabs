@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Home Design Toolkit</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="pl/pl-tokens.css">
+<link rel="stylesheet" href="pl/pl-components.css">
+<link rel="stylesheet" href="pl/pl-advanced.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="uh" id="root" data-pl data-pl-theme="dark" data-pl-product="hub" lang="tr">
+  <nav class="pl-sidebar uh-side" aria-label="Ana menü">
+    <div class="uh-brand" aria-label="PluginLabs Apps">
+      <span class="uh-mark" aria-hidden="true">pl</span><b>PluginLabs</b><span class="uh-apps">APPS</span>
+    </div>
+    <div class="uh-product">
+      <span class="pl-applogo" aria-hidden="true">UH</span>
+      <div class="uh-product__text"><b>Ultimate Home</b><span>Ev tasarım araç seti</span></div>
+      <span class="uh-product__no pl-num" aria-label="Sıra numarası 60">60</span>
+    </div>
+    <div class="pl-label uh-navlabel">Proje adımları</div>
+    <div class="uh-navs" id="stepNav">
+      <button class="pl-navitem uh-navbtn" type="button" data-view="model"><span class="uh-stepno">1</span>Model</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="katlar"><span class="uh-stepno">2</span>Katlar</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="plan"><span class="uh-stepno">3</span>İç plan</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="uc"><span class="uh-stepno">4</span>3B ve render</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="ozet"><span class="uh-stepno">5</span>Özet ve dışa aktar</button>
+    </div>
+    <div class="pl-label uh-navlabel">Araçlar</div>
+    <div class="uh-navs">
+      <button class="pl-navitem uh-navbtn" type="button" data-view="olcu">Ölçü ve metraj</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="maliyet">Maliyet ve ölçekleme</button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="fonksiyon">Fonksiyonlar<span class="pl-badge" id="fnCount">0</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">3B kütüphane (OBJ)<span class="pl-badge" id="objCount">0</span></button>
+    </div>
+    <div class="uh-mini" id="sideInfo"></div>
+    <div class="uh-side__foot">
+      <button class="pl-navitem uh-navbtn" type="button" data-view="mymind"><span class="uh-mymind-dot" aria-hidden="true"></span>MyMind<span class="pl-badge" id="mymindState">Kapalı</span></button>
+      <div class="uh-engine pl-label" id="engineInfo">Motor yükleniyor…</div>
+    </div>
+  </nav>
+
+  <main class="uh-main">
+    <header class="uh-top">
+      <span class="pl-chip pl-chip--solid pl-chip--mono" id="projectNo">UHD-2026-000000</span>
+      <span class="pl-chip" id="saveState"><span class="uh-dot" aria-hidden="true"></span><span>Otomatik kayıt hazır</span></span>
+      <span class="uh-std" id="stdLine"></span>
+      <span class="uh-grow"></span>
+      <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="btnUndo" title="Geri al (Ctrl+Z)">Geri al</button>
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnOpen">Proje aç</button>
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnSave">Projeyi kaydet</button>
+      <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="btnNew">Yeni proje</button>
+      <button class="pl-btn pl-btn--ghost pl-btn--sm uh-cmdk" type="button" id="btnCmd">Komutlar <span class="pl-kbd">Ctrl K</span></button>
+    </header>
+
+    <div class="uh-resume" id="resumeBar" hidden>
+      <span>Daha önce kaydedilmiş bir proje bulundu.</span>
+      <span class="uh-grow"></span>
+      <button class="pl-btn pl-btn--primary pl-btn--sm" type="button" id="btnResume">Projeye devam et</button>
+      <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnFresh">Yeni başla</button>
+    </div>
+
+    <!-- 1 · Model -->
+    <section class="uh-view" id="view-model" data-title="Model">
+      <div class="uh-page">
+        <div class="pl-callout uh-note">
+          <span class="pl-ico" aria-hidden="true">i</span>
+          <div><div class="pl-callout__title">Ön çalışma ve görselleştirme</div>
+          Bu araçla oluşturulan plan, 3B görünüm, render ve maliyet bir ön çalışmadır; statik, ruhsat veya uygulama projesi yerine geçmez. Birim fiyatlar düzenlenebilir örnek değerlerdir.</div>
+        </div>
+        <div class="uh-card">
+          <div class="pl-label uh-eyebrow">Adım 1</div>
+          <h1 class="uh-h1">Projenizin temelini oluşturun</h1>
+          <p class="uh-lead">Kat sayısını ve 4 m genişliğindeki hazır modülleri seçin.</p>
+          <h2 class="uh-h3">Kat sayısı</h2>
+          <div class="uh-choice2" role="radiogroup" aria-label="Kat sayısı">
+            <button class="uh-choice is-active" type="button" role="radio" aria-checked="true" data-storey="1"><b>Tek katlı</b><span>Zemin kat üzerinden tasarım.</span></button>
+            <button class="uh-choice" type="button" role="radio" aria-checked="false" data-storey="2"><b>İki katlı</b><span>Üst modül, seçilen alt modülün tam üzerine oturur.</span></button>
+          </div>
+          <h2 class="uh-h3">Modüller</h2>
+          <div class="uh-modgrid" id="moduleGrid"></div>
+          <div class="uh-kpis3">
+            <div class="pl-kpi"><div class="pl-label">Modül</div><div class="pl-kpi__value" id="kpiModules">0</div></div>
+            <div class="pl-kpi"><div class="pl-label">Zemin alanı (dış)</div><div class="pl-kpi__value" id="kpiArea">0 m²</div></div>
+            <div class="pl-kpi"><div class="pl-label">Kat tipi</div><div class="pl-kpi__value uh-kpi-text" id="kpiStorey">Tek katlı</div></div>
+          </div>
+          <div class="uh-actions"><button class="pl-btn pl-btn--primary pl-btn--lg" type="button" id="btnPlaceModules">Modülleri yerleştir →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · Katlar -->
+    <section class="uh-view uh-view--work" id="view-katlar" data-title="Katlar">
+      <div class="uh-work">
+        <div class="uh-canvaswrap">
+          <div class="uh-canvasbar">
+            <div class="pl-segment" id="floorSegK" role="tablist" aria-label="Kat görünümü"></div>
+            <span class="uh-grow"></span>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnRotate" disabled>↻ 90° döndür</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-fit>Çizimi sığdır</button>
+          </div>
+          <canvas class="uh-canvas" id="canvasK" tabindex="0" aria-label="Kat yerleşim planı. Modülleri sürükleyin; seçili modülü R tuşuyla döndürün."></canvas>
+          <div class="uh-canvashint" id="hintK">Zemin modüllerini sürükleyin; yaklaşınca kenarlara hizalanır.</div>
+        </div>
+        <aside class="uh-panel" aria-label="Kat ayarları">
+          <div class="pl-label uh-eyebrow">Adım 2</div>
+          <h2 class="uh-h2">Katları ve modülleri yerleştirin</h2>
+          <div class="uh-stats" id="floorStats"></div>
+          <div class="uh-group" id="upperGroup">
+            <h3 class="uh-h3">1. kat seçimi</h3>
+            <p class="uh-small">Üst kata çıkmak istediğiniz zemin modüllerini seçin.</p>
+            <div class="uh-checklist" id="upperList"></div>
+          </div>
+          <div class="uh-group">
+            <h3 class="uh-h3">Taşıyıcı perde kuralı</h3>
+            <p class="uh-small">Uzun kenarlardaki koyu bölümler taşıma için korunması zorunlu beton perdelerdir; modüller birleştiğinde de kapalı kalır. 4 m kısa kenar ve uzun kenarın ortası açılabilir.</p>
+            <div class="uh-legend"><span class="uh-sw uh-sw--pier"></span>Taşıyıcı perde <span class="uh-sw uh-sw--front"></span>Ön cephe</div>
+          </div>
+          <div class="uh-group">
+            <h3 class="uh-h3">Yardım</h3>
+            <ul class="uh-small uh-list"><li>Modüller yaklaştırıldığında hizalanır.</li><li>↻ ile döndürün (R).</li><li>Üst kat modülü serbest kaydırılamaz.</li></ul>
+          </div>
+          <div class="uh-overlap pl-callout pl-callout--danger" id="overlapWarn" hidden><span class="pl-ico" aria-hidden="true">!</span><div id="overlapText"></div></div>
+          <div class="uh-actions uh-actions--split">
+            <button class="pl-btn pl-btn--secondary" type="button" data-go="model">← Modele dön</button>
+            <button class="pl-btn pl-btn--primary" type="button" data-go="plan">İç planı tasarla →</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3 · İç plan -->
+    <section class="uh-view uh-view--work" id="view-plan" data-title="İç plan">
+      <div class="uh-work uh-work--3">
+        <aside class="uh-tools" aria-label="Plan araçları" id="toolPanel"></aside>
+        <div class="uh-canvaswrap">
+          <div class="uh-canvasbar">
+            <div class="pl-segment" id="floorSegP" role="tablist" aria-label="Kat"></div>
+            <span class="pl-chip pl-chip--accent" id="activeTool">Aktif: Seç / taşı</span>
+            <span class="uh-grow"></span>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-fit>Çizimi sığdır</button>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-undo>↶ Geri al</button>
+            <button class="pl-btn pl-btn--danger pl-btn--sm" type="button" id="btnArchiveSel" disabled>Seçiliyi arşivle</button>
+          </div>
+          <canvas class="uh-canvas" id="canvasP" tabindex="0" aria-label="İç plan çizim alanı"></canvas>
+          <div class="uh-canvashint" id="hintP">Araç seçin ve doğrudan planda çalışın. Kaydırmak için sağ tuş ya da boşluk + sürükle; yakınlaştırmak için tekerlek.</div>
+        </div>
+        <aside class="uh-panel" aria-label="Seçili eleman ve canlı hesap">
+          <h3 class="uh-h3">Seçili eleman</h3>
+          <div id="inspector" class="uh-inspector"><p class="uh-small">Bir duvar, oda, kapı/pencere veya nesneye tıklayın.</p></div>
+          <h3 class="uh-h3">Canlı alan hesabı</h3>
+          <div class="uh-stats" id="liveStats"></div>
+          <h3 class="uh-h3">Yerleşim kontrolü</h3>
+          <div id="liveCheck" class="uh-small"></div>
+          <h3 class="uh-h3">Yapı standardı</h3>
+          <table class="pl-table uh-mini-table" id="stdTable"></table>
+          <div class="uh-actions uh-actions--split">
+            <button class="pl-btn pl-btn--secondary" type="button" data-go="katlar">← Katlara dön</button>
+            <button class="pl-btn pl-btn--primary" type="button" data-go="uc">3B görünüme geç →</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4 · 3B -->
+    <section class="uh-view uh-view--work" id="view-uc" data-title="3B ve render">
+      <div class="uh-work">
+        <div class="uh-canvaswrap uh-3d">
+          <canvas class="uh-canvas" id="canvas3d" tabindex="0" aria-label="3B sahne. Sol tuş döndür, tekerlek yakınlaştır, sağ tuş kaydır."></canvas>
+          <div class="uh-3d-status pl-chip pl-chip--mono" id="view3dInfo">—</div>
+          <div class="uh-render-overlay" id="renderOverlay" hidden>
+            <div class="pl-progress pl-progress--indeterminate"><span></span></div>
+            <span id="renderMsg">Render hazırlanıyor…</span>
+          </div>
+        </div>
+        <aside class="uh-panel" aria-label="3B görünüm ve render">
+          <div class="pl-label uh-eyebrow">Adım 4</div>
+          <h2 class="uh-h2">Gerçekçi 3B proje</h2>
+          <p class="uh-small">Dış kabuk beton dokulu gösterilir; seçtiğiniz cephe kaplaması, cephe boyası ve iç boya sahneye uygulanır. Render, ışık ve gölgeyi fiziksel ışın izlemeyle hesaplar.</p>
+          <h3 class="uh-h3">Görünüm</h3>
+          <div class="pl-segment" id="segView"><button type="button" class="is-active" data-v="dis">Dış görünüm</button><button type="button" data-v="ic">İç mekân</button></div>
+          <h3 class="uh-h3">Katlar</h3>
+          <div class="pl-segment" id="segLevels"><button type="button" class="is-active" data-l="all">Tüm katlar</button><button type="button" data-l="L0">Sadece zemin</button></div>
+          <label class="pl-switch uh-switch"><input type="checkbox" id="chkCut"> Çatıyı gizle (kesit)</label>
+          <h3 class="uh-h3">Hazır kamera açıları</h3>
+          <div class="uh-btngrid" id="camButtons">
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="on">Ön cephe</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="arka">Arka cephe</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="sag">Sağ cephe</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="sol">Sol cephe</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="kusbakisi">Kuşbakışı</button>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-cam="perspektif">Perspektif</button>
+          </div>
+          <h3 class="uh-h3">Render atmosferi</h3>
+          <div class="pl-segment" id="segAtm"><button type="button" class="is-active" data-a="gunduz">Gündüz</button><button type="button" data-a="gun-batimi">Gün batımı</button><button type="button" data-a="aksam">Akşam</button></div>
+          <h3 class="uh-h3">İç cephe boyası</h3>
+          <div class="pl-swatches" id="interiorSwatches" role="radiogroup" aria-label="İç cephe boyası"></div>
+          <h3 class="uh-h3">Render kalitesi</h3>
+          <div class="uh-row">
+            <select class="pl-select" id="selRes" aria-label="Çözünürlük"><option value="960x540">960 × 540</option><option value="1280x720" selected>1280 × 720 (HD)</option><option value="1920x1080">1920 × 1080 (Full HD)</option></select>
+            <select class="pl-select" id="selSpp" aria-label="Örnek sayısı"><option value="16">Taslak · 16</option><option value="48" selected>İyi · 48</option><option value="128">Yüksek · 128</option></select>
+          </div>
+          <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnRender">HD render al (PNG)</button>
+          <figure class="uh-renderfig" id="renderFig" hidden>
+            <img id="renderImg" alt="Son render önizlemesi">
+            <figcaption class="uh-small" id="renderCap"></figcaption>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnSavePng">PNG olarak kaydet</button>
+          </figure>
+          <p class="uh-small">Sol tuş: döndür · Tekerlek: yakınlaştır · Sağ tuş: kaydır</p>
+          <div class="uh-actions uh-actions--split">
+            <button class="pl-btn pl-btn--secondary" type="button" data-go="plan">← İç plana dön</button>
+            <button class="pl-btn pl-btn--primary" type="button" data-go="ozet">Proje özeti →</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 5 · Özet -->
+    <section class="uh-view" id="view-ozet" data-title="Özet">
+      <div class="uh-page">
+        <div class="uh-card">
+          <div class="pl-label uh-eyebrow">Adım 5</div>
+          <h1 class="uh-h1">Projeniz hazır</h1>
+          <p class="uh-lead">Proje özetini inceleyin, kontrolleri tamamlayın ve dosyalarınızı dışa aktarın.</p>
+          <div class="uh-kpis4" id="sumKpis"></div>
+          <div class="uh-split2">
+            <div>
+              <h2 class="uh-h3">Proje kontrolü</h2>
+              <div id="checkList" class="uh-checks"></div>
+              <h2 class="uh-h3">Mahaller</h2>
+              <table class="pl-table" id="sumRooms"></table>
+            </div>
+            <div>
+              <h2 class="uh-h3">Dışa aktar</h2>
+              <div class="uh-exports">
+                <button class="pl-btn pl-btn--primary" type="button" data-export="uhds">Proje dosyasını kaydet (.uhds)</button>
+                <button class="pl-btn pl-btn--secondary" type="button" data-export="open">Kayıtlı proje dosyası aç</button>
+                <button class="pl-btn pl-btn--secondary" type="button" data-export="plan-png">2B planı PNG indir</button>
+                <button class="pl-btn pl-btn--secondary" type="button" data-export="obj">3B modeli OBJ + MTL dışa aktar</button>
+                <button class="pl-btn pl-btn--secondary" type="button" data-export="render">Son render'ı PNG kaydet</button>
+                <button class="pl-btn pl-btn--secondary" type="button" data-export="print">Proje özetini yazdır / PDF</button>
+                <button class="pl-btn pl-btn--ghost" type="button" data-go="mymind"><span class="uh-mymind-dot" aria-hidden="true"></span>MyMind'dan öneri al</button>
+              </div>
+              <label class="uh-check uh-mt"><input type="checkbox" id="chkAck"> Bu tasarımın bir ön çalışma olduğunu; statik, ruhsat veya uygulama projesi yerine geçmediğini kabul ediyorum.</label>
+              <img class="uh-sumrender" id="sumRender" alt="Son render" hidden>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ölçü -->
+    <section class="uh-view" id="view-olcu" data-title="Ölçü ve metraj">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Ölçü ve metraj</h1><span class="uh-grow"></span>
+          <label class="uh-inline">Birim <select class="pl-select" id="selUnit"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option><option value="ft">ft</option><option value="in">in</option></select></label></div>
+        <div class="uh-kpis4" id="mKpis"></div>
+        <h2 class="uh-h3">Mahaller</h2><div class="uh-tablewrap"><table class="pl-table" id="mRooms"></table></div>
+        <h2 class="uh-h3">Duvarlar</h2><div class="uh-tablewrap"><table class="pl-table" id="mWalls"></table></div>
+        <h2 class="uh-h3">Kullanıcı fonksiyonları</h2><div class="uh-tablewrap"><table class="pl-table" id="mFns"></table></div>
+        <div id="mWarn"></div>
+      </div>
+    </section>
+
+    <!-- Maliyet -->
+    <section class="uh-view" id="view-maliyet" data-title="Maliyet ve ölçekleme">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Maliyet ve ölçekleme</h1><span class="uh-grow"></span>
+          <div class="pl-segment" id="segTier"><button type="button" data-t="ekonomik">Ekonomik</button><button type="button" class="is-active" data-t="standart">Standart</button><button type="button" data-t="premium">Premium</button></div></div>
+        <div class="uh-params">
+          <label class="pl-field"><span class="pl-field__label">Bölge fiyat endeksi</span><input class="pl-input" type="number" step="0.01" min="0.1" max="10" id="inRegion"></label>
+          <label class="pl-field"><span class="pl-field__label">İşçilik endeksi</span><input class="pl-input" type="number" step="0.01" min="0.1" max="10" id="inLabour"></label>
+          <label class="pl-field"><span class="pl-field__label">KDV (%)</span><input class="pl-input" type="number" step="1" min="0" max="100" id="inVat"></label>
+          <label class="pl-field"><span class="pl-field__label">Beklenmeyen gider (%)</span><input class="pl-input" type="number" step="1" min="0" max="100" id="inCont"></label>
+          <label class="pl-switch uh-switch"><input type="checkbox" id="chkFurn"> Mobilya ve donatıyı dahil et</label>
+        </div>
+        <div class="uh-kpis4" id="cKpis"></div>
+        <div class="uh-split2">
+          <div><h2 class="uh-h3">Gruplar</h2><div id="cGroups"></div></div>
+          <div><h2 class="uh-h3">Kalite düzeyleri</h2><div id="cTiers"></div></div>
+        </div>
+        <h2 class="uh-h3">Kalemler <span class="uh-small">· birim fiyatları tablodan düzenleyin</span></h2>
+        <div class="uh-tablewrap"><table class="pl-table" id="cLines"></table></div>
+        <h2 class="uh-h3">Ölçekleme</h2>
+        <div class="uh-split2">
+          <div><h3 class="uh-h4">Alan ölçeklemesi (toplam ₺)</h3><div id="cCurve" class="uh-chart"></div><table class="pl-table" id="cCurveT"></table></div>
+          <div><h3 class="uh-h4">Seri üretim (aynı projeden N konut)</h3><table class="pl-table" id="cUnits"></table><p class="uh-small" id="cElastic"></p></div>
+        </div>
+        <div id="cErr"></div>
+      </div>
+    </section>
+
+    <!-- Fonksiyonlar -->
+    <section class="uh-view" id="view-fonksiyon" data-title="Fonksiyonlar">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Fonksiyonlar</h1></div>
+        <p class="uh-lead">Kendi ölçü ve maliyet fonksiyonlarınızı ekleyin. Formüller güvenli bir dilde çalışır: <code>+ - * / ^ %</code>, karşılaştırmalar, <code>min max ceil floor round abs sqrt pow clamp if</code>. Ölçü fonksiyonunun sonucu sonraki formüllerde kimliğiyle kullanılabilir.</p>
+        <div class="uh-split2">
+          <div class="uh-card uh-card--flat">
+            <h2 class="uh-h3">Yeni fonksiyon</h2>
+            <div class="uh-form">
+              <label class="pl-field"><span class="pl-field__label">Ad</span><input class="pl-input" id="fnName" placeholder="Ör. Seramik kutusu"></label>
+              <label class="pl-field"><span class="pl-field__label">Kimlik (formülde kullanılır)</span><input class="pl-input" id="fnId" placeholder="seramik_kutu"></label>
+              <label class="pl-field"><span class="pl-field__label">Tür</span><select class="pl-select" id="fnKind"><option value="measure">Ölçü (miktar üretir)</option><option value="cost">Maliyet (kalem ekler)</option></select></label>
+              <label class="pl-field"><span class="pl-field__label">Formül</span><input class="pl-input uh-mono" id="fnExpr" placeholder="ceil(wet_area * 1.10 / 1.44)"></label>
+              <div class="uh-row">
+                <label class="pl-field"><span class="pl-field__label">Birim</span><input class="pl-input" id="fnUnit" placeholder="kutu"></label>
+                <label class="pl-field"><span class="pl-field__label">Birim fiyat (₺)</span><input class="pl-input" type="number" id="fnPrice" value="0"></label>
+              </div>
+              <div class="uh-row"><button class="pl-btn pl-btn--secondary" type="button" id="btnFnTest">Formülü dene</button><button class="pl-btn pl-btn--primary" type="button" id="btnFnAdd">Fonksiyonu ekle</button></div>
+              <div id="fnResult" class="uh-small" role="status"></div>
+            </div>
+          </div>
+          <div>
+            <h2 class="uh-h3">Kullanılabilir değişkenler</h2>
+            <div class="uh-tablewrap uh-tall"><table class="pl-table" id="fnVars"></table></div>
+          </div>
+        </div>
+        <h2 class="uh-h3">Fonksiyonlarım</h2>
+        <div class="uh-tablewrap"><table class="pl-table" id="fnList"></table></div>
+      </div>
+    </section>
+
+    <!-- Kütüphane -->
+    <section class="uh-view" id="view-kutuphane" data-title="3B kütüphane">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">3B kütüphane</h1></div>
+        <p class="uh-lead">Wavefront OBJ modellerini (isteğe bağlı MTL malzemeleriyle) içe aktarın; modeller sahneye nesne olarak eklenir, render ve OBJ dışa aktarmaya katılır.</p>
+        <div class="uh-card uh-card--flat">
+          <div class="uh-row uh-wrap">
+            <label class="pl-field"><span class="pl-field__label">Model birimi</span><select class="pl-select" id="objUnit"><option value="m">metre</option><option value="cm">santimetre</option><option value="mm">milimetre</option><option value="in">inç</option><option value="ft">feet</option></select></label>
+            <label class="pl-switch uh-switch"><input type="checkbox" id="objZup"> Z ekseni yukarı (CAD dışa aktarımı)</label>
+            <span class="uh-grow"></span>
+            <button class="pl-btn pl-btn--primary" type="button" id="btnObjImport">OBJ içe aktar…</button>
+          </div>
+          <div id="objResult" class="uh-small" role="status"></div>
+        </div>
+        <h2 class="uh-h3">İçe aktarılan modeller</h2>
+        <div class="uh-tablewrap"><table class="pl-table" id="objList"></table></div>
+        <h2 class="uh-h3">Parametrik katalog</h2>
+        <div class="uh-tablewrap"><table class="pl-table" id="catList"></table></div>
+      </div>
+    </section>
+
+    <!-- MyMind -->
+    <section class="uh-view" id="view-mymind" data-title="MyMind">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">MyMind ile öneri</h1><span class="pl-badge pl-badge--pro">MyMind</span></div>
+        <p class="uh-lead">MyMind yalnız PluginLabs Hub üzerinden (bu bilgisayarda, 127.0.0.1) çalışır. Gönderilecek metni önce görürsünüz; proje numarası, fiyatlar, dosya yolları ve notlar gönderilmez. Yanıt yalnız öneridir, projeniz otomatik değişmez.</p>
+        <div class="uh-split2">
+          <div class="uh-card uh-card--flat">
+            <h2 class="uh-h3">Bağlantı</h2>
+            <div id="hubBox" class="uh-small"></div>
+            <label class="pl-field uh-mt"><span class="pl-field__label">Soru</span>
+              <select class="pl-select" id="mmTask">
+                <option value="plan">Plan yerleşimi ve gün ışığı için öneriler</option>
+                <option value="malzeme">Malzeme ve renk uyumu önerileri</option>
+                <option value="sira">Uygulama sırası ve kontrol listesi</option>
+              </select></label>
+            <h3 class="uh-h4">Gönderilecek metin (önizleme)</h3>
+            <pre class="uh-pre" id="mmPreview"></pre>
+            <div class="uh-row"><button class="pl-btn pl-btn--primary" type="button" id="btnMmSend">Onayla ve gönder</button></div>
+          </div>
+          <div class="uh-card uh-card--flat">
+            <h2 class="uh-h3">Yanıt</h2>
+            <div id="mmAnswer" class="uh-answer"><p class="uh-small">Henüz yanıt yok.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="uh-toasts" id="toasts" aria-live="polite"></div>
+
+  <dialog class="pl-modal uh-cmdk-dialog" id="cmdDialog" aria-label="Komut paleti">
+    <div class="pl-cmdk">
+      <div class="pl-cmdk__input"><span aria-hidden="true">⌘</span><input id="cmdInput" placeholder="Komut ya da ekran ara…" autocomplete="off"></div>
+      <div class="pl-cmdk__list" id="cmdList" role="listbox"></div>
+      <div class="pl-cmdk__foot"><span><span class="pl-kbd">↑↓</span> seç</span><span><span class="pl-kbd">Enter</span> çalıştır</span><span><span class="pl-kbd">Esc</span> kapat</span></div>
+    </div>
+  </dialog>
+
+  <dialog class="pl-modal" id="noteDialog" aria-label="Revizyon notu">
+    <div class="pl-modal__head"><div><b>Revizyon notu</b><p class="uh-small">Ör. “pencere iptal”, “ada büyüsün”.</p></div></div>
+    <div class="pl-modal__body"><input class="pl-input" id="noteText" maxlength="200" placeholder="Notunuz"></div>
+    <div class="pl-modal__foot"><button class="pl-btn pl-btn--ghost" type="button" id="noteCancel">Vazgeç</button><button class="pl-btn pl-btn--primary" type="button" id="noteOk">Notu ekle</button></div>
+  </dialog>
+
+  <input type="file" id="fileInput" hidden>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
