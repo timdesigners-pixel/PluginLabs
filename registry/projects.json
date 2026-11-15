@@ -2473,6 +2473,40 @@
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": "https://app.notion.com/p/4118aa13d8f981e4afa9c4cfaea19562"
+    },
+    {
+      "id": "PL-060",
+      "number": 60,
+      "slug": "ultimate-home-design-toolkit",
+      "name": "Ultimate Home Design Toolkit",
+      "category": {
+        "id": "07",
+        "slug": "yeni-urunler",
+        "title": "07 · Yeni ürünler — PL-054+"
+      },
+      "status": "v0.1.0 geliştirme · Rust motoru (42 test) + Tauri 2 kabuğu; Windows paketi ve release bekliyor",
+      "priority": null,
+      "effort": null,
+      "platforms": {
+        "windows": true,
+        "linux": false,
+        "macos": false,
+        "chrome": false,
+        "web": false
+      },
+      "platformText": "Windows masaüstü (Tauri 2 / Rust)",
+      "formFactors": [
+        "masaüstü uygulaması"
+      ],
+      "summary": "Modüler hazır konutlar için tasarım araç seti: modül ve kat yerleşimi, 10 cm hassas iç plan, ölçü/metraj, maliyet ölçeklemesi, kullanıcı fonksiyonları, ışın izleme render, OBJ ve yerel .uhds sahne dosyası.",
+      "repo": "timdesigners-pixel/PluginLabs",
+      "appPath": "apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit",
+      "codexProject": {
+        "name": "PL-060 · Ultimate Home Design Toolkit",
+        "primaryFolder": "PluginLabs/apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app",
+        "secondaryFolder": "PluginLabs"
+      },
+      "notionUrl": null
     }
   ]
 }

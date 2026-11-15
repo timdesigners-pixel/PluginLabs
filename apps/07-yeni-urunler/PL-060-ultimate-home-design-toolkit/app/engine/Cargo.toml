@@ -1,0 +1,13 @@
+[package]
+name = "uhd-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Ultimate Home Design Toolkit — ölçü, maliyet, mimari, OBJ, sahne dosyası ve render motoru"
+license = "MIT"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+png = "0.17"
+base64 = "0.22"

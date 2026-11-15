@@ -1,0 +1,14 @@
+{
+  "name": "ultimate-home-design-toolkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PluginLabs Ultimate Home Design Toolkit — Rust/Tauri 2 masaüstü uygulaması",
+  "scripts": {
+    "test": "cargo test -p uhd-engine --release",
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "test:ui": "bash scripts/build-wasm.sh && node scripts/ui-check.cjs",
+    "tauri": "tauri",
+    "build:win": "tauri build"
+  },
+  "devDependencies": { "@tauri-apps/cli": "2.10.1" }
+}
