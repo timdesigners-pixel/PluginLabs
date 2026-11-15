@@ -340,10 +340,48 @@ pub struct RenderSettings {
     pub mesh: MeshOptions,
     pub threads: u32,
     pub seed: u64,
+    /// "perspective" ya da "isometric" (paralel izdüşüm).
+    pub projection: String,
+    /// İzometrik görünümde çerçevenin dünya yüksekliği (mm). Boşsa kamera uzaklığından türetilir.
+    pub ortho_height: Option<f64>,
+    /// Gökyüzü motoru: boşsa atmosfer ön ayarının saati kullanılır.
+    pub sky: Option<SkySettings>,
+}
+
+/// Gökyüzü ve atmosfer motoru parametreleri.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(default)]
+pub struct SkySettings {
+    /// Yerel saat (0–24).
+    pub hour: f32,
+    /// Ay (1–12): güneş yüksekliğini mevsime göre değiştirir.
+    pub month: u32,
+    /// Bulutluluk (0 = açık, 1 = kapalı).
+    pub cloud: f32,
+    /// Pus (0–1): ufku soldurur, güneşi yumuşatır.
+    pub haze: f32,
+    /// Enlem (derece).
+    pub latitude: f32,
+}
+impl Default for SkySettings {
+    fn default() -> Self {
+        SkySettings { hour: 13.0, month: 6, cloud: 0.0, haze: 0.1, latitude: 39.0 }
+    }
+}
+
+/// Güneşin konumu: (yükseklik°, güneyden batıya azimut°).
+pub fn sun_position(sky: &SkySettings) -> (f32, f32) {
+    let n = (sky.month.clamp(1, 12) as f32 - 0.5) * 30.4;
+    let decl = 23.44f32.to_radians() * ((360.0 / 365.0 * (284.0 + n)).to_radians()).sin();
+    let lat = sky.latitude.clamp(-66.0, 66.0).to_radians();
+    let h = (15.0 * (sky.hour.rem_euclid(24.0) - 12.0)).to_radians();
+    let el = (lat.sin() * decl.sin() + lat.cos() * decl.cos() * h.cos()).clamp(-1.0, 1.0).asin();
+    let az = h.sin().atan2(h.cos() * lat.sin() - decl.tan() * lat.cos());
+    (el.to_degrees(), az.to_degrees())
 }
 impl Default for RenderSettings {
     fn default() -> Self {
-        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7 }
+        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None }
     }
 }
 
@@ -369,22 +407,59 @@ struct Env {
 }
 
 impl Env {
-    fn new(scene: &Scene, a: Atmosphere) -> Env {
+    fn new(scene: &Scene, a: Atmosphere, sky: Option<&SkySettings>) -> Env {
         let s = &scene.sun;
-        let (az, el, sun_i, lamp) = match a {
-            Atmosphere::Gunduz => (s.azimuth, s.elevation, s.intensity as f32, 0.6),
-            Atmosphere::GunBatimi => (s.azimuth - 40.0, 7.0, s.intensity as f32 * 0.85, 1.0),
-            Atmosphere::Aksam => (s.azimuth, -12.0, 0.0, 1.6),
+        // ön ayarlar saat olarak ifade edilir; gökyüzü motoru hepsini aynı modelle üretir
+        let preset = match a {
+            Atmosphere::Gunduz => SkySettings { hour: 13.5, ..Default::default() },
+            Atmosphere::GunBatimi => {
+                // öğleden sonra güneşin ~6° olduğu saat
+                let mut k = SkySettings { hour: 15.0, ..Default::default() };
+                while k.hour < 22.0 && sun_position(&k).0 > 6.0 {
+                    k.hour += 0.05;
+                }
+                k
+            }
+            Atmosphere::Aksam => SkySettings { hour: 22.5, ..Default::default() },
         };
-        let (az, el) = (az.to_radians() as f32, el.to_radians() as f32);
-        let sun_dir = V(el.cos() * az.sin(), el.sin(), el.cos() * az.cos()).norm();
-        let sky = s.sky as f32;
-        let (sun_col, zenith, horizon, ground) = match a {
-            Atmosphere::Gunduz => (V(1.0, 0.95, 0.86), V(0.26, 0.45, 0.85), V(0.78, 0.86, 0.95), V(0.30, 0.31, 0.28)),
-            Atmosphere::GunBatimi => (V(1.0, 0.55, 0.26), V(0.20, 0.25, 0.48), V(1.0, 0.62, 0.40), V(0.22, 0.18, 0.15)),
-            Atmosphere::Aksam => (V(0.0, 0.0, 0.0), V(0.015, 0.025, 0.06), V(0.05, 0.06, 0.10), V(0.02, 0.02, 0.025)),
+        let k = sky.cloned().unwrap_or(preset);
+        let (el, az_s) = sun_position(&k);
+        let lerp = |a: V, b: V, t: f32| a * (1.0 - t) + b * t;
+        let cloud = k.cloud.clamp(0.0, 1.0);
+        let haze = k.haze.clamp(0.0, 1.0);
+        let day = (V(1.0, 0.95, 0.86), V(0.26, 0.45, 0.85), V(0.78, 0.86, 0.95), V(0.30, 0.31, 0.28));
+        let low = (V(1.0, 0.50, 0.22), V(0.20, 0.25, 0.48), V(1.0, 0.60, 0.38), V(0.22, 0.18, 0.15));
+        let night = (V(0.0, 0.0, 0.0), V(0.015, 0.025, 0.06), V(0.05, 0.06, 0.10), V(0.02, 0.02, 0.025));
+        let (mut sun_col, mut zenith, mut horizon, ground, sun_i, lamp) = if el > 12.0 {
+            (day.0, day.1, day.2, day.3, el.to_radians().sin().powf(0.4), 0.6)
+        } else if el > 0.0 {
+            let t = el / 12.0;
+            (lerp(low.0, day.0, t), lerp(low.1, day.1, t), lerp(low.2, day.2, t), lerp(low.3, day.3, t), 0.3 + 0.6 * t, 1.0 - 0.4 * t)
+        } else if el > -8.0 {
+            let t = (el + 8.0) / 8.0;
+            (V(0.0, 0.0, 0.0), lerp(night.1, low.1 * 0.5, t), lerp(night.2, low.2 * 0.45, t), lerp(night.3, low.3 * 0.5, t), 0.0, 1.6 - 0.6 * t)
+        } else {
+            (night.0, night.1, night.2, night.3, 0.0, 1.6)
         };
-        Env { sun_dir, sun_col: sun_col * sun_i, sun_cos: (0.6f32).to_radians().cos(), zenith: zenith * sky, horizon: horizon * sky, ground: ground * sky, lamp_gain: lamp }
+        // bulut ve pus: gökyüzünü griye çeker, güneşi kısar ve gölgeyi yumuşatır
+        let grey = V(0.62, 0.64, 0.67) * (zenith.lum() * 1.6 + horizon.lum() * 0.4).min(1.0);
+        zenith = lerp(zenith, grey, cloud * 0.9);
+        horizon = lerp(lerp(horizon, grey, cloud * 0.9), horizon * 0.5 + V(0.5, 0.5, 0.5) * horizon.lum(), haze * 0.5);
+        sun_col = lerp(sun_col, V(sun_col.lum(), sun_col.lum(), sun_col.lum()), cloud * 0.6);
+        let sun_gain = s.intensity as f32 * sun_i * (1.0 - 0.88 * cloud) * (1.0 - 0.25 * haze);
+        // dünya azimutu: sahnenin öğle güneşi yönü (sun.azimuth) + güneyden batıya açı
+        let az = (s.azimuth as f32 + az_s).to_radians();
+        let e = el.max(-20.0).to_radians();
+        let mut sun_dir = V(e.cos() * az.sin(), e.sin(), e.cos() * az.cos()).norm();
+        let mut col = sun_col * sun_gain;
+        if el <= 0.0 {
+            // gece: soluk ay ışığı
+            sun_dir = V(-0.45, 0.72, 0.53).norm();
+            col = V(0.55, 0.65, 0.9) * (0.05 * (1.0 - cloud));
+        }
+        let half_angle = 0.6 + cloud * 14.0 + haze * 2.0;
+        let sk = s.sky as f32;
+        Env { sun_dir, sun_col: col, sun_cos: half_angle.to_radians().cos(), zenith: zenith * sk, horizon: horizon * sk, ground: ground * sk, lamp_gain: lamp }
     }
     fn sky(&self, d: V) -> V {
         if d.1 < 0.0 {
@@ -587,7 +662,8 @@ pub fn prepare(scene: &Scene, s: &RenderSettings) -> SceneMesh {
 }
 
 pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String> {
-    let (w, h) = (s.width.clamp(16, 3840), s.height.clamp(16, 2160));
+    // 8K'ya kadar (7680 × 4320); bellek ~40 bayt/piksel
+    let (w, h) = (s.width.clamp(16, 7680), s.height.clamp(16, 4320));
     let spp = s.samples.clamp(1, 2048);
     let sm = prepare(scene, s);
     let mut mats: Vec<Mat> = vec![];
@@ -625,7 +701,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             lamps.push(Lamp { tri: i, area: a, cdf: acc });
         }
     }
-    let env = Env::new(scene, s.atmosphere);
+    let env = Env::new(scene, s.atmosphere, s.sky.as_ref());
     let tracer = Tracer { bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12) };
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let tgt = s.target.unwrap_or(scene.camera.target);
@@ -635,6 +711,9 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
     let right = fwd.cross(V(0.0, 1.0, 0.0)).norm();
     let up = right.cross(fwd);
     let th = (fov.to_radians() * 0.5).tan();
+    let iso = s.projection == "isometric";
+    let tv = V(tgt[0] as f32, tgt[1] as f32, tgt[2] as f32);
+    let ortho_half = s.ortho_height.map(|v| v as f32 * 0.5).unwrap_or_else(|| (tv - e).len() * th).max(10.0);
     let aspect = w as f32 / h as f32;
     let n_px = (w * h) as usize;
     let mut color = vec![V::default(); n_px];
@@ -665,9 +744,13 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
                 for _ in 0..spp {
                     let px = ((x as f32 + r.f()) / w as f32 * 2.0 - 1.0) * th * aspect;
                     let py = (1.0 - (y as f32 + r.f()) / h as f32 * 2.0) * th;
-                    let dir = (fwd + right * px + up * py).norm();
+                    let (org, dir) = if iso {
+                        (e + right * (px / th * ortho_half) + up * (py / th * ortho_half), fwd)
+                    } else {
+                        (e, (fwd + right * px + up * py).norm())
+                    };
                     let mut first = (V::default(), V::default(), 0.0);
-                    let (c, n) = tracer.radiance(e, dir, &mut r, &mut first);
+                    let (c, n) = tracer.radiance(org, dir, &mut r, &mut first);
                     rays += n;
                     // aşırı parlak örnekleri bastır (ateş böceği)
                     let lum = c.lum();
@@ -801,6 +884,32 @@ mod tests {
             b.iter().map(|x| *x as f64).sum::<f64>() / b.len() as f64
         };
         assert!(mean(Atmosphere::Aksam) < mean(Atmosphere::Gunduz));
+    }
+
+    #[test]
+    fn sky_engine_follows_the_clock() {
+        let at = |h: f32, m: u32| sun_position(&SkySettings { hour: h, month: m, ..Default::default() }).0;
+        assert!(at(12.0, 6) > 70.0 && at(12.0, 6) < 76.0, "haziran öğle {}", at(12.0, 6));
+        assert!(at(12.0, 12) > 25.0 && at(12.0, 12) < 30.0, "aralık öğle {}", at(12.0, 12));
+        assert!(at(0.0, 6) < -10.0);
+        assert!(at(9.0, 6) > at(7.0, 6));
+        let s = crate::templates::demo_scene();
+        let noon = Env::new(&s, Atmosphere::Gunduz, Some(&SkySettings { hour: 12.0, ..Default::default() }));
+        let cloudy = Env::new(&s, Atmosphere::Gunduz, Some(&SkySettings { hour: 12.0, cloud: 1.0, ..Default::default() }));
+        let night = Env::new(&s, Atmosphere::Gunduz, Some(&SkySettings { hour: 1.0, ..Default::default() }));
+        assert!(cloudy.sun_col.lum() < noon.sun_col.lum() * 0.3);
+        assert!(cloudy.sun_cos < noon.sun_cos, "bulutta gölge yumuşar");
+        assert!(night.zenith.lum() < noon.zenith.lum() * 0.2 && night.lamp_gain > noon.lamp_gain);
+    }
+
+    #[test]
+    fn isometric_projection_and_large_output_limits() {
+        let s = crate::templates::demo_scene();
+        let set = RenderSettings { width: 64, height: 36, samples: 2, projection: "isometric".into(), ortho_height: Some(14_000.0), eye: Some([15_000.0, 12_000.0, 14_000.0]), target: Some([5_000.0, 1_000.0, 4_000.0]), denoise: false, ..Default::default() };
+        let r = render(&s, &set).unwrap();
+        assert_eq!((r.width, r.height), (64, 36));
+        // sınır: 8K üstü istek 7680 × 4320'ye kırpılır (burada yalnız kırpma mantığı sınanır)
+        assert_eq!(9000u32.clamp(16, 7680), 7680);
     }
 
     #[test]

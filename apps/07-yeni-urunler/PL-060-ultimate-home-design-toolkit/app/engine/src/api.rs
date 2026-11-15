@@ -53,6 +53,12 @@ fn camera_preset(s: &Scene, name: &str, room: Option<&str>) -> Result<Value, Str
         "sol" => ([mn[0] as f64 - dist, h * 0.55 + 1600.0, c[2] + size * 0.15], c, 42.0),
         "kusbakisi" => ([c[0] + 1.0, size * 1.6 + 8000.0, c[2] + size * 0.35], [c[0], 0.0, c[2]], 40.0),
         "perspektif" => ([mn[0] as f64 - size * 0.55, h + size * 0.75, mn[2] as f64 - size * 0.65], c, 45.0),
+        "izometrik" => {
+            // klasik izometri: 45° azimut, 35,264° yükseklik
+            let d = size * 2.2 + 8000.0;
+            let eye = [c[0] - d * 0.5774, c[1] + d * 0.5774, c[2] - d * 0.5774];
+            return Ok(json!({"eye": eye, "target": c, "fov": 30.0, "projection": "isometric", "orthoHeight": size * 0.95 + h * 0.9 + 800.0}));
+        }
         "ic" => {
             let level = s.levels.first().ok_or("Kat yok")?;
             let r = match room {
