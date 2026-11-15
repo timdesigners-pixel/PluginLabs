@@ -36,6 +36,7 @@
       <button class="pl-navitem uh-navbtn" type="button" data-view="fonksiyon">Fonksiyonlar<span class="pl-badge" id="fnCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">Ürün kütüphanesi<span class="pl-badge" id="objCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="motor">Tasarım motorları<span class="pl-badge">5</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="referans">Görselden referans</button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kaplama">Kaplama kütüphanesi<span class="pl-badge" id="matCount">0</span></button>
     </div>
     <div class="uh-mini" id="sideInfo"></div>
@@ -372,6 +373,32 @@
             <button class="pl-btn pl-btn--primary pl-btn--block" type="button" id="btnMotorAdd">Oluştur ve plana ekle</button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Görselden referans -->
+    <section class="uh-view" id="view-referans" data-title="Görselden referans">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Görselden referans</h1><span class="uh-grow"></span><button class="pl-btn pl-btn--primary" type="button" id="btnRefPick">Görsel seç…</button></div>
+        <p class="uh-lead">Bir fotoğraf ya da render seçin: renk paleti, ışık düzeni, arka plan ve ufuk çizgisi çıkarılır; sahneniz buna göre uyarlanır ve kütüphanedeki en yakın ürünler listelenir. Görsel bu bilgisayardan çıkmaz. Ürün eşleştirme renk ve oran tabanlı bir ön eşleştirmedir.</p>
+        <div class="uh-split2" id="refBody" hidden>
+          <div class="uh-card uh-card--flat">
+            <img id="refThumb" class="uh-refthumb" alt="Seçilen referans görsel">
+            <h2 class="uh-h3">Renk paleti</h2>
+            <div class="uh-palette" id="refPalette"></div>
+            <div class="uh-stats uh-mt" id="refStats"></div>
+          </div>
+          <div class="uh-card uh-card--flat">
+            <h2 class="uh-h3">Sahneye uyarla</h2>
+            <div class="uh-checklist" id="refApplyList"></div>
+            <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnRefApply">Seçilenleri sahneye uygula</button>
+            <p class="uh-small">Uygulama tek adımda geri alınabilir (Ctrl+Z).</p>
+            <h2 class="uh-h3">Kütüphanedeki en yakın ürünler</h2>
+            <div class="uh-libgrid" id="refMatches"></div>
+          </div>
+        </div>
+        <div class="uh-card uh-card--flat" id="refEmpty"><p class="uh-small">Henüz görsel seçilmedi. JPG, PNG ya da WebP kullanabilirsiniz.</p></div>
+        <input type="file" id="refInput" accept="image/png,image/jpeg,image/webp" hidden>
       </div>
     </section>
 

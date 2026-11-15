@@ -367,6 +367,14 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let (o_txt, m_txt) = obj::export(&s, &m, &format!("{base}.mtl"));
             Ok(json!({"obj": o_txt, "mtl": m_txt, "triangles": m.triangle_count(), "basename": base}))
         }
+        "reference_image" => {
+            let s = scene_of(&v)?;
+            let w: usize = arg(&v, "width")?;
+            let h: usize = arg(&v, "height")?;
+            let b64: String = arg(&v, "rgb")?;
+            let rgb = base64::engine::general_purpose::STANDARD.decode(b64).map_err(|_| "Görsel verisi okunamadı".to_string())?;
+            Ok(serde_json::to_value(crate::reference::analyze(&s, w, h, &rgb)?).unwrap())
+        }
         "motor_defaults" => Ok(crate::motors::defaults()),
         "motor_preview" => {
             let kind: String = arg(&v, "kind")?;

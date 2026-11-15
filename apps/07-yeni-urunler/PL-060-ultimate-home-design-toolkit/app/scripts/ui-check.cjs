@@ -131,6 +131,17 @@ const server = http.createServer((req, res) => {
   await page.dispatchEvent("#skyHour", "input");
   ok((await page.textContent("#skyHourOut")) === "17:30", "Gökyüzü: saat 17:30");
   await shot("19-izometrik-kesit.png");
+  // görselden referans: örnek render'ı referans al, sahneye uygula
+  await page.click('[data-view="referans"]');
+  await page.setInputFiles("#refInput", path.join(__dirname, "..", "docs", "screenshots", "render-perspektif-gun-batimi.png"));
+  await page.waitForSelector("#refBody:not([hidden])");
+  ok((await page.locator("#refPalette span").count()) >= 3, "Referans: renk paleti çıkarıldı");
+  ok((await page.textContent("#refApplyList")).includes("Gökyüzü"), "Referans: uyarlama önerileri listelendi");
+  await shot("20-gorselden-referans.png");
+  await page.click("#btnRefApply");
+  await page.waitForSelector("#view-uc.is-active");
+  await page.waitForTimeout(1200);
+  ok(await page.isChecked("#chkSky"), "Referans: gökyüzü ayarı sahneye uygulandı");
   // ürün ve kaplama kütüphaneleri, boyutlandırma
   await page.click('[data-view="kutuphane"]');
   await page.waitForSelector("#libGrid .uh-libcard svg");

@@ -343,7 +343,7 @@ mod tests {
         let s = two_side_by_side();
         let w = &s.levels[0].walls;
         // birleşim kenarında yalnız perdeler kalır (her modülden 2'şer)
-        let joint: Vec<&Wall> = w.iter().filter(|w| (w.id.starts_with("M1-K") || w.id.starts_with("M2-G"))).collect();
+        let joint: Vec<&Wall> = w.iter().filter(|w| w.id.starts_with("M1-K") || w.id.starts_with("M2-G")).collect();
         assert_eq!(joint.len(), 4);
         assert!(joint.iter().all(|w| w.structural && !w.exterior));
         let total: f64 = joint.iter().map(|w| w.length()).sum();

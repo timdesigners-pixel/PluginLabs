@@ -13,7 +13,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, exposure: null, pendingCam: null, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -115,6 +115,7 @@ function refresh() {
   if (v === "kutuphane") renderLibrary();
   if (v === "kaplama") renderMaterials();
   if (v === "motor") renderMotor();
+  if (v === "referans") renderReference();
   if (v === "mymind") renderMyMind();
 }
 
@@ -495,6 +496,7 @@ async function show3d() {
     const m = await B.engine("mesh", { scene: S.scene, options: meshOptions() });
     V.setMesh(m);
     if (!S.camSet) { S.camSet = true; await camera(S.v3.mode === "ic" ? "ic" : "perspektif"); }
+    if (S.pendingCam) { const c = S.pendingCam; S.pendingCam = null; await camera(c); }
   });
 }
 async function camera(name) {
@@ -535,7 +537,7 @@ async function doRender() {
   $("#btnRender").classList.add("is-loading");
   try {
     const cam = V.getCamera();
-    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: spp >= 128 ? 6 : 4, eye: cam.eye, target: cam.target, fov: cam.fov, projection: S.proj || "perspective", ortho_height: S.proj ? cam.orthoHeight : null, sky: skySettings(), mesh: meshOptions(), denoise: true } });
+    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: spp >= 128 ? 6 : 4, eye: cam.eye, target: cam.target, fov: cam.fov, exposure: S.exposure || 0.62, projection: S.proj || "perspective", ortho_height: S.proj ? cam.orthoHeight : null, sky: skySettings(), mesh: meshOptions(), denoise: true } });
     S.lastRender = r.png;
     $("#renderImg").src = `data:image/png;base64,${r.png}`;
     $("#renderCap").textContent = `${r.width}×${r.height} · ${r.samples} örnek · ${r.triangles.toLocaleString("tr-TR")} üçgen · ${r.threads} iş parçacığı${r.ms ? ` · ${fmt(r.ms / 1000, 1)} sn` : ""}`;
@@ -806,6 +808,73 @@ async function motorAdd() {
   toast("Model plana eklendi; sürükleyerek yerine taşıyın", { sub: `${r.triangles.toLocaleString("tr-TR")} üçgen · ${tl(r.price)}` });
 }
 
+/* ---------- Görselden referans ---------- */
+async function refPick(file) {
+  if (!file || file.size > 40 * 1024 * 1024) { toast("Görsel 40 MB'tan küçük olmalı", { kind: "warn" }); return; }
+  const bmp = await createImageBitmap(file);
+  // en-boy oranını koruyarak en çok 96 piksele küçült; görsel yalnız bu cihazda işlenir
+  const k = 96 / Math.max(bmp.width, bmp.height);
+  const w = Math.max(4, Math.round(bmp.width * k)), h = Math.max(4, Math.round(bmp.height * k));
+  const cv = document.createElement("canvas");
+  cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d");
+  cx.drawImage(bmp, 0, 0, w, h);
+  const d = cx.getImageData(0, 0, w, h).data;
+  let bin = "";
+  for (let i = 0; i < d.length; i += 4) bin += String.fromCharCode(d[i], d[i + 1], d[i + 2]);
+  const r = await B.engine("reference_image", { scene: S.scene, width: w, height: h, rgb: btoa(bin) });
+  S.ref = r;
+  $("#refThumb").src = URL.createObjectURL(file);
+  renderReference();
+}
+function renderReference() {
+  const r = S.ref;
+  $("#refBody").hidden = !r;
+  $("#refEmpty").hidden = !!r;
+  if (!r) return;
+  const name = (id) => S.scene.materials.find((m) => m.id === id)?.name || "—";
+  $("#refPalette").innerHTML = r.palette.map((p) => `<span style="width:${(p.share * 100).toFixed(1)}%;background:${rgb(p.color)}" title="%${Math.round(p.share * 100)}"></span>`).join("");
+  const light = { ic: "İç mekân / kapalı hava", "dis-gunduz": "Dış mekân · gündüz", "gun-batimi": "Gün batımı", gece: "Gece" }[r.lighting];
+  const cam = { ic: "İç mekân, göz hizası", kusbakisi: "Kuşbakışı", perspektif: "Dış perspektif" }[r.camera];
+  $("#refStats").innerHTML = `<dt>Işık düzeni</dt><dd>${light}</dd><dt>Parlaklık</dt><dd>%${Math.round(r.brightness * 100)}</dd><dt>Sıcaklık</dt><dd>${r.warmth > 0.04 ? "Sıcak" : r.warmth < -0.04 ? "Soğuk" : "Nötr"} (${fmt(r.warmth)})</dd><dt>Doygunluk</dt><dd>%${Math.round(r.saturation * 100)}</dd><dt>Ufuk çizgisi (tahmini)</dt><dd>üstten %${Math.round(r.horizon * 100)}</dd>`;
+  const hh = `${String(Math.floor(r.sky.hour)).padStart(2, "0")}:${String(Math.round((r.sky.hour % 1) * 60)).padStart(2, "0")}`;
+  const items = [
+    ["interior", `İç cephe boyası → ${esc(name(r.interior))}`, !!r.interior],
+    ["floor", `Zemin kaplaması (kuru mahaller) → ${esc(name(r.floor))}`, !!r.floor],
+    ["facade", `Dış cephe → ${esc(name(r.facade))}`, !!r.facade && r.lighting !== "ic"],
+    ["sky", `Gökyüzü ve ışık → saat ${hh}, bulut %${Math.round(r.sky.cloud * 100)}, pus %${Math.round(r.sky.haze * 100)}`, true],
+    ["exposure", `Pozlama → ${fmt(r.exposure)}`, true],
+    ["camera", `Kamera / perspektif → ${cam} (görüş açısı ${r.fov}°)`, true],
+  ];
+  $("#refApplyList").innerHTML = items.map(([k, l, on]) => `<label class="uh-check"><input type="checkbox" data-ref="${k}" ${on ? "checked" : ""}> ${l}</label>`).join("");
+  $("#refMatches").innerHTML = r.matches.map((m) => `<div class="uh-libcard"><div class="uh-libcard__thumb">${isoThumb(S.catalog.previews[m.id])}</div><b>${esc(m.name)}</b><div class="uh-libcard__meta"><span>${esc(m.group)}</span><span>benzerlik %${Math.round(m.score * 100)}</span></div><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-lib-place="${m.id}">Plana yerleştir</button></div>`).join("") || `<p class="uh-small">Görselde arka plandan ayrışan tek bir ürün bulunamadı. Ürünü düz bir zemin önünde gösteren bir görsel deneyin.</p>`;
+}
+async function refApply() {
+  const r = S.ref;
+  if (!r) return;
+  const on = (k) => $(`[data-ref="${k}"]`)?.checked;
+  const want = { sky: on("sky"), exposure: on("exposure"), camera: on("camera") };
+  const s = clone();
+  if (on("interior") && r.interior) s.interior = r.interior;
+  if (on("facade") && r.facade) s.facade = r.facade;
+  if (on("floor") && r.floor) for (const l of s.levels) for (const room of l.rooms) if (!["banyo", "mutfak", "camasir", "kiler"].includes(room.kind)) room.floor = r.floor;
+  commit(s);
+  if (want.sky) {
+    $("#chkSky").checked = true;
+    $("#skyHour").value = r.sky.hour; $("#skyCloud").value = r.sky.cloud; $("#skyHaze").value = r.sky.haze;
+    syncSky();
+  }
+  if (want.exposure) S.exposure = r.exposure;
+  if (want.camera) {
+    S.v3.mode = r.camera === "ic" ? "ic" : "dis";
+    $$("#segView button").forEach((b) => b.classList.toggle("is-active", b.dataset.v === S.v3.mode));
+    S.camSet = true;
+    S.pendingCam = r.camera;
+  }
+  go("uc");
+  toast("Sahne görsele göre uyarlandı", { action: "Geri al", onAction: undo });
+}
+
 /* ---------- Kaplama kütüphanesi ---------- */
 const MAT_CATS = [["zemin", "Zemin", ["zemin"]], ["ic", "İç duvar", ["duvar", "ic-boya", "tavan"]], ["cephe", "Dış cephe boyası", ["cephe", "kabuk"]], ["kaplama", "Cephe kaplaması", ["kaplama"]], ["mobilya", "Mobilya ve tekstil", ["mobilya", "tekstil", "metal", "dekor", "genel"]], ["diger", "Diğer", ["dograma", "isik", "dis", "ice-aktarilan"]]];
 function renderMaterials() {
@@ -866,7 +935,7 @@ async function renderMyMind() {
 /* ---------- komut paleti ---------- */
 const COMMANDS = () => [
   ["1 · Model", () => go("model")], ["2 · Katlar", () => go("katlar")], ["3 · İç plan", () => go("plan")], ["4 · 3B ve render", () => go("uc")], ["5 · Özet ve dışa aktar", () => go("ozet")],
-  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["Tasarım motorları", () => go("motor")], ["MyMind", () => go("mymind")],
+  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["Tasarım motorları", () => go("motor")], ["Görselden referans", () => go("referans")], ["MyMind", () => go("mymind")],
   ["Örnek projeyi aç", () => loadDemo()], ["Yeni proje", () => newProject()], ["Projeyi kaydet (.uhds)", () => exportAs("uhds")], ["Proje aç", () => exportAs("open")],
   ["OBJ içe aktar", () => run(importObj)], ["OBJ dışa aktar", () => exportAs("obj")], ["HD render al", () => { go("uc"); setTimeout(doRender, 300); }], ["Geri al", () => undo()],
 ];
@@ -1137,6 +1206,9 @@ segment("#segAtm", "a", (a) => { S.atm = a; $("#chkSky").checked = false; syncSk
 segment("#motorTabs", "m", (m) => { S.motor = m; renderMotor(); });
 for (const id of ["#chkSky", "#skyHour", "#skyCloud", "#skyHaze", "#skyMonth"]) $(id).addEventListener("input", syncSky);
 $("#btnMotorAdd").onclick = () => run(motorAdd);
+$("#btnRefPick").onclick = () => $("#refInput").click();
+$("#refInput").addEventListener("change", (e) => run(() => refPick(e.target.files[0])));
+$("#btnRefApply").onclick = () => refApply();
 $("#motorForm").addEventListener("input", (e) => {
   const t = e.target, k = t.dataset.mk;
   if (!k) return;
