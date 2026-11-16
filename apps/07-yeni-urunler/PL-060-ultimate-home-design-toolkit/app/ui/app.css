@@ -189,6 +189,21 @@ html, body { margin: 0; height: 100%; }
 .uh-refthumb { width: 100%; max-height: 300px; object-fit: contain; border-radius: var(--pl-radius-md); background: var(--pl-bg-1); }
 .uh-palette { display: flex; height: 44px; border-radius: var(--pl-radius-md); overflow: hidden; box-shadow: inset 0 0 0 1px var(--pl-line); }
 .uh-palette span { display: block; height: 100%; }
+.uh-welcome { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--pl-space-6); align-items: start; }
+.uh-wire { margin-top: var(--pl-space-3); aspect-ratio: 16 / 9; border: 1px solid var(--pl-line); border-radius: var(--pl-radius-lg); background: var(--pl-bg-1); display: grid; place-items: center; overflow: hidden; }
+.uh-wire svg { width: 100%; height: 100%; }
+.uh-wire line { vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.uh-wire .k0 { stroke: var(--pl-fg-1); stroke-width: 1.6; }
+.uh-wire .k1 { stroke: var(--pl-accent); stroke-width: 1.4; }
+.uh-wire .k2 { stroke: var(--pl-fg-4); stroke-width: 1; stroke-dasharray: 5 4; }
+.uh-wire .k3 { stroke: var(--pl-success); stroke-width: 2; }
+.uh-wire .k4 { stroke: var(--pl-accent); stroke-width: 1; opacity: .6; }
+.uh-3dbar { position: absolute; left: var(--pl-space-3); top: var(--pl-space-3); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: calc(100% - 180px); padding: 6px; background: var(--pl-bg-2); border: 1px solid var(--pl-line); border-radius: var(--pl-radius-lg); }
+.uh-canvas.is-drop, .uh-main.is-drop { outline: 2px dashed var(--pl-accent); outline-offset: -6px; }
+.uh-tool[draggable="true"], .uh-libcard[draggable="true"] { cursor: grab; }
+.uh-motorreal { width: 100%; border-radius: var(--pl-radius-md); border: 1px solid var(--pl-line); }
+.uh-libcard__thumb img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 1100px) { .uh-welcome { grid-template-columns: 1fr; } }
 .uh-form { display: grid; gap: var(--pl-space-3); }
 .uh-pre { white-space: pre-wrap; font-family: var(--pl-font-mono); font-size: var(--pl-text-xs); background: var(--pl-bg-1); border: 1px solid var(--pl-line); border-radius: var(--pl-radius-md); padding: var(--pl-space-3); max-height: 280px; overflow: auto; color: var(--pl-fg-2); }
 .uh-answer { font-size: var(--pl-text-sm); line-height: var(--pl-leading); white-space: pre-wrap; }

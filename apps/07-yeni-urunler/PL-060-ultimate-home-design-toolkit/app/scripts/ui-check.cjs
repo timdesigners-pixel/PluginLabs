@@ -42,6 +42,10 @@ const server = http.createServer((req, res) => {
   // 1 · Model: boş proje, modül seçimi
   await page.goto(base);
   await waitText("#engineInfo", /Rust/);
+  await page.waitForSelector("#view-karsilama.is-active");
+  ok((await page.textContent("#welcomeWire")).includes("Henüz proje yok"), "Karşılama: boş durumda yönlendirme");
+  await page.click("#btnWelcomeNew");
+  await page.waitForSelector("#view-model.is-active");
   await page.click('[data-storey="2"]');
   await page.click('[data-inc="10"]');
   await page.click('[data-inc="10"]');
@@ -54,6 +58,15 @@ const server = http.createServer((req, res) => {
   await page.waitForTimeout(400);
   ok(await page.isChecked('[data-upper="M1"]'), "Katlar: M1 üst kata çıkarıldı");
   await shot("02-katlar.png");
+
+  // Karşılama: örnek projenin önden tel kafes önizlemesi
+  await page.goto(base + "?demo=1&view=karsilama");
+  await page.waitForSelector("#welcomeWire svg line", { state: "attached" });
+  ok((await page.locator("#welcomeWire svg line.k1").count()) >= 8, "Karşılama: ön cephe açıklıkları tel kafeste");
+  ok((await page.textContent("#welcomeCap")).includes("Ön cephe"), "Karşılama: cephe ölçüleri yazılı");
+  await shot("00-karsilama.png");
+  await page.click('#segElev [data-side="arka"]');
+  await waitText("#welcomeCap", /Arka cephe/);
 
   // Örnek proje ile iç plan
   await page.goto(base + "?demo=1&view=plan&sel=room:L0-R1");
@@ -97,12 +110,38 @@ const server = http.createServer((req, res) => {
   await page.waitForTimeout(500);
   ok((await page.textContent("#fnList")).includes("Perde kornişi"), "Fonksiyon: eklendi");
   await shot("08-fonksiyonlar.png");
+  // sürükle bırak: plan aracından tuvale, hızlı üründen 3B sahneye; 3B araç çubuğu
+  await page.click('[data-view="plan"]');
+  await page.waitForSelector("#view-plan.is-active");
+  await page.evaluate(() => document.querySelectorAll("#toolPanel details").forEach((d) => (d.open = true)));
+  const before = await page.evaluate(() => document.querySelector("#sideInfo").textContent);
+  await page.dragAndDrop('#toolPanel [data-drag-item="berjer"]', "#canvasP", { targetPosition: { x: 420, y: 300 } });
+  await page.waitForTimeout(600);
+  ok((await page.inputValue('#inspector [data-f="name"]')) === "Berjer", "Sürükle bırak: berjer plana bırakıldı ve seçildi");
+  await page.click('[data-view="uc"]');
+  await waitText("#view3dInfo", /üçgen/);
+  await page.waitForSelector('#quick3d [data-drag-item="lambader"]');
+  await page.dragAndDrop('#quick3d [data-drag-item="lambader"]', "#canvas3d", { targetPosition: { x: 520, y: 520 } });
+  await waitText("#b3dSel", /Lambader/);
+  ok(!(await page.isDisabled('[data-3d="rot"]')), "3B: bırakılan nesne seçili, araç çubuğu etkin");
+  await page.click('[data-3d="rot"]');
+  await page.click('[data-3d="up"]');
+  await page.click('#seg3dMode [data-mode="duzenle"]');
+  await page.waitForTimeout(900);
+  await shot("21-3b-duzenleme.png");
+  void before;
   // tasarım motorları
   await page.click('[data-view="motor"]');
   await waitText("#motorInfo", /cm/);
   ok((await page.textContent("#motorInfo")).includes("perde"), "Motor: perde önizlemesi üretildi");
   await page.selectOption('#motorForm [data-mk="header"]', "kemer-kavisli");
   await page.waitForTimeout(500);
+  // görünüm yükleme: bir görseli perde kumaşı olarak kullan, gerçekçi önizleme al
+  await page.setInputFiles("#lookInput", path.join(__dirname, "..", "docs", "screenshots", "render-kusbakisi.png"));
+  await waitText("#toasts", /Görünüm yüklendi/);
+  ok((await page.inputValue('#motorForm [data-mk="look"]')).startsWith("img:"), "Motor: yüklenen görünüm seçildi");
+  await page.click("#btnMotorReal");
+  await page.waitForSelector("#motorReal:not([hidden])", { timeout: 600000 });
   await shot("15-motor-perde.png");
   await page.click('#motorTabs [data-m="hali"]');
   await page.selectOption('#motorForm [data-mk="pattern"]', "madalyon");
@@ -146,6 +185,10 @@ const server = http.createServer((req, res) => {
   await page.click('[data-view="kutuphane"]');
   await page.waitForSelector("#libGrid .uh-libcard svg");
   ok((await page.locator("#libGrid .uh-libcard").count()) >= 55, "Ürün kütüphanesi: en az 55 hazır model");
+  await page.click('#libGrid [data-lib-real="kanepe-3"]');
+  await page.waitForSelector('[data-thumb="kanepe-3"] img', { timeout: 600000 });
+  await page.click('#libGrid [data-lib-real="berjer"]');
+  await page.waitForSelector('[data-thumb="berjer"] img', { timeout: 600000 });
   await shot("12-urun-kutuphanesi.png");
   await page.click('[data-view="kaplama"]');
   await page.waitForSelector("#matGrid .uh-matcard");
@@ -155,6 +198,15 @@ const server = http.createServer((req, res) => {
   await page.waitForTimeout(400);
   ok((await page.textContent("#matGrid")).includes("Doğal taş bazalt"), "Kaplama kütüphanesi: yeni kaplama eklendi");
   await shot("13-kaplama-kutuphanesi.png");
+  const palFile = path.join(out, "ornek-palet.gpl");
+  fs.writeFileSync(palFile, "GIMP Palette\nName: Yaz evi\n232 220 200 Kum\n107 143 113 Adaçayı\n43 58 85 Gece mavisi\n201 122 86 Kiremit\n");
+  await page.setInputFiles("#paletteInput", palFile);
+  await waitText("#matGrid", /Gece mavisi/);
+  ok((await page.locator("#matGrid .uh-matcard").count()) === 4, "Palet: 4 renk kaplamalara eklendi");
+  await shot("22-renk-paleti.png");
+  fs.unlinkSync(palFile);
+  await page.click('#matCats [data-mat-cat="zemin"]');
+  await page.waitForSelector("#matGrid .uh-matcard.is-active");
   await page.click('#matGrid .uh-matcard.is-active [data-mat-apply]');
   await page.waitForSelector("#view-plan.is-active");
   ok((await page.textContent("#activeTool")).includes("Kaplama"), "Kaplama: uygulama aracı etkin");

@@ -13,7 +13,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, exposure: null, pendingCam: null, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -116,6 +116,7 @@ function refresh() {
   if (v === "kaplama") renderMaterials();
   if (v === "motor") renderMotor();
   if (v === "referans") renderReference();
+  if (v === "karsilama") renderWelcome();
   if (v === "mymind") renderMyMind();
 }
 
@@ -221,7 +222,7 @@ function buildTools() {
   const first = !el.childElementCount;
   el.innerHTML = PLAN_TOOLS().map((g, i) => {
     let body = "";
-    if (g.items) body = `<div class="uh-toolgrid">${g.items.map((t) => `<button class="uh-tool ${P.tool.type === t.type && (P.tool.value || "") === (t.value || "") ? "is-active" : ""}" type="button" data-tool='${esc(JSON.stringify({ type: t.type, value: t.value }))}'>${esc(t.label)}</button>`).join("")}</div>`;
+    if (g.items) body = `<div class="uh-toolgrid">${g.items.map((t) => `<button ${t.type === "furniture" ? `draggable="true" data-drag-item="${t.value}"` : ""} class="uh-tool ${P.tool.type === t.type && (P.tool.value || "") === (t.value || "") ? "is-active" : ""}" type="button" data-tool='${esc(JSON.stringify({ type: t.type, value: t.value }))}'>${esc(t.label)}</button>`).join("")}</div>`;
     if (g.swatches === "facade") body = swatches("dis-", S.scene.facade, "facade");
     return `<details class="uh-toolsec" data-k="${i}" ${first ? (i < 4 ? "open" : "") : open.has(String(i)) ? "open" : ""}><summary>${esc(g.title)}</summary>${body}${g.extra || ""}</details>`;
   }).join("");
@@ -493,8 +494,12 @@ async function show3d() {
   S.dirty3d = false;
   return run(async () => {
     $("#view3dInfo").textContent = "Sahne hazırlanıyor…";
+    const sig = JSON.stringify([S.scene.materials.map((x) => [x.id, x.texture, x.texture_scale, x.color]), S.scene.textures.map((x) => x.id)]);
+    if (sig !== S.texSig) { S.texSig = sig; V.setTextures(await B.engine("texture_tiles", { scene: S.scene })); }
     const m = await B.engine("mesh", { scene: S.scene, options: meshOptions() });
     V.setMesh(m);
+    update3dSelection();
+    $("#quick3d").innerHTML = ["kanepe-3", "berjer", "yemek-masasi", "cift-yatak", "gardirop", "lambader", "avize", "tv-55", "bitki", "agac", "sezlong", "bahce-lambasi"].map((id) => S.catalog.furniture.find((f) => f.id === id)).filter(Boolean).map((f) => `<button class="uh-tool" type="button" draggable="true" data-drag-item="${f.id}">${esc(f.name)}</button>`).join("");
     if (!S.camSet) { S.camSet = true; await camera(S.v3.mode === "ic" ? "ic" : "perspektif"); }
     if (S.pendingCam) { const c = S.pendingCam; S.pendingCam = null; await camera(c); }
   });
@@ -662,12 +667,203 @@ function renderLibrary() {
   $("#libGroups").innerHTML = groups.map((g) => `<button type="button" role="tab" class="uh-tool ${S.libGroup === g ? "is-active" : ""}" data-lib-group="${esc(g)}">${esc(g)}</button>`).join("");
   const q = S.libQ.toLocaleLowerCase("tr-TR");
   const list = f.filter((x) => (S.libGroup === "Tümü" || x.group === S.libGroup) && (!q || x.name.toLocaleLowerCase("tr-TR").includes(q)));
-  $("#libGrid").innerHTML = list.map((x) => `<div class="uh-libcard"><div class="uh-libcard__thumb">${isoThumb(S.catalog.previews[x.id])}</div><b>${esc(x.name)}</b>
+  $("#libGrid").innerHTML = list.map((x) => `<div class="uh-libcard" draggable="true" data-drag-item="${x.id}"><div class="uh-libcard__thumb" data-thumb="${x.id}">${S.thumbs[x.id] ? `<img src="data:image/png;base64,${S.thumbs[x.id]}" alt="${esc(x.name)} gerçekçi önizleme">` : isoThumb(S.catalog.previews[x.id])}</div><b>${esc(x.name)}</b>
     <div class="uh-libcard__meta"><span>${x.size.map((v) => fmt(v / 10, 0)).join("×")} cm</span><span class="is-money">${x.price ? tl(x.price) : "—"}</span></div>
-    <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-lib-place="${x.id}">Plana yerleştir</button></div>`).join("") || `<p class="uh-small">Aramanızla eşleşen ürün yok.</p>`;
+    <div class="uh-row"><button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-lib-real="${x.id}">Gerçekçi görünüm</button><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-lib-place="${x.id}">Plana yerleştir</button></div></div>`).join("") || `<p class="uh-small">Aramanızla eşleşen ürün yok.</p>`;
   $("#objGrid").innerHTML = S.scene.meshes.map((m) => `<div class="uh-libcard"><div class="uh-libcard__thumb"><span class="pl-badge">OBJ</span></div><b>${esc(m.name)}</b>
     <div class="uh-libcard__meta"><span>${(m.indices.length / 3).toLocaleString("tr-TR")} üçgen</span><span>sahnede ${S.scene.objects.filter((o) => o.mesh === m.id).length}</span></div>
     <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-place-mesh="${m.id}">Plana ekle</button></div>`).join("") || `<p class="uh-small">Henüz içe aktarılan model yok.</p>`;
+}
+
+/* ---------- Karşılama: önden tel kafes önizleme ---------- */
+async function welcomeScene() {
+  if (S.scene && S.scene.modules.length) return { scene: S.scene, saved: false };
+  if (S.saved && !S.savedScene) {
+    try { S.savedScene = (await B.engine("load_scene", { text: S.saved })).scene; } catch { S.saved = null; }
+  }
+  return S.savedScene && S.savedScene.modules.length ? { scene: S.savedScene, saved: true } : { scene: null, saved: false };
+}
+async function renderWelcome() {
+  const { scene, saved } = await welcomeScene();
+  $("#btnWelcomeResume").hidden = !saved;
+  const wire = $("#welcomeWire");
+  if (!scene) {
+    wire.innerHTML = `<p class="uh-small">Henüz proje yok. Yeni bir proje başlatın ya da örnek projeyi açın.</p>`;
+    $("#welcomeCap").textContent = "";
+    $("#welcomeTitle").textContent = "Hoş geldiniz";
+    $("#welcomeStats").innerHTML = "";
+    return;
+  }
+  $("#welcomeTitle").textContent = saved ? "Kaldığınız yerden devam edin" : scene.name || "Projeniz";
+  $("#welcomeLead").textContent = saved ? "Daha önce otomatik kaydedilmiş bir proje bulundu." : "Açık proje. Adımlar arasında soldaki menüden gezebilirsiniz.";
+  const area = scene.levels.reduce((a, l) => a + netArea(l), 0);
+  $("#welcomeStats").innerHTML = `<dt>Proje</dt><dd>${esc(scene.project_no || "—")}</dd><dt>Modül</dt><dd>${scene.modules.map((m) => "4×" + m.length).join(", ")}</dd><dt>Kat</dt><dd>${scene.levels.length}</dd><dt>Net mahal alanı</dt><dd>${fmt(area)} m²</dd><dt>Nesne</dt><dd>${scene.objects.length}</dd>`;
+  try {
+    const e = await B.engine("elevation", { scene, side: S.elevSide });
+    const [x0, y0, x1, y1] = e.bounds;
+    const pad = (y1 - y0) * 0.12 + 200;
+    wire.innerHTML = `<svg viewBox="${x0} ${-pad} ${x1 - x0} ${y1 - y0 + pad * 2}" preserveAspectRatio="xMidYMid meet">${e.lines.map((l) => `<line class="k${l[4]}" x1="${l[0]}" y1="${y1 - l[1]}" x2="${l[2]}" y2="${y1 - l[3]}"/>`).join("")}</svg>`;
+    const side = { on: "Ön", arka: "Arka", sol: "Sol", sag: "Sağ" }[S.elevSide];
+    $("#welcomeCap").textContent = `${side} cephe · genişlik ${fmt((Math.max(...e.lines.filter((l) => l[4] === 0).flatMap((l) => [l[0], l[2]])) - Math.min(...e.lines.filter((l) => l[4] === 0).flatMap((l) => [l[0], l[2]]))) / 1000, 1)} m · yükseklik ${fmt((y1 - y0) / 1000)} m · ${e.openings} açıklık`;
+  } catch (err) {
+    wire.innerHTML = `<p class="uh-small">${esc(err.message)}</p>`;
+  }
+}
+async function resumeSaved() {
+  const r = await B.engine("load_scene", { text: S.saved });
+  S.undo = []; S.json = ""; K.fitted = false; P.fitted = false; S.camSet = false;
+  commit(r.scene, { undo: false });
+  syncCountsFromScene();
+  go(r.scene.levels.some((l) => l.rooms.length) ? "plan" : "katlar");
+}
+
+/* ---------- 3B düzenleme: seçim, sürükleyerek taşıma, araç çubuğu ---------- */
+function objHeight(o) { return baseDims(o)[2] * (o.scale[1] || 1); }
+function objectAt(pt) {
+  const [x, y, z] = pt;
+  for (let i = S.scene.objects.length - 1; i >= 0; i--) {
+    const o = S.scene.objects[i];
+    const lv = S.scene.levels.find((l) => l.id === o.level);
+    if (!lv) continue;
+    const y0 = lv.elevation + o.position[2];
+    if (y < y0 - 60 || y > y0 + objHeight(o) + 60) continue;
+    const [w, d] = P.objSize(o);
+    const a = (-o.rotation * Math.PI) / 180;
+    const dx = x - o.position[0], dz = z - o.position[1];
+    const lx = dx * Math.cos(a) - dz * Math.sin(a), lz = dx * Math.sin(a) + dz * Math.cos(a);
+    if (Math.abs(lx) <= w / 2 + 30 && Math.abs(lz) <= d / 2 + 30) return o;
+  }
+  return null;
+}
+function update3dSelection() {
+  const o = S.sel3 && S.scene.objects.find((x) => x.id === S.sel3);
+  if (!o) S.sel3 = null;
+  $$("[data-3d]").forEach((b) => (b.disabled = !o));
+  $("#b3dSel").textContent = o ? o.name : "Seçim yok";
+  if (!o) { V.setBox(null); return; }
+  const lv = S.scene.levels.find((l) => l.id === o.level);
+  const cs = P.objCorners(o);
+  const xs = cs.map((c) => c[0]), zs = cs.map((c) => c[1]);
+  const y0 = lv.elevation + o.position[2];
+  V.setBox([Math.min(...xs), y0, Math.min(...zs)], [Math.max(...xs), y0 + objHeight(o), Math.max(...zs)]);
+}
+const hooks3d = {
+  drag: null,
+  down(e) {
+    const hit = V.pick(e);
+    const o = hit && objectAt(hit.point);
+    S.sel3 = o ? o.id : null;
+    update3dSelection();
+    if (!o) return false;
+    const y = hit.point[1];
+    const start = V.planePoint(e, y);
+    this.drag = start ? { id: o.id, y, start, pos: [...o.position], moved: false } : null;
+    return !!this.drag;
+  },
+  move(e) {
+    const d = this.drag;
+    if (!d) return;
+    const p = V.planePoint(e, d.y);
+    if (!p) return;
+    const o = S.scene.objects.find((x) => x.id === d.id);
+    o.position = [Math.round((d.pos[0] + p[0] - d.start[0]) / 50) * 50, Math.round((d.pos[1] + p[2] - d.start[2]) / 50) * 50, o.position[2]];
+    d.moved = true;
+    update3dSelection();
+  },
+  up() {
+    const d = this.drag;
+    this.drag = null;
+    if (d && d.moved) commit(S.scene);
+  },
+};
+function act3d(kind) {
+  const o = S.sel3 && S.scene.objects.find((x) => x.id === S.sel3);
+  if (!o) return;
+  const s = clone();
+  const t = s.objects.find((x) => x.id === o.id);
+  if (kind === "rot") t.rotation = ((t.rotation || 0) + 90) % 360;
+  if (kind === "up") t.position[2] = Math.min(6000, t.position[2] + 50);
+  if (kind === "down") t.position[2] = Math.max(0, t.position[2] - 50);
+  if (kind === "dup") {
+    const c = JSON.parse(JSON.stringify(t));
+    c.id = nextId("N", s.objects);
+    c.position = [t.position[0] + 400, t.position[1] + 400, t.position[2]];
+    s.objects.push(c);
+    S.sel3 = c.id;
+  }
+  if (kind === "archive") {
+    s.objects = s.objects.filter((x) => x.id !== o.id);
+    s.archive.push({ type: "object", level: o.level, item: o, at: new Date().toISOString() });
+    S.sel3 = null;
+    commit(s);
+    toast("Arşivlendi", { action: "Geri al", onAction: undo });
+    return;
+  }
+  commit(s);
+}
+/** Katalog ürününü dünya noktasına yerleştirir (plan ve 3B bırakma ortak). */
+function placeItem(cat, x, z, level) {
+  const it = S.catalog.furniture.find((f) => f.id === cat);
+  if (!it) return null;
+  const s = clone();
+  const zz = it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
+  const id = nextId("N", s.objects);
+  s.objects.push({ id, name: it.name, mesh: `cat:${it.id}`, level, position: [Math.round(x / 50) * 50, Math.round(z / 50) * 50, zz], rotation: 0, scale: [1, 1, 1], material: null, price: it.price, quantity: 1, motor: null });
+  commit(s);
+  return id;
+}
+
+/* ---------- görsel → RGB (yerelde küçültme) ---------- */
+async function imageToRgb(file, maxEdge) {
+  const bmp = await createImageBitmap(file);
+  const k = Math.min(1, maxEdge / Math.max(bmp.width, bmp.height));
+  const w = Math.max(2, Math.round(bmp.width * k)), h = Math.max(2, Math.round(bmp.height * k));
+  const cv = document.createElement("canvas");
+  cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d");
+  cx.drawImage(bmp, 0, 0, w, h);
+  const d = cx.getImageData(0, 0, w, h).data;
+  let bin = "";
+  for (let i = 0; i < d.length; i += 4) bin += String.fromCharCode(d[i], d[i + 1], d[i + 2]);
+  return { width: w, height: h, rgb: btoa(bin) };
+}
+async function uploadLook(file) {
+  if (!file || file.size > 40 * 1024 * 1024) { toast("Görsel 40 MB'tan küçük olmalı", { kind: "warn" }); return; }
+  const img = await imageToRgb(file, 256);
+  const r = await B.engine("add_texture", { scene: S.scene, name: file.name.replace(/\.[^.]+$/, ""), ...img });
+  commit(r.scene);
+  if (MOTORS[S.motor].fields && S.motor !== "havuz") S.motorParams[S.motor].look = r.look;
+  if (S.view === "motor") renderMotor();
+  toast("Görünüm yüklendi", { sub: `${img.width}×${img.height} piksel` });
+}
+async function loadPalette(name, text) {
+  const r = await B.engine("import_palette", { scene: S.scene, name, text });
+  commit(r.scene);
+  S.matCat = "palet";
+  go("kaplama");
+  toast(`${r.ids.length} renk kaplamalara eklendi`, { sub: name });
+}
+/** Pencereye bırakılan dosyalar: türüne göre aç / içe aktar. */
+async function handleFiles(files) {
+  const list = [...files];
+  const ext = (f) => (f.name.split(".").pop() || "").toLowerCase();
+  const proj = list.find((f) => ext(f) === "uhds");
+  if (proj) {
+    const r = await B.engine("load_scene", { text: await proj.text() });
+    S.undo = []; S.json = ""; S.camSet = false; K.fitted = false; P.fitted = false;
+    commit(r.scene, { undo: false });
+    syncCountsFromScene();
+    go("katlar");
+    toast("Proje açıldı", { sub: proj.name });
+    return;
+  }
+  const objs = list.filter((f) => ["obj", "mtl"].includes(ext(f)));
+  if (objs.length) { await importObj(await Promise.all(objs.map(async (f) => ({ name: f.name, text: await f.text() })))); return; }
+  const img = list.find((f) => f.type.startsWith("image/"));
+  if (img) { if (S.view === "motor") await uploadLook(img); else { go("referans"); await refPick(img); } return; }
+  const pal = list.find((f) => ["gpl", "txt", "json", "css", "hex", "pal"].includes(ext(f)));
+  if (pal) { await loadPalette(pal.name.replace(/\.[^.]+$/, ""), await pal.text()); return; }
+  toast("Bu dosya türü desteklenmiyor", { kind: "warn", sub: "Desteklenen: .uhds, .obj/.mtl, görsel, renk paleti" });
 }
 
 /* ---------- Tasarım motorları ---------- */
@@ -712,7 +908,8 @@ function renderMotor() {
     if (f.t === "select") return `<label class="pl-field"><span class="pl-field__label">${f.label}</span><select class="pl-select" data-mk="${f.k}" data-mt="${typeof f.opts[0][0] === "number" ? "num" : "str"}">${f.opts.map(([val, l]) => `<option value="${val}" ${String(v) === String(val) ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
     if (f.t === "color") return `<label class="pl-field"><span class="pl-field__label">${f.label}</span><input class="pl-input uh-color" type="color" value="${rgb2hex(v)}" data-mk="${f.k}" data-mt="color"></label>`;
     return `<label class="pl-switch"><input type="checkbox" ${v ? "checked" : ""} data-mk="${f.k}" data-mt="check"> ${f.label}</label>`;
-  }).join("");
+  }).join("") + (kind === "havuz" ? "" : `<label class="pl-field"><span class="pl-field__label">Görünüm (doku)</span><select class="pl-select" data-mk="look" data-mt="str"><option value="">Motorun kendi dokusu</option>${S.texKinds.map((k) => `<option value="${k.id}" ${p.look === k.id ? "selected" : ""}>${k.label}</option>`).join("")}${S.scene.textures.map((t) => `<option value="img:${t.id}" ${p.look === "img:" + t.id ? "selected" : ""}>Yüklenen: ${esc(t.name)}</option>`).join("")}</select></label><label class="pl-field"><span class="pl-field__label">&nbsp;</span><button class="pl-btn pl-btn--secondary" type="button" id="btnLook">Görünüm yükle…</button></label><label class="pl-field"><span class="pl-field__label">Desen ölçüsü <output>${fmt(p.look_scale, 0)} mm</output></span><input type="range" min="50" max="2000" step="10" value="${p.look_scale}" data-mk="look_scale" data-mt="range" data-unit="mm" data-step="10"></label><label class="pl-field"><span class="pl-field__label">Ayrıntı düzeyi</span><select class="pl-select" data-mk="detail" data-mt="num">${[[1, "Hızlı"], [2, "Ayrıntılı"], [3, "Çok ayrıntılı"]].map(([val, l]) => `<option value="${val}" ${p.detail === val ? "selected" : ""}>${l}</option>`).join("")}</select></label>`);
+  $("#motorReal").hidden = true;
   motorPreview();
 }
 function motorPreview() {
@@ -876,7 +1073,7 @@ async function refApply() {
 }
 
 /* ---------- Kaplama kütüphanesi ---------- */
-const MAT_CATS = [["zemin", "Zemin", ["zemin"]], ["ic", "İç duvar", ["duvar", "ic-boya", "tavan"]], ["cephe", "Dış cephe boyası", ["cephe", "kabuk"]], ["kaplama", "Cephe kaplaması", ["kaplama"]], ["mobilya", "Mobilya ve tekstil", ["mobilya", "tekstil", "metal", "dekor", "genel"]], ["diger", "Diğer", ["dograma", "isik", "dis", "ice-aktarilan"]]];
+const MAT_CATS = [["palet", "Paletim", ["palet"]], ["zemin", "Zemin", ["zemin"]], ["ic", "İç duvar", ["duvar", "ic-boya", "tavan"]], ["cephe", "Dış cephe boyası", ["cephe", "kabuk"]], ["kaplama", "Cephe kaplaması", ["kaplama"]], ["mobilya", "Mobilya ve tekstil", ["mobilya", "tekstil", "metal", "dekor", "genel"]], ["diger", "Diğer", ["dograma", "isik", "dis", "ice-aktarilan"]]];
 function renderMaterials() {
   $("#matCats").innerHTML = MAT_CATS.map(([id, label]) => `<button type="button" role="tab" class="uh-tool ${S.matCat === id ? "is-active" : ""}" data-mat-cat="${id}">${label}</button>`).join("");
   const cats = MAT_CATS.find((c) => c[0] === S.matCat)[2];
@@ -896,8 +1093,8 @@ function baseDims(o) {
   const h = m && m.positions.length ? Math.max(...m.positions.map((p) => p[1])) : 1000;
   return [w, d, h];
 }
-async function importObj() {
-  const files = await B.openFiles("obj");
+async function importObj(given) {
+  const files = Array.isArray(given) ? given : await B.openFiles("obj");
   if (!files || !files.length) return;
   const obj = files.find((f) => /\.obj$/i.test(f.name));
   const mtl = files.find((f) => /\.mtl$/i.test(f.name));
@@ -935,7 +1132,7 @@ async function renderMyMind() {
 /* ---------- komut paleti ---------- */
 const COMMANDS = () => [
   ["1 · Model", () => go("model")], ["2 · Katlar", () => go("katlar")], ["3 · İç plan", () => go("plan")], ["4 · 3B ve render", () => go("uc")], ["5 · Özet ve dışa aktar", () => go("ozet")],
-  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["Tasarım motorları", () => go("motor")], ["Görselden referans", () => go("referans")], ["MyMind", () => go("mymind")],
+  ["Ölçü ve metraj", () => go("olcu")], ["Maliyet ve ölçekleme", () => go("maliyet")], ["Fonksiyonlar", () => go("fonksiyon")], ["Ürün kütüphanesi", () => go("kutuphane")], ["Kaplama kütüphanesi", () => go("kaplama")], ["Tasarım motorları", () => go("motor")], ["Görselden referans", () => go("referans")], ["Karşılama", () => go("karsilama")], ["Renk paleti yükle", () => { go("kaplama"); $("#paletteInput").click(); }], ["MyMind", () => go("mymind")],
   ["Örnek projeyi aç", () => loadDemo()], ["Yeni proje", () => newProject()], ["Projeyi kaydet (.uhds)", () => exportAs("uhds")], ["Proje aç", () => exportAs("open")],
   ["OBJ içe aktar", () => run(importObj)], ["OBJ dışa aktar", () => exportAs("obj")], ["HD render al", () => { go("uc"); setTimeout(doRender, 300); }], ["Geri al", () => undo()],
 ];
@@ -1020,11 +1217,13 @@ async function init() {
   K = new PlanCanvas($("#canvasK"), { mode: "katlar", onAction: onKatAction });
   P = new PlanCanvas($("#canvasP"), { mode: "plan", onAction: onPlanAction });
   V = new View3D($("#canvas3d"), $("#view3dInfo"));
+  V.hooks = hooks3d;
   try {
     const info = await B.engine("info");
     $("#engineInfo").textContent = `Rust motoru ${info.version} · ${B.isDesktop ? "yerel" : "WebAssembly önizleme"}`;
     S.catalog = await B.engine("catalog");
     S.motorParams = await B.engine("motor_defaults");
+    S.texKinds = await B.engine("texture_kinds");
   } catch (e) {
     $("#engineInfo").textContent = "Motor yüklenemedi";
     toast(e.message, { kind: "error" });
@@ -1037,7 +1236,7 @@ async function init() {
   if (params.get("demo") === "1") await loadDemo();
   else {
     await newProject();
-    if (saved) $("#resumeBar").hidden = false;
+    S.saved = saved;
   }
   $("#btnResume").onclick = () => run(async () => {
     const r = await B.engine("load_scene", { text: saved });
@@ -1050,6 +1249,7 @@ async function init() {
   $("#btnFresh").onclick = () => { $("#resumeBar").hidden = true; };
   const v = params.get("view");
   if (v) go(v);
+  else if (params.get("demo") !== "1") go("karsilama");
   if (params.get("tool")) { const [t, val] = params.get("tool").split(":"); P.setTool({ type: t, value: val }); }
   if (params.get("sel")) { const [t, id] = params.get("sel").split(":"); P.sel = { type: t, id }; renderInspector(); P.draw(); }
 }
@@ -1155,6 +1355,23 @@ document.addEventListener("click", (e) => {
     commit(s);
     return;
   }
+  const d3 = t.closest("[data-3d]");
+  if (d3) { act3d(d3.dataset["3d"]); return; }
+  if (t.id === "btnLook") { $("#lookInput").click(); return; }
+  const real = t.closest("[data-lib-real]");
+  if (real) {
+    const id = real.dataset.libReal;
+    real.classList.add("is-loading");
+    run(async () => {
+      try {
+        const r = await B.engine("object_render", { scene: S.scene, cat: id, width: 400, height: 300, samples: B.isDesktop ? 48 : 12 });
+        S.thumbs[id] = r.png;
+        const box = $(`[data-thumb="${id}"]`);
+        if (box) box.innerHTML = `<img src="data:image/png;base64,${r.png}" alt="Gerçekçi önizleme">`;
+      } finally { real.classList.remove("is-loading"); }
+    });
+    return;
+  }
   const cam = t.closest("[data-cam]");
   if (cam) { run(() => camera(cam.dataset.cam)); return; }
   const ex = t.closest("[data-export]");
@@ -1206,6 +1423,63 @@ segment("#segAtm", "a", (a) => { S.atm = a; $("#chkSky").checked = false; syncSk
 segment("#motorTabs", "m", (m) => { S.motor = m; renderMotor(); });
 for (const id of ["#chkSky", "#skyHour", "#skyCloud", "#skyHaze", "#skyMonth"]) $(id).addEventListener("input", syncSky);
 $("#btnMotorAdd").onclick = () => run(motorAdd);
+$("#btnMotorReal").onclick = () => run(async () => {
+  const b = $("#btnMotorReal");
+  b.classList.add("is-loading");
+  try {
+    const r = await B.engine("object_render", { scene: S.scene, motor: S.motor, params: S.motorParams[S.motor], width: 720, height: 520, samples: B.isDesktop ? 64 : 16 });
+    $("#motorReal").src = `data:image/png;base64,${r.png}`;
+    $("#motorReal").hidden = false;
+  } finally { b.classList.remove("is-loading"); }
+});
+$("#lookInput").addEventListener("change", (e) => run(() => uploadLook(e.target.files[0])));
+$("#btnPalette").onclick = () => $("#paletteInput").click();
+$("#paletteInput").addEventListener("change", (e) => run(async () => { const f = e.target.files[0]; if (f) await loadPalette(f.name.replace(/\.[^.]+$/, ""), await f.text()); }));
+$("#btnRefPalette").onclick = () => run(async () => { if (S.ref) await loadPalette("Referans görsel", S.ref.palette.map((p) => rgb2hex(p.color)).join("\n")); });
+$("#btnWelcomeResume").onclick = () => run(resumeSaved);
+$("#btnWelcomeNew").onclick = () => run(newProject);
+$("#btnWelcomeDemo").onclick = () => run(loadDemo);
+$("#btnWelcomeOpen").onclick = () => exportAs("open");
+segment("#segElev", "side", (s) => { S.elevSide = s; renderWelcome(); });
+segment("#seg3dMode", "mode", (m) => { V.edit = m === "duzenle"; $("#canvas3d").style.cursor = V.edit ? "pointer" : ""; });
+/* sürükle bırak: ürün düğmeleri ve kartları → plan ya da 3B sahne; dosyalar → pencere */
+document.addEventListener("dragstart", (e) => {
+  const el = e.target.closest && e.target.closest("[data-drag-item]");
+  if (el) { e.dataTransfer.setData("text/plain", "uhd-item:" + el.dataset.dragItem); e.dataTransfer.effectAllowed = "copy"; }
+});
+for (const [id, kind] of [["#canvasP", "plan"], ["#canvas3d", "uc"]]) {
+  const cv = $(id);
+  cv.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; cv.classList.add("is-drop"); });
+  cv.addEventListener("dragleave", () => cv.classList.remove("is-drop"));
+  cv.addEventListener("drop", (e) => {
+    cv.classList.remove("is-drop");
+    const data = e.dataTransfer.getData("text/plain");
+    if (!data.startsWith("uhd-item:")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const cat = data.slice(9);
+    if (kind === "plan") {
+      const p = P.toWorld(e);
+      const idNew = placeItem(cat, p[0], p[1], S.level);
+      if (idNew) { P.sel = { type: "object", id: idNew }; renderPlan(); }
+    } else {
+      const hit = V.pick(e);
+      const p = hit ? hit.point : V.planePoint(e, S.scene.levels[0].elevation);
+      if (!p) return;
+      const lv = [...S.scene.levels].sort((a, b) => b.elevation - a.elevation).find((l) => p[1] >= l.elevation - 200) || S.scene.levels[0];
+      S.sel3 = placeItem(cat, p[0], p[2], lv.id);
+    }
+  });
+}
+const mainEl = $(".uh-main");
+mainEl.addEventListener("dragover", (e) => { if ([...e.dataTransfer.types].includes("Files")) { e.preventDefault(); mainEl.classList.add("is-drop"); } });
+mainEl.addEventListener("dragleave", (e) => { if (e.target === mainEl) mainEl.classList.remove("is-drop"); });
+mainEl.addEventListener("drop", (e) => {
+  mainEl.classList.remove("is-drop");
+  if (!e.dataTransfer.files.length) return;
+  e.preventDefault();
+  run(() => handleFiles(e.dataTransfer.files));
+});
 $("#btnRefPick").onclick = () => $("#refInput").click();
 $("#refInput").addEventListener("change", (e) => run(() => refPick(e.target.files[0])));
 $("#btnRefApply").onclick = () => refApply();
