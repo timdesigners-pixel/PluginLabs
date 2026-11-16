@@ -106,6 +106,8 @@ struct Mat {
     tex: u8,
     kind: u16,
     tscale: f32,
+    /// Yüzey kabartısının derinliği (mm); 0 = düz.
+    relief: f32,
 }
 
 #[derive(Clone, Copy)]
@@ -354,6 +356,22 @@ pub struct RenderSettings {
     pub sky: Option<SkySettings>,
     /// Otomatik pozlama: görüntünün ortalama parlaklığını orta griye çeker; `exposure` bunun üstüne çarpılır.
     pub auto_exposure: bool,
+    /// Diyafram (f/sayı): 0 = iğne deliği (her yer net). Tam kare (36 × 24 mm) algılayıcıya göre alan derinliği üretir.
+    pub aperture: f32,
+    /// Netlik uzaklığı (mm). Boşsa görüntünün ortasındaki yüzeye otomatik netlenir.
+    pub focus: Option<f64>,
+    /// Parlak bölgelerin çevresine yayılan ışık (0–1).
+    pub bloom: f32,
+    /// Köşe kararması (0–1).
+    pub vignette: f32,
+    /// Film greni (0–1).
+    pub grain: f32,
+    /// Keskinleştirme (0–1).
+    pub sharpen: f32,
+    /// Beyaz dengesi (Kelvin); 0 ya da 6500 = nötr, daha yüksek değer görüntüyü ısıtır.
+    pub white_balance: f32,
+    /// Yüzey kabartısı çarpanı (0 = kapalı, 1 = doğal).
+    pub bump: f32,
 }
 
 /// Gökyüzü ve atmosfer motoru parametreleri.
@@ -389,7 +407,7 @@ pub fn sun_position(sky: &SkySettings) -> (f32, f32) {
 }
 impl Default for RenderSettings {
     fn default() -> Self {
-        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None, auto_exposure: true }
+        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None, auto_exposure: true, aperture: 0.0, focus: None, bloom: 0.0, vignette: 0.0, grain: 0.0, sharpen: 0.0, white_balance: 0.0, bump: 1.0 }
     }
 }
 
@@ -509,7 +527,16 @@ struct Tracer<'a> {
     lamps: &'a [Lamp],
     lamp_total: f32,
     bounces: u32,
+    bump: f32,
 }
+
+/// Smith gölgeleme terimi (GGX, tek yön).
+fn g1(nx: f32, a2: f32) -> f32 {
+    2.0 * nx / (nx + (a2 + (1.0 - a2) * nx * nx).sqrt())
+}
+
+/// Prosedürel türlerin kabartı derinliği (mm), `texture::KINDS` sırasıyla.
+const RELIEF: [f32; 9] = [1.2, 0.8, 2.0, 0.15, 1.5, 1.2, 2.5, 4.0, 5.0];
 
 impl Tracer<'_> {
     /// Gölge ışını: camdan geçerken renk süzer.
@@ -532,9 +559,11 @@ impl Tracer<'_> {
         V(0.0, 0.0, 0.0)
     }
 
-    fn sample_lamp(&self, p: V, n: V, r: &mut Rng) -> V {
+    /// Lambalardan bir nokta örnekler: (kosinüs dahil gelen ışık, ışığın yönü).
+    fn sample_lamp(&self, p: V, n: V, r: &mut Rng) -> (V, V) {
+        let none = (V(0.0, 0.0, 0.0), n);
         if self.lamps.is_empty() {
-            return V(0.0, 0.0, 0.0);
+            return none;
         }
         let x = r.f() * self.lamp_total;
         let k = self.lamps.partition_point(|l| l.cdf < x).min(self.lamps.len() - 1);
@@ -553,17 +582,59 @@ impl Tracer<'_> {
         let cos_x = n.dot(wd);
         let cos_l = t.n.dot(-wd).abs();
         if cos_x <= 0.0 || cos_l <= 0.0 {
-            return V(0.0, 0.0, 0.0);
+            return none;
         }
         let vis = self.transmit(p + n * 1.0, wd, dist - 2.0);
         if vis.max_c() <= 0.0 {
-            return V(0.0, 0.0, 0.0);
+            return none;
         }
         let pdf = l.area / self.lamp_total; // seçim olasılığı × alan yoğunluğu (1/alan) tersinin çarpımı
         let le = self.mats[t.mat as usize].emit * self.env.lamp_gain;
         // L = Le · cosx · cosl / d² · (alan / seçim olasılığı)
         let geo = cos_x * cos_l / d2 * (l.area / pdf.max(1e-12));
-        vis.mul(le) * geo
+        (vis.mul(le) * geo, wd)
+    }
+
+    /// Yüzey yüksekliği (0–1): desenin parlaklığından ya da boyalı yüzeyin rulo dokusundan.
+    fn height_at(&self, m: &Mat, u: f32, v: f32) -> f32 {
+        match m.tex {
+            1 => {
+                let k = crate::texture::procedural(crate::texture::KINDS[m.kind as usize].0, u, v, m.tscale);
+                (k[0] + k[1] + k[2]) / 3.0
+            }
+            2 => match self.images.get(m.kind as usize) {
+                Some(img) => {
+                    let c = img.sample(u / m.tscale, v / m.tscale);
+                    (c[0] + c[1] + c[2]) / 3.0
+                }
+                None => 0.0,
+            },
+            _ => 0.5 * crate::texture::noise(u / 2.4, v / 2.4) + 0.5 * crate::texture::noise(u / 0.9 + 31.0, v / 0.9 + 7.0),
+        }
+    }
+
+    /// Kabartı: yükseklik alanının eğimiyle normali büker (geometri eklemeden derz, damar, sıva dokusu).
+    fn bump_normal(&self, m: &Mat, p: V, gn: V, n: V, facing: V) -> V {
+        let (u, v) = crate::texture::planar([p.0, p.1, p.2], [gn.0, gn.1, gn.2]);
+        let (ax, ay, az) = (gn.0.abs(), gn.1.abs(), gn.2.abs());
+        let (t, b) = if ay >= ax && ay >= az {
+            (V(1.0, 0.0, 0.0), V(0.0, 0.0, 1.0))
+        } else if az >= ax {
+            (V(1.0, 0.0, 0.0), V(0.0, 1.0, 0.0))
+        } else {
+            (V(0.0, 0.0, 1.0), V(0.0, 1.0, 0.0))
+        };
+        let e = if m.tex == 2 { (m.tscale / 512.0).max(0.5) } else { 1.2 };
+        let h0 = self.height_at(m, u, v);
+        let k = m.relief * self.bump / e;
+        let (mut du, mut dv) = ((self.height_at(m, u + e, v) - h0) * k, (self.height_at(m, u, v + e) - h0) * k);
+        let g = (du * du + dv * dv).sqrt();
+        if g > 1.2 {
+            du *= 1.2 / g;
+            dv *= 1.2 / g;
+        }
+        let nn = (n - t * du - b * dv).norm();
+        if nn.dot(facing) > 0.05 { nn } else { n }
     }
 
     /// Dokulu yüzey rengi: prosedürel desen ya da yüklenen görsel, baskın düzlem izdüşümüyle.
@@ -649,40 +720,94 @@ impl Tracer<'_> {
                 count_emit = true;
                 continue;
             }
-            let spec_p = (m.metal + (1.0 - m.metal) * (0.04 + 0.25 * (1.0 - m.rough).powi(2))).clamp(0.0, 0.98);
-            if r.f() < spec_p {
-                let refl = (d - n * (2.0 * d.dot(n))).norm();
-                let a = m.rough * m.rough;
-                let j = V(r.f() * 2.0 - 1.0, r.f() * 2.0 - 1.0, r.f() * 2.0 - 1.0) * a;
-                let nd = (refl + j).norm();
-                if nd.dot(n) <= 0.0 {
+            if depth <= 1 && m.relief > 0.0 && self.bump > 0.0 {
+                n = self.bump_normal(m, p, tri.n, n, ng);
+                if depth == 0 {
+                    first.1 = n;
+                }
+            }
+            let pi = std::f32::consts::PI;
+            let one = V(1.0, 1.0, 1.0);
+            let v = -d;
+            let nv = n.dot(v).max(1e-3);
+            let a = (m.rough * m.rough).max(0.002);
+            let a2 = a * a;
+            let f0 = V(0.04, 0.04, 0.04) * (1.0 - m.metal) + alb * m.metal;
+            let fres = |c: f32| f0 + (one - f0) * (1.0 - c).clamp(0.0, 1.0).powi(5);
+            let fv = fres(nv);
+            let diff = alb.mul(one - fv) * (1.0 - m.metal);
+            // ayna gibi yüzeylerde lamba parlaması yansıma ışınıyla bulunur
+            let mirror = a < 0.01;
+            let an2 = a.max(0.02) * a.max(0.02);
+            let spec = |l: V, a2: f32| -> V {
+                let nl = n.dot(l);
+                if nl <= 0.0 {
+                    return V(0.0, 0.0, 0.0);
+                }
+                let h = (v + l).norm();
+                let nh = n.dot(h).max(0.0);
+                let dd = nh * nh * (a2 - 1.0) + 1.0;
+                let dterm = a2 / (pi * dd * dd);
+                fres(v.dot(h).max(0.0)) * (dterm * g1(nv, a2) * g1(nl, a2) / (4.0 * nv * nl).max(1e-4))
+            };
+            // doğrudan ışık: güneş (diski kadar yumuşak gölge)
+            if n.dot(self.env.sun_dir) > 0.0 && self.env.sun_col.max_c() > 0.0 {
+                let (tt, bb) = onb(self.env.sun_dir);
+                let rad = (1.0 - self.env.sun_cos).sqrt() * 1.4;
+                let jd = (self.env.sun_dir + tt * ((r.f() - 0.5) * rad) + bb * ((r.f() - 0.5) * rad)).norm();
+                let nl = n.dot(jd);
+                if nl > 0.0 {
+                    let vis = self.transmit(p + ng * 0.5, jd, 1e9);
+                    rays += 1;
+                    if vis.max_c() > 0.0 {
+                        l = l + thr.mul(self.env.sun_col).mul(vis).mul(diff + spec(jd, an2) * pi) * nl;
+                    }
+                }
+            }
+            // doğrudan ışık: lambalar
+            if !self.lamps.is_empty() {
+                let (le, wd) = self.sample_lamp(p, n, r);
+                rays += 1;
+                if le.max_c() > 0.0 {
+                    let sp = if mirror { V(0.0, 0.0, 0.0) } else { spec(wd, an2) };
+                    l = l + thr.mul(le).mul(diff * (1.0 / pi) + sp);
+                }
+            }
+            // dolaylı ışık: Fresnel ağırlığıyla parlak ya da yayınık lob
+            let (fl, dl) = (fv.lum(), diff.lum());
+            let p_spec = if dl <= 1e-4 { 1.0 } else { (fl / (fl + dl)).clamp(0.04, 0.96) };
+            if r.f() < p_spec {
+                let (u1, u2) = (r.f(), r.f());
+                let ct = ((1.0 - u1) / (1.0 + (a2 - 1.0) * u1)).max(0.0).sqrt();
+                let st = (1.0 - ct * ct).max(0.0).sqrt();
+                let phi = 2.0 * pi * u2;
+                let (t, b) = onb(n);
+                let h = (t * (st * phi.cos()) + b * (st * phi.sin()) + n * ct).norm();
+                let vh = v.dot(h);
+                if vh <= 0.0 {
                     break;
                 }
-                let tint = if m.metal > 0.5 { alb } else { V(1.0, 1.0, 1.0) };
-                thr = thr.mul(tint);
-                d = nd;
-                o = p + n * 0.5;
-                count_emit = m.rough < 0.3;
+                let ld = (h * (2.0 * vh) - v).norm();
+                let nl = n.dot(ld);
+                if nl <= 0.0 || ng.dot(ld) <= 0.0 {
+                    break;
+                }
+                let mut w = fres(vh) * (g1(nv, a2) * g1(nl, a2) * vh / (nv * ct.max(1e-4)) / p_spec);
+                let wl = w.lum();
+                if wl > 4.0 {
+                    w = w * (4.0 / wl);
+                }
+                thr = thr.mul(w);
+                d = ld;
+                o = p + ng * 0.5;
+                count_emit = mirror;
             } else {
-                // doğrudan ışık: güneş
-                let sun_c = n.dot(self.env.sun_dir);
-                if sun_c > 0.0 && self.env.sun_col.max_c() > 0.0 {
-                    let (tt, bb) = onb(self.env.sun_dir);
-                    let rad = (1.0 - self.env.sun_cos).sqrt() * 1.4;
-                    let jd = (self.env.sun_dir + tt * ((r.f() - 0.5) * rad) + bb * ((r.f() - 0.5) * rad)).norm();
-                    let vis = self.transmit(p + n * 0.5, jd, 1e9);
-                    rays += 1;
-                    l = l + thr.mul(alb).mul(self.env.sun_col).mul(vis) * sun_c;
-                }
-                // doğrudan ışık: lambalar
-                if !self.lamps.is_empty() {
-                    let le = self.sample_lamp(p, n, r);
-                    rays += 1;
-                    l = l + thr.mul(alb).mul(le) * (1.0 / std::f32::consts::PI);
-                }
-                thr = thr.mul(alb);
+                thr = thr.mul(diff) * (1.0 / (1.0 - p_spec));
                 d = cosine_dir(n, r);
-                o = p + n * 0.5;
+                if ng.dot(d) <= 0.0 {
+                    d = cosine_dir(ng, r);
+                }
+                o = p + ng * 0.5;
                 count_emit = false;
             }
             if depth >= 2 {
@@ -725,7 +850,15 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             Some(id) => images.iter().position(|i| i.id == id).map(|k| (2u8, k as u16)).unwrap_or((0, 0)),
             None => crate::texture::KINDS.iter().position(|k| k.0 == m.texture).map(|k| (1u8, k as u16)).unwrap_or((0, 0)),
         };
-        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0) });
+        let relief = match tex {
+            1 => RELIEF[kind as usize],
+            2 => 1.0,
+            // boyalı duvar ve tavanda rulo dokusu, düz kumaşta ince dokuma
+            _ if matches!(m.category.as_str(), "duvar" | "tavan" | "palet") => 0.3,
+            _ if m.category == "tekstil" => 0.6,
+            _ => 0.0,
+        };
+        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0), relief });
         for (ti, t) in b.positions.chunks(3).enumerate() {
             if t.len() < 3 {
                 continue;
@@ -757,7 +890,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         }
     }
     let env = Env::new(scene, s.atmosphere, s.sky.as_ref());
-    let tracer = Tracer { images: &images, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12) };
+    let tracer = Tracer { images: &images, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12), bump: s.bump.clamp(0.0, 4.0) };
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let tgt = s.target.unwrap_or(scene.camera.target);
     let fov = s.fov.unwrap_or(scene.camera.fov).clamp(10.0, 120.0) as f32;
@@ -770,6 +903,12 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
     let tv = V(tgt[0] as f32, tgt[1] as f32, tgt[2] as f32);
     let ortho_half = s.ortho_height.map(|v| v as f32 * 0.5).unwrap_or_else(|| (tv - e).len() * th).max(10.0);
     let aspect = w as f32 / h as f32;
+    // objektif: 24 mm yüksekliğindeki algılayıcıya göre odak uzaklığı ve diyafram açıklığı
+    let lens_r = if s.aperture > 0.0 && !iso { (12.0 / th) / (2.0 * s.aperture.clamp(0.7, 64.0)) } else { 0.0 };
+    let focus = match s.focus {
+        Some(f) if f > 1.0 => f as f32,
+        _ => bvh.intersect(e, fwd, 1e9).map(|(t, _)| t).unwrap_or(5000.0).max(200.0),
+    };
     let n_px = (w * h) as usize;
     let mut color = vec![V::default(); n_px];
     let mut albedo = vec![V::default(); n_px];
@@ -801,6 +940,12 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
                     let py = (1.0 - (y as f32 + r.f()) / h as f32 * 2.0) * th;
                     let (org, dir) = if iso {
                         (e + right * (px / th * ortho_half) + up * (py / th * ortho_half), fwd)
+                    } else if lens_r > 0.0 {
+                        // ince mercek: netlik düzlemindeki nokta sabit, ışın mercek üzerindeki rastgele noktadan çıkar
+                        let fp = e + (fwd + right * px + up * py) * focus;
+                        let (rr, ang) = (r.f().sqrt() * lens_r, r.f() * 2.0 * std::f32::consts::PI);
+                        let lo = e + right * (rr * ang.cos()) + up * (rr * ang.sin());
+                        (lo, (fp - lo).norm())
                     } else {
                         (e, (fwd + right * px + up * py).norm())
                     };
@@ -860,13 +1005,112 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         let target = if night { 0.09 } else { 0.2 };
         exp *= (target / avg.max(1e-4)).clamp(0.25, 6.0) / 0.62;
     }
-    let mut rgba = Vec::with_capacity(n_px * 4);
-    for c in &color {
-        let c = *c * exp;
-        rgba.extend_from_slice(&[srgb(aces(c.0)), srgb(aces(c.1)), srgb(aces(c.2)), 255]);
-    }
+    let rgba = develop(&color, w as usize, h as usize, exp, s);
     let png = encode_png(&rgba, w, h)?;
     Ok(RenderResult { width: w, height: h, png, triangles: tri_count, samples: spp, threads, rays })
+}
+
+/// Tek yönlü kutu bulanıklığı (üç geçişi Gauss'a yaklaşır).
+fn box_blur(src: &[V], w: usize, h: usize, rad: usize, horizontal: bool) -> Vec<V> {
+    let mut out = vec![V::default(); w * h];
+    let (n, m) = if horizontal { (h, w) } else { (w, h) };
+    let at = |line: usize, k: usize| if horizontal { line * w + k } else { k * w + line };
+    let inv = 1.0 / (2 * rad + 1) as f32;
+    for line in 0..n {
+        let mut sum = V::default();
+        for k in 0..=2 * rad {
+            sum = sum + src[at(line, k.saturating_sub(rad).min(m - 1))];
+        }
+        for k in 0..m {
+            out[at(line, k)] = sum * inv;
+            let add = (k + rad + 1).min(m - 1);
+            let rem = k.saturating_sub(rad);
+            sum = sum + src[at(line, add)] - src[at(line, rem)];
+        }
+    }
+    out
+}
+
+/// Doğrusal ışık değerlerini görüntüye çevirir: beyaz dengesi, parlama, köşe kararması,
+/// ton eşleme, keskinleştirme ve gren — fotoğraf makinesinin yaptığı işlemler.
+fn develop(color: &[V], w: usize, h: usize, exp: f32, s: &RenderSettings) -> Vec<u8> {
+    let wb = if s.white_balance > 1000.0 {
+        let t = ((s.white_balance - 6500.0) / 2500.0).clamp(-1.5, 1.5);
+        V(1.0 + 0.12 * t, 1.0, 1.0 - 0.16 * t)
+    } else {
+        V(1.0, 1.0, 1.0)
+    };
+    let mut lin: Vec<V> = color.iter().map(|c| c.mul(wb) * exp).collect();
+    let bloom = s.bloom.clamp(0.0, 1.0);
+    if bloom > 0.0 && w >= 32 && h >= 32 {
+        // parlak bölgeler çeyrek çözünürlükte yayılır
+        let (bw, bh) = (w.div_ceil(4), h.div_ceil(4));
+        let mut small = vec![V::default(); bw * bh];
+        for y in 0..h {
+            for x in 0..w {
+                let c = lin[y * w + x];
+                let over = (c.lum() - 1.6).max(0.0);
+                if over > 0.0 {
+                    let k = (over / c.lum()).min(1.0) * (12.0 / c.lum().max(12.0));
+                    small[(y / 4) * bw + x / 4] = small[(y / 4) * bw + x / 4] + c * (k / 16.0);
+                }
+            }
+        }
+        let rad = (bw / 48).max(2);
+        for _ in 0..3 {
+            small = box_blur(&small, bw, bh, rad, true);
+            small = box_blur(&small, bw, bh, rad, false);
+        }
+        for y in 0..h {
+            for x in 0..w {
+                let (fx, fy) = (((x as f32 + 0.5) / 4.0 - 0.5).max(0.0), ((y as f32 + 0.5) / 4.0 - 0.5).max(0.0));
+                let (x0, y0) = ((fx as usize).min(bw - 1), (fy as usize).min(bh - 1));
+                let (x1, y1) = ((x0 + 1).min(bw - 1), (y0 + 1).min(bh - 1));
+                let (tx, ty) = (fx - x0 as f32, fy - y0 as f32);
+                let top = small[y0 * bw + x0] * (1.0 - tx) + small[y0 * bw + x1] * tx;
+                let bot = small[y1 * bw + x0] * (1.0 - tx) + small[y1 * bw + x1] * tx;
+                lin[y * w + x] = lin[y * w + x] + (top * (1.0 - ty) + bot * ty) * (bloom * 0.9);
+            }
+        }
+    }
+    let vig = s.vignette.clamp(0.0, 1.0);
+    let mut disp: Vec<V> = Vec::with_capacity(w * h);
+    for y in 0..h {
+        for x in 0..w {
+            let mut c = lin[y * w + x];
+            if vig > 0.0 {
+                let (dx, dy) = ((x as f32 + 0.5) / w as f32 * 2.0 - 1.0, (y as f32 + 0.5) / h as f32 * 2.0 - 1.0);
+                let r2 = (dx * dx + dy * dy) * 0.5;
+                c = c * (1.0 - vig * 0.55 * r2 * r2.sqrt());
+            }
+            disp.push(V(aces(c.0), aces(c.1), aces(c.2)));
+        }
+    }
+    let sharp = s.sharpen.clamp(0.0, 1.0);
+    if sharp > 0.0 {
+        let blur = box_blur(&box_blur(&disp, w, h, 1, true), w, h, 1, false);
+        for (c, b) in disp.iter_mut().zip(&blur) {
+            *c = *c + (*c - *b) * (sharp * 0.8);
+        }
+    }
+    let grain = s.grain.clamp(0.0, 1.0);
+    let mut rgba = Vec::with_capacity(w * h * 4);
+    for (i, c) in disp.iter().enumerate() {
+        let mut c = *c;
+        if grain > 0.0 {
+            let mut r = Rng::new(s.seed ^ (i as u64).wrapping_mul(0xD6E8_FEB8_6659_FD93));
+            // orta tonlarda belirgin, siyah ve beyazda sönük
+            let l = c.lum().clamp(0.0, 1.0);
+            let g = (r.f() + r.f() - 1.0) * grain * 0.09 * (0.25 + 3.0 * l * (1.0 - l));
+            c = c + V(g, g, g);
+        }
+        rgba.extend_from_slice(&[srgb_display(c.0), srgb_display(c.1), srgb_display(c.2), 255]);
+    }
+    rgba
+}
+
+fn srgb_display(x: f32) -> u8 {
+    srgb(x.clamp(0.0, 1.0))
 }
 
 /// Albedo ve normal kılavuzlu kenar korumalı süzgeç (à-trous, 3 geçiş).
@@ -874,7 +1118,7 @@ fn denoise(col: &[V], alb: &[V], nor: &[V], dep: &[f32], w: usize, h: usize) -> 
     let demod: Vec<V> = col.iter().zip(alb).map(|(c, a)| V(c.0 / a.0.max(0.02), c.1 / a.1.max(0.02), c.2 / a.2.max(0.02))).collect();
     let mut cur = demod;
     let kern = [1.0 / 16.0, 1.0 / 4.0, 3.0 / 8.0, 1.0 / 4.0, 1.0 / 16.0];
-    for step in [1usize, 2, 4] {
+    for step in [1usize, 2, 4, 8] {
         let mut out = vec![V::default(); w * h];
         for y in 0..h {
             for x in 0..w {
