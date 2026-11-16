@@ -31,6 +31,8 @@ pub struct Scene {
     pub interior: String,
     /// Plan üzerindeki kalıcı ölçü çizgileri.
     pub dimensions: Vec<Dimension>,
+    /// Kullanıcının yüklediği görsel dokular (en çok 512 × 512).
+    pub textures: Vec<TextureAsset>,
 }
 
 impl Default for Scene {
@@ -54,6 +56,7 @@ impl Default for Scene {
             facade: "beton-kabuk".into(),
             interior: "boya-beyaz".into(),
             dimensions: vec![],
+            textures: vec![],
         }
     }
 }
@@ -105,6 +108,17 @@ impl Default for Module {
     fn default() -> Self {
         Module { id: String::new(), length: 10, floor: 0, position: [0.0, 0.0], rotated: false, on: None }
     }
+}
+
+/// Yüklenmiş görsel doku: satır satır RGB baytları, base64.
+#[derive(Clone, Debug, Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct TextureAsset {
+    pub id: String,
+    pub name: String,
+    pub width: u32,
+    pub height: u32,
+    pub rgb: String,
 }
 
 /// Ölçü aracıyla bırakılan çizgi (mm).
@@ -249,10 +263,14 @@ pub struct Material {
     /// Birim fiyat (₺ / m²) — zemin ve duvar kaplamalarında kullanılır.
     pub price_m2: f64,
     pub category: String,
+    /// Doku: prosedürel tür (parke, ahsap, karo, mermer, beton, kumas, hali, cim, tas) ya da `img:<doku kimliği>`.
+    pub texture: String,
+    /// Desenin bir tekrarının dünya ölçüsü (mm).
+    pub texture_scale: f32,
 }
 impl Default for Material {
     fn default() -> Self {
-        Material { id: String::new(), name: String::new(), color: [0.8, 0.8, 0.8], roughness: 0.8, metallic: 0.0, emission: 0.0, opacity: 1.0, price_m2: 0.0, category: "genel".into() }
+        Material { id: String::new(), name: String::new(), color: [0.8, 0.8, 0.8], roughness: 0.8, metallic: 0.0, emission: 0.0, opacity: 1.0, price_m2: 0.0, category: "genel".into(), texture: String::new(), texture_scale: 1000.0 }
     }
 }
 

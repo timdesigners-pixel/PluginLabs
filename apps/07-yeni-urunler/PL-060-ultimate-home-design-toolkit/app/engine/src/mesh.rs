@@ -58,10 +58,12 @@ pub struct MeshOptions {
     pub ground: bool,
     pub furniture: bool,
     pub openings: bool,
+    /// Zemin düzleminin malzemesi (stüdyo önizlemesinde nötr gri).
+    pub ground_material: String,
 }
 impl Default for MeshOptions {
     fn default() -> Self {
-        MeshOptions { levels: vec![], roof: true, ground: true, furniture: true, openings: true }
+        MeshOptions { levels: vec![], roof: true, ground: true, furniture: true, openings: true, ground_material: "zemin-dis".into() }
     }
 }
 
@@ -114,6 +116,104 @@ pub fn push_box(b: &mut Batch, o: V3, u: V3, v: V3, w: V3) {
         let fc = add(p, mul(add(e1, e2), 0.5));
         let out = [fc[0] - c[0], fc[1] - c[1], fc[2] - c[2]];
         quad(b, p, e1, e2, out);
+    }
+}
+
+/// Köşe normalleriyle üçgen; sarım, normallerin ortalamasına göre düzeltilir.
+fn tri_n(b: &mut Batch, p: [V3; 3], n: [V3; 3]) {
+    let g = cross([p[1][0] - p[0][0], p[1][1] - p[0][1], p[1][2] - p[0][2]], [p[2][0] - p[0][0], p[2][1] - p[0][1], p[2][2] - p[0][2]]);
+    let avg = add(add(n[0], n[1]), n[2]);
+    let order = if dot(g, avg) >= 0.0 { [0, 1, 2] } else { [0, 2, 1] };
+    for k in order {
+        b.positions.push(f(p[k]));
+        b.normals.push(f(norm(n[k])));
+    }
+}
+
+/// Biçimli parça: `o + a·u + b·v + c·w` kutusunun içine oturur (u, v, w kenar vektörleri).
+pub fn push_shape(b: &mut Batch, shape: catalog::Shape, o: V3, u: V3, v: V3, w: V3) {
+    use catalog::Shape;
+    let len = |a: V3| dot(a, a).sqrt();
+    let (lu, lv, lw) = (len(u), len(v), len(w));
+    if lu < 1e-6 || lv < 1e-6 || lw < 1e-6 {
+        return;
+    }
+    let (uh, vh, wh) = (mul(u, 1.0 / lu), mul(v, 1.0 / lv), mul(w, 1.0 / lw));
+    let c = add(o, mul(add(add(u, v), w), 0.5));
+    let h = [lu / 2.0, lv / 2.0, lw / 2.0];
+    // yerel (merkezli) nokta ve normal → dünya
+    let wp = |q: V3| add(c, add(add(mul(uh, q[0]), mul(vh, q[1])), mul(wh, q[2])));
+    let wn = |q: V3| norm(add(add(mul(uh, q[0]), mul(vh, q[1])), mul(wh, q[2])));
+    match shape {
+        Shape::Box => push_box(b, o, u, v, w),
+        Shape::Round(r) => {
+            let r = r.min(h[0] * 0.98).min(h[1] * 0.98).min(h[2] * 0.98).max(0.5);
+            let list = |hh: f64| [-hh, -(hh - 0.29 * r), -(hh - r), hh - r, hh - 0.29 * r, hh];
+            let point = |q: V3, face: V3| -> (V3, V3) {
+                let inner = [q[0].clamp(-(h[0] - r), h[0] - r), q[1].clamp(-(h[1] - r), h[1] - r), q[2].clamp(-(h[2] - r), h[2] - r)];
+                let d = [q[0] - inner[0], q[1] - inner[1], q[2] - inner[2]];
+                let n = if dot(d, d) < 1e-9 { face } else { norm(d) };
+                (add(inner, mul(n, r)), n)
+            };
+            for axis in 0..3 {
+                let (a1, a2) = ((axis + 1) % 3, (axis + 2) % 3);
+                let (l1, l2) = (list(h[a1]), list(h[a2]));
+                for sgn in [-1.0, 1.0] {
+                    let mut face = [0.0; 3];
+                    face[axis] = sgn;
+                    for i in 0..5 {
+                        for j in 0..5 {
+                            let mk = |x: f64, y: f64| {
+                                let mut q = [0.0; 3];
+                                q[axis] = sgn * h[axis];
+                                q[a1] = x;
+                                q[a2] = y;
+                                let (p, n) = point(q, face);
+                                (wp(p), wn(n))
+                            };
+                            let (p00, p10, p11, p01) = (mk(l1[i], l2[j]), mk(l1[i + 1], l2[j]), mk(l1[i + 1], l2[j + 1]), mk(l1[i], l2[j + 1]));
+                            tri_n(b, [p00.0, p10.0, p11.0], [p00.1, p10.1, p11.1]);
+                            tri_n(b, [p00.0, p11.0, p01.0], [p00.1, p11.1, p01.1]);
+                        }
+                    }
+                }
+            }
+        }
+        Shape::Cyl => {
+            let n = 18;
+            for k in 0..n {
+                let (a0, a1) = (std::f64::consts::TAU * k as f64 / n as f64, std::f64::consts::TAU * (k + 1) as f64 / n as f64);
+                let rim = |a: f64, y: f64| [h[0] * a.cos(), y, h[2] * a.sin()];
+                let rn = |a: f64| [a.cos() / h[0].max(1e-6), 0.0, a.sin() / h[2].max(1e-6)];
+                let (b0, b1, t1, t0) = (rim(a0, -h[1]), rim(a1, -h[1]), rim(a1, h[1]), rim(a0, h[1]));
+                tri_n(b, [wp(b0), wp(b1), wp(t1)], [wn(rn(a0)), wn(rn(a1)), wn(rn(a1))]);
+                tri_n(b, [wp(b0), wp(t1), wp(t0)], [wn(rn(a0)), wn(rn(a1)), wn(rn(a0))]);
+                let up = wn([0.0, 1.0, 0.0]);
+                let dn = wn([0.0, -1.0, 0.0]);
+                tri_n(b, [wp([0.0, h[1], 0.0]), wp(t0), wp(t1)], [up, up, up]);
+                tri_n(b, [wp([0.0, -h[1], 0.0]), wp(b1), wp(b0)], [dn, dn, dn]);
+            }
+        }
+        Shape::Ball => {
+            let (lat, lon) = (8, 14);
+            let pt = |i: usize, j: usize| -> (V3, V3) {
+                let th = std::f64::consts::PI * i as f64 / lat as f64;
+                let ph = std::f64::consts::TAU * j as f64 / lon as f64;
+                let d = [th.sin() * ph.cos(), th.cos(), th.sin() * ph.sin()];
+                (wp([d[0] * h[0], d[1] * h[1], d[2] * h[2]]), wn([d[0] / h[0], d[1] / h[1], d[2] / h[2]]))
+            };
+            for i in 0..lat {
+                for j in 0..lon {
+                    let (p00, p10, p11, p01) = (pt(i, j), pt(i + 1, j), pt(i + 1, j + 1), pt(i, j + 1));
+                    if i > 0 {
+                        tri_n(b, [p00.0, p10.0, p01.0], [p00.1, p10.1, p01.1]);
+                    }
+                    if i < lat - 1 {
+                        tri_n(b, [p10.0, p11.0, p01.0], [p10.1, p11.1, p01.1]);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -353,7 +453,7 @@ pub fn build(scene: &Scene, opt: &MeshOptions) -> SceneMesh {
             mx = bb.1;
         }
         let pad = 40_000.0;
-        let b = m.batch("zemin-dis");
+        let b = m.batch(if opt.ground_material.is_empty() { "zemin-dis" } else { &opt.ground_material });
         quad(b, [mn[0] - pad, -2.0, mn[1] - pad], [mx[0] - mn[0] + 2.0 * pad, 0.0, 0.0], [0.0, 0.0, mx[1] - mn[1] + 2.0 * pad], [0.0, 1.0, 0.0]);
     }
     m.batches.retain(|b| !b.positions.is_empty());
@@ -382,7 +482,7 @@ pub fn push_object(m: &mut SceneMesh, scene: &Scene, o: &Object, elevation: f64)
             let u = axis([(p.max[0] - p.min[0]) * sc[0], 0.0, 0.0]);
             let v = [0.0, (p.max[1] - p.min[1]) * sc[1], 0.0];
             let w = axis([0.0, 0.0, (p.max[2] - p.min[2]) * sc[2]]);
-            push_box(m.batch(&mat), origin, u, v, w);
+            push_shape(m.batch(&mat), p.shape, origin, u, v, w);
         }
     } else if let Some(asset) = scene.meshes.iter().find(|a| a.id == o.mesh) {
         for g in &asset.groups {
@@ -433,6 +533,32 @@ mod tests {
         assert!(m.batches.iter().any(|b| b.material == "beton-kabuk"));
         let cut = build(&s, &MeshOptions { roof: false, ..Default::default() });
         assert!(cut.triangle_count() < tris);
+    }
+
+    #[test]
+    fn shaped_parts_stay_inside_their_box_and_have_unit_normals() {
+        use crate::catalog::Shape;
+        for shape in [Shape::Round(40.0), Shape::Cyl, Shape::Ball, Shape::Box] {
+            let mut b = Batch::default();
+            push_shape(&mut b, shape, [100.0, 0.0, -50.0], [400.0, 0.0, 0.0], [0.0, 300.0, 0.0], [0.0, 0.0, 200.0]);
+            assert!(b.positions.len() >= 36 && b.positions.len() % 3 == 0, "{shape:?}");
+            for p in &b.positions {
+                assert!(p[0] >= 99.9 && p[0] <= 500.1 && p[1] >= -0.1 && p[1] <= 300.1 && p[2] >= -50.1 && p[2] <= 150.1, "{shape:?} kutudan taştı: {p:?}");
+            }
+            for n in &b.normals {
+                assert!((n[0] * n[0] + n[1] * n[1] + n[2] * n[2] - 1.0).abs() < 1e-3);
+            }
+            // üçgenler dışa bakar
+            let c = [300.0f32, 150.0, 50.0];
+            let out = b.positions.chunks(3).filter(|t| {
+                let e1 = [t[1][0] - t[0][0], t[1][1] - t[0][1], t[1][2] - t[0][2]];
+                let e2 = [t[2][0] - t[0][0], t[2][1] - t[0][1], t[2][2] - t[0][2]];
+                let n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+                let m = [(t[0][0] + t[1][0] + t[2][0]) / 3.0 - c[0], (t[0][1] + t[1][1] + t[2][1]) / 3.0 - c[1], (t[0][2] + t[1][2] + t[2][2]) / 3.0 - c[2]];
+                n[0] * m[0] + n[1] * m[1] + n[2] * m[2] >= -1e-3
+            }).count();
+            assert_eq!(out, b.positions.len() / 3, "{shape:?}: içe bakan üçgen var");
+        }
     }
 
     #[test]

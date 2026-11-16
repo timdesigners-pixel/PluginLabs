@@ -20,6 +20,7 @@ pub mod obj;
 pub mod render;
 pub mod scene_file;
 pub mod templates;
+pub mod texture;
 pub mod units;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

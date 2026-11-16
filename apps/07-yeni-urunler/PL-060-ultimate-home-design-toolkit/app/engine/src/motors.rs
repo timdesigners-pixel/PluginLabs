@@ -71,7 +71,9 @@ impl Gen {
     }
     fn material(&mut self, id: &str, name: &str, color: [f32; 3], roughness: f32, opacity: f32, category: &str) {
         if !self.materials.iter().any(|m| m.id == id) {
-            self.materials.push(Material { id: id.into(), name: name.into(), color, roughness, metallic: 0.0, emission: 0.0, opacity, price_m2: 0.0, category: category.into() });
+            let texture = if id.starts_with("hali") { "hali" } else if category == "tekstil" { "kumas" } else if id == "traverten" { "mermer" } else if id.starts_with("havuz-fayans") { "karo" } else { "" };
+            let texture_scale = if id.starts_with("havuz-fayans") { 300.0 } else { 1000.0 };
+            self.materials.push(Material { id: id.into(), name: name.into(), color, roughness, metallic: 0.0, emission: 0.0, opacity, price_m2: 0.0, category: category.into(), texture: texture.into(), texture_scale });
         }
     }
     fn finish(self, id: &str, name: &str, price: f64, mount: f64) -> Generated {
@@ -82,6 +84,20 @@ impl Gen {
         let (mut mn, mut mx) = ([f64::INFINITY; 3], [f64::NEG_INFINITY; 3]);
         for (mat, tris) in &self.tris {
             let start = indices.len() as u32;
+            // aynı konumu paylaşan köşelerde alan ağırlıklı normal ortalaması (yumuşak kıvrımlar)
+            let key = |p: &P| ((p[0] * 4.0).round() as i64, (p[1] * 4.0).round() as i64, (p[2] * 4.0).round() as i64);
+            let mut acc: std::collections::HashMap<(i64, i64, i64), [f64; 3]> = std::collections::HashMap::new();
+            for t in tris {
+                let e1 = [t[1][0] - t[0][0], t[1][1] - t[0][1], t[1][2] - t[0][2]];
+                let e2 = [t[2][0] - t[0][0], t[2][1] - t[0][1], t[2][2] - t[0][2]];
+                let n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+                for p in t {
+                    let a = acc.entry(key(p)).or_insert([0.0; 3]);
+                    for k in 0..3 {
+                        a[k] += n[k];
+                    }
+                }
+            }
             for t in tris {
                 let e1 = [t[1][0] - t[0][0], t[1][1] - t[0][1], t[1][2] - t[0][2]];
                 let e2 = [t[2][0] - t[0][0], t[2][1] - t[0][1], t[2][2] - t[0][2]];
@@ -97,7 +113,12 @@ impl Gen {
                     }
                     indices.push(positions.len() as u32);
                     positions.push([p[0] as f32, p[1] as f32, p[2] as f32]);
-                    normals.push([(n[0] / l) as f32, (n[1] / l) as f32, (n[2] / l) as f32]);
+                    let fnrm = [n[0] / l, n[1] / l, n[2] / l];
+                    let a = acc[&key(p)];
+                    let al = (a[0] * a[0] + a[1] * a[1] + a[2] * a[2]).sqrt();
+                    // keskin kenarlar (≈ 50° üstü) düz kalır
+                    let sn = if al > 1e-9 && (a[0] * fnrm[0] + a[1] * fnrm[1] + a[2] * fnrm[2]) / al > 0.64 { [a[0] / al, a[1] / al, a[2] / al] } else { fnrm };
+                    normals.push([sn[0] as f32, sn[1] as f32, sn[2] as f32]);
                 }
             }
             groups.push(MeshGroup { material: mat.clone(), start, count: indices.len() as u32 - start });
@@ -706,7 +727,7 @@ pub fn pool(p: &Pool, id: &str) -> Result<Generated, String> {
         other => return Err(format!("Bilinmeyen havuz şekli: {other}")),
     }
     if p.lights {
-        g.materials.push(Material { id: "havuz-isik".into(), name: "Havuz aydınlatması".into(), color: [0.75, 0.93, 1.0], roughness: 0.5, metallic: 0.0, emission: 5.0, opacity: 1.0, price_m2: 0.0, category: "isik".into() });
+        g.materials.push(Material { id: "havuz-isik".into(), name: "Havuz aydınlatması".into(), color: [0.75, 0.93, 1.0], roughness: 0.5, metallic: 0.0, emission: 5.0, opacity: 1.0, price_m2: 0.0, category: "isik".into(), ..Default::default() });
         let n = ((ll / 2500.0).round().max(1.0)) as usize;
         for kk in 0..n {
             let z = -ll / 2.0 + (kk as f64 + 0.5) * ll / n as f64;

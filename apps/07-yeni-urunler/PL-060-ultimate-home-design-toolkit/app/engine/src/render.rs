@@ -102,6 +102,10 @@ struct Mat {
     metal: f32,
     emit: V,
     glass: bool,
+    /// 0 = düz renk, 1 = prosedürel (KINDS indeksi `kind`), 2 = görsel (`kind` = görsel indeksi)
+    tex: u8,
+    kind: u16,
+    tscale: f32,
 }
 
 #[derive(Clone, Copy)]
@@ -110,6 +114,8 @@ struct Tri {
     e1: V,
     e2: V,
     n: V,
+    /// Köşe normalleri (yumuşak gölgeleme).
+    ns: [V; 3],
     mat: u16,
 }
 
@@ -346,6 +352,8 @@ pub struct RenderSettings {
     pub ortho_height: Option<f64>,
     /// Gökyüzü motoru: boşsa atmosfer ön ayarının saati kullanılır.
     pub sky: Option<SkySettings>,
+    /// Otomatik pozlama: görüntünün ortalama parlaklığını orta griye çeker; `exposure` bunun üstüne çarpılır.
+    pub auto_exposure: bool,
 }
 
 /// Gökyüzü ve atmosfer motoru parametreleri.
@@ -381,7 +389,7 @@ pub fn sun_position(sky: &SkySettings) -> (f32, f32) {
 }
 impl Default for RenderSettings {
     fn default() -> Self {
-        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None }
+        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None, auto_exposure: true }
     }
 }
 
@@ -494,6 +502,7 @@ struct Lamp {
 }
 
 struct Tracer<'a> {
+    images: &'a [crate::texture::Image],
     bvh: &'a Bvh,
     mats: &'a [Mat],
     env: &'a Env,
@@ -557,6 +566,25 @@ impl Tracer<'_> {
         vis.mul(le) * geo
     }
 
+    /// Dokulu yüzey rengi: prosedürel desen ya da yüklenen görsel, baskın düzlem izdüşümüyle.
+    fn albedo_at(&self, m: &Mat, p: V, n: V) -> V {
+        if m.tex == 0 {
+            return m.albedo;
+        }
+        let (u, v) = crate::texture::planar([p.0, p.1, p.2], [n.0, n.1, n.2]);
+        if m.tex == 1 {
+            let k = crate::texture::procedural(crate::texture::KINDS[m.kind as usize].0, u, v, m.tscale);
+            return m.albedo.mul(V(k[0], k[1], k[2]));
+        }
+        match self.images.get(m.kind as usize) {
+            Some(img) => {
+                let c = img.sample(u / m.tscale, v / m.tscale);
+                V(c[0], c[1], c[2]) * 0.92
+            }
+            None => m.albedo,
+        }
+    }
+
     fn radiance(&self, mut o: V, mut d: V, r: &mut Rng, first: &mut (V, V, f32)) -> (V, u64) {
         let mut l = V(0.0, 0.0, 0.0);
         let mut thr = V(1.0, 1.0, 1.0);
@@ -574,12 +602,32 @@ impl Tracer<'_> {
             let tri = &self.bvh.tris[i];
             let m = &self.mats[tri.mat as usize];
             let p = o + d * t;
-            let mut n = tri.n;
-            if n.dot(d) > 0.0 {
+            // yumuşak gölgeleme: köşe normallerini kesişimin barisentrik ağırlıklarıyla karıştır
+            let mut n = {
+                let s = p - tri.v0;
+                let (d11, d12, d22) = (tri.e1.dot(tri.e1), tri.e1.dot(tri.e2), tri.e2.dot(tri.e2));
+                let (s1, s2) = (s.dot(tri.e1), s.dot(tri.e2));
+                let den = d11 * d22 - d12 * d12;
+                if den.abs() < 1e-12 {
+                    tri.n
+                } else {
+                    let bu = (d22 * s1 - d12 * s2) / den;
+                    let bv = (d11 * s2 - d12 * s1) / den;
+                    let sn = tri.ns[0] * (1.0 - bu - bv) + tri.ns[1] * bu + tri.ns[2] * bv;
+                    if sn.dot(tri.n) > 0.2 { sn.norm() } else { tri.n }
+                }
+            };
+            let mut ng = tri.n;
+            if ng.dot(d) > 0.0 {
+                ng = -ng;
                 n = -n;
             }
+            if n.dot(d) > 0.0 {
+                n = ng;
+            }
+            let alb = self.albedo_at(m, p, tri.n);
             if depth == 0 {
-                *first = (m.albedo, n, t);
+                *first = (alb, n, t);
             }
             if m.emit.max_c() > 0.0 {
                 if count_emit {
@@ -610,7 +658,7 @@ impl Tracer<'_> {
                 if nd.dot(n) <= 0.0 {
                     break;
                 }
-                let tint = if m.metal > 0.5 { m.albedo } else { V(1.0, 1.0, 1.0) };
+                let tint = if m.metal > 0.5 { alb } else { V(1.0, 1.0, 1.0) };
                 thr = thr.mul(tint);
                 d = nd;
                 o = p + n * 0.5;
@@ -624,15 +672,15 @@ impl Tracer<'_> {
                     let jd = (self.env.sun_dir + tt * ((r.f() - 0.5) * rad) + bb * ((r.f() - 0.5) * rad)).norm();
                     let vis = self.transmit(p + n * 0.5, jd, 1e9);
                     rays += 1;
-                    l = l + thr.mul(m.albedo).mul(self.env.sun_col).mul(vis) * sun_c;
+                    l = l + thr.mul(alb).mul(self.env.sun_col).mul(vis) * sun_c;
                 }
                 // doğrudan ışık: lambalar
                 if !self.lamps.is_empty() {
                     let le = self.sample_lamp(p, n, r);
                     rays += 1;
-                    l = l + thr.mul(m.albedo).mul(le) * (1.0 / std::f32::consts::PI);
+                    l = l + thr.mul(alb).mul(le) * (1.0 / std::f32::consts::PI);
                 }
-                thr = thr.mul(m.albedo);
+                thr = thr.mul(alb);
                 d = cosine_dir(n, r);
                 o = p + n * 0.5;
                 count_emit = false;
@@ -666,14 +714,19 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
     let (w, h) = (s.width.clamp(16, 7680), s.height.clamp(16, 4320));
     let spp = s.samples.clamp(1, 2048);
     let sm = prepare(scene, s);
+    let images: Vec<crate::texture::Image> = scene.textures.iter().filter_map(crate::texture::Image::decode).collect();
     let mut mats: Vec<Mat> = vec![];
     let mut tris: Vec<Tri> = vec![];
     for b in &sm.batches {
         let m = scene.material(&b.material).cloned().unwrap_or_default();
         let idx = mats.len() as u16;
         let albedo = V(m.color[0], m.color[1], m.color[2]) * 0.92;
-        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5 });
-        for t in b.positions.chunks(3) {
+        let (tex, kind) = match m.texture.strip_prefix("img:") {
+            Some(id) => images.iter().position(|i| i.id == id).map(|k| (2u8, k as u16)).unwrap_or((0, 0)),
+            None => crate::texture::KINDS.iter().position(|k| k.0 == m.texture).map(|k| (1u8, k as u16)).unwrap_or((0, 0)),
+        };
+        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0) });
+        for (ti, t) in b.positions.chunks(3).enumerate() {
             if t.len() < 3 {
                 continue;
             }
@@ -684,7 +737,9 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             if n.len() < 1e-6 {
                 continue;
             }
-            tris.push(Tri { v0, e1, e2, n: n.norm(), mat: idx });
+            let gn = n.norm();
+            let vn = |k: usize| b.normals.get(ti * 3 + k).map(|q| V(q[0], q[1], q[2])).filter(|q| q.len() > 0.5).unwrap_or(gn);
+            tris.push(Tri { v0, e1, e2, n: gn, ns: [vn(0), vn(1), vn(2)], mat: idx });
         }
     }
     if tris.is_empty() {
@@ -702,7 +757,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         }
     }
     let env = Env::new(scene, s.atmosphere, s.sky.as_ref());
-    let tracer = Tracer { bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12) };
+    let tracer = Tracer { images: &images, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12) };
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let tgt = s.target.unwrap_or(scene.camera.target);
     let fov = s.fov.unwrap_or(scene.camera.fov).clamp(10.0, 120.0) as f32;
@@ -793,7 +848,18 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
     if s.denoise && spp < 512 {
         color = denoise(&color, &albedo, &normal, &depth, w as usize, h as usize);
     }
-    let exp = s.exposure.clamp(0.05, 8.0);
+    let mut exp = s.exposure.clamp(0.05, 8.0);
+    if s.auto_exposure {
+        // log-ortalama parlaklık → orta gri (0,18); gece sahneleri fazla açılmasın diye sınırlı
+        let mut sum = 0.0f64;
+        for c in &color {
+            sum += ((c.lum().max(0.0) + 1e-4) as f64).ln();
+        }
+        let avg = (sum / n_px.max(1) as f64).exp() as f32;
+        let night = matches!(s.atmosphere, Atmosphere::Aksam) || s.sky.as_ref().is_some_and(|k| sun_position(k).0 < -2.0);
+        let target = if night { 0.09 } else { 0.2 };
+        exp *= (target / avg.max(1e-4)).clamp(0.25, 6.0) / 0.62;
+    }
     let mut rgba = Vec::with_capacity(n_px * 4);
     for c in &color {
         let c = *c * exp;
@@ -877,7 +943,7 @@ mod tests {
     fn evening_is_darker_than_day() {
         let s = crate::templates::demo_scene();
         let mean = |a| {
-            let r = render(&s, &RenderSettings { width: 48, height: 27, samples: 4, atmosphere: a, denoise: false, ..Default::default() }).unwrap();
+            let r = render(&s, &RenderSettings { width: 48, height: 27, samples: 4, atmosphere: a, denoise: false, auto_exposure: false, ..Default::default() }).unwrap();
             let mut rd = png::Decoder::new(std::io::Cursor::new(r.png)).read_info().unwrap();
             let mut b = vec![0; rd.output_buffer_size()];
             rd.next_frame(&mut b).unwrap();
@@ -914,7 +980,7 @@ mod tests {
 
     #[test]
     fn bvh_hits_nearest_triangle() {
-        let t = |z: f32, m: u16| Tri { v0: V(-1.0, -1.0, z), e1: V(2.0, 0.0, 0.0), e2: V(0.0, 2.0, 0.0), n: V(0.0, 0.0, 1.0), mat: m };
+        let t = |z: f32, m: u16| Tri { v0: V(-1.0, -1.0, z), e1: V(2.0, 0.0, 0.0), e2: V(0.0, 2.0, 0.0), n: V(0.0, 0.0, 1.0), ns: [V(0.0, 0.0, 1.0); 3], mat: m };
         let tris: Vec<Tri> = (0..50).map(|k| t(10.0 + k as f32, k as u16)).collect();
         let b = Bvh::build(tris);
         let (d, i) = b.intersect(V(0.0, 0.0, 0.0), V(0.0, 0.0, 1.0), 1e9).unwrap();

@@ -18,11 +18,25 @@ pub struct CatalogItem {
 
 /// Nesnenin yerel koordinatında bir kutu: x genişlik, y yukarı, z derinlik.
 /// Merkez tabanın ortasıdır (x, z ∈ [-W/2, W/2]).
+/// Parçanın biçimi; hepsi `min`–`max` kutusunun içine oturur.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[serde(rename_all = "lowercase", tag = "type", content = "r")]
+pub enum Shape {
+    Box,
+    /// Kenarları `r` mm yuvarlatılmış kutu (minder, şilte, gövde).
+    Round(f64),
+    /// Dikey silindir (ayak, direk, abajur, saksı).
+    Cyl,
+    /// Elipsoit (yaprak kümesi, ampul).
+    Ball,
+}
+
 #[derive(Debug, Clone)]
 pub struct Part {
     pub min: [f64; 3],
     pub max: [f64; 3],
     pub material: &'static str,
+    pub shape: Shape,
 }
 
 const fn it(id: &'static str, name: &'static str, group: &'static str, size: [f64; 3], price: f64, rooms: &'static [&'static str]) -> CatalogItem {
@@ -103,11 +117,50 @@ pub fn item(id: &str) -> Option<CatalogItem> {
 }
 
 fn bx(x0: f64, y0: f64, z0: f64, x1: f64, y1: f64, z1: f64, m: &'static str) -> Part {
-    Part { min: [x0, y0, z0], max: [x1, y1, z1], material: m }
+    Part { min: [x0, y0, z0], max: [x1, y1, z1], material: m, shape: Shape::Box }
+}
+
+/// Kutu parçalarına gerçekçi biçim atar: kumaş ve şilte yuvarlatılır, ayak ve direkler
+/// silindir, yaprak ve ampuller elipsoit olur.
+fn refine(id: &str, parts: &mut [Part]) {
+    for p in parts.iter_mut() {
+        let d = [p.max[0] - p.min[0], p.max[1] - p.min[1], p.max[2] - p.min[2]];
+        let least = d[0].min(d[1]).min(d[2]);
+        let m = p.material;
+        p.shape = if m == "bitki-yesil" || m == "yaprak-koyu" {
+            Shape::Ball
+        } else if m == "govde" {
+            Shape::Cyl
+        } else if m == "lamba-isik" {
+            match id {
+                "avize" => Shape::Ball,
+                "aplik" => Shape::Round(25.0),
+                _ => Shape::Cyl,
+            }
+        } else if m.starts_with("kumas") || m == "hali-bej" && least > 40.0 {
+            if least >= 50.0 { Shape::Round((least * 0.32).min(60.0)) } else { Shape::Box }
+        } else if m == "seramik-beyaz" || (m == "beton" && id == "saksi-buyuk") {
+            if matches!(id, "bitki" | "saksi-buyuk") { Shape::Cyl } else if least >= 40.0 { Shape::Round((least * 0.3).min(40.0)) } else { Shape::Box }
+        } else if d[0] <= 90.0 && d[2] <= 90.0 && d[1] >= 120.0 && matches!(m, "siyah-mat" | "metal-krom" | "ahsap-ceviz" | "ahsap-mese") {
+            Shape::Cyl
+        } else if (m.starts_with("lake") || (m == "metal-krom" && id == "buzdolabi")) && least >= 200.0 {
+            Shape::Round(14.0)
+        } else if id == "puf" && m == "siyah-mat" {
+            Shape::Cyl
+        } else {
+            Shape::Box
+        };
+    }
 }
 
 /// Parçalar, katalogdaki ölçüye göre (size) üretilir. Nesne ölçeği dönüşümde uygulanır.
 pub fn parts(id: &str) -> Vec<Part> {
+    let mut v = raw_parts(id);
+    refine(id, &mut v);
+    v
+}
+
+fn raw_parts(id: &str) -> Vec<Part> {
     let Some(item) = item(id) else { return vec![] };
     let [w, d, h] = item.size;
     let (hw, hd) = (w / 2.0, d / 2.0);
@@ -349,6 +402,10 @@ mod tests {
                 for k in 0..3 {
                     assert!(q.min[k] <= q.max[k], "{} ters kutu", i.id);
                 }
+            }
+            if i.id == "kanepe-3" {
+                assert!(p.iter().any(|q| matches!(q.shape, Shape::Round(_))), "kanepe minderleri yuvarlatılmalı");
+                assert!(p.iter().any(|q| q.shape == Shape::Cyl), "kanepe ayakları silindir olmalı");
             }
         }
         assert_eq!(items().iter().filter(|i| i.id == "kanepe-3").count(), 1);

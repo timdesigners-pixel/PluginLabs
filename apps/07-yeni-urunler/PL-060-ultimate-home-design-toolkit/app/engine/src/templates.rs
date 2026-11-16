@@ -6,7 +6,29 @@ use crate::catalog;
 use crate::model::*;
 
 fn mat(id: &str, name: &str, cat: &str, color: [f32; 3], roughness: f32, metallic: f32, price_m2: f64) -> Material {
-    Material { id: id.into(), name: name.into(), color, roughness, metallic, emission: 0.0, opacity: 1.0, price_m2, category: cat.into() }
+    // türüne göre varsayılan prosedürel doku
+    let (texture, texture_scale) = if id.starts_with("parke") {
+        ("parke", 1200.0)
+    } else if id.starts_with("ahsap") || id == "kaplama-ahsap" || id == "kapi-ahsap" || id == "govde" {
+        ("ahsap", 900.0)
+    } else if id.starts_with("seramik") {
+        ("karo", 600.0)
+    } else if id == "mermer" {
+        ("mermer", 1400.0)
+    } else if id.starts_with("beton") || id == "dis-cephe" {
+        ("beton", 1600.0)
+    } else if id.starts_with("kumas") {
+        ("kumas", 1000.0)
+    } else if id.starts_with("hali") {
+        ("hali", 1000.0)
+    } else if id == "cim" || id == "zemin-dis" {
+        ("cim", 2000.0)
+    } else if id == "cakil" || id == "kaplama-tas" {
+        ("tas", 900.0)
+    } else {
+        ("", 1000.0)
+    };
+    Material { id: id.into(), name: name.into(), color, roughness, metallic, emission: 0.0, opacity: 1.0, price_m2, category: cat.into(), texture: texture.into(), texture_scale }
 }
 
 pub fn default_materials() -> Vec<Material> {
