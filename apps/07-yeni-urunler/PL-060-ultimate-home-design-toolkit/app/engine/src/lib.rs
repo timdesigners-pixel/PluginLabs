@@ -7,6 +7,7 @@
 pub mod api;
 pub mod catalog;
 pub mod cost;
+pub mod elevation;
 pub mod formula;
 pub mod geom;
 pub mod measure;
@@ -17,6 +18,7 @@ pub mod modules;
 pub mod plan;
 pub mod reference;
 pub mod obj;
+pub mod palette;
 pub mod render;
 pub mod scene_file;
 pub mod templates;

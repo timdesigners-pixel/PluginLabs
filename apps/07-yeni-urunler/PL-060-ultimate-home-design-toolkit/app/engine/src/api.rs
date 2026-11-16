@@ -306,7 +306,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                     let mat = s.material(&b.material).cloned().unwrap_or_default();
                     let p: Vec<f32> = b.positions.iter().flat_map(|p| p.iter().map(|x| (x * 10.0).round() / 10.0)).collect();
                     let n: Vec<f32> = b.normals.iter().flat_map(|p| p.iter().map(|x| (x * 1000.0).round() / 1000.0)).collect();
-                    json!({"material": b.material, "color": mat.color, "roughness": mat.roughness, "metallic": mat.metallic, "emission": mat.emission, "opacity": mat.opacity, "positions": p, "normals": n})
+                    json!({"material": b.material, "color": mat.color, "roughness": mat.roughness, "metallic": mat.metallic, "emission": mat.emission, "opacity": mat.opacity, "textured": !mat.texture.is_empty(), "scale": mat.texture_scale, "positions": p, "normals": n})
                 })
                 .collect();
             Ok(json!({"groups": groups, "triangles": m.triangle_count(), "bounds": m.bounds()}))
@@ -376,6 +376,100 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             Ok(serde_json::to_value(crate::reference::analyze(&s, w, h, &rgb)?).unwrap())
         }
         "motor_defaults" => Ok(crate::motors::defaults()),
+        "add_texture" => {
+            let mut s = scene_of(&v)?;
+            let name: String = opt(&v, "name").unwrap_or_else(|| "Doku".into());
+            let id = crate::texture::add_texture(&mut s, &name, arg(&v, "width")?, arg(&v, "height")?, &arg::<String>(&v, "rgb")?)?;
+            Ok(json!({"scene": s, "id": id, "look": format!("img:{id}")}))
+        }
+        "texture_tiles" => {
+            // 3B önizleme için: dokulu her malzemenin tekrar eden karosu
+            let s = scene_of(&v)?;
+            let size: usize = opt::<usize>(&v, "size").unwrap_or(64).clamp(16, 128);
+            let mut out = serde_json::Map::new();
+            for m in s.materials.iter().filter(|m| !m.texture.is_empty()) {
+                let e = base64::engine::general_purpose::STANDARD;
+                if let Some(id) = m.texture.strip_prefix("img:") {
+                    if let Some(t) = s.textures.iter().find(|t| t.id == id) {
+                        out.insert(m.id.clone(), json!({"width": t.width, "height": t.height, "rgb": t.rgb, "scale": m.texture_scale}));
+                    }
+                } else if crate::texture::KINDS.iter().any(|k| k.0 == m.texture) {
+                    out.insert(m.id.clone(), json!({"width": size, "height": size, "rgb": e.encode(crate::texture::tile(&m.texture, m.color, m.texture_scale, size)), "scale": m.texture_scale}));
+                }
+            }
+            Ok(Value::Object(out))
+        }
+        "texture_kinds" => Ok(json!(crate::texture::KINDS.iter().map(|(k, l)| json!({"id": k, "label": l})).collect::<Vec<_>>())),
+        "import_palette" => {
+            let mut s = scene_of(&v)?;
+            let name: String = opt(&v, "name").unwrap_or_else(|| "Palet".into());
+            let ids = crate::palette::import(&mut s, &name, &arg::<String>(&v, "text")?)?;
+            Ok(json!({"scene": s, "ids": ids}))
+        }
+        "elevation" => {
+            let s = scene_of(&v)?;
+            let side: String = opt(&v, "side").unwrap_or_else(|| "on".into());
+            Ok(serde_json::to_value(crate::elevation::build(&s, &side)?).unwrap())
+        }
+        "object_render" => {
+            // Stüdyo önizlemesi: tek ürün, nötr zemin, yumuşak gün ışığı, yol izleme.
+            let base = scene_of(&v)?;
+            let mut s = templates::new_project("onizleme");
+            s.materials = base.materials.clone();
+            s.textures = base.textures.clone();
+            s.levels[0].elevation = 0.0;
+            if !s.materials.iter().any(|m| m.id == "studyo") {
+                s.materials.push(crate::model::Material { id: "studyo".into(), name: "Stüdyo zemini".into(), color: [0.78, 0.78, 0.77], roughness: 1.0, category: "dis".into(), ..Default::default() });
+            }
+            let mut obj = crate::model::Object { id: "N1".into(), rotation: opt(&v, "rotation").unwrap_or(-28.0), position: [5000.0, 4000.0, 0.0], ..Default::default() };
+            let size: [f64; 3];
+            if let Some(kind) = opt::<String>(&v, "motor") {
+                let g = crate::motors::generate(&kind, v.get("params").cloned().unwrap_or(json!({})), "onizleme")?;
+                for m in &g.materials {
+                    if !s.materials.iter().any(|x| x.id == m.id) {
+                        s.materials.push(m.clone());
+                    }
+                }
+                size = g.size;
+                obj.mesh = "onizleme".into();
+                s.meshes.push(g.mesh);
+            } else if let Some(cat) = opt::<String>(&v, "cat") {
+                let it = catalog::item(&cat).ok_or("Ürün bulunamadı")?;
+                size = it.size;
+                obj.mesh = format!("cat:{cat}");
+                obj.material = opt::<String>(&v, "material").filter(|m| !m.is_empty());
+            } else {
+                let id: String = arg(&v, "mesh")?;
+                let a = base.meshes.iter().find(|m| m.id == id).ok_or("Model bulunamadı")?;
+                let (mut mn, mut mx) = ([f32::INFINITY; 3], [f32::NEG_INFINITY; 3]);
+                for p in &a.positions {
+                    for k in 0..3 {
+                        mn[k] = mn[k].min(p[k]);
+                        mx[k] = mx[k].max(p[k]);
+                    }
+                }
+                size = [(mx[0] - mn[0]) as f64, (mx[2] - mn[2]) as f64, (mx[1] - mn[1]) as f64];
+                obj.mesh = id;
+                s.meshes.push(a.clone());
+            }
+            s.objects.push(obj);
+            let big = size[0].max(size[1]).max(size[2]).max(200.0);
+            let dist = big * 2.1 + 600.0;
+            let set = RenderSettings {
+                width: opt::<u32>(&v, "width").unwrap_or(640).clamp(64, 1920),
+                height: opt::<u32>(&v, "height").unwrap_or(480).clamp(64, 1080),
+                samples: opt::<u32>(&v, "samples").unwrap_or(32).clamp(1, 512),
+                bounces: 4,
+                eye: Some([5000.0 + dist * 0.62, size[2] * 0.55 + dist * 0.42, 4000.0 + dist * 0.68]),
+                target: Some([5000.0, size[2] * 0.45, 4000.0]),
+                fov: Some(34.0),
+                sky: Some(render::SkySettings { hour: 10.5, cloud: 0.35, haze: 0.2, ..Default::default() }),
+                mesh: mesh::MeshOptions { ground_material: "studyo".into(), ..Default::default() },
+                ..Default::default()
+            };
+            let r = render::render(&s, &set)?;
+            Ok(json!({"png": base64::engine::general_purpose::STANDARD.encode(&r.png), "width": r.width, "height": r.height, "triangles": r.triangles, "samples": r.samples}))
+        }
         "motor_preview" => {
             let kind: String = arg(&v, "kind")?;
             let g = crate::motors::generate(&kind, v.get("params").cloned().unwrap_or(json!({})), "onizleme")?;
@@ -387,7 +481,8 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                 .map(|gr| {
                     let mat = g.materials.iter().chain(base.iter()).find(|m| m.id == gr.material).cloned().unwrap_or_default();
                     let pos: Vec<f32> = g.mesh.indices[gr.start as usize..(gr.start + gr.count) as usize].iter().flat_map(|&i| g.mesh.positions[i as usize].map(|x| x.round())).collect();
-                    json!({"material": gr.material, "color": mat.color, "opacity": mat.opacity, "positions": pos})
+                    let nrm: Vec<f32> = g.mesh.indices[gr.start as usize..(gr.start + gr.count) as usize].iter().flat_map(|&i| g.mesh.normals[i as usize].map(|x| (x * 1000.0).round() / 1000.0)).collect();
+                    json!({"material": gr.material, "color": mat.color, "opacity": mat.opacity, "roughness": mat.roughness, "metallic": mat.metallic, "emission": mat.emission, "textured": !mat.texture.is_empty(), "scale": mat.texture_scale, "texture": mat.texture, "positions": pos, "normals": nrm})
                 })
                 .collect();
             Ok(json!({"groups": groups, "size": g.size, "price": g.price, "name": g.name, "triangles": g.triangles}))
@@ -532,6 +627,31 @@ mod tests {
         assert!(ok(&call("motor_preview", &json!({"kind": "havuz", "params": {"shape": "oval"}}).to_string()))["triangles"].as_u64().unwrap() > 50);
         let mesh = ok(&call("mesh", &json!({"scene": s, "options": {"roof": false}}).to_string()));
         assert!(mesh["triangles"].as_u64().unwrap() > 100);
+    }
+
+    #[test]
+    fn textures_palette_elevation_and_studio_render() {
+        let s = serde_json::to_value(templates::demo_scene()).unwrap();
+        use base64::Engine as _;
+        let raw: Vec<u8> = (0..16 * 16).flat_map(|i| if (i / 4 + i / 64) % 2 == 0 { [200u8, 40, 40] } else { [240, 230, 210] }).collect();
+        let tx = ok(&call("add_texture", &json!({"scene": s, "name": "Kareli", "width": 16, "height": 16, "rgb": base64::engine::general_purpose::STANDARD.encode(&raw)}).to_string()));
+        assert_eq!(tx["look"], "img:tx1");
+        let s = tx["scene"].clone();
+        let pv = ok(&call("motor_preview", &json!({"kind": "perde", "params": {"kind": "fon", "look": "img:tx1", "look_scale": 300}}).to_string()));
+        assert!(pv["groups"].as_array().unwrap().iter().any(|g| g["texture"] == "img:tx1"));
+        let m = ok(&call("motor", &json!({"scene": s, "kind": "perde", "params": {"kind": "fon", "look": "img:tx1"}}).to_string()));
+        let s = m["scene"].clone();
+        let tiles = ok(&call("texture_tiles", &json!({"scene": s, "size": 32}).to_string()));
+        assert_eq!(tiles["parke-mese"]["width"], 32);
+        assert!(tiles.as_object().unwrap().values().any(|t| t["width"] == 16), "yüklenen doku karosu döner");
+        let pal = ok(&call("import_palette", &json!({"scene": s, "name": "Deneme", "text": "#AABBCC\n#102030"}).to_string()));
+        assert_eq!(pal["ids"].as_array().unwrap().len(), 2);
+        let el = ok(&call("elevation", &json!({"scene": s, "side": "on"}).to_string()));
+        assert_eq!(el["openings"], 2);
+        let r = ok(&call("object_render", &json!({"scene": s, "cat": "kanepe-3", "width": 96, "height": 72, "samples": 4}).to_string()));
+        assert!(r["png"].as_str().unwrap().len() > 500);
+        let r2 = ok(&call("object_render", &json!({"scene": s, "motor": "yatak", "params": {}, "width": 96, "height": 72, "samples": 2}).to_string()));
+        assert!(r2["triangles"].as_u64().unwrap() > 1000);
     }
 
     #[test]

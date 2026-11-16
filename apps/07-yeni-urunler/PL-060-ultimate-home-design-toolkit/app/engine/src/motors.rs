@@ -24,14 +24,39 @@ pub struct Generated {
     pub triangles: usize,
 }
 
+/// Tüm motorlarda ortak görünüm ayarı.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct Style {
+    /// Kumaş/halı görünümü: boş (motorun kendi dokusu), prosedürel tür (ör. `kumas`, `hali`)
+    /// ya da yüklenen görsel `img:<doku kimliği>`.
+    pub look: String,
+    /// Desenin bir tekrarının ölçüsü (mm).
+    pub look_scale: f32,
+    /// Ayrıntı düzeyi: 1 hızlı, 2 ayrıntılı, 3 çok ayrıntılı (daha çok üçgen).
+    pub detail: u32,
+}
+impl Default for Style {
+    fn default() -> Self {
+        Style { look: String::new(), look_scale: 600.0, detail: 2 }
+    }
+}
+
 /// Malzemeye göre üçgen toplayıcı.
 #[derive(Default)]
 struct Gen {
     tris: BTreeMap<String, Vec<[P; 3]>>,
     materials: Vec<Material>,
+    style: Style,
 }
 
 impl Gen {
+    fn with(style: &Style) -> Gen {
+        Gen { style: Style { detail: style.detail.clamp(1, 3), ..style.clone() }, ..Default::default() }
+    }
+    fn d(&self) -> usize {
+        self.style.detail.clamp(1, 3) as usize
+    }
     fn tri(&mut self, m: &str, a: P, b: P, c: P) {
         self.tris.entry(m.to_string()).or_default().push([a, b, c]);
     }
@@ -73,6 +98,8 @@ impl Gen {
         if !self.materials.iter().any(|m| m.id == id) {
             let texture = if id.starts_with("hali") { "hali" } else if category == "tekstil" { "kumas" } else if id == "traverten" { "mermer" } else if id.starts_with("havuz-fayans") { "karo" } else { "" };
             let texture_scale = if id.starts_with("havuz-fayans") { 300.0 } else { 1000.0 };
+            // yüklenen ya da seçilen görünüm kumaş ve halı malzemelerine uygulanır
+            let (texture, texture_scale) = if category == "tekstil" && !self.style.look.is_empty() { (self.style.look.as_str(), self.style.look_scale.max(10.0)) } else { (texture, texture_scale) };
             self.materials.push(Material { id: id.into(), name: name.into(), color, roughness, metallic: 0.0, emission: 0.0, opacity, price_m2: 0.0, category: category.into(), texture: texture.into(), texture_scale });
         }
     }
@@ -171,10 +198,12 @@ pub struct Curtain {
     pub pattern: String,
     /// Fon panellerinin açıklığı (0 = kapalı, 1 = tamamen yanlara toplanmış).
     pub open: f64,
+    #[serde(flatten)]
+    pub style: Style,
 }
 impl Default for Curtain {
     fn default() -> Self {
-        Curtain { width: 2600.0, height: 2600.0, kind: "tul-fon".into(), pleats: 9.0, depth: 70.0, header: "rustik".into(), opacity: 0.35, color: [0.93, 0.92, 0.88], color2: [0.42, 0.47, 0.52], pattern: "duz".into(), open: 0.6 }
+        Curtain { width: 2600.0, height: 2600.0, kind: "tul-fon".into(), pleats: 9.0, depth: 70.0, header: "rustik".into(), opacity: 0.35, color: [0.93, 0.92, 0.88], color2: [0.42, 0.47, 0.52], pattern: "duz".into(), open: 0.6, style: Style::default() }
     }
 }
 
@@ -186,8 +215,9 @@ fn drape(g: &mut Gen, x0: f64, x1: f64, y0: f64, y1: f64, z: f64, pleats_per_m: 
         return;
     }
     let n = ((w / 1000.0 * pleats_per_m).round().max(1.0)) as usize;
-    let nu = n * 8;
-    let nv = 8;
+    let seg = 4 + 4 * g.d();
+    let nu = n * seg;
+    let nv = 4 + 4 * g.d();
     let (m0, m1) = (mats[0].to_string(), mats[1].to_string());
     let pat = pattern.to_string();
     g.surface(
@@ -201,7 +231,7 @@ fn drape(g: &mut Gen, x0: f64, x1: f64, y0: f64, y1: f64, z: f64, pleats_per_m: 
             [x0 + w * u, y1 - (y1 - y0) * v, z + amp * phase.sin() + sway]
         },
         |i, j| match pat.as_str() {
-            "cizgili" if (i / 8) % 2 == 1 => m1.clone(),
+            "cizgili" if (i / seg) % 2 == 1 => m1.clone(),
             "bordur" if j >= nv - 1 => m1.clone(),
             _ => m0.clone(),
         },
@@ -213,7 +243,7 @@ pub fn curtain(p: &Curtain, id: &str) -> Result<Generated, String> {
     let h = p.height.clamp(400.0, 3400.0);
     let depth = p.depth.clamp(15.0, 160.0);
     let pleats = p.pleats.clamp(3.0, 18.0);
-    let mut g = Gen::default();
+    let mut g = Gen::with(&p.style);
     let sheer_op = (p.opacity.clamp(0.1, 0.6)) as f32;
     let tul = col_id("perde-tul", p.color, (sheer_op * 100.0) as u32);
     let fon = col_id("perde-fon", p.color2, 100);
@@ -264,6 +294,15 @@ pub fn curtain(p: &Curtain, id: &str) -> Result<Generated, String> {
                 for sx in [-1.0, 1.0] {
                     let x = sx * (w / 2.0 + 120.0);
                     g.boxx("ahsap-ceviz", [x - 28.0, top + 7.0, zc - 28.0], [x + 28.0, top + 63.0, zc + 28.0]);
+                }
+                // halkalar: ayrıntı düzeyi 2 ve üstünde
+                if g.d() >= 2 {
+                    let rings = ((w / 1000.0 * pleats).round() as usize).clamp(4, 60);
+                    for k in 0..rings {
+                        let x = -w / 2.0 + (k as f64 + 0.5) * w / rings as f64;
+                        g.prism_x("metal-krom", x - 4.0, x + 4.0, top + 35.0, zc, 24.0, 8);
+                        g.boxx("metal-krom", [x - 2.0, top - 6.0, zc - 2.0], [x + 2.0, top + 12.0, zc + 2.0]);
+                    }
                 }
                 header_price = w / 1000.0 * 650.0 + 400.0;
             }
@@ -326,10 +365,12 @@ pub struct Rug {
     /// Hav yüksekliği (mm).
     pub pile: f64,
     pub fringe: bool,
+    #[serde(flatten)]
+    pub style: Style,
 }
 impl Default for Rug {
     fn default() -> Self {
-        Rug { shape: "dikdortgen".into(), width: 2000.0, length: 2900.0, pattern: "bordur".into(), color: [0.72, 0.64, 0.52], color2: [0.30, 0.22, 0.20], pile: 12.0, fringe: false }
+        Rug { shape: "dikdortgen".into(), width: 2000.0, length: 2900.0, pattern: "bordur".into(), color: [0.72, 0.64, 0.52], color2: [0.30, 0.22, 0.20], pile: 12.0, fringe: false, style: Style::default() }
     }
 }
 
@@ -356,7 +397,7 @@ pub fn rug(p: &Rug, id: &str) -> Result<Generated, String> {
         w = w.min(1000.0);
         l = l.max(w * 2.5);
     }
-    let mut g = Gen::default();
+    let mut g = Gen::with(&p.style);
     let rough = if pile > 25.0 { 1.0 } else { 0.92 };
     let m = [col_id("hali", p.color, pile as u32), col_id("hali", p.color2, pile as u32 + 1)];
     g.material(&m[0], "Halı · ana renk", p.color, rough, 1.0, "tekstil");
@@ -451,10 +492,12 @@ pub struct Bed {
     pub headboard_height: f64,
     pub headboard_color: [f32; 3],
     pub bedding: Bedding,
+    #[serde(flatten)]
+    pub style: Style,
 }
 impl Default for Bed {
     fn default() -> Self {
-        Bed { width: 1600.0, length: 2000.0, base: "sandikli".into(), base_color: [0.42, 0.43, 0.45], mattress: 260.0, headboard: "kapitone".into(), headboard_height: 1250.0, headboard_color: [0.42, 0.43, 0.45], bedding: Bedding::default() }
+        Bed { width: 1600.0, length: 2000.0, base: "sandikli".into(), base_color: [0.42, 0.43, 0.45], mattress: 260.0, headboard: "kapitone".into(), headboard_height: 1250.0, headboard_color: [0.42, 0.43, 0.45], bedding: Bedding::default(), style: Style::default() }
     }
 }
 
@@ -479,7 +522,7 @@ fn bedding(g: &mut Gen, b: &Bedding, w: f64, l: f64, top: f64) {
         }
     };
     // üst yüzey: kabarık ve hafif kırışık
-    let (nu, nv) = (24usize, 24usize);
+    let (nu, nv) = (12 * g.d() + 12, 12 * g.d() + 12);
     let height = move |u: f64, v: f64| {
         let edge = (1.0 - (2.0 * u - 1.0).abs().powi(6)) * (1.0 - (2.0 * v - 1.0).abs().powi(6));
         top + 18.0 + puff * edge + 6.0 * ((u * 9.0).sin() * (v * 7.0 + 0.6).cos())
@@ -512,9 +555,10 @@ fn bedding(g: &mut Gen, b: &Bedding, w: f64, l: f64, top: f64) {
         let mat = if row % 2 == 0 { m[2].clone() } else { m[1].clone() };
         let ph = 150.0;
         let pd = 360.0;
+        let (pu, pv) = (6 + 4 * g.d(), 4 + 4 * g.d());
         g.surface(
-            10,
-            8,
+            pu,
+            pv,
             |u, v| {
                 let (a, c) = (2.0 * u - 1.0, 2.0 * v - 1.0);
                 let bulge = (1.0 - a.abs().powi(4)) * (1.0 - c.abs().powi(4));
@@ -533,7 +577,7 @@ pub fn bed(p: &Bed, id: &str) -> Result<Generated, String> {
     let w = p.width.clamp(800.0, 2200.0);
     let l = p.length.clamp(1800.0, 2200.0);
     let mh = p.mattress.clamp(120.0, 400.0);
-    let mut g = Gen::default();
+    let mut g = Gen::with(&p.style);
     let bm = col_id("baza", p.base_color, 0);
     let hm = col_id("baslik", p.headboard_color, 0);
     let hm2 = col_id("baslik", shade(p.headboard_color, 0.78), 1);
@@ -628,14 +672,16 @@ pub struct BeddingSet {
     pub length: f64,
     pub top: f64,
     pub bedding: Bedding,
+    #[serde(flatten)]
+    pub style: Style,
 }
 impl Default for BeddingSet {
     fn default() -> Self {
-        BeddingSet { width: 1600.0, length: 2000.0, top: 520.0, bedding: Bedding::default() }
+        BeddingSet { width: 1600.0, length: 2000.0, top: 520.0, bedding: Bedding::default(), style: Style::default() }
     }
 }
 pub fn bedding_set(p: &BeddingSet, id: &str) -> Result<Generated, String> {
-    let mut g = Gen::default();
+    let mut g = Gen::with(&p.style);
     let (w, l) = (p.width.clamp(800.0, 2200.0), p.length.clamp(1800.0, 2200.0));
     let top = p.top.clamp(100.0, 900.0);
     bedding(&mut g, &Bedding { on: true, ..p.bedding.clone() }, w, l, top);
@@ -837,6 +883,20 @@ mod tests {
         let two = bedding_set(&BeddingSet { width: 1600.0, bedding: Bedding { pillows: 4, pattern: "dama".into(), ..Default::default() }, ..Default::default() }, "n").unwrap();
         let one = bedding_set(&BeddingSet { width: 1600.0, bedding: Bedding { pillows: 2, ..Default::default() }, ..Default::default() }, "n").unwrap();
         assert!(two.triangles > one.triangles);
+    }
+
+    #[test]
+    fn look_and_detail_change_material_and_tessellation() {
+        let lo = curtain(&Curtain { kind: "tul".into(), style: Style { detail: 1, ..Default::default() }, ..Default::default() }, "p").unwrap();
+        let hi = curtain(&Curtain { kind: "tul".into(), style: Style { detail: 3, look: "img:tx1".into(), look_scale: 400.0 }, ..Default::default() }, "p").unwrap();
+        assert!(hi.triangles > lo.triangles * 2);
+        assert!(hi.materials.iter().filter(|m| m.category == "tekstil").all(|m| m.texture == "img:tx1" && m.texture_scale == 400.0));
+        assert!(lo.materials.iter().any(|m| m.texture == "kumas"));
+        // yumuşak normaller: komşu üçgenler köşe normalini paylaşır
+        let distinct: std::collections::HashSet<[i32; 3]> = hi.mesh.normals.iter().map(|n| [(n[0] * 50.0) as i32, (n[1] * 50.0) as i32, (n[2] * 50.0) as i32]).collect();
+        assert!(distinct.len() > 40, "kıvrımlı yüzeyde çok sayıda farklı normal olmalı: {}", distinct.len());
+        let r = generate("hali", serde_json::json!({"look": "hali", "detail": 3, "pattern": "dama"}), "h").unwrap();
+        valid(&r);
     }
 
     #[test]
