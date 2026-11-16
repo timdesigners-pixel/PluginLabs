@@ -4,7 +4,7 @@
 use crate::model::{Scene, Tier};
 use crate::render::{Atmosphere, RenderSettings};
 use crate::units::Unit;
-use crate::{catalog, cost, formula, measure, mesh, modules, obj, plan, render, scene_file, templates};
+use crate::{catalog, cost, formula, measure, mesh, modules, obj, photo, plan, render, scene_file, spaces, templates};
 use base64::Engine;
 use serde::Deserialize;
 use serde_json::{json, Value};
@@ -31,7 +31,8 @@ pub fn call(cmd: &str, payload: &str) -> String {
 
 /// Sahne üzerinde düzenleme yapan komutların ortak sonu: modülleri ve odaları yeniler.
 fn finish(mut s: Scene, extra: Value) -> Result<Value, String> {
-    let notes = modules::rebuild(&mut s);
+    let mut notes = modules::rebuild(&mut s);
+    notes.extend(spaces::rebuild(&mut s));
     let warn = plan::refresh_rooms(&mut s);
     Ok(json!({"scene": s, "notes": notes, "roomWarnings": warn, "extra": extra}))
 }
@@ -366,6 +367,40 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let base = if base.is_empty() { "ev".to_string() } else { base };
             let (o_txt, m_txt) = obj::export(&s, &m, &format!("{base}.mtl"));
             Ok(json!({"obj": o_txt, "mtl": m_txt, "triangles": m.triangle_count(), "basename": base}))
+        }
+        "photo_room" => {
+            let inp: photo::PhotoInput = arg(&v, "photo")?;
+            Ok(json!(photo::fit(&inp)?))
+        }
+        "add_space" => {
+            let mut s = scene_of(&v)?;
+            let sp: spaces::Space = arg(&v, "space")?;
+            let openings: Vec<photo::FitOpening> = opt(&v, "openings").unwrap_or_default();
+            let cam: Option<photo::FitCamera> = opt(&v, "camera");
+            let beside: Option<String> = opt(&v, "beside");
+            let side: String = opt(&v, "side").unwrap_or_else(|| "sag".into());
+            let (id, notes) = spaces::add(&mut s, sp, &openings, cam.as_ref(), beside.as_deref(), &side)?;
+            if let Some(c) = s.spaces.iter().find(|x| x.id == id).and_then(|x| x.camera.clone()) {
+                s.camera = c;
+            }
+            finish(s, json!({"id": id, "notes": notes}))
+        }
+        "set_space" => {
+            let mut s = scene_of(&v)?;
+            let id: String = arg(&v, "id")?;
+            if let Some(name) = opt::<String>(&v, "name") {
+                if let Some(sp) = s.spaces.iter_mut().find(|x| x.id == id) {
+                    sp.name = name.chars().take(40).collect();
+                }
+            }
+            let notes = spaces::resize(&mut s, &id, opt(&v, "width"), opt(&v, "depth"), opt(&v, "height"), opt(&v, "lock").unwrap_or(false))?;
+            finish(s, json!({"id": id, "notes": notes}))
+        }
+        "archive_space" => {
+            let mut s = scene_of(&v)?;
+            let id: String = arg(&v, "id")?;
+            spaces::archive(&mut s, &id)?;
+            finish(s, json!({"id": id}))
         }
         "reference_image" => {
             let s = scene_of(&v)?;

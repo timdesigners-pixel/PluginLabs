@@ -33,6 +33,8 @@ pub struct Scene {
     pub dimensions: Vec<Dimension>,
     /// Kullanıcının yüklediği görsel dokular (en çok 512 × 512).
     pub textures: Vec<TextureAsset>,
+    /// Serbest ölçülü mekânlar (fotoğraftan ya da elle girilen ölçülerden).
+    pub spaces: Vec<crate::spaces::Space>,
 }
 
 impl Default for Scene {
@@ -57,6 +59,7 @@ impl Default for Scene {
             interior: "boya-beyaz".into(),
             dimensions: vec![],
             textures: vec![],
+            spaces: vec![],
         }
     }
 }

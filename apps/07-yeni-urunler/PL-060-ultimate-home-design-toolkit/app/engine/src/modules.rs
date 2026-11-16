@@ -220,7 +220,7 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
         }
     }
     for l in scene.levels.iter_mut() {
-        l.walls.retain(|w| !w.generated);
+        l.walls.retain(|w| !w.generated || w.id.starts_with('O'));
     }
     for (lvl, mut w) in new_walls {
         if let Some(o) = outer_keep.get(&w.id) {

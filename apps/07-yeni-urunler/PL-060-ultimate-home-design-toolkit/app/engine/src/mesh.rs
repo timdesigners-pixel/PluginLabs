@@ -309,6 +309,21 @@ pub fn build(scene: &Scene, opt: &MeshOptions) -> SceneMesh {
         }
     }
 
+    // serbest mekânların döşemesi ve tavanı
+    if let Some(l0) = scene.levels.first().filter(|l| show(&l.id)) {
+        let el = l0.elevation;
+        for sp in &scene.spaces {
+            let (omn, omx) = sp.outer();
+            slab(&mut m, "beton-kabuk", (omn, omx), 0.0, el, &[]);
+            if opt.roof || Some(l0.id.clone()) != top_visible {
+                let y0 = el + sp.height;
+                slab(&mut m, "beton-kabuk", (omn, omx), y0, y0 + st.top_slab, &[]);
+                let (a, _) = sp.rect();
+                quad(m.batch("tavan-beyaz"), [a[0], y0 - 1.0, a[1]], [sp.width, 0.0, 0.0], [0.0, 0.0, sp.depth], [0.0, -1.0, 0.0]);
+            }
+        }
+    }
+
     for level in scene.levels.iter().filter(|l| show(&l.id)) {
         let el = level.elevation;
         // zemin kaplamaları
