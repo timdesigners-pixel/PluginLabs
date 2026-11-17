@@ -1,1 +1,0 @@
-{ "identifier": "main", "description": "Yalnız paketlenmiş ana pencere; dosya, ağ ve kasa işlemleri doğrulanan Rust komutlarında.", "windows": ["main"], "permissions": ["core:default"] }

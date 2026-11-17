@@ -6,17 +6,17 @@
 | --- | --- |
 | Kimlik | `PL-060` · `ultimate-home-design-toolkit` (ad geçicidir) |
 | Kategori | 07 · Yeni ürünler — PL-054+ |
-| Durum | v0.1.0 geliştirme · motor ve arayüz testleri geçti; Windows paketi CI'da üretilecek, release yayımlanmadı |
+| Durum | v0.1.0 geliştirme · kendi deposunda; motor ve arayüz testleri geçti, release yayımlanmadı |
 | Hedef platformlar | Windows (masaüstü) |
 | Dağıtım biçimi | masaüstü uygulaması (Tauri 2 / Rust) |
-| Kaynak | [app/](app/) |
+| Geliştirme deposu | [timdesigners-pixel/ultimate-home-design-toolkit](https://github.com/timdesigners-pixel/ultimate-home-design-toolkit) (private) |
 | Referans | Kullanıcının paylaştığı modüler konut konfigüratörü akışı (Model → Katlar → İç plan → 3D → Gönder) ve ekran görüntüleri; marka, metin ve görseller kopyalanmadı |
 
 ## Ne işe yarar
 
 Kullanıcı 4 m genişlikli modülleri seçer, katlara yerleştirir, iç planı çizer, mahalleri tek tıkla adlandırır, kapı/pencere/mobilya yerleştirir; uygulama net alanları, metrajı ve tahmini maliyeti hesaplar, 3B sahneyi gösterir ve gerçekçi render üretir. Proje `.uhds` dosyası, OBJ+MTL, PNG plan/render ve yazdırılabilir özet olarak dışa aktarılır.
 
-Ayrıntılar, ekran görüntüleri ve geliştirme komutları: [app/README.md](app/README.md).
+Ayrıntılar, ekran görüntüleri ve geliştirme komutları: [ürün deposunun README dosyası](https://github.com/timdesigners-pixel/ultimate-home-design-toolkit#readme).
 
 ## MyMind
 

@@ -2484,7 +2484,7 @@
         "slug": "yeni-urunler",
         "title": "07 · Yeni ürünler — PL-054+"
       },
-      "status": "v0.1.0 geliştirme · Rust motoru (42 test) + Tauri 2 kabuğu; Windows paketi ve release bekliyor",
+      "status": "v0.1.0 geliştirme · kendi deposunda; Rust motoru (85 test) + Tauri 2; genişleme paketleri (Tiny House, Van Builder); release ve Hub kataloğu bekliyor",
       "priority": null,
       "effort": null,
       "platforms": {
@@ -2499,11 +2499,17 @@
         "masaüstü uygulaması"
       ],
       "summary": "Modüler hazır konutlar için tasarım araç seti: modül ve kat yerleşimi, 10 cm hassas iç plan, ölçü/metraj, maliyet ölçeklemesi, kullanıcı fonksiyonları, ışın izleme render, OBJ ve yerel .uhds sahne dosyası.",
-      "repo": "timdesigners-pixel/PluginLabs",
+      "repo": {
+        "owner": "timdesigners-pixel",
+        "name": "ultimate-home-design-toolkit",
+        "url": "https://github.com/timdesigners-pixel/ultimate-home-design-toolkit",
+        "verified": true,
+        "note": "Kullanıcı tarafından private oluşturuldu 17.11.2026; kod PluginLabs apps/…/app klasöründen geçmişiyle taşındı"
+      },
       "appPath": "apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit",
       "codexProject": {
         "name": "PL-060 · Ultimate Home Design Toolkit",
-        "primaryFolder": "PluginLabs/apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app",
+        "primaryFolder": "ürün klasörü (yerel)",
         "secondaryFolder": "PluginLabs"
       },
       "notionUrl": null
