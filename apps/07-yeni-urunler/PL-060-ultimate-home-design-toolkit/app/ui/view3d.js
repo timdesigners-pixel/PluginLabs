@@ -171,7 +171,7 @@ export class View3D {
       for (let i = 0; i < p.length; i++) p[i] = g.positions[i] * MM;
       geo.setAttribute("position", new THREE.BufferAttribute(p, 3));
       geo.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(g.normals), 3));
-      const col = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.SRGBColorSpace);
+      const col = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.LinearSRGBColorSpace);
       const tx = this.tex[g.material];
       if (tx && tx.uv && g.uvs && g.uvs.length) {
         geo.setAttribute("uv", new THREE.BufferAttribute(new Float32Array(g.uvs), 2));
@@ -191,7 +191,7 @@ export class View3D {
       }
       const useMap = tx && (!tx.uv || (g.uvs && g.uvs.length));
       const mat = new THREE.MeshStandardMaterial({ map: useMap ? tx.map : null, side: THREE.DoubleSide, color: col, roughness: g.roughness, metalness: g.metallic * 0.85, transparent: g.opacity < 0.99, opacity: Math.max(0.15, g.opacity), alphaTest: g.alphaCutoff > 0 ? g.alphaCutoff : 0 });
-      if (g.emission > 0) { mat.emissive = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.SRGBColorSpace); mat.emissiveIntensity = Math.min(3, g.emission / 3); }
+      if (g.emission > 0) { mat.emissive = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.LinearSRGBColorSpace); mat.emissiveIntensity = Math.min(3, g.emission / 3); }
       if (g.opacity < 0.99) mat.depthWrite = false;
       const mesh = new THREE.Mesh(geo, mat);
       mesh.castShadow = g.material !== "zemin-dis" && g.opacity >= 0.5;

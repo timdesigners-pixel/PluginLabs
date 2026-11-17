@@ -16,12 +16,16 @@ type R<T> = Result<T, String>;
 const HUB: &str = "http://127.0.0.1:47632";
 const MAX_TEXT: u64 = 256 * 1024 * 1024;
 const MAX_OBJ: u64 = 64 * 1024 * 1024;
+const MAX_PALETTE: u64 = 4 * 1024 * 1024;
 const MAX_PROMPT: usize = 6000;
 
 #[derive(Serialize)]
 struct OpenedFile {
     name: String,
     text: String,
+    /// İkili dosyalar (ör. ASE kartelası) için base64 içerik.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    data: Option<String>,
 }
 
 #[tauri::command]
@@ -63,6 +67,7 @@ fn filter(kind: &str) -> R<(&'static str, &'static [&'static str])> {
         "obj" => ("Wavefront OBJ / MTL", &["obj", "mtl"]),
         "mtl" => ("MTL malzeme", &["mtl"]),
         "png" => ("PNG görüntü", &["png"]),
+        "palette" => ("Renk kartelası (ASE, GPL, CSV)", &["ase", "gpl", "csv", "txt"]),
         _ => return Err("Bilinmeyen dosya türü".into()),
     })
 }
@@ -70,13 +75,17 @@ fn filter(kind: &str) -> R<(&'static str, &'static [&'static str])> {
 #[tauri::command]
 async fn open_files(kind: String) -> R<Vec<OpenedFile>> {
     let (label, exts) = filter(&kind)?;
-    if kind != "uhds" && kind != "obj" {
+    if kind != "uhds" && kind != "obj" && kind != "palette" {
         return Err("Bu tür açılamaz".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
         let dlg = rfd::FileDialog::new().add_filter(label, exts);
         let picked: Vec<PathBuf> = if kind == "obj" { dlg.pick_files().unwrap_or_default() } else { dlg.pick_file().into_iter().collect() };
-        let limit = if kind == "obj" { MAX_OBJ } else { MAX_TEXT };
+        let limit = match kind.as_str() {
+            "obj" => MAX_OBJ,
+            "palette" => MAX_PALETTE,
+            _ => MAX_TEXT,
+        };
         let mut out = vec![];
         for p in picked.into_iter().take(4) {
             let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("").to_lowercase();
@@ -87,8 +96,14 @@ async fn open_files(kind: String) -> R<Vec<OpenedFile>> {
             if len > limit {
                 return Err(format!("{} çok büyük", p.display()));
             }
+            let name = p.file_name().and_then(|n| n.to_str()).unwrap_or("dosya").to_string();
+            if ext == "ase" {
+                let bytes = std::fs::read(&p).map_err(|e| e.to_string())?;
+                out.push(OpenedFile { name, text: String::new(), data: Some(base64::engine::general_purpose::STANDARD.encode(bytes)) });
+                continue;
+            }
             let text = std::fs::read_to_string(&p).map_err(|_| "Dosya UTF-8 metin olarak okunamadı".to_string())?;
-            out.push(OpenedFile { name: p.file_name().and_then(|n| n.to_str()).unwrap_or("dosya").to_string(), text });
+            out.push(OpenedFile { name, text, data: None });
         }
         Ok(out)
     })

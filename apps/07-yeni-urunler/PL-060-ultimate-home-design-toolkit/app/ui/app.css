@@ -262,3 +262,17 @@ html, body { margin: 0; height: 100%; }
 .uh-phcard .uh-libcard__thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--pl-radius-md); }
 .uh-phcard .uh-libcard__meta { font-family: var(--pl-font-mono); }
 .uh-phcard.is-busy { opacity: .6; pointer-events: none; }
+
+/* Renk kartelaları */
+.uh-swgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: var(--pl-space-2); margin-top: var(--pl-space-2); }
+.uh-paintsw { display: grid; grid-template-rows: 54px auto auto; gap: 2px; padding: 6px; border: 1px solid var(--pl-line); border-radius: var(--pl-radius-md); background: var(--pl-bg-2); color: var(--pl-fg-1); text-align: left; cursor: pointer; font: inherit; }
+.uh-paintsw:hover { border-color: var(--pl-line-strong); }
+.uh-paintsw:focus-visible { outline: 2px solid var(--pl-line-focus); outline-offset: 2px; }
+.uh-paintsw.is-active { border-color: var(--pl-accent); box-shadow: 0 0 0 1px var(--pl-accent); }
+.uh-paintsw__chip { border-radius: calc(var(--pl-radius-md) - 3px); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.18); }
+.uh-paintsw__code { font-size: var(--pl-text-xs); font-weight: 600; }
+.uh-paintsw__in { color: var(--pl-accent); font-size: 9px; vertical-align: middle; }
+.uh-paintsw__name { font-size: var(--pl-text-2xs); color: var(--pl-fg-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.uh-details { margin: var(--pl-space-2) 0; padding: var(--pl-space-2) var(--pl-space-3); border: 1px solid var(--pl-line); border-radius: var(--pl-radius-md); }
+.uh-details > summary { cursor: pointer; font-weight: 600; font-size: var(--pl-text-sm); }
+.uh-details .pl-swatch { width: 12px; height: 12px; }

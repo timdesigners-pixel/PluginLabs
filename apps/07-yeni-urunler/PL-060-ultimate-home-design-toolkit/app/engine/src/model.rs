@@ -35,6 +35,9 @@ pub struct Scene {
     pub textures: Vec<TextureAsset>,
     /// Serbest ölçülü mekânlar (fotoğraftan ya da elle girilen ölçülerden).
     pub spaces: Vec<crate::spaces::Space>,
+    /// Kullanıcının içe aktardığı renk kartelaları (boya firması ASE/GPL/CSV dosyaları).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub paint_systems: Vec<crate::paints::PaintSystem>,
 }
 
 impl Default for Scene {
@@ -60,6 +63,7 @@ impl Default for Scene {
             dimensions: vec![],
             textures: vec![],
             spaces: vec![],
+            paint_systems: vec![],
         }
     }
 }
@@ -200,13 +204,35 @@ pub struct Wall {
     pub outside: i8,
     /// Kabuk duvarı ise taban ve tavan kotları (mm, dünya).
     pub shell: Option<[f64; 2]>,
+    /// İç yüzde iki renk: zeminden `split` mm'ye kadar `lower` boyası (0 = tek renk).
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub lower: String,
+    #[serde(skip_serializing_if = "is_zero_f")]
+    pub split: f64,
+    /// Ayırma çizgisinin üstünde `band_h` mm yüksekliğinde şerit boyası.
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub band: String,
+    #[serde(skip_serializing_if = "is_zero_f")]
+    pub band_h: f64,
+}
+fn is_zero_f(v: &f64) -> bool {
+    *v == 0.0
 }
 impl Default for Wall {
     fn default() -> Self {
-        Wall { id: String::new(), a: [0.0, 0.0], b: [1000.0, 0.0], thickness: 100.0, height: None, material: String::new(), exterior: false, structural: false, generated: false, outer: String::new(), outside: 0, shell: None }
+        Wall { id: String::new(), a: [0.0, 0.0], b: [1000.0, 0.0], thickness: 100.0, height: None, material: String::new(), exterior: false, structural: false, generated: false, outer: String::new(), outside: 0, shell: None, lower: String::new(), split: 0.0, band: String::new(), band_h: 0.0 }
     }
 }
 impl Wall {
+    /// Yeniden kurulan (üretilmiş) duvara eski duvarın yüzey boyalarını taşır.
+    pub fn keep_paint(&mut self, old: &Wall) {
+        self.material = old.material.clone();
+        self.outer = old.outer.clone();
+        self.lower = old.lower.clone();
+        self.split = old.split;
+        self.band = old.band.clone();
+        self.band_h = old.band_h;
+    }
     pub fn length(&self) -> f64 {
         crate::geom::dist(self.a, self.b)
     }

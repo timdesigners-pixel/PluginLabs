@@ -180,6 +180,15 @@ pub fn to_linear(c: f32) -> f32 {
     }
 }
 
+/// Doğrusal → sRGB (0–1).
+pub fn to_srgb(c: f32) -> f32 {
+    if c <= 0.0031308 {
+        12.92 * c
+    } else {
+        1.055 * c.powf(1.0 / 2.4) - 0.055
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

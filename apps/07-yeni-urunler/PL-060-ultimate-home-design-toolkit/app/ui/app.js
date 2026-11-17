@@ -15,7 +15,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, ph: { models: null, textures: null, cat: "seating", q: "", tcat: "floor", tq: "", busy: new Set(), thumbs: {}, loading: {}, error: {} }, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", paint: { sys: "ral-classic", group: "*", q: "", target: "duvar", ral: null }, libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, ph: { models: null, textures: null, cat: "seating", q: "", tcat: "floor", tq: "", busy: new Set(), thumbs: {}, loading: {}, error: {} }, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -115,7 +115,7 @@ function refresh() {
   if (v === "maliyet") renderCost();
   if (v === "fonksiyon") renderFunctions();
   if (v === "kutuphane") { renderLibrary(); renderPhModels(); }
-  if (v === "kaplama") { renderMaterials(); renderPhTextures(); }
+  if (v === "kaplama") { renderMaterials(); renderPaints(); renderPhTextures(); }
   if (v === "motor") renderMotor();
   if (v === "referans") renderReference();
   if (v === "foto") renderPhoto();
@@ -203,7 +203,7 @@ const PLAN_TOOLS = () => {
     { title: L("app.8_aydinlatma_elektronik_dis_mekan"), items: cat(["avize", "lambader", "ankastre-spot", "aplik", "tv-55", "tablo-yatay", "agac", "cali", "cim-alan", "bahce-lambasi"]), extra: `<button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="motor">${L("app.perde_hali_yatak_havuz_tasarla")}</button><p class="uh-small">${L("app.tum_urunler_urun_kutuphanesindedir")}</p>` },
     { title: L("app.9_dis_cephe_kaplama"), items: [{ type: "clad", value: "kaplama-tas", label: L("app.tas") }, { type: "clad", value: "kaplama-ahsap", label: L("app.ahsap") }, { type: "clad", value: "kaplama-kompozit", label: L("app.aluminyum_kompozit") }, { type: "clad", value: "", label: L("app.kaplamayi_kaldir") }], extra: `<p class="uh-small">${L("app.kaplama_secin_sonra_plandaki_dis_cephe")}</p>` },
     { title: L("app.10_dis_cephe_boyasi"), swatches: "facade" },
-    { title: L("app.11_kaplama_uygula"), items: [{ type: "paint", value: S.paintMat, label: L("app.kaplamayi_uygula") }], extra: (() => { const m = S.scene.materials.find((x) => x.id === S.paintMat); return `<div class="uh-paintnow">${m ? `<span class="pl-swatch" style="background:rgb(${m.color.map((c) => Math.round(c * 255)).join(" ")})" aria-hidden="true"></span>${esc(N.matName(m))}` : ""}</div><button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="kaplama">${L("app.kaplama_kutuphanesini_ac")}</button><button class="uh-tool uh-tool--wide" type="button" data-view="kutuphane">${L("app.urun_kutuphanesini_ac")}</button><p class="uh-small">${L("app.mahale_tiklayinca_zemin_duvara")}</p>`; })() },
+    { title: L("app.11_kaplama_uygula"), items: [{ type: "paint", value: S.paintMat, label: L("app.kaplamayi_uygula") }], extra: (() => { const m = S.scene.materials.find((x) => x.id === S.paintMat); return `<div class="uh-paintnow">${m ? `<span class="pl-swatch" style="background:${rgb(m.color)}" aria-hidden="true"></span>${esc(N.matName(m))}` : ""}</div><button class="uh-tool uh-tool--wide uh-mt" type="button" data-view="kaplama">${L("app.kaplama_kutuphanesini_ac")}</button><button class="uh-tool uh-tool--wide" type="button" data-view="kutuphane">${L("app.urun_kutuphanesini_ac")}</button><p class="uh-small">${L("app.mahale_tiklayinca_zemin_duvara")}</p>`; })() },
     { title: L("app.12_revizyon_notu"), items: [{ type: "note", label: L("app.plana_not_ekle") }] },
   ];
 };
@@ -232,7 +232,7 @@ function buildTools() {
 }
 function swatches(prefix, current, kind) {
   const mats = S.scene.materials.filter((m) => m.id.startsWith(prefix) || (kind === "facade" && m.id === "beton-kabuk"));
-  return `<div class="pl-swatches uh-mt" role="radiogroup">${mats.map((m) => `<button type="button" class="pl-swatch ${m.id === current ? "is-selected" : ""}" role="radio" aria-checked="${m.id === current}" title="${esc(N.matName(m))}" aria-label="${esc(N.matName(m))}" data-swatch="${kind}" data-id="${m.id}" style="background:rgb(${m.color.map((c) => Math.round(c * 255)).join(" ")})"></button>`).join("")}</div>`;
+  return `<div class="pl-swatches uh-mt" role="radiogroup">${mats.map((m) => `<button type="button" class="pl-swatch ${m.id === current ? "is-selected" : ""}" role="radio" aria-checked="${m.id === current}" title="${esc(N.matName(m))}" aria-label="${esc(N.matName(m))}" data-swatch="${kind}" data-id="${m.id}" style="background:${rgb(m.color)}"></button>`).join("")}</div>`;
 }
 function renderPlan() {
   floorSeg($("#floorSegP"), (l) => { S.level = l; P.setLevel(l); renderPlan(); });
@@ -269,6 +269,10 @@ function selected() {
   if (sel.type === "dimension") return { sel, o: (s.dimensions || []).find((x) => x.id === sel.id) };
   return null;
 }
+const innerMats = () => S.scene.materials.filter((m) => ["duvar", "ic-boya", "zemin"].includes(m.category) || m.id.startsWith("ozel-"));
+const outerMats = () => S.scene.materials.filter((m) => ["kaplama", "cephe", "kabuk"].includes(m.category));
+const matSelect = (f, list, cur, none, disabled = false) => `<select class="pl-select" data-f="${f}" ${disabled ? "disabled" : ""}><option value="">${none}</option>${list.map((m) => `<option value="${m.id}" ${cur === m.id ? "selected" : ""}>${esc(N.matName(m))}</option>`).join("")}</select>`;
+const ralCss = (code) => { const c = (S.paint.ral || []).find((x) => x.code === code); return c ? c.hex : "transparent"; };
 const field = (label, html) => `<label class="pl-field"><span class="pl-field__label">${label}</span>${html}</label>`;
 function renderInspector() {
   const box = $("#inspector");
@@ -302,8 +306,17 @@ function renderInspector() {
     const len = Math.hypot(o.b[0] - o.a[0], o.b[1] - o.a[1]);
     const kind = o.structural ? L("app.tasiyici_perde_beton_degistirilemez") : o.generated ? (o.exterior ? L("app.modul_dis_duvari") : L("app.modul_birlesim_duvari")) : L("app.ic_bolme");
     box.innerHTML = `<div class="uh-stats"><dt>${L("common.tur")}</dt><dd>${kind}</dd><dt>${L("app.uzunluk")}</dt><dd>${fmt(len / 1000)} m</dd><dt>${L("app.kalinlik")}</dt><dd>${fmt(o.thickness / 10, 1)} cm</dd></div>
-      ${o.exterior ? field(L("app.dis_yuz"), `<select class="pl-select" data-f="outer"><option value="">${L("app.cephe_boyasi_genel")}</option>${S.scene.materials.filter((m) => m.category === "kaplama").map((m) => `<option value="${m.id}" ${o.outer === m.id ? "selected" : ""}>${esc(N.matName(m))}</option>`).join("")}</select>`) : ""}
-      ${field(L("app.ic_yuz_kaplamasi"), `<select class="pl-select" data-f="wmat"><option value="">${L("app.ic_cephe_boyasi_genel")}</option>${S.scene.materials.filter((m) => ["duvar", "ic-boya", "zemin"].includes(m.category) || m.id.startsWith("ozel-")).map((m) => `<option value="${m.id}" ${o.material === m.id ? "selected" : ""}>${esc(N.matName(m))}</option>`).join("")}</select>`)}
+      ${o.exterior ? field(L("app.dis_yuz"), matSelect("outer", outerMats(), o.outer, L("app.cephe_boyasi_genel"))) : ""}
+      ${field(L("app.ic_yuz_kaplamasi"), matSelect("wmat", innerMats(), o.material, L("app.ic_cephe_boyasi_genel")))}
+      ${!o.exterior ? field(L("boya.b_yuzu"), matSelect("outer", innerMats(), o.outer, L("boya.a_yuzu_ile_ayni"))) : ""}
+      <details class="uh-details" ${o.lower ? "open" : ""}><summary>${L("boya.kombine_boya")}</summary>
+        ${field(L("boya.alt_bolge"), matSelect("lower", innerMats(), o.lower, L("boya.tek_renk")))}
+        ${field(L("boya.ayirma_yuksekligi_cm"), `<input class="pl-input" type="number" step="5" min="0" max="400" data-f="split" value="${o.split ? Math.round(o.split / 10) : 90}" ${o.lower ? "" : "disabled"}>`)}
+        ${field(L("boya.serit"), matSelect("band", innerMats(), o.band, L("boya.serit_yok"), !o.lower))}
+        ${field(L("boya.serit_yuksekligi_cm"), `<input class="pl-input" type="number" step="1" min="1" max="60" data-f="band_h" value="${o.band_h ? Math.round(o.band_h / 10) : 6}" ${o.lower && o.band ? "" : "disabled"}>`)}
+        <div class="uh-row uh-wrap">${[["9010", "7016"], ["9001", "6021"], ["1013", "5014"]].map(([u, d]) => `<button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" data-act="two-tone" data-up="${u}" data-down="${d}"><span class="pl-swatch" style="background:${ralCss(u)}" aria-hidden="true"></span><span class="pl-swatch" style="background:${ralCss(d)}" aria-hidden="true"></span> RAL ${u} / ${d}</button>`).join("")}</div>
+        <p class="uh-small">${L("boya.kombine_ipucu")}</p>
+      </details>
       ${!o.generated ? field(L("app.kalinlik_cm"), `<input class="pl-input" type="number" step="0.5" min="5" max="40" data-f="thick" value="${o.thickness / 10}">`) : ""}
       ${!o.generated ? `<button class="pl-btn pl-btn--danger pl-btn--sm" type="button" data-act="archive">${L("uc.arsivle")}</button>` : `<p class="uh-small">${L("app.modul_duvarlari_modulle_birlikte_degisir")}</p>`}`;
   } else if (it.sel.type === "room") {
@@ -358,6 +371,14 @@ function onInspectorChange(e) {
   } else if (it.sel.type === "wall" && f === "outer") {
     level.walls.find((x) => x.id === it.o.id).outer = v;
     commit(s);
+  } else if (it.sel.type === "wall" && ["lower", "split", "band", "band_h"].includes(f)) {
+    const w = level.walls.find((x) => x.id === it.o.id);
+    if (f === "lower") { w.lower = v; if (v && !w.split) w.split = 900; if (!v) { w.split = 0; w.band = ""; w.band_h = 0; } }
+    if (f === "split") w.split = Math.max(50, Math.min(4000, (Number(v) || 90) * 10));
+    if (f === "band") { w.band = v; w.band_h = v ? w.band_h || 60 : 0; }
+    if (f === "band_h") w.band_h = Math.max(10, Math.min(600, (Number(v) || 6) * 10));
+    commit(s);
+    renderInspector();
   } else if (it.sel.type === "room") {
     const r = level.rooms.find((x) => x.id === it.o.id);
     if (f === "rname") r.name = v.slice(0, 60);
@@ -688,7 +709,11 @@ function fnDraft() {
 }
 
 /* ---------- Ürün kütüphanesi ---------- */
-const rgb = (c, k = 1) => `rgb(${c.map((x) => Math.round(Math.min(1, x * k) * 255)).join(" ")})`;
+// malzeme renkleri doğrusal ışık değeridir; ekranda sRGB olarak gösterilir
+const toS = (x) => (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+const toL = (x) => (x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4));
+const rgb = (c, k = 1) => `rgb(${c.map((x) => Math.round(Math.max(0, Math.min(1, toS(Math.min(1, x * k)))) * 255)).join(" ")})`;
+const srgbCss = (c) => `rgb(${c.map((x) => Math.round(Math.max(0, Math.min(1, x)) * 255)).join(" ")})`;
 /** Katalog parçalarından izometrik küçük resim (SVG). */
 function isoThumb(parts) {
   if (!parts || !parts.length) return "";
@@ -1026,8 +1051,9 @@ async function addManualSpace() {
 }
 
 /* ---------- Tasarım motorları ---------- */
-const hex2rgb = (h) => [1, 3, 5].map((i) => Math.round((parseInt(h.slice(i, i + 2), 16) / 255) * 1000) / 1000);
-const rgb2hex = (c) => "#" + c.map((x) => Math.round(Math.max(0, Math.min(1, x)) * 255).toString(16).padStart(2, "0")).join("");
+const hex2rgb = (h) => [1, 3, 5].map((i) => Math.round(toL(parseInt(h.slice(i, i + 2), 16) / 255) * 10000) / 10000);
+const rgb2hex = (c) => "#" + c.map((x) => Math.round(Math.max(0, Math.min(1, toS(Math.max(0, x)))) * 255).toString(16).padStart(2, "0")).join("");
+const srgbHex = (c) => "#" + c.map((x) => Math.round(Math.max(0, Math.min(1, x)) * 255).toString(16).padStart(2, "0")).join("");
 const R = (k, label, min, max, step, unit = "") => ({ k, label, t: "range", min, max, step, unit });
 const Sel = (k, label, opts) => ({ k, label, t: "select", opts });
 const Col = (k, label) => ({ k, label, t: "color" });
@@ -1195,7 +1221,7 @@ function renderReference() {
   $("#refEmpty").hidden = !!r;
   if (!r) return;
   const name = (id) => N.matName(S.scene.materials.find((m) => m.id === id)) || "—";
-  $("#refPalette").innerHTML = r.palette.map((p) => `<span style="width:${(p.share * 100).toFixed(1)}%;background:${rgb(p.color)}" title="%${Math.round(p.share * 100)}"></span>`).join("");
+  $("#refPalette").innerHTML = r.palette.map((p) => `<span style="width:${(p.share * 100).toFixed(1)}%;background:${srgbCss(p.color)}" title="%${Math.round(p.share * 100)}"></span>`).join("");
   const light = { ic: L("app.ic_mekan_kapali_hava"), "dis-gunduz": L("app.dis_mekan_gunduz"), "gun-batimi": L("uc.gun_batimi"), gece: L("app.gece") }[r.lighting];
   const cam = { ic: L("app.ic_mekan_goz_hizasi"), kusbakisi: L("uc.kusbakisi"), perspektif: L("app.dis_perspektif") }[r.camera];
   $("#refStats").innerHTML = `<dt>${L("app.isik_duzeni")}</dt><dd>${light}</dd><dt>${L("app.parlaklik")}</dt><dd>%${Math.round(r.brightness * 100)}</dd><dt>${L("app.sicaklik")}</dt><dd>${r.warmth > 0.04 ? L("app.sicak") : r.warmth < -0.04 ? L("app.soguk") : L("app.notr")} (${fmt(r.warmth)})</dd><dt>${L("app.doygunluk")}</dt><dd>%${Math.round(r.saturation * 100)}</dd><dt>${L("app.ufuk_cizgisi_tahmini")}</dt><dd>${L("app.ustten", { p: Math.round(r.horizon * 100) })}</dd>`;
@@ -1251,6 +1277,76 @@ function renderMaterials() {
       <div class="uh-matcard__row">${priced ? `<input class="pl-input uh-cell-input" type="number" min="0" step="10" value="${m.price_m2}" data-mat-price="${m.id}" aria-label="${L("app.m2_fiyati", { p: esc(N.matName(m)) })}"><span class="uh-small">₺/m²</span>` : ""}<span class="uh-grow"></span><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-mat-apply="${m.id}">${L("app.uygula")}</button></div>
     </div></div>`).join("") || `<p class="uh-small">${L("app.bu_turde_kaplama_yok")}</p>`;
 }
+/* ---------- Renk kartelaları (duvar ve cephe boyası) ---------- */
+const RAL_GROUPS = ["yellow and beige", "orange", "red", "violet", "blue", "green", "grey", "brown", "white and black"];
+const PAINT_MAX = 400;
+function paintColors() {
+  if (S.paint.sys === "ral-classic") return (S.paint.ral || []).map((c) => ({ code: c.code, hex: c.hex, group: c.group, label: `RAL ${c.code}`, name: L(`ral.${c.code}`) }));
+  const sys = (S.scene.paint_systems || []).find((p) => p.id === S.paint.sys);
+  return sys ? sys.colors.map((c) => ({ code: c.code, hex: c.hex, group: c.group, label: c.code, name: c.name && c.name !== c.code ? c.name : "" })) : [];
+}
+const paintGroupName = (g) => (S.paint.sys === "ral-classic" ? L(`ralgroup.${N.slug(g)}`) : g || L("boya.grupsuz"));
+const paintMatId = (code) => {
+  const side = S.paint.target === "cephe" ? "dis" : "ic";
+  return S.paint.sys === "ral-classic" ? `ral${code}-${side}` : null;
+};
+function renderPaints() {
+  const systems = [["ral-classic", L("boya.ral_classic")], ...(S.scene.paint_systems || []).map((p) => [p.id, p.name])];
+  if (!systems.some(([id]) => id === S.paint.sys)) S.paint.sys = "ral-classic";
+  $("#paintSys").innerHTML = systems.map(([id, n]) => `<option value="${esc(id)}" ${S.paint.sys === id ? "selected" : ""}>${esc(n)}</option>`).join("");
+  $("#paintTarget").value = S.paint.target;
+  const all = paintColors();
+  const groups = S.paint.sys === "ral-classic" ? RAL_GROUPS : [...new Set(all.map((c) => c.group))];
+  if (S.paint.group !== "*" && !groups.includes(S.paint.group)) S.paint.group = "*";
+  $("#paintGroups").innerHTML = [["*", L("boya.tumu")], ...groups.map((g) => [g, paintGroupName(g)])].map(([g, n]) => `<button type="button" role="tab" class="uh-tool ${S.paint.group === g ? "is-active" : ""}" data-paint-group="${esc(g)}">${esc(n)}</button>`).join("");
+  const q = S.paint.q.toLocaleLowerCase();
+  const list = all.filter((c) => (S.paint.group === "*" || c.group === S.paint.group) && (!q || `${c.label} ${c.name} ${c.hex}`.toLocaleLowerCase().includes(q)));
+  const used = new Set(S.scene.materials.map((m) => m.id));
+  $("#paintGrid").innerHTML = list.slice(0, PAINT_MAX).map((c) => {
+    const id = paintMatId(c.code);
+    return `<button type="button" class="uh-paintsw ${id && S.paintMat === id ? "is-active" : ""}" data-paint-code="${esc(c.code)}" title="${esc(`${c.label} ${c.name} · ${c.hex}`)}">
+      <span class="uh-paintsw__chip" style="background:${esc(c.hex)}" aria-hidden="true"></span>
+      <span class="uh-paintsw__code pl-num">${esc(c.label)}${id && used.has(id) ? ` <span class="uh-paintsw__in" aria-label="${L("boya.projede")}">●</span>` : ""}</span>
+      <span class="uh-paintsw__name">${esc(c.name)}</span></button>`;
+  }).join("") || `<p class="uh-small">${L("boya.sonuc_yok")}</p>`;
+  $("#paintState").textContent = list.length > PAINT_MAX ? L("boya.ilk_n_gosteriliyor", { n: PAINT_MAX, total: list.length }) : L("boya.renk_sayisi", { n: list.length });
+}
+async function pickPaint(code) {
+  const r = await B.engine("add_paint", { scene: S.scene, system: S.paint.sys, code, target: S.paint.target });
+  if (!S.scene.materials.some((m) => m.id === r.id)) commit(r.scene);
+  S.paintMat = r.id;
+  P.setTool({ type: "paint", value: r.id });
+  renderPaints();
+  const m = S.scene.materials.find((x) => x.id === r.id);
+  toast(L("boya.hazir", { name: N.matName(m) }), { sub: L("boya.hazir_ipucu"), action: L("boya.plana_git"), onAction: () => go("plan") });
+}
+async function importPaintSystem(files) {
+  const f = files && files[0];
+  if (!f) return;
+  const r = await B.engine("import_paint_system", { scene: S.scene, name: f.name.replace(/\.[^.]+$/, ""), file: f.name, text: f.data ? undefined : f.text, data: f.data });
+  commit(r.scene);
+  S.paint.sys = r.id;
+  S.paint.group = "*";
+  S.paint.q = "";
+  $("#paintSearch").value = "";
+  renderPaints();
+  toast(L("boya.kartela_eklendi", { n: r.count }), { sub: f.name });
+}
+async function twoTone(up, down) {
+  const it = selected();
+  if (!it || it.sel.type !== "wall") return;
+  let sc = S.scene;
+  const ids = [];
+  for (const code of [up, down]) { const r = await B.engine("add_paint", { scene: sc, system: "ral-classic", code, target: "duvar" }); sc = r.scene; ids.push(r.id); }
+  const s = JSON.parse(JSON.stringify(sc));
+  const w = s.levels.find((l) => l.id === S.level).walls.find((x) => x.id === it.o.id);
+  w.material = ids[0];
+  w.lower = ids[1];
+  w.split = w.split || 900;
+  commit(s);
+  renderInspector();
+}
+
 function baseDims(o) {
   if (o.mesh.startsWith("cat:")) { const c = S.catalog.furniture.find((f) => f.id === o.mesh.slice(4)); if (c) return [...c.size]; }
   const m = S.scene.meshes.find((x) => x.id === o.mesh);
@@ -1501,6 +1597,7 @@ async function init() {
     const info = await B.engine("info");
     $("#engineInfo").textContent = `${L("app.rust_motoru", { version: info.version, p: B.isDesktop ? L("app.yerel") : L("app.webassembly_onizleme") })}`;
     S.catalog = await B.engine("catalog");
+    S.paint.ral = (await B.engine("paint_systems"))[0].colors;
     // görünen adlar seçili dile çevrilir; motorun özgün adları eşleştirme için saklanır
     for (const x of S.catalog.furniture) { x.name_src = x.name; x.group_src = x.group; x.name = N.catName(x); x.group = N.groupName(x.group); }
     for (const o of S.catalog.openings) { o.label_src = o.label; o.label = N.openingName(o); }
@@ -1593,6 +1690,7 @@ document.addEventListener("click", (e) => {
   const act = t.closest("[data-act]");
   if (act) {
     const a = act.dataset.act;
+    if (a === "two-tone") run(() => twoTone(act.dataset.up, act.dataset.down));
     if (a === "archive") archiveSelected();
     if (a === "rot") rotateObject();
     if (a === "dup" || a === "reset-size") {
@@ -1721,7 +1819,7 @@ $("#btnMotorReal").onclick = () => run(async () => {
 $("#lookInput").addEventListener("change", (e) => run(() => uploadLook(e.target.files[0])));
 $("#btnPalette").onclick = () => $("#paletteInput").click();
 $("#paletteInput").addEventListener("change", (e) => run(async () => { const f = e.target.files[0]; if (f) await loadPalette(f.name.replace(/\.[^.]+$/, ""), await f.text()); }));
-$("#btnRefPalette").onclick = () => run(async () => { if (S.ref) await loadPalette(L("app.referans_gorsel"), S.ref.palette.map((p) => rgb2hex(p.color)).join("\n")); });
+$("#btnRefPalette").onclick = () => run(async () => { if (S.ref) await loadPalette(L("app.referans_gorsel"), S.ref.palette.map((p) => srgbHex(p.color)).join("\n")); });
 $("#btnWelcomeResume").onclick = () => run(resumeSaved);
 $("#btnWelcomeNew").onclick = () => run(newProject);
 $("#btnWelcomeDemo").onclick = () => run(loadDemo);
@@ -1791,6 +1889,12 @@ $("#phCats").addEventListener("click", (e) => { const b = e.target.closest("[dat
 $("#phtCats").addEventListener("click", (e) => { const b = e.target.closest("[data-phtcat]"); if (b) { S.ph.tcat = b.dataset.phtcat; renderPhTextures(); } });
 $("#phSearch").addEventListener("input", (e) => { S.ph.q = e.target.value.trim(); renderPhModels(); });
 $("#phtSearch").addEventListener("input", (e) => { S.ph.tq = e.target.value.trim(); renderPhTextures(); });
+$("#paintSys").addEventListener("change", (e) => { S.paint.sys = e.target.value; S.paint.group = "*"; renderPaints(); });
+$("#paintTarget").addEventListener("change", (e) => { S.paint.target = e.target.value; renderPaints(); });
+$("#paintSearch").addEventListener("input", (e) => { S.paint.q = e.target.value.trim(); renderPaints(); });
+$("#paintGroups").addEventListener("click", (e) => { const b = e.target.closest("[data-paint-group]"); if (b) { S.paint.group = b.dataset.paintGroup; renderPaints(); } });
+$("#paintGrid").addEventListener("click", (e) => { const b = e.target.closest("[data-paint-code]"); if (b) run(() => pickPaint(b.dataset.paintCode)); });
+$("#btnPaintImport").onclick = () => run(async () => importPaintSystem(await B.openFiles("palette")));
 for (const g of ["#phGrid", "#phtGrid"]) $(g).addEventListener("click", (e) => { const b = e.target.closest("[data-phget]"); if (b) run(() => phGet(b.dataset.phget, b.dataset.phkind)); });
 $("#btnRefPick").onclick = () => $("#refInput").click();
 $("#btnPhotoPick").onclick = () => $("#photoInput").click();

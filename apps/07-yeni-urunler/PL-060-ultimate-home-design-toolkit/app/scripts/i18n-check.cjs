@@ -63,7 +63,7 @@ for (const d of rsDirs) {
 }
 used.add("engine.worker_file");
 for (const k of used) if (!(k in tr) || !(k in en)) errors.push(`kodda kullanılan anahtar dil dosyasında yok: ${k}`);
-const unused = Object.keys(tr).filter((k) => !used.has(k) && !/^(catalog|catgroup|opening|roomkind|material|materialprefix|rate|rategroup|unit|texkind|tier|names|roomname|scenename|motor|mm|ph\.cat|ph\.tcat)\./.test(k));
+const unused = Object.keys(tr).filter((k) => !used.has(k) && !/^(catalog|catgroup|opening|roomkind|material|materialprefix|rate|rategroup|unit|texkind|tier|names|roomname|scenename|motor|mm|ral|ralgroup|ph\.cat|ph\.tcat)\./.test(k));
 if (unused.length) notes.push(`kullanılmayan ${unused.length} anahtar: ${unused.slice(0, 12).join(", ")}${unused.length > 12 ? " …" : ""}`);
 // 5
 const acorn = (() => {

@@ -18,7 +18,8 @@ pub fn parse(text: &str) -> Result<Vec<(String, [f32; 3])>, String> {
     }
     let mut out: Vec<(String, [f32; 3])> = vec![];
     let mut push = |name: String, c: [u8; 3]| {
-        let col = [c[0] as f32 / 255.0, c[1] as f32 / 255.0, c[2] as f32 / 255.0];
+        // dosyadaki renkler sRGB; motor malzemeleri doğrusal ışık değeri kullanır
+        let col = [crate::store::to_linear(c[0] as f32 / 255.0), crate::store::to_linear(c[1] as f32 / 255.0), crate::store::to_linear(c[2] as f32 / 255.0)];
         if out.len() < MAX_COLORS && !out.iter().any(|(_, o)| *o == col) {
             out.push((name, col));
         }
@@ -100,7 +101,7 @@ mod tests {
         let g = parse("GIMP Palette\nName: Ev\nColumns: 4\n# yorum\n200  180 150\tKum beji\n 34 48 88 Lacivert\n").unwrap();
         assert_eq!(g.len(), 2);
         assert_eq!(g[0].0, "Kum beji");
-        assert!((g[1].1[2] - 88.0 / 255.0).abs() < 1e-6);
+        assert!((g[1].1[2] - crate::store::to_linear(88.0 / 255.0)).abs() < 1e-6);
         assert!(parse("merhaba dünya").is_err());
         assert!(parse(&"#123456\n".repeat(200)).unwrap().len() == 1);
     }

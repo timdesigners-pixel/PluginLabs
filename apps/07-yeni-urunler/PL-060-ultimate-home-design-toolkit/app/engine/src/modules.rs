@@ -207,24 +207,25 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
                         outer: String::new(),
                         outside: if in_joint { 0 } else { side },
                         shell: Some([base, top]),
+                        ..Default::default()
                     },
                 ));
             }
         }
     }
-    // eski üretilmiş duvarların dış kaplamasını koru
-    let mut outer_keep = std::collections::HashMap::new();
+    // eski üretilmiş duvarların yüzey boyalarını (iç, dış, alt bölge, şerit) koru
+    let mut keep = std::collections::HashMap::new();
     for l in &scene.levels {
-        for w in l.walls.iter().filter(|w| w.generated && !w.outer.is_empty()) {
-            outer_keep.insert(w.id.clone(), w.outer.clone());
+        for w in l.walls.iter().filter(|w| w.generated && !w.id.starts_with('O')) {
+            keep.insert(w.id.clone(), w.clone());
         }
     }
     for l in scene.levels.iter_mut() {
         l.walls.retain(|w| !w.generated || w.id.starts_with('O'));
     }
     for (lvl, mut w) in new_walls {
-        if let Some(o) = outer_keep.get(&w.id) {
-            w.outer = o.clone();
+        if let Some(old) = keep.get(&w.id) {
+            w.keep_paint(old);
         }
         if let Some(l) = scene.levels.iter_mut().find(|l| l.id == lvl) {
             l.walls.push(w);

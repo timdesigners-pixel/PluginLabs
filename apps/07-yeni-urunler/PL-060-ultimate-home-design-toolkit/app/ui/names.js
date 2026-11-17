@@ -32,6 +32,9 @@ export function matName(m) {
   if (!m) return "";
   const key = `material.${m.id}`;
   if (has(key)) return t(key);
+  // renk sistemi boyaları: "ral7016-ic" → "RAL 7016 Antrasit gri"
+  const ral = /^ral(\d{4})-(ic|dis)$/.exec(m.id);
+  if (ral && has(`ral.${ral[1]}`)) return `RAL ${ral[1]} ${t(`ral.${ral[1]}`)}`;
   // motorların ürettiği renk kimlikli kaplamalar: "perde-tul-…", "hali-…" …
   const p = PREFIXES.find((x) => m.id.startsWith(`${x}-`));
   if (p && m.category !== "palet") return t(`materialprefix.${p}`);

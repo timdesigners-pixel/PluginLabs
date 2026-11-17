@@ -303,6 +303,49 @@ const server = http.createServer((req, res) => {
   await page.click('#matGrid .uh-matcard.is-active [data-mat-apply]');
   await page.waitForSelector("#view-plan.is-active");
   ok((await page.textContent("#activeTool")).includes("Kaplama"), "Kaplama: uygulama aracı etkin");
+  // renk kartelası: RAL ara → seç → boya aracı
+  await page.click('[data-view="kaplama"]');
+  await page.waitForSelector("#paintGrid .uh-paintsw");
+  ok((await page.locator("#paintGrid .uh-paintsw").count()) === 215, "Renk kartelası: RAL Classic 215 renk");
+  await page.fill("#paintSearch", "antrasit");
+  await page.waitForSelector('#paintGrid [data-paint-code="7016"]');
+  await page.click('#paintGrid [data-paint-code="7016"]');
+  await waitText("#toasts", /RAL 7016 Antrasit gri/);
+  await page.click('[data-view="plan"]');
+  await page.waitForSelector("#view-plan.is-active");
+  ok((await page.textContent("#activeTool")).includes("RAL 7016"), "Renk kartelası: boya aracı RAL 7016 ile hazır");
+  await page.click('[data-view="kaplama"]');
+  await page.waitForSelector("#paintGrid .uh-paintsw");
+  await page.fill("#paintSearch", "");
+  await page.dispatchEvent("#paintSearch", "input");
+  await page.click('#paintGroups [data-paint-group="grey"]');
+  await page.locator("#paintSys").scrollIntoViewIfNeeded();
+  await shot("27-renk-kartelasi.png");
+  // firma kartelası (CSV) içe aktarma
+  const kart = path.join(out, "ornek-firma.csv");
+  fs.writeFileSync(kart, "kod;ad;hex;grup\nOF-101;Kireç beyazı;#F2EEE4;Beyazlar\nOF-205;Zeytin dalı;#7D8566;Yeşiller\nOF-310;Kil;B9775A;Topraklar\n");
+  const [chooser] = await Promise.all([page.waitForEvent("filechooser"), page.click("#btnPaintImport")]);
+  await chooser.setFiles(kart);
+  await waitText("#paintState", /3 renk/);
+  ok((await page.inputValue("#paintSys")) === "k-ornek_firma", "Firma kartelası: içe aktarıldı ve seçildi");
+  await page.selectOption("#paintTarget", "cephe");
+  await page.click('#paintGrid [data-paint-code="OF-310"]');
+  await waitText("#toasts", /OF-310/);
+  fs.unlinkSync(kart);
+  // tek duvarda kombine boya: üst + alt bölge + şerit
+  await page.goto(base + "?demo=1&view=plan&sel=wall:M1-G2000");
+  await page.waitForSelector("#inspector .uh-details summary");
+  await page.click("#inspector .uh-details summary");
+  await page.click('#inspector [data-act="two-tone"][data-up="9010"]');
+  await page.waitForFunction(() => document.querySelector('#inspector [data-f="lower"]')?.value === "ral7016-ic");
+  ok((await page.inputValue('#inspector [data-f="wmat"]')) === "ral9010-ic", "Kombine boya: üst renk RAL 9010");
+  await page.fill('#inspector [data-f="split"]', "110");
+  await page.dispatchEvent('#inspector [data-f="split"]', "change");
+  await page.waitForFunction(() => !document.querySelector('#inspector [data-f="band"]')?.disabled);
+  await page.selectOption('#inspector [data-f="band"]', "ral9010-ic");
+  await page.waitForFunction(() => !document.querySelector('#inspector [data-f="band_h"]')?.disabled);
+  ok((await page.inputValue('#inspector [data-f="split"]')) === "110" && (await page.inputValue('#inspector [data-f="band_h"]')) === "6", "Kombine boya: ayırma 110 cm, şerit 6 cm");
+  await shot("28-kombine-duvar-boyasi.png");
   await page.evaluate(() => {});
   await page.goto(base + "?demo=1&view=plan&sel=object:N1");
   await page.waitForSelector("#view-plan.is-active");
@@ -337,6 +380,11 @@ const server = http.createServer((req, res) => {
     await page.waitForTimeout(view === "uc" ? 2500 : 900);
     await shot(file);
   }
+  await page.click('[data-view="kaplama"]');
+  await page.waitForSelector('#paintGrid [data-paint-code="7016"]');
+  ok((await page.textContent('#paintGrid [data-paint-code="7016"]')).includes("Anthracite grey"), "İngilizce: RAL adları dil dosyasından");
+  await page.locator("#paintSys").scrollIntoViewIfNeeded();
+  await shot("en-27-colour-systems.png");
   ok(missing.length === 0, `İngilizce: eksik çeviri anahtarı yok (${missing.length})`);
   if (missing.length) console.log(missing.slice(0, 20).join("\n"));
   await browser.close();

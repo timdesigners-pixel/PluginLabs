@@ -376,7 +376,38 @@ pub fn build(scene: &Scene, opt: &MeshOptions) -> SceneMesh {
             cuts.sort_by(|a, b| a.partial_cmp(b).unwrap());
             cuts.dedup_by(|a, b| (*a - *b).abs() < 0.5);
             let inner = if w.material.is_empty() { interior.as_str() } else { w.material.as_str() };
-            let outer_mat = if w.outside != 0 { if w.outer.is_empty() { facade.as_str() } else { w.outer.as_str() } } else { inner };
+            // iç bölmede ikinci yüz ayrı boyanabilir (`outer`)
+            let outer_mat = if w.outside != 0 { if w.outer.is_empty() { facade.as_str() } else { w.outer.as_str() } } else if w.outer.is_empty() { inner } else { w.outer.as_str() };
+            // iç yüzde kombine boya: alt bölge ve şerit kotları (dünya)
+            let split_y = if w.split > 0.0 && !w.lower.is_empty() { Some(el + w.split) } else { None };
+            let band = match split_y {
+                Some(sy) if w.band_h > 0.0 && !w.band.is_empty() => Some((sy, sy + w.band_h)),
+                _ => None,
+            };
+            let zones = |a: f64, bb: f64| -> Vec<(f64, f64, &str)> {
+                let mut cuts = vec![a, bb];
+                if let Some(sy) = split_y {
+                    cuts.push(sy);
+                }
+                if let Some((b0, b1)) = band {
+                    cuts.push(b0);
+                    cuts.push(b1);
+                }
+                cuts.retain(|c| *c >= a && *c <= bb);
+                cuts.sort_by(|p, q| p.partial_cmp(q).unwrap());
+                cuts.dedup_by(|p, q| (*p - *q).abs() < 0.5);
+                cuts.windows(2)
+                    .map(|c| {
+                        let mid = (c[0] + c[1]) / 2.0;
+                        let mat = match (split_y, band) {
+                            (_, Some((b0, b1))) if mid > b0 && mid < b1 => w.band.as_str(),
+                            (Some(sy), _) if mid < sy => w.lower.as_str(),
+                            _ => inner,
+                        };
+                        (c[0], c[1], mat)
+                    })
+                    .collect()
+            };
             // dış yarı = outside yönündeki yarı
             let side = if w.outside >= 0 { 1.0 } else { -1.0 };
             let half = w.thickness / 2.0;
@@ -403,7 +434,9 @@ pub fn build(scene: &Scene, opt: &MeshOptions) -> SceneMesh {
                     let inner_w = [-right[0] * side * half, 0.0, -right[1] * side * half];
                     let outer_w = [right[0] * side * half, 0.0, right[1] * side * half];
                     let o = world(p0, a);
-                    push_box(m.batch(inner), o, u, v, inner_w);
+                    for (z0, z1, mat) in zones(a, bb) {
+                        push_box(m.batch(mat), world(p0, z0), u, [0.0, z1 - z0, 0.0], inner_w);
+                    }
                     push_box(m.batch(outer_mat), o, u, v, outer_w);
                 }
             }
@@ -600,6 +633,37 @@ mod tests {
             }).count();
             assert_eq!(out, b.positions.len() / 3, "{shape:?}: içe bakan üçgen var");
         }
+    }
+
+    #[test]
+    fn two_tone_wall_with_band_and_paint_survives_rebuild() {
+        let mut s = crate::templates::demo_scene();
+        let id = s.levels[0].walls.iter().find(|w| w.generated && w.exterior && !w.structural).unwrap().id.clone();
+        crate::paints::add(&mut s, "ral-classic", "7016", "duvar").unwrap();
+        crate::paints::add(&mut s, "ral-classic", "9010", "duvar").unwrap();
+        crate::paints::add(&mut s, "ral-classic", "1013", "duvar").unwrap();
+        {
+            let w = s.levels[0].walls.iter_mut().find(|w| w.id == id).unwrap();
+            w.material = "ral9010-ic".into();
+            w.lower = "ral7016-ic".into();
+            w.split = 900.0;
+            w.band = "ral1013-ic".into();
+            w.band_h = 60.0;
+        }
+        crate::modules::rebuild(&mut s);
+        let w = s.levels[0].walls.iter().find(|w| w.id == id).unwrap();
+        assert_eq!((w.material.as_str(), w.lower.as_str(), w.split, w.band.as_str()), ("ral9010-ic", "ral7016-ic", 900.0, "ral1013-ic"), "boya yeniden kurulumda korunur");
+        let m = build(&s, &MeshOptions::default());
+        let ys = |mat: &str| -> (f32, f32) {
+            let b = m.batches.iter().find(|b| b.material == mat).unwrap();
+            b.positions.iter().fold((f32::INFINITY, f32::NEG_INFINITY), |a, p| (a.0.min(p[1]), a.1.max(p[1])))
+        };
+        let el = s.levels[0].elevation as f32;
+        let (lo0, lo1) = ys("ral7016-ic");
+        assert!(lo0 <= el + 1.0 && (lo1 - (el + 900.0)).abs() < 1.0, "alt bölge duvar tabanından döşeme +90 cm'ye: {lo0}..{lo1}");
+        let (b0, b1) = ys("ral1013-ic");
+        assert!((b0 - (el + 900.0)).abs() < 1.0 && (b1 - (el + 960.0)).abs() < 1.0, "şerit 6 cm: {b0}..{b1}");
+        assert!(ys("ral9010-ic").1 > el + 2000.0);
     }
 
     #[test]

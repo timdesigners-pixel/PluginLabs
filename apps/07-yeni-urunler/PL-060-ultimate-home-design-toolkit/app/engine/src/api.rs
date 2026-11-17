@@ -467,6 +467,29 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             });
             Ok(json!({"scene": s, "id": id}))
         }
+        "paint_systems" => Ok(json!([{"id": "ral-classic", "colors": crate::paints::ral_classic()}])),
+        "add_paint" => {
+            let mut s = scene_of(&v)?;
+            let system: String = arg(&v, "system")?;
+            let code: String = arg(&v, "code")?;
+            let target: String = opt(&v, "target").unwrap_or_else(|| "duvar".into());
+            let id = crate::paints::add(&mut s, &system, &code, &target)?;
+            Ok(json!({"scene": s, "id": id}))
+        }
+        "import_paint_system" => {
+            let mut s = scene_of(&v)?;
+            let name: String = arg(&v, "name")?;
+            let text: Option<String> = opt(&v, "text");
+            let data = match opt::<String>(&v, "data") {
+                Some(b) => Some(base64::Engine::decode(&base64::engine::general_purpose::STANDARD, b.as_bytes()).map_err(|_| "@palette_unreadable")?),
+                None => None,
+            };
+            let file: String = opt(&v, "file").unwrap_or_default();
+            let colors = crate::paints::parse_palette(&file, text.as_deref(), data.as_deref())?;
+            let count = colors.len();
+            let id = crate::paints::import(&mut s, &name, colors);
+            Ok(json!({"scene": s, "id": id, "count": count}))
+        }
         "store_missing" => {
             // depoda bulunmayan ağır veriler (ör. motor yeniden başladıysa)
             let s = scene_of(&v)?;

@@ -70,12 +70,19 @@ export async function openFiles(kind) {
   const input = document.getElementById("fileInput");
   input.value = "";
   input.multiple = kind === "obj";
-  input.accept = kind === "obj" ? ".obj,.mtl" : ".uhds";
+  input.accept = kind === "obj" ? ".obj,.mtl" : kind === "palette" ? ".ase,.gpl,.csv,.txt" : ".uhds";
   return new Promise((res) => {
     input.onchange = async () => {
       const out = [];
       for (const f of input.files) {
-        if (f.size > 64 * 1024 * 1024) continue;
+        if (f.size > (kind === "palette" ? 4 : 64) * 1024 * 1024) continue;
+        if (kind === "palette" && /\.ase$/i.test(f.name)) {
+          const b = new Uint8Array(await f.arrayBuffer());
+          let bin = "";
+          for (let i = 0; i < b.length; i += 0x8000) bin += String.fromCharCode(...b.subarray(i, i + 0x8000));
+          out.push({ name: f.name, text: "", data: btoa(bin) });
+          continue;
+        }
         out.push({ name: f.name, text: await f.text() });
       }
       res(out);

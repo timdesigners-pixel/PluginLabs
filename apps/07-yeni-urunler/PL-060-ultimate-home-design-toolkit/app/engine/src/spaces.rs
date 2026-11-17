@@ -158,16 +158,16 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
                 outer: String::new(),
                 outside: if joint { 0 } else { side },
                 shell: Some([0.0, el + sp.height + st.top_slab]),
+                ..Default::default()
             });
         }
     }
     let level = &mut scene.levels[0];
-    let keep: std::collections::HashMap<String, (String, String)> = level.walls.iter().filter(|w| is_space_wall(w)).map(|w| (w.id.clone(), (w.material.clone(), w.outer.clone()))).collect();
+    let keep: std::collections::HashMap<String, Wall> = level.walls.iter().filter(|w| is_space_wall(w)).map(|w| (w.id.clone(), w.clone())).collect();
     level.walls.retain(|w| !is_space_wall(w));
     for mut w in walls {
-        if let Some((m, o)) = keep.get(&w.id) {
-            w.material = m.clone();
-            w.outer = o.clone();
+        if let Some(old) = keep.get(&w.id) {
+            w.keep_paint(old);
         }
         level.walls.push(w);
     }
