@@ -216,6 +216,7 @@
           <div class="uh-render-overlay" id="renderOverlay" hidden>
             <div class="pl-progress pl-progress--indeterminate"><span></span></div>
             <span id="renderMsg" data-i18n="uc.render_hazirlaniyor"></span>
+            <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" id="btnRenderCancel" hidden data-i18n="uc.iptal"></button>
           </div>
         </div>
         <aside class="uh-panel" data-i18n-attr="aria-label=uc.3b_gorunum_ve_render">
@@ -264,6 +265,10 @@
             <select class="pl-select" id="selAperture" data-i18n-attr="aria-label=uc.diyafram"><option value="0" selected data-i18n="uc.her_yer_net"></option><option value="2.8" data-i18n="uc.f_2_8_arka_plan_yumusak"></option><option value="5.6" data-i18n="uc.f_5_6"></option><option value="8" data-i18n="uc.f_8"></option><option value="11" data-i18n="uc.f_11"></option></select>
           </div>
           <p class="uh-small" id="styleHint" data-i18n="uc.stil_secilmezse_varsayilan_stil"></p>
+          <h3 class="uh-h3" data-i18n="uc.render_motoru"></h3>
+          <div class="pl-segment" id="segEngine" role="radiogroup" data-i18n-attr="aria-label=uc.render_motoru"><button type="button" role="radio" class="is-active" data-engine="internal" data-i18n="uc.motor_dahili"></button><button type="button" role="radio" data-engine="cycles" data-i18n="uc.motor_cycles"></button></div>
+          <p class="uh-small" id="cyclesState"></p>
+          <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button" id="btnCyclesPath" hidden data-i18n="uc.blender_yolunu_sec"></button>
           <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnRender" data-i18n="uc.hd_render_al_png"></button>
           <figure class="uh-renderfig" id="renderFig" hidden>
             <img id="renderImg" data-i18n-attr="alt=uc.son_render_onizlemesi">

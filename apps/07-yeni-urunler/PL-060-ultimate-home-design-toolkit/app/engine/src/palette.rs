@@ -14,7 +14,7 @@ fn hex(s: &[u8]) -> Option<u8> {
 /// Metinden (ad, renk) çiftleri çıkarır.
 pub fn parse(text: &str) -> Result<Vec<(String, [f32; 3])>, String> {
     if text.len() > MAX_BYTES {
-        return Err("Palet dosyası 512 KB sınırını aşıyor".into());
+        return Err("@palette_too_large".into());
     }
     let mut out: Vec<(String, [f32; 3])> = vec![];
     let mut push = |name: String, c: [u8; 3]| {
@@ -61,7 +61,7 @@ pub fn parse(text: &str) -> Result<Vec<(String, [f32; 3])>, String> {
         }
     }
     if out.is_empty() {
-        return Err("Dosyada renk bulunamadı (#RRGGBB ya da “R G B ad” satırları beklenir)".into());
+        return Err("@palette_no_colours".into());
     }
     Ok(out)
 }

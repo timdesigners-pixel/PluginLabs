@@ -22,6 +22,27 @@ Görüntüler `scripts/ui-check.cjs` ile alınmıştır: Linux, Chromium 1600×9
 | ![Yatak](docs/screenshots/18-motor-yatak.png) **Yatak · baza · başlık · nevresim** | ![İzometrik kesit](docs/screenshots/19-izometrik-kesit.png) **İzometrik kesit** ve gökyüzü ayarları |
 | ![Görselden referans](docs/screenshots/20-gorselden-referans.png) **Görselden referans** — palet, ışık, en yakın ürünler | |
 
+| ![Karşılama](docs/screenshots/00-karsilama.png) **Karşılama** — önden tel kafes önizleme, kaldığınız yerden devam | ![3B düzenleme](docs/screenshots/21-3b-duzenleme.png) **3B düzenleme** — sürükle bırak, döndür, çoğalt, yükselt |
+| ![Fotoğraftan mekân](docs/screenshots/23-fotograftan-mekan.png) **Fotoğraftan mekân** — köşe işaretleri, ölçü ve tolerans, 3B oda | ![Render motoru](docs/screenshots/24-render-motoru.png) **Render stili ve motoru** — Varsayılan, Dergi, Mimari, Maket, Beyaz maket; Dahili / Cycles |
+| ![İngilizce arayüz](docs/screenshots/en-00-welcome.png) **English** — aynı arayüz, `locales/en.json` | ![İngilizce maliyet](docs/screenshots/en-07-cost.png) **English · cost** |
+
+### Cycles (Blender) ile fotoğraf gerçekliğinde render
+
+Masaüstü uygulaması, bilgisayarda kurulu Blender'ın **Cycles** motorunu arka planda çalıştırır: fiziksel tabanlı ışık, gerçek gökyüzü modeli ve güneş, pencere ışık portalları, AgX renk yönetimi, yapay zekâ gürültü gidericisi (OIDN), alan derinliği; ekran kartı varsa otomatik kullanılır. Blender ücretsizdir (blender.org); uygulama yolunu kendisi bulur ya da 3B ekranındaki “Blender yolunu seç…” ile gösterilir. Sahne bilgisayardan çıkmaz.
+
+![Cycles · salon](docs/screenshots/render-cycles-salon.png)
+Cycles · 960×600 · 128 örnek · yalnız işlemci (4 çekirdek) 2 dk 16 sn · `cycles/uhd_cycles.py`, Blender 5.3 (bpy) ile Linux'ta alınmıştır.
+
+### Render stilleri (dahili motor)
+
+Stil seçilmezse **Varsayılan** kullanılır.
+
+| | |
+|---|---|
+| ![Varsayılan](docs/screenshots/render-stil-varsayilan.png) Varsayılan | ![Dergi çekimi](docs/screenshots/render-stil-dergi.png) Dergi çekimi |
+| ![Mimari görselleştirme](docs/screenshots/render-stil-mimari.png) Mimari görselleştirme | ![Maket](docs/screenshots/render-stil-maket.png) Maket |
+| ![Beyaz maket](docs/screenshots/render-stil-beyaz-maket.png) Beyaz maket | |
+
 ### Render motoru çıktıları (örnek proje, 1280×720)
 
 Aynı motorun yerel derlemesiyle (`cargo run --release --example render_cli`, Linux, 4 iş parçacığı) alınmıştır.
@@ -53,6 +74,9 @@ Aynı motorun yerel derlemesiyle (`cargo run --release --example render_cli`, Li
 
 Durum ve eksikler: [docs/roadmap.md](docs/roadmap.md) · Varsayımlar ve açık kararlar: [docs/assumptions.md](docs/assumptions.md)
 
+- **Fotoğraftan mekân** — odanın fotoğrafında arka duvarın dört köşesi ve yan duvarların zemin çizgisi işaretlenir, bilinen tek ölçü girilir (tavan yüksekliği, genişlik, kamera yüksekliği ya da görünen duvar boyu). Kaçış noktalarından odak uzaklığı ve kamera yönü bulunur; genişlik, derinlik, yükseklik ve kapı/pencereler ± tolerans ile hesaplanır, oda 3B kurulur. Ölçüler tablodan değiştirilebilir (oranı koru seçeneğiyle), odalar yan yana eklenerek daire oluşur.
+- **Dil** — Türkçe ve İngilizce; metinler yalnız `ui/locales/tr.json` ve `ui/locales/en.json` dosyalarındadır. Motor iletileri `@anahtar` biçimindedir ve arayüzde çevrilir. `node scripts/i18n-check.cjs` iki dosyanın eksiksiz ve tutarlı olduğunu denetler.
+
 Ayrıca: **Ölçü ve metraj** (mm/cm/m/ft/in), **Maliyet ve ölçekleme**, **Fonksiyonlar**, **3B kütüphane (OBJ)**, **MyMind**, Ctrl+K komut paleti, Ctrl+Z geri alma, otomatik kayıt ve “Projeye devam et”.
 
 ## Motor (`engine/`, Rust)
@@ -82,10 +106,13 @@ Ayrıca: **Ölçü ve metraj** (mm/cm/m/ft/in), **Maliyet ve ölçekleme**, **Fo
 ## Geliştirme
 
 ```bash
-cargo test -p uhd-engine --release        # motor testleri (52)
+cargo test -p uhd-engine --release        # motor testleri (75)
+node scripts/i18n-check.cjs               # dil dosyası denetimi (tr/en)
 bash scripts/build-wasm.sh                # tarayıcı önizleme motoru → ui/engine/
 node scripts/ui-check.cjs [klasör]        # Chromium arayüz denetimi + ekran görüntüleri (DSF=2 ile 2x)
 npm ci && npx tauri build                 # Windows: NSIS kurulum + taşınabilir exe
+# Linux'tan Windows'a: mingw-w64 + nsis kurulu iken
+CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc npx tauri build --target x86_64-pc-windows-gnu
 cargo run --release -p uhd-engine --example render_cli -- cikti.png perspektif gunduz 1280 720 64
 ```
 

@@ -84,20 +84,20 @@ pub fn nearest_wall(level: &Level, p: P2) -> Option<(String, f64, f64)> {
 
 /// Açıklık yerleşimini doğrular; hata metni döner.
 pub fn validate_opening(level: &Level, o: &Opening) -> Result<(), String> {
-    let w = level.walls.iter().find(|w| w.id == o.wall).ok_or("Duvar bulunamadı")?;
+    let w = level.walls.iter().find(|w| w.id == o.wall).ok_or("@wall_not_found")?;
     if w.structural {
-        return Err("Taşıyıcı perde betona kapı ya da pencere konamaz".into());
+        return Err("@shear_wall_no_openings".into());
     }
     let len = w.length();
     if o.offset < -0.5 || o.offset + o.width > len + 0.5 {
-        return Err(format!("Açıklık duvara sığmıyor (duvar {:.2} m, açıklık {:.2} m)", len / 1000.0, o.width / 1000.0));
+        return Err(format!("@opening_too_wide|wall={:.2}|opening={:.2}", len / 1000.0, o.width / 1000.0));
     }
     if o.sill + o.height > level.height + 0.5 {
-        return Err("Açıklık net iç yüksekliği aşıyor".into());
+        return Err("@opening_too_tall".into());
     }
     for x in level.openings.iter().filter(|x| x.wall == o.wall && x.id != o.id) {
         if o.offset < x.offset + x.width - 0.5 && x.offset < o.offset + o.width - 0.5 {
-            return Err(format!("{} ile çakışıyor", x.id));
+            return Err(format!("@opening_overlap|id={}", x.id));
         }
     }
     Ok(())
@@ -105,11 +105,11 @@ pub fn validate_opening(level: &Level, o: &Opening) -> Result<(), String> {
 
 /// Tıklanan noktaya en yakın uygun konuma açıklık yerleştirir.
 pub fn place_opening(level: &Level, std_id: &str, p: P2, id: String) -> Result<Opening, String> {
-    let s = standard_openings().into_iter().find(|s| s.id == std_id).ok_or("Bilinmeyen kapı/pencere")?;
-    let (wid, t, d) = nearest_wall(level, p).ok_or("Bu katta duvar yok")?;
+    let s = standard_openings().into_iter().find(|s| s.id == std_id).ok_or("@unknown_opening")?;
+    let (wid, t, d) = nearest_wall(level, p).ok_or("@no_walls")?;
     let w = level.walls.iter().find(|w| w.id == wid).unwrap();
     if d > w.thickness * 0.5 + 400.0 {
-        return Err("Bir duvarın üzerine tıklayın".into());
+        return Err("@click_on_wall".into());
     }
     let len = w.length();
     let offset = ((t - s.width / 2.0) / 100.0).round() * 100.0;
@@ -130,7 +130,7 @@ pub struct Detected {
 /// Duvarlarla çevrili kapalı alanı bulur (açıklıklar alanı açmaz). Izgara 5–10 mm.
 pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
     if level.walls.is_empty() {
-        return Err("Bu katta duvar yok".into());
+        return Err("@no_walls".into());
     }
     let mut pts = vec![];
     for w in &level.walls {
@@ -154,7 +154,7 @@ pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
     let nx = ((mx[0] - mn[0]) / cell).ceil() as usize;
     let ny = ((mx[1] - mn[1]) / cell).ceil() as usize;
     if nx * ny > 12_000_000 {
-        return Err("Plan çok büyük".into());
+        return Err("@plan_too_large".into());
     }
     let mut grid = vec![0u8; nx * ny];
     for w in &level.walls {
@@ -193,11 +193,11 @@ pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
     let si = ((p[0] - mn[0]) / cell).floor();
     let sj = ((p[1] - mn[1]) / cell).floor();
     if si < 0.0 || sj < 0.0 || si as usize >= nx || sj as usize >= ny {
-        return Err("Nokta planın dışında".into());
+        return Err("@point_outside".into());
     }
     let start = sj as usize * nx + si as usize;
     if grid[start] == 1 {
-        return Err("Duvarın üzerine tıklandı; odanın içine tıklayın".into());
+        return Err("@clicked_on_wall".into());
     }
     let mut stack = vec![start];
     grid[start] = 2;
@@ -206,7 +206,7 @@ pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
         count += 1;
         let (i, j) = (k % nx, k / nx);
         if i == 0 || j == 0 || i == nx - 1 || j == ny - 1 {
-            return Err("Alan kapalı değil: duvarları birleştirin".into());
+            return Err("@area_not_closed".into());
         }
         for nk in [k - 1, k + 1, k - nx, k + nx] {
             if grid[nk] == 0 {
@@ -261,7 +261,7 @@ pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
         .iter()
         .map(|l| l.iter().map(to_world).collect::<Vec<P2>>())
         .max_by(|a, b| geom::area(a).partial_cmp(&geom::area(b)).unwrap())
-        .ok_or("Sınır bulunamadı")?;
+        .ok_or("@boundary_not_found")?;
     // doğrusal köşeleri sadeleştir
     let mut poly: Vec<P2> = vec![];
     let n = outer.len();
@@ -285,8 +285,8 @@ pub fn detect_room(level: &Level, p: P2) -> Result<Detected, String> {
 
 /// Tıklanan kapalı alanı adlandırır; aynı alanda oda varsa türünü ve adını günceller.
 pub fn name_room(scene: &mut Scene, level_id: &str, p: P2, kind: &str, name: Option<String>) -> Result<Room, String> {
-    let label = ROOM_KINDS.iter().find(|k| k.0 == kind).map(|k| k.1).ok_or("Bilinmeyen mahal türü")?;
-    let level = scene.levels.iter_mut().find(|l| l.id == level_id).ok_or("Kat bulunamadı")?;
+    let label = ROOM_KINDS.iter().find(|k| k.0 == kind).map(|k| k.1).ok_or("@unknown_room_type")?;
+    let level = scene.levels.iter_mut().find(|l| l.id == level_id).ok_or("@level_not_found")?;
     let det = detect_room(level, p)?;
     let floor = match kind {
         "banyo" | "camasir" => "seramik-gri",
@@ -328,7 +328,7 @@ pub fn refresh_rooms(scene: &mut Scene) -> Vec<String> {
             let probe = interior_point(&r.polygon);
             match detect_room(&snapshot, probe) {
                 Ok(d) => r.polygon = d.polygon,
-                Err(e) => warn.push(format!("{}: {e}", r.name)),
+                Err(e) => warn.push(crate::msg::named(&r.name, &e)),
             }
         }
     }
@@ -356,7 +356,7 @@ pub fn partition(scene: &Scene, a: P2, b: P2, id: String, thickness: Option<f64>
     let a = snap_point(a, None, 100.0);
     let b = snap_point(b, Some(a), 100.0);
     if geom::dist(a, b) < 200.0 {
-        return Err("Bölme en az 20 cm olmalı".into());
+        return Err("@partition_too_short".into());
     }
     let t = thickness.filter(|t| t.is_finite()).map(|t| t.clamp(50.0, 400.0)).unwrap_or(scene.standard.partition);
     Ok(Wall { id, a, b, thickness: t, ..Default::default() })
@@ -407,12 +407,12 @@ mod tests {
     fn piers_reject_openings_and_open_area_is_reported() {
         let s = module_scene();
         let e = place_opening(&s.levels[0], "p140", [500.0, 0.0], "P1".into()).unwrap_err();
-        assert!(e.contains("perde"), "{e}");
+        assert!(e == "@shear_wall_no_openings", "{e}");
         let ok = place_opening(&s.levels[0], "p250", [5000.0, 0.0], "P2".into()).unwrap();
         assert_eq!((ok.offset, ok.width), (1800.0, 2500.0));
         let mut open = s.clone();
         open.levels[0].walls.retain(|w| w.id != "M1-B0");
-        assert!(detect_room(&open.levels[0], [5000.0, 2000.0]).unwrap_err().contains("kapalı değil"));
+        assert!(detect_room(&open.levels[0], [5000.0, 2000.0]).unwrap_err() == "@area_not_closed");
     }
 
     #[test]

@@ -16,6 +16,7 @@ pub mod mesh;
 pub mod model;
 pub mod motors;
 pub mod modules;
+pub mod msg;
 pub mod plan;
 pub mod reference;
 pub mod obj;

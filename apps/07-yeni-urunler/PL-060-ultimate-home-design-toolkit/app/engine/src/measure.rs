@@ -101,10 +101,10 @@ pub fn measure(scene: &Scene) -> MeasureReport {
             all_pts.push(w.b);
             for o in level.openings.iter().filter(|o| o.wall == w.id) {
                 if o.offset < -1.0 || o.offset + o.width > len + 1.0 {
-                    warnings.push(format!("{} açıklığı duvar boyunu aşıyor", o.id));
+                    warnings.push(format!("@opening_exceeds_length|id={}", o.id));
                 }
                 if o.sill + o.height > h + 1.0 {
-                    warnings.push(format!("{} açıklığı duvar yüksekliğini aşıyor", o.id));
+                    warnings.push(format!("@opening_exceeds_height|id={}", o.id));
                 }
             }
             let wm = WallMeasure {
@@ -129,7 +129,7 @@ pub fn measure(scene: &Scene) -> MeasureReport {
 
         for room in &level.rooms {
             if room.polygon.len() < 3 {
-                warnings.push(format!("{} odasının çokgeni eksik", room.name));
+                warnings.push(format!("@room_polygon_missing|room={}", room.name.replace('|', "/")));
                 continue;
             }
             let poly = &room.polygon;
@@ -184,7 +184,7 @@ pub fn measure(scene: &Scene) -> MeasureReport {
             if rm.kind != "banyo" && rm.kind != "antre" && rm.kind != "balkon" && rm.windows == 0 {
                 warnings.push(format!("{}: pencere yok", rm.name));
             } else if matches!(rm.kind.as_str(), "salon" | "yatak" | "calisma") && rm.daylight_ratio < 0.10 {
-                warnings.push(format!("{}: gün ışığı oranı %{:.0} (önerilen ≥ %10)", rm.name, rm.daylight_ratio * 100.0));
+                warnings.push(format!("@low_daylight|room={}|p={:.0}", rm.name.replace('|', "/"), rm.daylight_ratio * 100.0));
             }
             t.rooms += 1;
             t.floor_area_m2 += area / MM2_PER_M2;
@@ -208,7 +208,7 @@ pub fn measure(scene: &Scene) -> MeasureReport {
                 }
             }
             if !level.walls.iter().any(|w| w.id == o.wall) {
-                warnings.push(format!("{} açıklığının duvarı bulunamadı", o.id));
+                warnings.push(format!("@opening_wall_missing|id={}", o.id));
             }
         }
     }
@@ -371,6 +371,6 @@ mod tests {
     fn warns_on_overflowing_opening() {
         let mut s = box_room();
         s.levels[0].openings[0].offset = 3500.0;
-        assert!(measure(&s).warnings.iter().any(|w| w.contains("duvar boyunu")));
+        assert!(measure(&s).warnings.iter().any(|w| w.contains("@opening_exceeds_length")));
     }
 }

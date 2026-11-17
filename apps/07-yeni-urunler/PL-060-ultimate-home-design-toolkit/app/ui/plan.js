@@ -1,6 +1,7 @@
 /* 2B plan tuvali: Katlar (modül yerleşimi) ve İç plan (bölme, mahal, açıklık, nesne) modları.
  * Dünya birimi mm; ekran = dünya × ölçek + kaydırma. Renkler PluginLabs tokenlarından okunur. */
 import { t as L, locale } from "./i18n.js";
+import { objectName, roomName } from "./names.js";
 
 const WIDTH = 4000;
 
@@ -577,13 +578,13 @@ export class PlanCanvas {
       ctx.beginPath();
       ctx.arc(this.sx(f[0]), this.sy(f[1]), 2, 0, Math.PI * 2);
       ctx.fill();
-      if (w * this.view.s > 46 && !lamp) this.label(o.name, this.sx(o.position[0]), this.sy(o.position[1]), { size: 10, color: C.fg3 });
+      if (w * this.view.s > 46 && !lamp) this.label(objectName(o, this.catalog.furniture || []), this.sx(o.position[0]), this.sy(o.position[1]), { size: 10, color: C.fg3 });
     }
     // mahal etiketleri
     for (const r of level.rooms) {
       const c = centroid(r.polygon);
       const area = polyArea(r.polygon) / 1e6;
-      this.label(r.name.toLocaleUpperCase(locale()), this.sx(c[0]), this.sy(c[1]) - 8, { size: 11, weight: 700, color: C.fg1 });
+      this.label(roomName(r, this.catalog.roomKinds || []).toLocaleUpperCase(locale()), this.sx(c[0]), this.sy(c[1]) - 8, { size: 11, weight: 700, color: C.fg1 });
       this.label(`${L("plan.net_m2", { p: fmt(area) })}`, this.sx(c[0]), this.sy(c[1]) + 8, { size: 10, mono: true, color: C.accent });
     }
     // duvar ölçüleri

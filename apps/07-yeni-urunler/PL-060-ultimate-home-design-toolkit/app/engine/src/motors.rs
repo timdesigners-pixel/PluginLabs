@@ -283,7 +283,7 @@ pub fn curtain(p: &Curtain, id: &str) -> Result<Generated, String> {
             g.boxx("metal-krom", [-w / 2.0 + 15.0, top - drop - 18.0, -8.0], [w / 2.0 - 15.0, top - drop, 8.0]);
             area += w * drop;
         }
-        other => return Err(format!("Bilinmeyen perde cinsi: {other}")),
+        other => return Err(format!("@unknown_curtain|value={other}")),
     }
     let zc = if p.kind == "tul-fon" { (depth + 30.0) / 2.0 } else { 0.0 };
     let mut header_price = 0.0;
@@ -602,7 +602,7 @@ pub fn bed(p: &Bed, id: &str) -> Result<Generated, String> {
             g.boxx("ahsap-mese", [-w / 2.0 - 120.0, 0.0, -l / 2.0 - 40.0], [w / 2.0 + 120.0, 180.0, l / 2.0 + 120.0]);
             (180.0, w / 1000.0 * 8400.0)
         }
-        other => return Err(format!("Bilinmeyen baza tipi: {other}")),
+        other => return Err(format!("@unknown_base|value={other}")),
     };
     // şilte
     g.boxx("kumas-beyaz", [-w / 2.0 + 10.0, base_top, -l / 2.0 + 10.0], [w / 2.0 - 10.0, base_top + mh, l / 2.0 - 10.0]);
@@ -654,7 +654,7 @@ pub fn bed(p: &Bed, id: &str) -> Result<Generated, String> {
             }
             price += w / 1000.0 * 5600.0;
         }
-        other => return Err(format!("Bilinmeyen başlık formu: {other}")),
+        other => return Err(format!("@unknown_headboard|value={other}")),
     }
     if p.bedding.on {
         bedding(&mut g, &p.bedding, w, l, top);
@@ -770,7 +770,7 @@ pub fn pool(p: &Pool, id: &str) -> Result<Generated, String> {
                 }
             }
         }
-        other => return Err(format!("Bilinmeyen havuz şekli: {other}")),
+        other => return Err(format!("@unknown_pool|value={other}")),
     }
     if p.lights {
         g.materials.push(Material { id: "havuz-isik".into(), name: "Havuz aydınlatması".into(), color: [0.75, 0.93, 1.0], roughness: 0.5, metallic: 0.0, emission: 5.0, opacity: 1.0, price_m2: 0.0, category: "isik".into(), ..Default::default() });
@@ -795,7 +795,7 @@ pub fn pool(p: &Pool, id: &str) -> Result<Generated, String> {
 /// Motor adına göre üretir. `params` ilgili motorun JSON parametreleridir.
 pub fn generate(kind: &str, params: serde_json::Value, id: &str) -> Result<Generated, String> {
     fn de<T: for<'a> Deserialize<'a>>(v: serde_json::Value) -> Result<T, String> {
-        serde_json::from_value(v).map_err(|e| format!("Parametreler geçersiz: {e}"))
+        serde_json::from_value(v).map_err(|e| format!("@params_invalid|error={}", e.to_string().replace('|', "/")))
     }
     match kind {
         "perde" => curtain(&de::<Curtain>(params)?, id),
@@ -803,7 +803,7 @@ pub fn generate(kind: &str, params: serde_json::Value, id: &str) -> Result<Gener
         "yatak" => bed(&de::<Bed>(params)?, id),
         "nevresim" => bedding_set(&de::<BeddingSet>(params)?, id),
         "havuz" => pool(&de::<Pool>(params)?, id),
-        _ => Err(format!("Bilinmeyen motor: {kind}")),
+        _ => Err(format!("@unknown_generator|value={kind}")),
     }
 }
 

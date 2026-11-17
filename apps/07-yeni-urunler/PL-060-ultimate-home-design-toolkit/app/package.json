@@ -8,7 +8,10 @@
     "build:wasm": "bash scripts/build-wasm.sh",
     "test:ui": "bash scripts/build-wasm.sh && node scripts/ui-check.cjs",
     "tauri": "tauri",
-    "build:win": "tauri build"
+    "build:win": "tauri build",
+    "i18n:check": "node scripts/i18n-check.cjs"
   },
-  "devDependencies": { "@tauri-apps/cli": "2.10.1" }
+  "devDependencies": {
+    "@tauri-apps/cli": "2.10.1"
+  }
 }

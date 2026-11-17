@@ -169,10 +169,10 @@ def color_management(sc, pkg):
         except TypeError:
             continue
     wb = float(pkg.get("post", {}).get("white_balance", 0) or 0)
-    if wb > 1000 and hasattr(vs, "use_white_balance"):
+    if wb > 1000 and abs(wb - 6500.0) > 300 and hasattr(vs, "use_white_balance"):
+        # yalnız belirgin bir istek varsa: Blender'da sıcaklık sahne ışığını belirtir, görüntü ters yönde kayar
         vs.use_white_balance = True
-        # Blender'ın beyaz dengesi sahne ışığının sıcaklığını belirtir; görüntüyü ısıtmak için ters yönde ayarlanır
-        vs.white_balance_temperature = max(2000.0, 13000.0 - wb)
+        vs.white_balance_temperature = 6500.0 - (wb - 6500.0) * 0.5
     log(f"renk yönetimi: {vs.view_transform} / {vs.look}")
 
 
@@ -247,6 +247,20 @@ def material_for(spec, clay, cache_dir):
         set_input(bsdf, "Roughness", 0.0)
         set_input(bsdf, "IOR", 1.52)
         set_input(bsdf, "Thin Wall", True)
+        # mimari görselleştirmede olağan yöntem: gölge ve yayınık ışınlar camdan kayıpsız geçer,
+        # böylece güneş lekesi ve gün ışığı içeri düşer; görünen yüz yine gerçek cam gibi yansıtır
+        lp = nodes.new("ShaderNodeLightPath")
+        either = nodes.new("ShaderNodeMath")
+        either.operation = "MAXIMUM"
+        links.new(lp.outputs["Is Shadow Ray"], either.inputs[0])
+        links.new(lp.outputs["Is Diffuse Ray"], either.inputs[1])
+        transp = nodes.new("ShaderNodeBsdfTransparent")
+        transp.inputs["Color"].default_value = (0.92, 0.94, 0.95, 1)
+        mix = nodes.new("ShaderNodeMixShader")
+        links.new(either.outputs[0], mix.inputs["Fac"])
+        links.new(bsdf.outputs[0], mix.inputs[1])
+        links.new(transp.outputs[0], mix.inputs[2])
+        links.new(mix.outputs[0], out.inputs["Surface"])
         return m
 
     height = None
@@ -490,7 +504,7 @@ def setup_camera(sc, pkg):
     target = mathutils.Vector(to_bl(c["target"]))
     ob.location = eye
     fwd = (target - eye).normalized()
-    ob.rotation_euler = fwd.to_track_quat("-Z", "Z").to_euler()
+    ob.rotation_euler = fwd.to_track_quat("-Z", "Y").to_euler()
     cam.sensor_fit = "VERTICAL"
     cam.sensor_height = 24.0
     cam.sensor_width = 36.0

@@ -98,7 +98,7 @@ fn nearest(scene: &Scene, cats: &[&str], c: C) -> Option<String> {
 /// `rgb`: satır satır RGB baytları (genişlik × yükseklik × 3).
 pub fn analyze(scene: &Scene, width: usize, height: usize, rgb: &[u8]) -> Result<Reference, String> {
     if !(4..=128).contains(&width) || !(4..=128).contains(&height) || rgb.len() != width * height * 3 {
-        return Err("Görsel örneği 4–128 piksel kenarlı RGB olmalı".into());
+        return Err("@reference_bad_sample".into());
     }
     let px: Vec<C> = rgb.chunks(3).map(|p| [p[0] as f32 / 255.0, p[1] as f32 / 255.0, p[2] as f32 / 255.0]).collect();
     let row = |y: usize| &px[y * width..(y + 1) * width];

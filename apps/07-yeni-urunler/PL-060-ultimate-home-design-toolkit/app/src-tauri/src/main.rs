@@ -3,6 +3,7 @@
 //! ve PluginLabs Hub (MyMind) köprüsü vardır. Ağ erişimi yalnız 127.0.0.1:47632'dir.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod cycles;
 mod vault;
 
 use base64::Engine as _;
@@ -178,9 +179,49 @@ async fn mymind(prompt: String, approved: bool) -> R<serde_json::Value> {
     .map_err(|e| e.to_string())?
 }
 
+#[tauri::command]
+fn cycles_status(app: tauri::AppHandle) -> serde_json::Value {
+    match cycles::find(&app) {
+        Some(p) => serde_json::json!({"available": true, "path": p.display().to_string()}),
+        None => serde_json::json!({"available": false}),
+    }
+}
+
+#[tauri::command]
+async fn cycles_pick(app: tauri::AppHandle) -> R<Option<String>> {
+    let picked = tauri::async_runtime::spawn_blocking(|| rfd::FileDialog::new().add_filter("Blender", &["exe", ""]).pick_file()).await.map_err(|e| e.to_string())?;
+    match picked {
+        Some(p) => {
+            cycles::set_path(&app, &p)?;
+            Ok(Some(p.display().to_string()))
+        }
+        None => Ok(None),
+    }
+}
+
+/// Sahneyi motorda Cycles paketine çevirir ve Blender ile render eder.
+#[tauri::command]
+async fn cycles_render(app: tauri::AppHandle, payload: String) -> R<String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let r: serde_json::Value = serde_json::from_str(&uhd_engine::api::call("export_cycles", &payload)).map_err(|e| e.to_string())?;
+        if r["ok"].as_bool() != Some(true) {
+            return Err(r["error"].as_str().unwrap_or("@cycles_failed").to_string());
+        }
+        let png = cycles::render(&app, &r["data"].to_string())?;
+        Ok(base64::engine::general_purpose::STANDARD.encode(png))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+fn cycles_cancel() {
+    cycles::cancel();
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key, mymind])
+        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key, mymind, cycles_status, cycles_pick, cycles_render, cycles_cancel])
         .run(tauri::generate_context!())
         .expect("Ultimate Home başlatılamadı");
 }

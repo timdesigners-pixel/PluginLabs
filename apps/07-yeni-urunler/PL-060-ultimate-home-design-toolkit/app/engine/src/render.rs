@@ -990,7 +990,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         }
     }
     if tris.is_empty() {
-        return Err("Render edilecek geometri yok".into());
+        return Err("@render_empty".into());
     }
     let tri_count = tris.len();
     let bvh = Bvh::build(tris);

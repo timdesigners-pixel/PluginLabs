@@ -181,14 +181,14 @@ impl Image {
 /// Yüklenecek görsel dokuyu doğrular ve sahneye ekler; kimliğini döner.
 pub fn add_texture(scene: &mut Scene, name: &str, width: usize, height: usize, rgb_b64: &str) -> Result<String, String> {
     if !(2..=MAX_TEXTURE_EDGE).contains(&width) || !(2..=MAX_TEXTURE_EDGE).contains(&height) {
-        return Err(format!("Doku kenarı 2–{MAX_TEXTURE_EDGE} piksel olmalı"));
+        return Err(format!("@texture_bad_size|max={MAX_TEXTURE_EDGE}"));
     }
-    let raw = base64::engine::general_purpose::STANDARD.decode(rgb_b64).map_err(|_| "Doku verisi okunamadı".to_string())?;
+    let raw = base64::engine::general_purpose::STANDARD.decode(rgb_b64).map_err(|_| "@texture_unreadable".to_string())?;
     if raw.len() != width * height * 3 {
-        return Err("Doku verisi ölçüyle uyuşmuyor".into());
+        return Err("@texture_size_mismatch".into());
     }
     if scene.textures.len() >= 64 {
-        return Err("En çok 64 doku yüklenebilir".into());
+        return Err("@texture_limit".into());
     }
     let mut k = scene.textures.len() + 1;
     let id = loop {

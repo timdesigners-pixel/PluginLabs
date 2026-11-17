@@ -94,7 +94,7 @@ fn idx(tok: &str, n: usize) -> Option<usize> {
 /// `z_up` true ise Z yukarı kabul edilir (çoğu CAD dışa aktarımı).
 pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_up: bool) -> Result<Imported, String> {
     if obj.len() > MAX_OBJ_BYTES {
-        return Err("OBJ dosyası 64 MB sınırını aşıyor".into());
+        return Err("@obj_too_large".into());
     }
     let prefix = format!("{id}-");
     let mut materials = mtl.map(|t| parse_mtl(t, &prefix)).unwrap_or_default();
@@ -117,9 +117,9 @@ pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_
         match k {
             "v" => {
                 if v.len() >= MAX_VERTICES {
-                    return Err("Köşe sayısı sınırı (3 milyon) aşıldı".into());
+                    return Err("@obj_too_many_vertices".into());
                 }
-                let Some(c) = parse_floats(it, 3) else { return Err(format!("Geçersiz köşe satırı: {}", line.chars().take(60).collect::<String>())) };
+                let Some(c) = parse_floats(it, 3) else { return Err(format!("@obj_bad_vertex|line={}", line.chars().take(60).collect::<String>().replace('|', "/"))) };
                 let p = if z_up { [c[0], c[2], -c[1]] } else { [c[0], c[1], c[2]] };
                 v.push([p[0] * scale, p[1] * scale, p[2] * scale]);
             }
@@ -159,7 +159,7 @@ pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_
                 }
                 for k in 1..poly.len() - 1 {
                     if indices.len() / 3 >= MAX_TRIANGLES {
-                        return Err("Üçgen sayısı sınırı (3 milyon) aşıldı".into());
+                        return Err("@obj_too_many_triangles".into());
                     }
                     for key in [poly[0], poly[k], poly[k + 1]] {
                         let flat = key.1.is_none();
@@ -186,10 +186,10 @@ pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_
         }
     }
     if indices.is_empty() {
-        return Err("OBJ dosyasında yüz bulunamadı".into());
+        return Err("@obj_no_faces".into());
     }
     if bad_faces > 0 {
-        warnings.push(format!("{bad_faces} geçersiz yüz atlandı"));
+        warnings.push(format!("@obj_bad_faces|n={bad_faces}"));
     }
     // normal hesapla
     for t in indices.chunks(3) {
@@ -219,9 +219,9 @@ pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_
     }
     let size = [mx[0] - mn[0], mx[1] - mn[1], mx[2] - mn[2]];
     if size.iter().any(|s| *s > 200_000.0) {
-        warnings.push("Model 200 m'den büyük; birim seçimini kontrol edin".into());
+        warnings.push("@obj_too_big".into());
     } else if size.iter().all(|s| *s < 50.0) {
-        warnings.push("Model 5 cm'den küçük; birim seçimini kontrol edin".into());
+        warnings.push("@obj_too_small".into());
     }
     let tris = indices.len() / 3;
     Ok(Imported {

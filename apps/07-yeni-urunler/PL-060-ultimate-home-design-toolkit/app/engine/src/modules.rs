@@ -100,7 +100,7 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
         ok
     });
     if scene.modules.len() != before {
-        notes.push("Dayanağı olmayan üst kat modülü kaldırıldı".into());
+        notes.push("@upper_module_removed".into());
     }
     let max_floor = scene.modules.iter().map(|m| m.floor).max().unwrap_or(0);
     for f in 0..=max_floor {
@@ -243,7 +243,7 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
         });
     }
     if !archived.is_empty() {
-        notes.push(format!("{} açıklık modül değişikliği nedeniyle arşivlendi", archived.len()));
+        notes.push(format!("@openings_archived_modules|n={}", archived.len()));
         scene.archive.extend(archived);
     }
     notes

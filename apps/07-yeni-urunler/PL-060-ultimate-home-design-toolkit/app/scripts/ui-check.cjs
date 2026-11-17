@@ -89,6 +89,14 @@ const server = http.createServer((req, res) => {
   await page.waitForSelector("#renderFig:not([hidden])", { timeout: 600000 });
   ok((await page.getAttribute("#renderImg", "src")).startsWith("data:image/png;base64,"), "3B: render PNG üretildi");
   await shot("05-render.png");
+  // render stili ve motoru: Cycles tarayıcı önizlemesinde masaüstüne yönlendirir
+  await page.selectOption("#selStyle", "editorial");
+  await page.click('#segEngine [data-engine="cycles"]');
+  await waitText("#cyclesState", /masaüstü/);
+  await page.locator("#cyclesState").scrollIntoViewIfNeeded();
+  await shot("24-render-motoru.png");
+  await page.click('#segEngine [data-engine="internal"]');
+  await page.selectOption("#selStyle", "default");
 
   // Ölçü, maliyet, fonksiyon, özet
   await page.click('[data-view="olcu"]');
@@ -251,6 +259,19 @@ const server = http.createServer((req, res) => {
   await shot("11-komut-paleti.png");
   await page.keyboard.press("Escape");
 
+  // İngilizce arayüz: tüm metinler dil dosyasından gelir, eksik anahtar uyarısı olmamalı
+  const missing = [];
+  page.on("console", (m) => { if (m.text().includes("i18n:")) missing.push(m.text()); });
+  await page.goto(base + "?demo=1&lang=en&view=karsilama");
+  await waitText("#engineInfo", /Rust engine/);
+  await shot("en-00-welcome.png");
+  for (const [view, file] of [["plan", "en-03-floor-plan.png"], ["uc", "en-04-3d-render.png"], ["foto", "en-23-room-from-photo.png"], ["maliyet", "en-07-cost.png"]]) {
+    await page.click(`[data-view="${view}"]`);
+    await page.waitForTimeout(view === "uc" ? 2500 : 900);
+    await shot(file);
+  }
+  ok(missing.length === 0, `İngilizce: eksik çeviri anahtarı yok (${missing.length})`);
+  if (missing.length) console.log(missing.slice(0, 20).join("\n"));
   await browser.close();
   server.close();
   if (errors.length) { console.error("HATALAR:\n" + errors.join("\n")); process.exit(1); }

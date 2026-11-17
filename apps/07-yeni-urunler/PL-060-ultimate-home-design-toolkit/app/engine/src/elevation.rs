@@ -28,7 +28,7 @@ pub fn build(scene: &Scene, side: &str) -> Result<Elevation, String> {
         "arka" => 'K',
         "sol" => 'B',
         "sag" => 'D',
-        _ => return Err("Bilinmeyen cephe".into()),
+        _ => return Err("@unknown_facade".into()),
     };
     let st = &scene.standard;
     let horizontal = edge == 'G' || edge == 'K';
@@ -79,7 +79,7 @@ pub fn build(scene: &Scene, side: &str) -> Result<Elevation, String> {
         }
     }
     if lines.is_empty() {
-        return Err("Cephe için önce modül ekleyin".into());
+        return Err("@facade_needs_modules".into());
     }
     let (mut x0, mut y0, mut x1, mut y1) = (f64::INFINITY, 0.0f64, f64::NEG_INFINITY, 0.0f64);
     for l in &lines {

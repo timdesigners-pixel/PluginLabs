@@ -164,7 +164,7 @@ fn vanish(a0: V3, a1: V3, b0: V3, b1: V3) -> V3 {
 
 fn solve(inp: &PhotoInput) -> Result<Raw, String> {
     if inp.width < 16.0 || inp.height < 16.0 {
-        return Err("Görüntü boyutu eksik".into());
+        return Err("@photo_no_size".into());
     }
     // merkezlenmiş ve görüntü genişliğine bölünmüş koordinatlar (sayısal kararlılık)
     let s = inp.width;
@@ -172,7 +172,7 @@ fn solve(inp: &PhotoInput) -> Result<Raw, String> {
     let h = |p: [f64; 2]| -> V3 { [(p[0] - c[0]) / s, (p[1] - c[1]) / s, 1.0] };
     let (bl, br, tr, tl) = (h(inp.bl), h(inp.br), h(inp.tr), h(inp.tl));
     if len(sub(bl, br)) < 0.02 || len(sub(bl, tl)) < 0.02 || len(sub(br, tr)) < 0.02 {
-        return Err("Köşeler birbirine çok yakın; arka duvarın dört köşesini ayrı ayrı işaretleyin".into());
+        return Err("@photo_corners_close".into());
     }
     let vx = vanish(bl, br, tl, tr);
     let vy = vanish(bl, tl, br, tr);
@@ -236,7 +236,7 @@ fn solve(inp: &PhotoInput) -> Result<Raw, String> {
     let cam_h = dot(y, p_bl);
     let den = dot(y, ray(br));
     if cam_h <= 1e-6 || den <= 1e-6 {
-        return Err("Zemin köşeleri ufuk çizgisinin üstünde görünüyor; köşeleri ya da görüş açısını kontrol edin".into());
+        return Err("@photo_floor_above_horizon".into());
     }
     let p_br = mul(ray(br), cam_h / den);
     let mut w = dot(x, sub(p_br, p_bl));
@@ -247,19 +247,19 @@ fn solve(inp: &PhotoInput) -> Result<Raw, String> {
     let d_cam = dot(z, p_bl);
     let d_cam_r = dot(z, p_br);
     if d_cam <= 1e-6 || d_cam_r <= 1e-6 || w < 1e-6 {
-        return Err("Arka duvar kameranın arkasında kalıyor; köşe sırasını kontrol edin (zemin-sol, zemin-sağ, tavan-sağ, tavan-sol)".into());
+        return Err("@photo_wall_behind".into());
     }
     let top = |p: V3, base: V3, d: f64| -> Result<f64, String> {
         let k = dot(z, ray(p));
         if k <= 1e-6 {
-            return Err("Tavan köşesi hesaplanamadı".into());
+            return Err("@photo_ceiling_failed".into());
         }
         Ok(dot(y, sub(base, mul(ray(p), d / k))))
     };
     let (hl, hr) = (top(tl, p_bl, d_cam)?, top(tr, p_br, d_cam_r)?);
     let hh = (hl + hr) / 2.0;
     if hh <= 1e-6 {
-        return Err("Tavan köşeleri zemin köşelerinin altında görünüyor".into());
+        return Err("@photo_ceiling_below".into());
     }
     let mut d_vis: f64 = 0.0;
     for (p, base) in [(inp.left, p_bl), (inp.right, p_br)] {
@@ -283,7 +283,7 @@ fn scale_of(r: &Raw, reference: &Reference) -> Result<f64, String> {
         _ => r.h,
     };
     if base <= 1e-9 || !(reference.mm > 0.0) {
-        return Err("Referans uzunluk hesaplanamadı; başka bir referans seçin".into());
+        return Err("@photo_reference_failed".into());
     }
     Ok(reference.mm / base)
 }
@@ -339,10 +339,10 @@ pub fn fit(inp: &PhotoInput) -> Result<PhotoFit, String> {
                 if fo.width >= 300.0 && fo.height >= 300.0 {
                     openings.push(fo);
                 } else {
-                    notes.push("Çok küçük işaretlenen bir açıklık atlandı".into());
+                    notes.push("@photo_opening_small".into());
                 }
             }
-            _ => notes.push("Bir açıklık seçilen duvara düşmüyor; atlandı".into()),
+            _ => notes.push("@photo_opening_off_wall".into()),
         }
     }
 
@@ -401,19 +401,19 @@ pub fn fit(inp: &PhotoInput) -> Result<PhotoFit, String> {
     }
 
     match r.source {
-        "varsayilan" => notes.push("Fotoğraf duvara tam karşıdan çekildiği için odak uzaklığı kaçış noktalarından bulunamadı; telefon ana kamerası (yatay 69°) varsayıldı. Derinlik bu varsayıma bağlıdır: görüş açısını biliyorsanız girin ya da odayı biraz çaprazdan çekin.".into()),
+        "varsayilan" => notes.push("@photo_focal_assumed".into()),
         "kullanici" => {}
         _ => {}
     }
     if inp.left.is_none() || inp.right.is_none() {
-        notes.push("Yan duvar noktaları işaretlenmedi; derinlik yalnız kameranın arka duvara uzaklığından tahmin edildi.".into());
+        notes.push("@photo_no_side_points".into());
     }
     if r.cons < 0.9 {
-        notes.push("Köşeler tam bir dikdörtgen odaya oturmuyor; işaretleri duvar-zemin birleşimlerine yeniden hizalayın.".into());
+        notes.push("@photo_not_rectangular".into());
     }
     let cam_x = -dot(r.x, r.p_bl) * k;
     if cam_x < 0.0 || cam_x > w {
-        notes.push("Kamera odanın yan sınırları dışında görünüyor (kapı aralığından çekim olabilir); derinlik yalnız görünen kısımdan alındı.".into());
+        notes.push("@photo_camera_outside".into());
     }
     let fov_h = 2.0 * (0.5 / r.f).atan().to_degrees();
     let fov_v = 2.0 * ((inp.height / inp.width) * 0.5 / r.f).atan().to_degrees();
@@ -523,7 +523,7 @@ mod tests {
         inp.reference = Reference { kind: "yukseklik".into(), mm: 2600.0 };
         let f = fit(&inp).unwrap();
         assert_eq!(f.focal_source, "varsayilan");
-        assert!(f.notes.iter().any(|n| n.contains("varsayıldı")));
+        assert!(f.notes.iter().any(|n| n == "@photo_focal_assumed"));
         // genişlik/yükseklik oranı odaktan bağımsızdır
         assert!((f.width - 4000.0).abs() < 5.0);
         inp.fov = Some(69.0);

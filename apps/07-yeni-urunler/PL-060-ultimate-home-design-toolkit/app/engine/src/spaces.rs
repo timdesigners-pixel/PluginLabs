@@ -182,14 +182,14 @@ pub fn rebuild(scene: &mut Scene) -> Vec<String> {
         }
     });
     if !archived.is_empty() {
-        notes.push(format!("{} açıklık ölçü değişikliği nedeniyle arşivlendi", archived.len()));
+        notes.push(format!("@openings_archived_resize|n={}", archived.len()));
         scene.archive.extend(archived);
     }
     for (i, a) in scene.spaces.iter().enumerate() {
         for b in scene.spaces.iter().skip(i + 1) {
             let ((a0, a1), (b0, b1)) = (a.rect(), b.rect());
             if a0[0] < b1[0] && b0[0] < a1[0] && a0[1] < b1[1] && b0[1] < a1[1] {
-                notes.push(format!("{} ile {} üst üste biniyor", a.name, b.name));
+                notes.push(format!("@spaces_overlap|a={}|b={}", a.name.replace('|', "/"), b.name.replace('|', "/")));
             }
         }
     }
@@ -280,7 +280,7 @@ pub fn add(scene: &mut Scene, mut s: Space, openings: &[FitOpening], cam: Option
     let mut notes = rebuild(scene);
     let lid = scene.levels[0].id.clone();
     if let Err(e) = crate::plan::name_room(scene, &lid, center, "salon", Some(name)) {
-        notes.push(format!("Zemin kaplaması atanamadı: {e}"));
+        notes.push(e);
     }
     let mut n = scene.levels[0].openings.len();
     for o in openings {
@@ -288,14 +288,14 @@ pub fn add(scene: &mut Scene, mut s: Space, openings: &[FitOpening], cam: Option
         // oda yüksekliğine ve duvar boyuna sığdır
         let height = o.height.min(s.height - o.sill.max(0.0) - 50.0);
         let Some((wall, offset)) = wall_for(scene, &s, &o.wall, o.offset.max(0.0), o.width) else {
-            notes.push("Bir açıklık duvara sığmadığı için eklenmedi".into());
+            notes.push("@space_opening_no_fit".into());
             continue;
         };
         n += 1;
         let op = Opening { id: format!("{id}-A{n}"), wall, kind: if door { OpeningKind::Door } else { OpeningKind::Window }, offset, width: o.width, height, sill: if door { 0.0 } else { o.sill }, price: 0.0, swing: "sol-ice".into() };
         match crate::plan::validate_opening(&scene.levels[0], &op) {
             Ok(()) => scene.levels[0].openings.push(op),
-            Err(e) => notes.push(format!("Açıklık eklenmedi: {e}")),
+            Err(e) => notes.push(e),
         }
     }
     Ok((id, notes))
@@ -304,7 +304,7 @@ pub fn add(scene: &mut Scene, mut s: Space, openings: &[FitOpening], cam: Option
 /// Mekânın ölçülerini günceller. `lock` açıkken tek bir ölçü değişse de oran korunur:
 /// diğer ölçüler, açıklıklar ve kamera aynı katsayıyla büyür.
 pub fn resize(scene: &mut Scene, id: &str, width: Option<f64>, depth: Option<f64>, height: Option<f64>, lock: bool) -> Result<Vec<String>, String> {
-    let i = scene.spaces.iter().position(|s| s.id == id).ok_or("Mekân bulunamadı")?;
+    let i = scene.spaces.iter().position(|s| s.id == id).ok_or("@space_not_found")?;
     let old = scene.spaces[i].clone();
     let mut s = old.clone();
     if lock {
@@ -312,7 +312,7 @@ pub fn resize(scene: &mut Scene, id: &str, width: Option<f64>, depth: Option<f64
         let lo = (MIN_SIDE / old.width.min(old.depth)).max(MIN_HEIGHT / old.height);
         let hi = (MAX_SIDE / old.width.max(old.depth)).min(MAX_HEIGHT / old.height);
         if !(k.is_finite() && k > 0.0) || lo > hi {
-            return Err("Geçersiz ölçü".into());
+            return Err("@invalid_size".into());
         }
         let k = k.clamp(lo, hi);
         s.width = old.width * k;
@@ -374,7 +374,7 @@ pub fn resize(scene: &mut Scene, id: &str, width: Option<f64>, depth: Option<f64
 
 /// Mekânı arşive taşır (silme yok); zemin kaydı da arşivlenir.
 pub fn archive(scene: &mut Scene, id: &str) -> Result<(), String> {
-    let i = scene.spaces.iter().position(|s| s.id == id).ok_or("Mekân bulunamadı")?;
+    let i = scene.spaces.iter().position(|s| s.id == id).ok_or("@space_not_found")?;
     let s = scene.spaces.remove(i);
     let (a, b) = s.rect();
     let mut rooms = vec![];

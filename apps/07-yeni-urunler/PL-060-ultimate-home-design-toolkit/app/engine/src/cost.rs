@@ -82,7 +82,7 @@ pub fn estimate_with(scene: &Scene, m: &MeasureReport, tier: Tier) -> CostReport
     let mut errors = vec![];
     for r in measure::run_measure_functions(scene, &mut vars) {
         if let Some(e) = r.error {
-            errors.push(format!("{}: {e}", r.name));
+            errors.push(crate::msg::named(&r.name, &e));
         }
     }
     let region = cp.region_index.clamp(0.1, 10.0);
@@ -92,7 +92,7 @@ pub fn estimate_with(scene: &Scene, m: &MeasureReport, tier: Tier) -> CostReport
         let q = match quantity(&rate.basis, m, &vars) {
             Ok(q) => q.max(0.0),
             Err(e) => {
-                errors.push(format!("{}: {e}", rate.name));
+                errors.push(crate::msg::named(&rate.name, &e));
                 continue;
             }
         };
@@ -117,7 +117,7 @@ pub fn estimate_with(scene: &Scene, m: &MeasureReport, tier: Tier) -> CostReport
             labour: r2(lab),
             discount: r2(disc),
             total: r2(total),
-            note: if d > 0.0 { format!("Miktar indirimi %{:.0}", d * 100.0) } else { String::new() },
+            note: if d > 0.0 { format!("@quantity_discount|p={:.0}", d * 100.0) } else { String::new() },
         });
     }
     // Açıklık birim fiyatları (kapı / pencere doğramaları)
@@ -194,7 +194,7 @@ pub fn estimate_with(scene: &Scene, m: &MeasureReport, tier: Tier) -> CostReport
                     note: format!("ƒ {}", f.expr),
                 });
             }
-            Err(e) => errors.push(format!("{}: {e}", f.name)),
+            Err(e) => errors.push(crate::msg::named(&f.name, &e)),
         }
     }
     if cp.include_furniture {

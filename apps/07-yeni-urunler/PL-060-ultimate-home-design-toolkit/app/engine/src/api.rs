@@ -12,7 +12,7 @@ use serde_json::{json, Value};
 pub const MAX_PAYLOAD: usize = 300 * 1024 * 1024;
 
 fn arg<T: for<'de> Deserialize<'de>>(v: &Value, k: &str) -> Result<T, String> {
-    serde_json::from_value(v.get(k).cloned().unwrap_or(Value::Null)).map_err(|e| format!("'{k}' alanı geçersiz: {e}"))
+    serde_json::from_value(v.get(k).cloned().unwrap_or(Value::Null)).map_err(|e| format!("@field_invalid|field={k}|error={}", e.to_string().replace('|', "/")))
 }
 fn opt<T: for<'de> Deserialize<'de>>(v: &Value, k: &str) -> Option<T> {
     v.get(k).and_then(|x| serde_json::from_value(x.clone()).ok())
@@ -22,7 +22,7 @@ fn scene_of(v: &Value) -> Result<Scene, String> {
 }
 
 pub fn call(cmd: &str, payload: &str) -> String {
-    let r = if payload.len() > MAX_PAYLOAD { Err("İstek çok büyük".to_string()) } else { dispatch(cmd, payload) };
+    let r = if payload.len() > MAX_PAYLOAD { Err("@request_too_large".to_string()) } else { dispatch(cmd, payload) };
     match r {
         Ok(d) => json!({"ok": true, "data": d}).to_string(),
         Err(e) => json!({"ok": false, "error": e}).to_string(),
@@ -41,7 +41,7 @@ fn camera_preset(s: &Scene, name: &str, room: Option<&str>) -> Result<Value, Str
     let m = mesh::build(s, &mesh::MeshOptions { ground: false, furniture: false, ..Default::default() });
     let (mn, mx) = m.bounds();
     if !mn[0].is_finite() {
-        return Err("Sahne boş".into());
+        return Err("@scene_empty".into());
     }
     let c = [(mn[0] + mx[0]) as f64 / 2.0, (mx[1] as f64) * 0.35, (mn[2] + mx[2]) as f64 / 2.0];
     let size = ((mx[0] - mn[0]).max(mx[2] - mn[2])) as f64;
@@ -61,12 +61,12 @@ fn camera_preset(s: &Scene, name: &str, room: Option<&str>) -> Result<Value, Str
             return Ok(json!({"eye": eye, "target": c, "fov": 30.0, "projection": "isometric", "orthoHeight": size * 0.95 + h * 0.9 + 800.0}));
         }
         "ic" => {
-            let level = s.levels.first().ok_or("Kat yok")?;
+            let level = s.levels.first().ok_or("@no_level")?;
             let r = match room {
                 Some(id) => s.levels.iter().flat_map(|l| l.rooms.iter()).find(|r| r.id == id),
                 None => level.rooms.iter().max_by(|a, b| crate::geom::area(&a.polygon).partial_cmp(&crate::geom::area(&b.polygon)).unwrap()),
             }
-            .ok_or("İç mekân için önce bir mahal adlandırın")?;
+            .ok_or("@interior_needs_room")?;
             let lv = s.levels.iter().find(|l| l.rooms.iter().any(|x| x.id == r.id)).unwrap();
             let (a, b) = crate::geom::bbox(&r.polygon);
             let y = lv.elevation + 1500.0;
@@ -77,34 +77,35 @@ fn camera_preset(s: &Scene, name: &str, room: Option<&str>) -> Result<Value, Str
                 ([a[0] + 250.0, y, a[1] + 250.0], [(a[0] + b[0]) / 2.0, lv.elevation + 900.0, b[1]], 72.0)
             }
         }
-        _ => return Err("Bilinmeyen kamera açısı".into()),
+        _ => return Err("@unknown_camera".into()),
     };
     Ok(json!({"eye": eye, "target": target, "fov": fov}))
 }
 
-/// MyMind'a gidecek veri azaltılmış özet: kişisel ad, proje numarası, dosya yolu ve fiyat içermez.
-pub fn mymind_summary(s: &Scene) -> String {
+/// MyMind'a gidecek veri azaltılmış özet bilgisi: kişisel ad, proje numarası, dosya yolu ve fiyat içermez.
+/// Metni arayüz seçili dilde kurar (ui/locales).
+pub fn mymind_facts(s: &Scene) -> Value {
     let m = measure::measure(s);
-    let mut lines = vec![];
-    use crate::units::fmt_tr;
-    lines.push(format!("Konut: {} modül, {} kat, net alan yaklaşık {} m².", s.modules.len(), s.levels.len(), fmt_tr(m.totals.floor_area_m2, 0)));
-    for r in &m.rooms {
-        let kind = plan::ROOM_KINDS.iter().find(|k| k.0 == r.kind).map(|k| k.1).unwrap_or("Mahal");
-        lines.push(format!("- {} ({}): {} m², {} pencere, {} kapı, gün ışığı oranı %{}", kind, r.name.chars().take(30).collect::<String>(), fmt_tr(r.area_m2, 1), r.windows, r.doors, fmt_tr(r.daylight_ratio * 100.0, 0)));
-    }
-    let mut counts: std::collections::BTreeMap<String, u32> = Default::default();
+    let rooms: Vec<Value> = m
+        .rooms
+        .iter()
+        .map(|r| json!({"kind": r.kind, "name": r.name.chars().take(30).collect::<String>(), "area_m2": (r.area_m2 * 10.0).round() / 10.0, "windows": r.windows, "doors": r.doors, "daylight": (r.daylight_ratio * 100.0).round()}))
+        .collect();
+    let mut counts: std::collections::BTreeMap<(String, String), u32> = Default::default();
     for o in &s.objects {
-        *counts.entry(o.name.clone()).or_default() += o.quantity.max(1);
+        *counts.entry((o.mesh.clone(), o.name.clone())).or_default() += o.quantity.max(1);
     }
-    if !counts.is_empty() {
-        lines.push(format!("Donatı: {}.", counts.iter().map(|(k, v)| format!("{v} {k}")).collect::<Vec<_>>().join(", ")));
-    }
-    lines.push(format!("Kalite düzeyi: {}.", s.cost.tier.label()));
-    lines.join("\n")
+    let items: Vec<Value> = counts.iter().map(|((mesh, name), n)| json!({"mesh": mesh, "name": name, "count": n})).collect();
+    let tier = match s.cost.tier {
+        crate::model::Tier::Ekonomik => "ekonomik",
+        crate::model::Tier::Standart => "standart",
+        crate::model::Tier::Premium => "premium",
+    };
+    json!({"modules": s.modules.len(), "levels": s.levels.len(), "floor_area_m2": m.totals.floor_area_m2.round(), "rooms": rooms, "items": items, "tier": tier})
 }
 
 fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
-    let v: Value = if payload.trim().is_empty() { json!({}) } else { serde_json::from_str(payload).map_err(|e| format!("JSON okunamadı: {e}"))? };
+    let v: Value = if payload.trim().is_empty() { json!({}) } else { serde_json::from_str(payload).map_err(|e| format!("@json_invalid|error={}", e.to_string().replace('|', "/")))? };
     match cmd {
         "info" => Ok(json!({"product": crate::PRODUCT, "version": crate::VERSION, "format": format!("{}/{}", scene_file::FORMAT, scene_file::VERSION), "extension": scene_file::EXTENSION})),
         "demo" => finish(templates::demo_scene(), json!(null)),
@@ -154,9 +155,9 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let id: String = arg(&v, "id")?;
             let pos: [f64; 2] = arg(&v, "position")?;
             let p = modules::snap(&s, &id, pos, opt(&v, "tolerance").unwrap_or(400.0));
-            let m = s.modules.iter_mut().find(|m| m.id == id).ok_or("Modül bulunamadı")?;
+            let m = s.modules.iter_mut().find(|m| m.id == id).ok_or("@module_not_found")?;
             if m.floor > 0 {
-                return Err("Üst kat modülü serbest kaydırılamaz".into());
+                return Err("@upper_module_fixed".into());
             }
             m.position = p;
             let ov = modules::overlaps(&s);
@@ -165,9 +166,9 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
         "rotate_module" => {
             let mut s = scene_of(&v)?;
             let id: String = arg(&v, "id")?;
-            let m = s.modules.iter_mut().find(|m| m.id == id).ok_or("Modül bulunamadı")?;
+            let m = s.modules.iter_mut().find(|m| m.id == id).ok_or("@module_not_found")?;
             if m.floor > 0 {
-                return Err("Üst kat modülü alttaki modülle birlikte döner".into());
+                return Err("@upper_module_rotates".into());
             }
             // merkez etrafında 90°
             let l = m.length as f64 * 1000.0;
@@ -182,7 +183,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let mut s = scene_of(&v)?;
             let ground: String = arg(&v, "ground")?;
             if !s.modules.iter().any(|m| m.id == ground && m.floor == 0) {
-                return Err("Zemin modülü bulunamadı".into());
+                return Err("@ground_module_not_found".into());
             }
             if let Some(i) = s.modules.iter().position(|m| m.floor == 1 && m.on.as_deref() == Some(&ground)) {
                 s.modules.remove(i);
@@ -211,7 +212,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                 k += 1;
             };
             let w = plan::partition(&s, a, b, id, opt(&v, "thickness"))?;
-            s.levels.iter_mut().find(|l| l.id == level).ok_or("Kat bulunamadı")?.walls.push(w.clone());
+            s.levels.iter_mut().find(|l| l.id == level).ok_or("@level_not_found")?.walls.push(w.clone());
             finish(s, json!({"wall": w}))
         }
         "name_room" => {
@@ -226,7 +227,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let s = scene_of(&v)?;
             let level: String = arg(&v, "level")?;
             let p: [f64; 2] = arg(&v, "point")?;
-            let l = s.levels.iter().find(|l| l.id == level).ok_or("Kat bulunamadı")?;
+            let l = s.levels.iter().find(|l| l.id == level).ok_or("@level_not_found")?;
             Ok(serde_json::to_value(plan::detect_room(l, p)?).unwrap())
         }
         "place_opening" => {
@@ -235,7 +236,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let p: [f64; 2] = arg(&v, "point")?;
             let std: String = arg(&v, "std")?;
             let n = s.levels.iter().map(|l| l.openings.len()).sum::<usize>() + 1;
-            let l = s.levels.iter_mut().find(|l| l.id == level).ok_or("Kat bulunamadı")?;
+            let l = s.levels.iter_mut().find(|l| l.id == level).ok_or("@level_not_found")?;
             let mut k = n;
             let id = loop {
                 let c = format!("A{k}");
@@ -252,7 +253,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let s = scene_of(&v)?;
             let level: String = arg(&v, "level")?;
             let o: crate::model::Opening = arg(&v, "opening")?;
-            let l = s.levels.iter().find(|l| l.id == level).ok_or("Kat bulunamadı")?;
+            let l = s.levels.iter().find(|l| l.id == level).ok_or("@level_not_found")?;
             plan::validate_opening(l, &o)?;
             Ok(json!(true))
         }
@@ -261,7 +262,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let s = scene_of(&v)?;
             let level: String = arg(&v, "level")?;
             let p: [f64; 2] = arg(&v, "point")?;
-            let l = s.levels.iter().find(|l| l.id == level).ok_or("Kat bulunamadı")?;
+            let l = s.levels.iter().find(|l| l.id == level).ok_or("@level_not_found")?;
             Ok(json!(plan::nearest_wall(l, p)))
         }
         // ---- Ölçü, maliyet, fonksiyon
@@ -415,7 +416,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let w: usize = arg(&v, "width")?;
             let h: usize = arg(&v, "height")?;
             let b64: String = arg(&v, "rgb")?;
-            let rgb = base64::engine::general_purpose::STANDARD.decode(b64).map_err(|_| "Görsel verisi okunamadı".to_string())?;
+            let rgb = base64::engine::general_purpose::STANDARD.decode(b64).map_err(|_| "@image_data_invalid".to_string())?;
             Ok(serde_json::to_value(crate::reference::analyze(&s, w, h, &rgb)?).unwrap())
         }
         "motor_defaults" => Ok(crate::motors::defaults()),
@@ -462,7 +463,7 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             s.textures = base.textures.clone();
             s.levels[0].elevation = 0.0;
             if !s.materials.iter().any(|m| m.id == "studyo") {
-                s.materials.push(crate::model::Material { id: "studyo".into(), name: "Stüdyo zemini".into(), color: [0.78, 0.78, 0.77], roughness: 1.0, category: "dis".into(), ..Default::default() });
+                s.materials.push(crate::model::Material { id: "studyo".into(), name: "@studio_floor".into(), color: [0.78, 0.78, 0.77], roughness: 1.0, category: "dis".into(), ..Default::default() });
             }
             let mut obj = crate::model::Object { id: "N1".into(), rotation: opt(&v, "rotation").unwrap_or(-28.0), position: [5000.0, 4000.0, 0.0], ..Default::default() };
             let size: [f64; 3];
@@ -477,13 +478,13 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                 obj.mesh = "onizleme".into();
                 s.meshes.push(g.mesh);
             } else if let Some(cat) = opt::<String>(&v, "cat") {
-                let it = catalog::item(&cat).ok_or("Ürün bulunamadı")?;
+                let it = catalog::item(&cat).ok_or("@product_not_found")?;
                 size = it.size;
                 obj.mesh = format!("cat:{cat}");
                 obj.material = opt::<String>(&v, "material").filter(|m| !m.is_empty());
             } else {
                 let id: String = arg(&v, "mesh")?;
-                let a = base.meshes.iter().find(|m| m.id == id).ok_or("Model bulunamadı")?;
+                let a = base.meshes.iter().find(|m| m.id == id).ok_or("@model_not_found")?;
                 let (mut mn, mut mx) = ([f32::INFINITY; 3], [f32::NEG_INFINITY; 3]);
                 for p in &a.positions {
                     for k in 0..3 {
@@ -572,8 +573,8 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let s = scene_of(&v)?;
             Ok(json!(check(&s)))
         }
-        "mymind_summary" => Ok(json!({"text": mymind_summary(&scene_of(&v)?)})),
-        _ => Err(format!("Bilinmeyen komut: {cmd}")),
+        "mymind_summary" => Ok(mymind_facts(&scene_of(&v)?)),
+        _ => Err(format!("@unknown_command|command={cmd}")),
     }
 }
 
@@ -582,10 +583,10 @@ pub fn check(s: &Scene) -> Vec<Value> {
     let mut out = vec![];
     let mut push = |level: &str, text: String| out.push(json!({"level": level, "text": text}));
     if s.modules.is_empty() {
-        push("hata", "Henüz modül seçilmedi".into());
+        push("hata", "@check_no_modules".into());
     }
     for (a, b) in modules::overlaps(s) {
-        push("hata", format!("{a} ve {b} modülleri üst üste biniyor"));
+        push("hata", format!("@check_modules_overlap|a={a}|b={b}"));
     }
     let m = measure::measure(s);
     for w in &m.warnings {
@@ -593,12 +594,12 @@ pub fn check(s: &Scene) -> Vec<Value> {
     }
     for l in &s.levels {
         if l.rooms.is_empty() && !l.walls.is_empty() {
-            push("uyari", format!("{}: adlandırılmış mahal yok", l.name));
+            push("uyari", format!("@check_no_named_rooms|level={}", l.id));
         }
         for r in &l.rooms {
             let rm = m.rooms.iter().find(|x| x.id == r.id);
             if rm.is_some_and(|x| x.doors == 0) && r.kind != "salon" {
-                push("uyari", format!("{}: kapı bulunamadı", r.name));
+                push("uyari", format!("@check_room_no_door|room={}", r.name.replace('|', "/")));
             }
         }
         for o in &l.openings {
@@ -607,11 +608,11 @@ pub fn check(s: &Scene) -> Vec<Value> {
             }
         }
         if l.id != "L0" && !s.objects.iter().any(|o| o.mesh == "cat:merdiven") {
-            push("uyari", format!("{} için merdiven yerleştirilmedi", l.name));
+            push("uyari", format!("@check_no_stairs|level={}", l.id));
         }
     }
     if !s.levels.iter().flat_map(|l| l.openings.iter()).any(|o| o.kind == crate::model::OpeningKind::Door && s.wall(&o.wall).is_some_and(|(_, w)| w.exterior)) && !s.modules.is_empty() {
-        push("uyari", "Dış kapı yok".into());
+        push("uyari", "@check_no_entrance".into());
     }
     out
 }
@@ -663,7 +664,7 @@ mod tests {
         let cam = ok(&call("camera_preset", &json!({"scene": s, "name": "ic"}).to_string()));
         assert!(cam["fov"].as_f64().unwrap() > 60.0);
         let chk = ok(&call("check", &json!({"scene": s}).to_string()));
-        assert!(chk.as_array().unwrap().iter().any(|x| x["text"].as_str().unwrap().contains("merdiven")));
+        assert!(chk.as_array().unwrap().iter().any(|x| x["text"].as_str().unwrap().contains("@check_no_stairs")));
         let m = ok(&call("motor", &json!({"scene": s, "kind": "perde", "params": {"kind": "tul", "width": 2000}, "at": [3000, 300]}).to_string()));
         let s = m["scene"].clone();
         assert_eq!(s["objects"].as_array().unwrap().last().unwrap()["motor"]["kind"], "perde");
@@ -700,8 +701,8 @@ mod tests {
     #[test]
     fn mymind_summary_is_data_reduced() {
         let s = templates::demo_scene();
-        let t = mymind_summary(&s);
-        assert!(t.contains("m²"));
+        let t = mymind_facts(&s).to_string();
+        assert!(t.contains("floor_area_m2"));
         assert!(!t.contains("₺") && !t.contains("UHD-") && !t.contains("price"));
         assert!(t.len() < 6000, "MyMind sınırı");
     }

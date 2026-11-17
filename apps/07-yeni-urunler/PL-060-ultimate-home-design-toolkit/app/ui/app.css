@@ -253,3 +253,6 @@ html, body { margin: 0; height: 100%; }
 #spaceTable input.uh-spname { width: 150px; text-align: start; font-family: inherit; }
 @media (max-width: 1100px) { .uh-phgrid { grid-template-columns: 1fr; } }
 #phResult .uh-stats { grid-template-columns: max-content 1fr; }
+.uh-top .uh-lang { width: auto; min-width: 112px; flex: none; height: 30px; padding-block: 0; }
+#segEngine { display: flex; }
+#segEngine button { flex: 1; }

@@ -3,11 +3,23 @@
   "productName": "Ultimate Home Design Toolkit",
   "version": "0.1.0",
   "identifier": "com.pluginlabs.ultimatehome",
-  "build": { "frontendDist": "../ui" },
+  "build": {
+    "frontendDist": "../ui"
+  },
   "app": {
     "withGlobalTauri": true,
     "windows": [
-      { "label": "main", "title": "Ultimate Home Design Toolkit · PluginLabs", "width": 1600, "height": 980, "minWidth": 1180, "minHeight": 740, "center": true, "theme": "Dark", "backgroundColor": "#090d18" }
+      {
+        "label": "main",
+        "title": "Ultimate Home Design Toolkit · PluginLabs",
+        "width": 1600,
+        "height": 980,
+        "minWidth": 1180,
+        "minHeight": 740,
+        "center": true,
+        "theme": "Dark",
+        "backgroundColor": "#090d18"
+      }
     ],
     "security": {
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src ipc: http://ipc.localhost; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
@@ -15,11 +27,37 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "publisher": "PluginLabs",
-    "icon": ["icons/icon.ico"],
+    "icon": [
+      "icons/icon.ico"
+    ],
     "shortDescription": "Modüler ev tasarımı, ölçü, maliyet, OBJ ve render",
-    "fileAssociations": [{ "ext": ["uhds"], "name": "Ultimate Home sahnesi", "description": "Ultimate Home Design sahne dosyası", "role": "Editor" }],
-    "windows": { "webviewInstallMode": { "type": "downloadBootstrapper" }, "nsis": { "installMode": "currentUser", "languages": ["Turkish"] } }
+    "fileAssociations": [
+      {
+        "ext": [
+          "uhds"
+        ],
+        "name": "Ultimate Home sahnesi",
+        "description": "Ultimate Home Design sahne dosyası",
+        "role": "Editor"
+      }
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "Turkish"
+        ]
+      }
+    },
+    "resources": {
+      "../cycles/uhd_cycles.py": "cycles/uhd_cycles.py"
+    }
   }
 }

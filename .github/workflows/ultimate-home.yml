@@ -20,6 +20,8 @@ jobs:
         with: { node-version: 22 }
       - name: Rust motor testleri
         run: cargo test -p uhd-engine --release
+      - name: Çeviri denetimi (tr/en)
+        run: node scripts/i18n-check.cjs
       - name: WebAssembly önizleme motoru
         run: bash scripts/build-wasm.sh
       - name: Arayüz denetimi (Chromium, gerçek motor)

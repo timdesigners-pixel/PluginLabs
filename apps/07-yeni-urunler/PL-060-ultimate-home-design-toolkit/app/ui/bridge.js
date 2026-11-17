@@ -88,6 +88,21 @@ export async function hubStatus() {
   if (!T) return { available: false, reason: L("bridge.mymind_yalniz_masaustu_uygulamasinda") };
   return T.invoke("hub_status");
 }
+export async function cyclesStatus() { return T ? T.invoke("cycles_status") : { available: false, browser: true }; }
+export async function cyclesPick() { return T.invoke("cycles_pick"); }
+export async function cyclesCancel() { if (T) await T.invoke("cycles_cancel"); }
+/** Cycles render: ilerleme satırları onProgress ile bildirilir. */
+export async function cyclesRender(payload, onProgress) {
+  const ev = window.__TAURI__ && window.__TAURI__.event;
+  const stop = ev ? await ev.listen("cycles-progress", (e) => onProgress && onProgress(e.payload)) : null;
+  try {
+    return await T.invoke("cycles_render", { payload: JSON.stringify(payload) });
+  } catch (e) {
+    throw new Error(LM(String(e && e.message ? e.message : e)));
+  } finally {
+    if (stop) stop();
+  }
+}
 export async function hubSetKey(key) { return T.invoke("hub_set_key", { key }); }
 export async function mymind(prompt, approved) {
   if (!T) throw new Error(L("bridge.mymind_yalniz_masaustu_uygulamasinda_2"));

@@ -82,7 +82,7 @@ export function tr(text) {
     const i = p.indexOf("=");
     if (i > 0) {
       const v = p.slice(i + 1);
-      params[p.slice(0, i)] = v.startsWith("~") ? t(v.slice(1)) : v;
+      params[p.slice(0, i)] = v.startsWith("~") ? t(v.slice(1)) : v.startsWith("@") ? tr(v.replace(/¦/g, "|")) : v;
     }
   }
   return t(`engine.${key}`, params);

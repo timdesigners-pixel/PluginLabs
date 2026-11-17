@@ -22,7 +22,7 @@ enum Tok {
 
 fn lex(src: &str) -> Result<Vec<Tok>, String> {
     if src.len() > MAX_LEN {
-        return Err(format!("Formül en fazla {MAX_LEN} karakter olabilir"));
+        return Err(format!("@formula_too_long|max={MAX_LEN}"));
     }
     let c: Vec<char> = src.chars().collect();
     let mut i = 0;
@@ -53,7 +53,7 @@ fn lex(src: &str) -> Result<Vec<Tok>, String> {
                 }
             }
             let t: String = c[s..i].iter().collect();
-            out.push(Tok::Num(t.parse().map_err(|_| format!("Geçersiz sayı: {t}"))?));
+            out.push(Tok::Num(t.parse().map_err(|_| format!("@formula_bad_number|value={t}"))?));
             continue;
         }
         if ch.is_alphabetic() || ch == '_' {
@@ -91,7 +91,7 @@ fn lex(src: &str) -> Result<Vec<Tok>, String> {
             '(' => Tok::LParen,
             ')' => Tok::RParen,
             ',' | ';' => Tok::Comma,
-            _ => return Err(format!("Beklenmeyen karakter: '{ch}'")),
+            _ => return Err(format!("@formula_bad_char|char={ch}")),
         };
         out.push(t);
         i += 1;
@@ -126,7 +126,7 @@ impl Parser {
     fn enter(&mut self) -> Result<(), String> {
         self.depth += 1;
         if self.depth > MAX_DEPTH {
-            Err("Formül çok derin".into())
+            Err("@formula_too_deep".into())
         } else {
             Ok(())
         }
@@ -192,7 +192,7 @@ impl Parser {
                             match self.next() {
                                 Some(Tok::Comma) => continue,
                                 Some(Tok::RParen) => break,
-                                _ => return Err(format!("{name}(…) kapatılmadı")),
+                                _ => return Err(format!("@formula_unclosed_call|name={name}")),
                             }
                         }
                     } else {
@@ -207,11 +207,11 @@ impl Parser {
                 let e = self.binary(0)?;
                 match self.next() {
                     Some(Tok::RParen) => Ok(e),
-                    _ => Err("Kapanış parantezi eksik".into()),
+                    _ => Err("@formula_missing_paren".into()),
                 }
             }
-            Some(t) => Err(format!("Beklenmeyen öğe: {t:?}")),
-            None => Err("Formül eksik bitti".into()),
+            Some(t) => Err(format!("@formula_unexpected|token={t:?}")),
+            None => Err("@formula_incomplete".into()),
         }
     }
 }
@@ -219,12 +219,12 @@ impl Parser {
 pub fn parse(src: &str) -> Result<Expr, String> {
     let t = lex(src)?;
     if t.is_empty() {
-        return Err("Formül boş".into());
+        return Err("@formula_empty".into());
     }
     let mut p = Parser { t, p: 0, depth: 0 };
     let e = p.binary(0)?;
     if p.p != p.t.len() {
-        return Err("Formülün sonunda fazladan öğe var".into());
+        return Err("@formula_trailing".into());
     }
     Ok(e)
 }
@@ -236,7 +236,7 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
         Expr::Num(n) => *n,
         Expr::Var(name) => match name.as_str() {
             "pi" => std::f64::consts::PI,
-            _ => *vars.get(name).ok_or_else(|| format!("Bilinmeyen değişken: {name}"))?,
+            _ => *vars.get(name).ok_or_else(|| format!("@formula_unknown_var|name={name}"))?,
         },
         Expr::Neg(x) => -eval(x, vars)?,
         Expr::Bin(op, a, b) => {
@@ -248,13 +248,13 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                 "*" => x * y,
                 "/" => {
                     if y == 0.0 {
-                        return Err("Sıfıra bölme".into());
+                        return Err("@formula_div_zero".into());
                     }
                     x / y
                 }
                 "%" => {
                     if y == 0.0 {
-                        return Err("Sıfıra göre mod".into());
+                        return Err("@formula_mod_zero".into());
                     }
                     x % y
                 }
@@ -267,7 +267,7 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                 "!=" => ((x - y).abs() >= 1e-9) as i32 as f64,
                 "&&" => (x != 0.0 && y != 0.0) as i32 as f64,
                 "||" => (x != 0.0 || y != 0.0) as i32 as f64,
-                _ => return Err(format!("Bilinmeyen işlem {op}")),
+                _ => return Err(format!("@formula_unknown_op|op={op}")),
             }
         }
         Expr::Call(f, args) => {
@@ -275,7 +275,7 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                 if args.len() == n {
                     Ok(())
                 } else {
-                    Err(format!("{f}() {n} değer bekler"))
+                    Err(format!("@formula_arity|name={f}|n={n}"))
                 }
             };
             match f.as_str() {
@@ -289,7 +289,7 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                 }
                 "min" | "max" => {
                     if args.is_empty() {
-                        return Err(format!("{f}() en az bir değer bekler"));
+                        return Err(format!("@formula_needs_value|name={f}"));
                     }
                     let mut it = args.iter().map(|a| eval(a, vars));
                     let mut acc = it.next().unwrap()?;
@@ -315,7 +315,7 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                     need(1)?;
                     let x = eval(&args[0], vars)?;
                     if x < 0.0 {
-                        return Err("Negatif sayının karekökü".into());
+                        return Err("@formula_sqrt_negative".into());
                     }
                     x.sqrt()
                 }
@@ -338,12 +338,12 @@ pub fn eval(e: &Expr, vars: &Vars) -> Result<f64, String> {
                         (eval(&args[0], vars)? * k).round() / k
                     }
                 }
-                _ => return Err(format!("Bilinmeyen fonksiyon: {f}()")),
+                _ => return Err(format!("@formula_unknown_fn|name={f}")),
             }
         }
     };
     if !v.is_finite() {
-        return Err("Sonuç sonlu bir sayı değil".into());
+        return Err("@formula_not_finite".into());
     }
     Ok(v)
 }
@@ -429,8 +429,8 @@ mod tests {
     #[test]
     fn errors_are_reported() {
         let e = Vars::new();
-        assert!(evaluate("1 / 0", &e).unwrap_err().contains("Sıfır"));
-        assert!(evaluate("unknown + 1", &e).unwrap_err().contains("Bilinmeyen"));
+        assert!(evaluate("1 / 0", &e).unwrap_err().contains("@formula_div_zero"));
+        assert!(evaluate("unknown + 1", &e).unwrap_err().contains("@formula_unknown_var"));
         assert!(evaluate("(1 + 2", &e).is_err());
         assert!(evaluate("1 +", &e).is_err());
         assert!(evaluate("system(1)", &e).is_err());
