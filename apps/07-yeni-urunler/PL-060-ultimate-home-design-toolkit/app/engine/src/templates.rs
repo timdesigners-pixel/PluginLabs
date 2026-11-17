@@ -28,7 +28,7 @@ fn mat(id: &str, name: &str, cat: &str, color: [f32; 3], roughness: f32, metalli
     } else {
         ("", 1000.0)
     };
-    Material { id: id.into(), name: name.into(), color, roughness, metallic, emission: 0.0, opacity: 1.0, price_m2, category: cat.into(), texture: texture.into(), texture_scale }
+    Material { id: id.into(), name: name.into(), color, roughness, metallic, emission: 0.0, opacity: 1.0, price_m2, category: cat.into(), texture: texture.into(), texture_scale, ..Default::default() }
 }
 
 pub fn default_materials() -> Vec<Material> {

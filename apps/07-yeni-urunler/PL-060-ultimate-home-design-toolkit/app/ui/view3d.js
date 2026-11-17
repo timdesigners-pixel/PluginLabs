@@ -106,6 +106,19 @@ export class View3D {
     for (const t of Object.values(this.tex)) t.map.dispose();
     this.tex = {};
     for (const [id, t] of Object.entries(tiles)) {
+      if (t.uv) {
+        // glTF dokusu: dosya görüntüsü, modelin kendi UV'leri (glTF'de v aşağı → flipY kapalı)
+        const img = new Image();
+        const map = new THREE.Texture(img);
+        map.wrapS = map.wrapT = THREE.RepeatWrapping;
+        map.colorSpace = THREE.SRGBColorSpace;
+        map.flipY = false;
+        map.anisotropy = 4;
+        img.onload = () => { map.needsUpdate = true; this.update(); };
+        img.src = `data:${t.mime};base64,${t.data}`;
+        this.tex[id] = { map, uv: true };
+        continue;
+      }
       const bin = atob(t.rgb);
       const data = new Uint8Array(t.width * t.height * 4);
       for (let i = 0, j = 0; i < bin.length; i += 3, j += 4) { data[j] = bin.charCodeAt(i); data[j + 1] = bin.charCodeAt(i + 1); data[j + 2] = bin.charCodeAt(i + 2); data[j + 3] = 255; }
@@ -160,7 +173,10 @@ export class View3D {
       geo.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(g.normals), 3));
       const col = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.SRGBColorSpace);
       const tx = this.tex[g.material];
-      if (tx) {
+      if (tx && tx.uv && g.uvs && g.uvs.length) {
+        geo.setAttribute("uv", new THREE.BufferAttribute(new Float32Array(g.uvs), 2));
+        col.setRGB(g.color[0], g.color[1], g.color[2]);
+      } else if (tx && !tx.uv) {
         // baskın düzlem izdüşümü: motorun render'da kullandığı eşlemeyle aynı
         const uv = new Float32Array((g.positions.length / 3) * 2);
         const P = g.positions, N = g.normals;
@@ -173,7 +189,8 @@ export class View3D {
         geo.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
         col.setRGB(1, 1, 1);
       }
-      const mat = new THREE.MeshStandardMaterial({ map: tx ? tx.map : null, side: THREE.DoubleSide, color: col, roughness: g.roughness, metalness: g.metallic * 0.85, transparent: g.opacity < 0.99, opacity: Math.max(0.15, g.opacity) });
+      const useMap = tx && (!tx.uv || (g.uvs && g.uvs.length));
+      const mat = new THREE.MeshStandardMaterial({ map: useMap ? tx.map : null, side: THREE.DoubleSide, color: col, roughness: g.roughness, metalness: g.metallic * 0.85, transparent: g.opacity < 0.99, opacity: Math.max(0.15, g.opacity), alphaTest: g.alphaCutoff > 0 ? g.alphaCutoff : 0 });
       if (g.emission > 0) { mat.emissive = new THREE.Color().setRGB(g.color[0], g.color[1], g.color[2], THREE.SRGBColorSpace); mat.emissiveIntensity = Math.min(3, g.emission / 3); }
       if (g.opacity < 0.99) mat.depthWrite = false;
       const mesh = new THREE.Mesh(geo, mat);

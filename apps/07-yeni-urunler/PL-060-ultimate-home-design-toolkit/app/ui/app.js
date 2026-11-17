@@ -15,7 +15,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, ph: { models: null, textures: null, cat: "seating", q: "", tcat: "floor", tq: "", busy: new Set(), thumbs: {}, loading: {}, error: {} }, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -114,8 +114,8 @@ function refresh() {
   if (v === "olcu") renderMeasure();
   if (v === "maliyet") renderCost();
   if (v === "fonksiyon") renderFunctions();
-  if (v === "kutuphane") renderLibrary();
-  if (v === "kaplama") renderMaterials();
+  if (v === "kutuphane") { renderLibrary(); renderPhModels(); }
+  if (v === "kaplama") { renderMaterials(); renderPhTextures(); }
   if (v === "motor") renderMotor();
   if (v === "referans") renderReference();
   if (v === "foto") renderPhoto();
@@ -904,6 +904,7 @@ async function handleFiles(files) {
     toast(L("app.proje_acildi"), { sub: proj.name });
     return;
   }
+  if (list.some((f) => ["glb", "gltf"].includes(ext(f)))) { await importGltf(await B.filesToModel(list)); return; }
   const objs = list.filter((f) => ["obj", "mtl"].includes(ext(f)));
   if (objs.length) { await importObj(await Promise.all(objs.map(async (f) => ({ name: f.name, text: await f.text() })))); return; }
   const img = list.find((f) => f.type.startsWith("image/"));
@@ -1271,6 +1272,113 @@ async function importObj(given) {
   commit(r.scene);
   $("#objResult").textContent = `${L("app.ucgen_m", { name: obj.name, p: r.triangles.toLocaleString(locale()), p2: r.size.map((x) => fmt(x / 1000)).join(" × "), p3: r.warnings.length ? " · " + r.warnings.map(LM).join(" · ") : "" })}`;
   toast(L("app.model_ice_aktarildi_ve_plana_eklendi"));
+}
+
+/* ---------- glTF ve Poly Haven ---------- */
+const PH_CATS = ["seating", "table", "furniture", "lighting", "plants", "potted plants", "trees", "vases", "decorative", "shelves", "bed", "electronics", "appliances", "wall decoration", "books", "rocks"];
+const PHT_CATS = ["floor", "wall", "wood", "plaster", "fabric", "tiles", "concrete", "brick", "rock", "metal", "roofing", "cobblestone", "gravel"];
+function roomCenter() {
+  const lv = S.scene.levels.find((l) => l.id === S.level) || S.scene.levels[0];
+  const room = lv.rooms[0];
+  if (!room) return { lv, at: [1000, 1000] };
+  const xs = room.polygon.map((p) => p[0]), ys = room.polygon.map((p) => p[1]);
+  return { lv, at: [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2] };
+}
+async function importGltf(pkg, license) {
+  if (!pkg) return;
+  const { lv, at } = roomCenter();
+  const r = await B.engine("import_gltf", { scene: S.scene, files: pkg.files, main: pkg.main, name: pkg.name || pkg.main, level: lv.id, at, license: license || pkg.license || "" });
+  commit(r.scene);
+  S.texSig = "";
+  const sub = L("ph.model_ozeti", { tris: r.triangles.toLocaleString(locale()), size: r.size.map((x) => fmt(x / 10, 0)).join(" × ") }) + (r.warnings.length ? ` · ${r.warnings.map(LM).join(" · ")}` : "");
+  $("#objResult").textContent = sub;
+  toast(L("ph.model_eklendi", { name: pkg.name || pkg.main }), { sub });
+  return r;
+}
+function phCard(x, kind) {
+  const busy = S.ph.busy.has(x.id);
+  const dims = Array.isArray(x.dimensions) && x.dimensions.length >= 2 ? x.dimensions.slice(0, 3).map((v) => fmt(v / 10, 0)).join(" × ") + " cm" : "";
+  const meta = kind === "models" ? L("ph.poligon", { n: Number(x.polycount || 0).toLocaleString(locale()) }) : dims;
+  return `<div class="uh-libcard uh-phcard ${busy ? "is-busy" : ""}" data-ph="${esc(x.id)}"><div class="uh-libcard__thumb" data-phthumb="${esc(x.id)}">${S.ph.thumbs[x.id] ? `<img src="${S.ph.thumbs[x.id]}" alt="${esc(x.name)}" loading="lazy">` : `<span class="pl-badge">CC0</span>`}</div><b>${esc(x.name)}</b>
+    <div class="uh-libcard__meta"><span>${esc(meta)}</span><span>${esc(kind === "models" ? dims : "")}</span></div>
+    <div class="uh-small">${L("ph.yazar", { name: esc(x.authors || "Poly Haven") })}</div>
+    <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-phget="${esc(x.id)}" data-phkind="${kind}">${busy ? L("ph.indiriliyor") : kind === "models" ? L("ph.indir_yerlestir") : L("ph.indir_kaplama")}</button></div>`;
+}
+async function loadPh(kind) {
+  if (S.ph[kind] || S.ph.loading[kind]) return;
+  S.ph.loading[kind] = true;
+  try {
+    S.ph[kind] = await B.phList(kind);
+  } catch (e) {
+    S.ph.error[kind] = LM(e.message || String(e));
+  } finally {
+    S.ph.loading[kind] = false;
+  }
+  if (kind === "models") renderPhModels(); else renderPhTextures();
+}
+function phThumbs(list) {
+  for (const x of list) {
+    if (S.ph.thumbs[x.id] !== undefined) continue;
+    S.ph.thumbs[x.id] = "";
+    B.phThumb(x.id).then((u) => { S.ph.thumbs[x.id] = u; const el = document.querySelector(`[data-phthumb="${CSS.escape(x.id)}"]`); if (el) el.innerHTML = `<img src="${u}" alt="${esc(x.name)}" loading="lazy">`; }).catch(() => {});
+  }
+}
+function phFilter(list, cat, q) {
+  const qq = q.toLocaleLowerCase(locale());
+  return list.filter((x) => (cat === "*" || (x.categories || []).includes(cat)) && (!qq || `${x.name} ${(x.tags || []).join(" ")}`.toLocaleLowerCase(locale()).includes(qq))).slice(0, 60);
+}
+function renderPhModels() {
+  $("#phCats").innerHTML = ["*", ...PH_CATS].map((c) => `<button type="button" role="tab" class="uh-tool ${S.ph.cat === c ? "is-active" : ""}" data-phcat="${esc(c)}">${c === "*" ? L("app.tumu") : L(`ph.cat.${N.slug(c)}`)}</button>`).join("");
+  if (!S.ph.models) {
+    $("#phState").textContent = S.ph.error.models ? L("ph.liste_alinamadi", { error: S.ph.error.models }) : L("ph.yukleniyor");
+    $("#phGrid").innerHTML = "";
+    loadPh("models");
+    return;
+  }
+  const list = phFilter(S.ph.models, S.ph.cat, S.ph.q);
+  $("#phState").textContent = L("ph.sonuc", { n: list.length, total: S.ph.models.length });
+  $("#phGrid").innerHTML = list.map((x) => phCard(x, "models")).join("");
+  phThumbs(list);
+}
+function renderPhTextures() {
+  $("#phtCats").innerHTML = PHT_CATS.map((c) => `<button type="button" role="tab" class="uh-tool ${S.ph.tcat === c ? "is-active" : ""}" data-phtcat="${esc(c)}">${L(`ph.tcat.${N.slug(c)}`)}</button>`).join("");
+  if (!S.ph.textures) {
+    $("#phtState").textContent = S.ph.error.textures ? L("ph.liste_alinamadi", { error: S.ph.error.textures }) : L("ph.yukleniyor");
+    $("#phtGrid").innerHTML = "";
+    loadPh("textures");
+    return;
+  }
+  const list = phFilter(S.ph.textures, S.ph.tcat, S.ph.tq);
+  $("#phtState").textContent = L("ph.sonuc", { n: list.length, total: S.ph.textures.length });
+  $("#phtGrid").innerHTML = list.map((x) => phCard(x, "textures")).join("");
+  phThumbs(list);
+}
+async function phGet(id, kind) {
+  const list = kind === "models" ? S.ph.models : S.ph.textures;
+  const item = (list || []).find((x) => x.id === id);
+  if (!item || S.ph.busy.has(id)) return;
+  S.ph.busy.add(id);
+  kind === "models" ? renderPhModels() : renderPhTextures();
+  try {
+    if (kind === "models") {
+      const pkg = await B.phModel(id, $("#phRes").value);
+      await importGltf({ ...pkg, name: item.name }, L("ph.lisans", { author: item.authors || "Poly Haven" }));
+    } else {
+      const pkg = await B.phTexture(id, $("#phRes").value);
+      const scale = Array.isArray(item.dimensions) && item.dimensions[0] ? item.dimensions[0] : 2000;
+      const target = $("#phtTarget").value;
+      const r = await B.engine("add_pbr_material", { scene: S.scene, maps: pkg.maps, name: item.name, category: target, scale });
+      // eklenen kaplamanın sekmesini aç
+      S.matCat = { zemin: "zemin", duvar: "ic", kaplama: "kaplama", mobilya: "mobilya" }[target] || S.matCat;
+      commit(r.scene);
+      S.paintMat = r.id;
+      S.texSig = "";
+      toast(L("ph.kaplama_eklendi", { name: item.name }), { sub: L("ph.kaplama_ipucu") });
+    }
+  } finally {
+    S.ph.busy.delete(id);
+    kind === "models" ? renderPhModels() : renderPhTextures();
+  }
 }
 
 /* ---------- MyMind ---------- */
@@ -1678,6 +1786,12 @@ $("#segEngine").addEventListener("click", (e) => {
 });
 $("#btnCyclesPath").onclick = () => run(async () => { const p = await B.cyclesPick(); if (p) { toast(L("app.blender_kaydedildi"), { sub: p }); await cyclesState(); } });
 $("#btnRenderCancel").onclick = () => run(async () => { await B.cyclesCancel(); toast(L("app.cycles_iptal_edildi"), { kind: "warn" }); });
+$("#btnGltfImport").onclick = () => run(async () => importGltf(await B.openModel()));
+$("#phCats").addEventListener("click", (e) => { const b = e.target.closest("[data-phcat]"); if (b) { S.ph.cat = b.dataset.phcat; renderPhModels(); } });
+$("#phtCats").addEventListener("click", (e) => { const b = e.target.closest("[data-phtcat]"); if (b) { S.ph.tcat = b.dataset.phtcat; renderPhTextures(); } });
+$("#phSearch").addEventListener("input", (e) => { S.ph.q = e.target.value.trim(); renderPhModels(); });
+$("#phtSearch").addEventListener("input", (e) => { S.ph.tq = e.target.value.trim(); renderPhTextures(); });
+for (const g of ["#phGrid", "#phtGrid"]) $(g).addEventListener("click", (e) => { const b = e.target.closest("[data-phget]"); if (b) run(() => phGet(b.dataset.phget, b.dataset.phkind)); });
 $("#btnRefPick").onclick = () => $("#refInput").click();
 $("#btnPhotoPick").onclick = () => $("#photoInput").click();
 $("#photoInput").addEventListener("change", (e) => run(() => photoPick(e.target.files[0])));

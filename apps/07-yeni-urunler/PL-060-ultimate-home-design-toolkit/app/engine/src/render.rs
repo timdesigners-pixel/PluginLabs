@@ -108,6 +108,12 @@ struct Mat {
     tscale: f32,
     /// Yüzey kabartısının derinliği (mm); 0 = düz.
     relief: f32,
+    /// UV'li doku (`uvimgs` indisi; -1 = yok), pürüzlülük/metal haritası ve alfa kesme eşiği.
+    uvtex: i32,
+    orm: i32,
+    cutoff: f32,
+    /// Depodaki doku düzlemsel izdüşümle (duvar/zemin) eşlenir; ölçü `tscale` mm.
+    planar: bool,
 }
 
 #[derive(Clone, Copy)]
@@ -119,6 +125,7 @@ struct Tri {
     /// Köşe normalleri (yumuşak gölgeleme).
     ns: [V; 3],
     mat: u16,
+    uv: [[f32; 2]; 3],
 }
 
 #[derive(Clone, Copy, Default)]
@@ -596,6 +603,7 @@ struct Lamp {
 
 struct Tracer<'a> {
     images: &'a [crate::texture::Image],
+    uvimgs: &'a [std::sync::Arc<crate::store::Rgba>],
     bvh: &'a Bvh,
     mats: &'a [Mat],
     env: &'a Env,
@@ -613,12 +621,50 @@ fn g1(nx: f32, a2: f32) -> f32 {
 /// Prosedürel türlerin kabartı derinliği (mm), `texture::KINDS` sırasıyla.
 const RELIEF: [f32; 9] = [1.2, 0.8, 2.0, 0.15, 1.5, 1.2, 2.5, 4.0, 5.0];
 
+fn bary(tri: &Tri, p: V) -> (f32, f32) {
+    let s = p - tri.v0;
+    let (d11, d12, d22) = (tri.e1.dot(tri.e1), tri.e1.dot(tri.e2), tri.e2.dot(tri.e2));
+    let (s1, s2) = (s.dot(tri.e1), s.dot(tri.e2));
+    let den = d11 * d22 - d12 * d12;
+    if den.abs() < 1e-12 {
+        return (0.0, 0.0);
+    }
+    ((d22 * s1 - d12 * s2) / den, (d11 * s2 - d12 * s1) / den)
+}
+
+fn tri_uv(tri: &Tri, bu: f32, bv: f32) -> (f32, f32) {
+    let w = 1.0 - bu - bv;
+    (tri.uv[0][0] * w + tri.uv[1][0] * bu + tri.uv[2][0] * bv, tri.uv[0][1] * w + tri.uv[1][1] * bu + tri.uv[2][1] * bv)
+}
+
 impl Tracer<'_> {
+    /// Alfa kesmeli kesişim: yaprak ve dantel gibi yüzeylerin saydam kısımlarından geçer.
+    fn hit(&self, mut o: V, d: V, mut tmax: f32) -> Option<(f32, usize)> {
+        let mut travelled = 0.0;
+        for _ in 0..12 {
+            let (t, i) = self.bvh.intersect(o, d, tmax)?;
+            let tri = &self.bvh.tris[i];
+            let m = &self.mats[tri.mat as usize];
+            if m.cutoff > 0.0 && m.uvtex >= 0 {
+                let (bu, bv) = bary(tri, o + d * t);
+                let (u, v) = tri_uv(tri, bu, bv);
+                if self.uvimgs[m.uvtex as usize].sample(u, v)[3] < m.cutoff {
+                    o = o + d * (t + 0.05);
+                    travelled += t + 0.05;
+                    tmax -= t + 0.05;
+                    continue;
+                }
+            }
+            return Some((travelled + t, i));
+        }
+        None
+    }
+
     /// Gölge ışını: camdan geçerken renk süzer.
     fn transmit(&self, mut o: V, d: V, mut dist: f32) -> V {
         let mut t = V(1.0, 1.0, 1.0);
         for _ in 0..16 {
-            match self.bvh.intersect(o, d, dist) {
+            match self.hit(o, d, dist) {
                 None => return t,
                 Some((h, i)) => {
                     let m = &self.mats[self.bvh.tris[i].mat as usize];
@@ -713,7 +759,18 @@ impl Tracer<'_> {
     }
 
     /// Dokulu yüzey rengi: prosedürel desen ya da yüklenen görsel, baskın düzlem izdüşümüyle.
-    fn albedo_at(&self, m: &Mat, p: V, n: V) -> V {
+    fn albedo_at(&self, m: &Mat, p: V, n: V, uv: (f32, f32)) -> V {
+        if m.uvtex >= 0 {
+            let uv = if m.planar {
+                let (u, v) = crate::texture::planar([p.0, p.1, p.2], [n.0, n.1, n.2]);
+                (u / m.tscale, -v / m.tscale)
+            } else {
+                uv
+            };
+            let c = self.uvimgs[m.uvtex as usize].sample(uv.0, uv.1);
+            let l = |x: f32| crate::store::to_linear(x);
+            return m.albedo.mul(V(l(c[0]), l(c[1]), l(c[2]))) * (1.0 / 0.92);
+        }
         if m.tex == 0 {
             return m.albedo;
         }
@@ -738,7 +795,7 @@ impl Tracer<'_> {
         let mut count_emit = true;
         for depth in 0..=self.bounces {
             rays += 1;
-            let Some((t, i)) = self.bvh.intersect(o, d, 1e9) else {
+            let Some((t, i)) = self.hit(o, d, 1e9) else {
                 l = l + thr.mul(self.env.sky(d));
                 if depth == 0 {
                     *first = (self.env.sky(d), V(0.0, 0.0, 0.0), 1e9);
@@ -771,7 +828,21 @@ impl Tracer<'_> {
             if n.dot(d) > 0.0 {
                 n = ng;
             }
-            let alb = self.albedo_at(m, p, tri.n);
+            let (bu, bv) = bary(tri, p);
+            let uv = if m.planar {
+                let (u, v) = crate::texture::planar([p.0, p.1, p.2], [tri.n.0, tri.n.1, tri.n.2]);
+                (u / m.tscale, -v / m.tscale)
+            } else {
+                tri_uv(tri, bu, bv)
+            };
+            let alb = self.albedo_at(m, p, tri.n, uv);
+            // pürüzlülük ve metaliklik haritası (G, B)
+            let (rough, metal) = if m.orm >= 0 {
+                let c = self.uvimgs[m.orm as usize].sample(uv.0, uv.1);
+                ((m.rough * c[1]).clamp(0.02, 1.0), (m.metal * c[2]).clamp(0.0, 1.0))
+            } else {
+                (m.rough, m.metal)
+            };
             if depth == 0 {
                 *first = (alb, n, t);
             }
@@ -805,12 +876,12 @@ impl Tracer<'_> {
             let one = V(1.0, 1.0, 1.0);
             let v = -d;
             let nv = n.dot(v).max(1e-3);
-            let a = (m.rough * m.rough).max(0.002);
+            let a = (rough * rough).max(0.002);
             let a2 = a * a;
-            let f0 = V(0.04, 0.04, 0.04) * (1.0 - m.metal) + alb * m.metal;
+            let f0 = V(0.04, 0.04, 0.04) * (1.0 - metal) + alb * metal;
             let fres = |c: f32| f0 + (one - f0) * (1.0 - c).clamp(0.0, 1.0).powi(5);
             let fv = fres(nv);
-            let diff = alb.mul(one - fv) * (1.0 - m.metal);
+            let diff = alb.mul(one - fv) * (1.0 - metal);
             // ayna gibi yüzeylerde lamba parlaması yansıma ışınıyla bulunur
             let mirror = a < 0.01;
             let an2 = a.max(0.02) * a.max(0.02);
@@ -943,6 +1014,16 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
     let spp = s.samples.clamp(1, 2048);
     let sm = prepare(scene, s);
     let images: Vec<crate::texture::Image> = scene.textures.iter().filter_map(crate::texture::Image::decode).collect();
+    // depodaki (glTF) dokular
+    let mut uvimgs: Vec<std::sync::Arc<crate::store::Rgba>> = vec![];
+    let mut uv_index = std::collections::HashMap::new();
+    for t in scene.textures.iter().filter(|t| !t.store.is_empty()) {
+        if let Some(img) = crate::store::image(&t.store) {
+            uv_index.insert(t.id.clone(), uvimgs.len() as i32);
+            uvimgs.push(img);
+        }
+    }
+    let uvtex_of = |id: &str| -> i32 { uv_index.get(id.strip_prefix("img:").unwrap_or(id)).copied().unwrap_or(-1) };
     let mut mats: Vec<Mat> = vec![];
     let mut tris: Vec<Tri> = vec![];
     for b in &sm.batches {
@@ -972,7 +1053,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         let m = if keep { m } else { crate::model::Material { roughness: 0.9, metallic: 0.0, ..m } };
         // beyaz makette ışıklar sıcak turuncu parlar
         let m = if style.clay == Clay::All && lit { crate::model::Material { color: [1.0, 0.55, 0.18], emission: m.emission * 1.6, ..m } } else { m };
-        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0), relief });
+        mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0), relief, uvtex: if keep { uvtex_of(&m.texture) } else { -1 }, orm: if keep && !m.orm_map.is_empty() { uvtex_of(&m.orm_map) } else { -1 }, cutoff: if m.uv { m.alpha_cutoff } else { 0.0 }, planar: !m.uv });
         for (ti, t) in b.positions.chunks(3).enumerate() {
             if t.len() < 3 {
                 continue;
@@ -986,7 +1067,8 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             }
             let gn = n.norm();
             let vn = |k: usize| b.normals.get(ti * 3 + k).map(|q| V(q[0], q[1], q[2])).filter(|q| q.len() > 0.5).unwrap_or(gn);
-            tris.push(Tri { v0, e1, e2, n: gn, ns: [vn(0), vn(1), vn(2)], mat: idx });
+            let uvk = |k: usize| b.uvs.get(ti * 3 + k).copied().unwrap_or([0.0, 0.0]);
+            tris.push(Tri { v0, e1, e2, n: gn, ns: [vn(0), vn(1), vn(2)], mat: idx, uv: [uvk(0), uvk(1), uvk(2)] });
         }
     }
     if tris.is_empty() {
@@ -1015,7 +1097,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         env.sun_cos = 9.0f32.to_radians().cos();
         env.lamp_gain = env.lamp_gain.max(1.0);
     }
-    let tracer = Tracer { images: &images, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12), bump: s.bump.clamp(0.0, 4.0) };
+    let tracer = Tracer { images: &images, uvimgs: &uvimgs, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12), bump: s.bump.clamp(0.0, 4.0) };
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let tgt = s.target.unwrap_or(scene.camera.target);
     let fov = s.fov.unwrap_or(scene.camera.fov).clamp(10.0, 120.0) as f32;
@@ -1374,7 +1456,7 @@ mod tests {
 
     #[test]
     fn bvh_hits_nearest_triangle() {
-        let t = |z: f32, m: u16| Tri { v0: V(-1.0, -1.0, z), e1: V(2.0, 0.0, 0.0), e2: V(0.0, 2.0, 0.0), n: V(0.0, 0.0, 1.0), ns: [V(0.0, 0.0, 1.0); 3], mat: m };
+        let t = |z: f32, m: u16| Tri { v0: V(-1.0, -1.0, z), e1: V(2.0, 0.0, 0.0), e2: V(0.0, 2.0, 0.0), n: V(0.0, 0.0, 1.0), ns: [V(0.0, 0.0, 1.0); 3], mat: m, uv: [[0.0; 2]; 3] };
         let tris: Vec<Tri> = (0..50).map(|k| t(10.0 + k as f32, k as u16)).collect();
         let b = Bvh::build(tris);
         let (d, i) = b.intersect(V(0.0, 0.0, 0.0), V(0.0, 0.0, 1.0), 1e9).unwrap();

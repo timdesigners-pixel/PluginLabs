@@ -56,7 +56,25 @@ pub fn export(scene: &Scene, s: &RenderSettings, tile: usize) -> Result<Value, S
     let mut batches = vec![];
     for b in &m.batches {
         let mat = scene.material(&b.material).cloned().unwrap_or_default();
-        let texture = if let Some(id) = mat.texture.strip_prefix("img:") {
+        // depodaki dosyayı olduğu gibi aktar (JPEG/PNG)
+        let stored = |id: &str| -> Option<serde_json::Value> {
+            let t = scene.textures.iter().find(|t| t.id == id.strip_prefix("img:").unwrap_or(id))?;
+            let b = crate::store::file(&t.store)?;
+            Some(json!({"data": e.encode(&b.bytes), "mime": b.mime}))
+        };
+        let texture = if mat.uv && mat.texture.starts_with("img:") {
+            stored(&mat.texture).map(|mut v| {
+                v["kind"] = json!("uv");
+                v["scale"] = json!(1.0);
+                v
+            })
+        } else if mat.texture.starts_with("img:") && stored(&mat.texture).is_some() {
+            stored(&mat.texture).map(|mut v| {
+                v["kind"] = json!("planar");
+                v["scale"] = json!(mat.texture_scale);
+                v
+            })
+        } else if let Some(id) = mat.texture.strip_prefix("img:") {
             scene.textures.iter().find(|t| t.id == id).and_then(|t| {
                 let rgb = e.decode(&t.rgb).ok()?;
                 let rgba: Vec<u8> = rgb.chunks(3).flat_map(|c| [c[0], c[1], c[2], 255]).collect();
@@ -75,10 +93,14 @@ pub fn export(scene: &Scene, s: &RenderSettings, tile: usize) -> Result<Value, S
         materials.push(json!({
             "id": mat.id, "color": mat.color, "roughness": mat.roughness, "metallic": mat.metallic,
             "emission": mat.emission, "opacity": mat.opacity, "category": mat.category, "texture": texture,
+            "uv": mat.uv, "alpha_cutoff": mat.alpha_cutoff,
+            "normal_map": if !mat.normal_map.is_empty() { stored(&mat.normal_map) } else { None },
+            "orm_map": if !mat.orm_map.is_empty() { stored(&mat.orm_map) } else { None },
         }));
         let p: Vec<f32> = b.positions.iter().flat_map(|q| q.iter().map(|x| round1(*x))).collect();
         let n: Vec<f32> = b.normals.iter().flat_map(|q| q.iter().map(|x| (x * 1000.0).round() / 1000.0)).collect();
-        batches.push(json!({"material": b.material, "positions": p, "normals": n}));
+        let uv: Vec<f32> = b.uvs.iter().flat_map(|q| q.iter().copied()).collect();
+        batches.push(json!({"material": b.material, "positions": p, "normals": n, "uvs": uv}));
     }
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let target = s.target.unwrap_or(scene.camera.target);

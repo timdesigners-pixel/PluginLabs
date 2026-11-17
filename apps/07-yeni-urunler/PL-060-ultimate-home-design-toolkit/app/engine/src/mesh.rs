@@ -15,6 +15,16 @@ pub struct Batch {
     /// Üçgen köşeleri (her üç köşe bir üçgen).
     pub positions: Vec<[f32; 3]>,
     pub normals: Vec<[f32; 3]>,
+    /// Modelin kendi doku koordinatları (yalnız UV'li malzemelerde; yoksa boş).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub uvs: Vec<[f32; 2]>,
+}
+
+impl Batch {
+    /// UV dizisini köşe sayısına tamamlar (UV'siz köşeler 0,0).
+    pub fn pad_uvs(&mut self) {
+        self.uvs.resize(self.positions.len(), [0.0, 0.0]);
+    }
 }
 
 #[derive(Debug, Clone, Default, Serialize)]
@@ -472,6 +482,9 @@ pub fn build(scene: &Scene, opt: &MeshOptions) -> SceneMesh {
         quad(b, [mn[0] - pad, -2.0, mn[1] - pad], [mx[0] - mn[0] + 2.0 * pad, 0.0, 0.0], [0.0, 0.0, mx[1] - mn[1] + 2.0 * pad], [0.0, 1.0, 0.0]);
     }
     m.batches.retain(|b| !b.positions.is_empty());
+    for b in m.batches.iter_mut().filter(|b| !b.uvs.is_empty()) {
+        b.pad_uvs();
+    }
     m
 }
 
@@ -500,16 +513,29 @@ pub fn push_object(m: &mut SceneMesh, scene: &Scene, o: &Object, elevation: f64)
             push_shape(m.batch(&mat), p.shape, origin, u, v, w);
         }
     } else if let Some(asset) = scene.meshes.iter().find(|a| a.id == o.mesh) {
+        // ağır modeller varlık deposunda; küçükler sahnenin içinde
+        let stored = if asset.store.is_empty() { None } else { crate::store::mesh(&asset.store) };
+        let (positions, normals, uvs, indices) = match &stored {
+            Some(d) => (&d.positions, &d.normals, &d.uvs, &d.indices),
+            None => (&asset.positions, &asset.normals, &asset.uvs, &asset.indices),
+        };
         for g in &asset.groups {
             let mat = o.material.clone().filter(|x| !x.is_empty()).unwrap_or_else(|| g.material.clone());
             let b = m.batch(&mat);
-            let end = (g.start + g.count).min(asset.indices.len() as u32);
+            let with_uv = !uvs.is_empty();
+            if with_uv {
+                b.pad_uvs();
+            }
+            let end = (g.start + g.count).min(indices.len() as u32);
             for k in g.start..end {
-                let i = asset.indices[k as usize] as usize;
-                let Some(p) = asset.positions.get(i) else { continue };
-                let n = asset.normals.get(i).copied().unwrap_or([0.0, 1.0, 0.0]);
+                let i = indices[k as usize] as usize;
+                let Some(p) = positions.get(i) else { continue };
+                let n = normals.get(i).copied().unwrap_or([0.0, 1.0, 0.0]);
                 b.positions.push(f(tf([p[0] as f64, p[1] as f64, p[2] as f64])));
                 b.normals.push(f(norm(axis([n[0] as f64 / sc[0].max(1e-6), n[1] as f64 / sc[1].max(1e-6), n[2] as f64 / sc[2].max(1e-6)]))));
+                if with_uv {
+                    b.uvs.push(uvs.get(i).copied().unwrap_or([0.0, 0.0]));
+                }
             }
         }
     }

@@ -100,7 +100,7 @@ impl Gen {
             let texture_scale = if id.starts_with("havuz-fayans") { 300.0 } else { 1000.0 };
             // yüklenen ya da seçilen görünüm kumaş ve halı malzemelerine uygulanır
             let (texture, texture_scale) = if category == "tekstil" && !self.style.look.is_empty() { (self.style.look.as_str(), self.style.look_scale.max(10.0)) } else { (texture, texture_scale) };
-            self.materials.push(Material { id: id.into(), name: name.into(), color, roughness, metallic: 0.0, emission: 0.0, opacity, price_m2: 0.0, category: category.into(), texture: texture.into(), texture_scale });
+            self.materials.push(Material { id: id.into(), name: name.into(), color, roughness, metallic: 0.0, emission: 0.0, opacity, price_m2: 0.0, category: category.into(), texture: texture.into(), texture_scale, ..Default::default() });
         }
     }
     fn finish(self, id: &str, name: &str, price: f64, mount: f64) -> Generated {
@@ -157,7 +157,7 @@ impl Gen {
         }
         let triangles = indices.len() / 3;
         Generated {
-            mesh: MeshAsset { id: id.into(), name: name.into(), positions, normals, indices, groups, source: "motor".into() },
+            mesh: MeshAsset { id: id.into(), name: name.into(), positions, normals, indices, groups, source: "motor".into(), ..Default::default() },
             materials: self.materials,
             name: name.into(),
             size: [mx[0] - mn[0], mx[2] - mn[2], mx[1] - mn[1]],

@@ -7,7 +7,60 @@ const path = require("path");
 const root = path.join(__dirname, "..", "ui");
 const out = process.argv[2] || path.join(__dirname, "..", "docs", "screenshots");
 const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".wasm": "application/wasm", ".woff2": "font/woff2", ".png": "image/png", ".json": "application/json" };
+// Sahte Poly Haven (çevrimdışı test): küçük glTF kanepe ve bir parke doku seti
+const zlib = require("zlib");
+function makePng(w, h, px) {
+  const crcT = Array.from({ length: 256 }, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
+  const crc = (b) => { let c = 0xffffffff; for (const x of b) c = crcT[(c ^ x) & 0xff] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
+  const chunk = (t, d) => { const len = Buffer.alloc(4); len.writeUInt32BE(d.length); const td = Buffer.concat([Buffer.from(t), d]); const c = Buffer.alloc(4); c.writeUInt32BE(crc(td)); return Buffer.concat([len, td, c]); };
+  const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(w, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 6;
+  const raw = Buffer.alloc((w * 4 + 1) * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const c = px(x, y); c.forEach((v, k) => (raw[y * (w * 4 + 1) + 1 + x * 4 + k] = v)); }
+  return Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), chunk("IHDR", ihdr), chunk("IDAT", zlib.deflateSync(raw)), chunk("IEND", Buffer.alloc(0))]);
+}
+function fakeSofa() {
+  // birim küpten 2 × 0,8 × 0,9 m kanepe gövdesi (6 yüz, UV'li)
+  const P = [], N = [], U = [], I = [];
+  const faces = [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[-1, 0, 0], [0, 1, 0], [0, 0, -1]], [[0, 1, 0], [0, 0, 1], [1, 0, 0]], [[0, -1, 0], [0, 0, -1], [1, 0, 0]], [[0, 0, 1], [1, 0, 0], [0, 1, 0]], [[0, 0, -1], [-1, 0, 0], [0, 1, 0]]];
+  const S = [1.0, 0.45, 0.4];
+  for (const [n, u, v] of faces) {
+    const b = P.length / 3;
+    for (const [a, c] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      for (let k = 0; k < 3; k++) P.push((n[k] + u[k] * a + v[k] * c) * S[k] + (k === 1 ? 0.45 : 0));
+      N.push(...n); U.push((a + 1) / 2, (1 - c) / 2);
+    }
+    I.push(b, b + 1, b + 2, b, b + 2, b + 3);
+  }
+  const f = Buffer.from(new Float32Array([...P, ...N, ...U]).buffer);
+  const idx = Buffer.from(new Uint16Array(I).buffer);
+  const bin = Buffer.concat([f, idx]);
+  const n = P.length / 3;
+  const gltf = {
+    asset: { version: "2.0" }, scene: 0, scenes: [{ nodes: [0] }], nodes: [{ mesh: 0 }],
+    meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, TEXCOORD_0: 2 }, indices: 3, material: 0 }] }],
+    materials: [{ name: "Kadife", pbrMetallicRoughness: { baseColorTexture: { index: 0 }, metallicFactor: 0, roughnessFactor: 0.9 } }],
+    textures: [{ source: 0 }], images: [{ uri: "textures/kadife.png" }],
+    buffers: [{ byteLength: bin.length, uri: "test_sofa.bin" }],
+    bufferViews: [{ buffer: 0, byteOffset: 0, byteLength: n * 12 }, { buffer: 0, byteOffset: n * 12, byteLength: n * 12 }, { buffer: 0, byteOffset: n * 24, byteLength: n * 8 }, { buffer: 0, byteOffset: n * 32, byteLength: I.length * 2 }],
+    accessors: [{ bufferView: 0, componentType: 5126, count: n, type: "VEC3" }, { bufferView: 1, componentType: 5126, count: n, type: "VEC3" }, { bufferView: 2, componentType: 5126, count: n, type: "VEC2" }, { bufferView: 3, componentType: 5123, count: I.length, type: "SCALAR" }],
+  };
+  const tex = makePng(16, 16, (x, y) => [20 + ((x + y) % 4) * 6, 90 + (x % 3) * 8, 70, 255]);
+  return { main: "test_sofa.gltf", files: { "test_sofa.gltf": Buffer.from(JSON.stringify(gltf)).toString("base64"), "test_sofa.bin": bin.toString("base64"), "textures/kadife.png": tex.toString("base64") }, license: "Poly Haven · CC0" };
+}
+const PH = {
+  "list/models": [{ id: "test_sofa", name: "Test Sofa", categories: ["seating", "furniture"], tags: ["sofa"], polycount: 12, dimensions: [2000, 900, 800], authors: "Test" }, { id: "test_plant", name: "Test Plant", categories: ["plants", "potted plants"], tags: ["plant"], polycount: 9000, dimensions: [500, 1200, 500], authors: "Test" }],
+  "list/textures": [{ id: "test_oak", name: "Test Oak Floor", categories: ["floor", "wood"], tags: ["parquet"], dimensions: [2000, 2000], authors: "Test" }],
+  "model/test_sofa/2k": fakeSofa(),
+  "texture/test_oak/2k": { maps: { diff: makePng(32, 32, (x, y) => [150 + (y % 8) * 6, 105 + (y % 8) * 4, 70, 255]).toString("base64"), nor: makePng(8, 8, () => [128, 128, 255, 255]).toString("base64"), arm: makePng(8, 8, () => [255, 150, 0, 255]).toString("base64") }, license: "Poly Haven · CC0" },
+};
 const server = http.createServer((req, res) => {
+  const ph = decodeURIComponent(req.url.split("?")[0]).match(/^\/polyhaven\/(.+)$/);
+  if (ph) {
+    if (ph[1].startsWith("thumb/")) { res.writeHead(200, { "Content-Type": "image/png" }); return res.end(makePng(8, 8, () => [90, 110, 140, 255])); }
+    const body = PH[ph[1]];
+    res.writeHead(body ? 200 : 404, { "Content-Type": "application/json" });
+    return res.end(body ? JSON.stringify(body) : "{}");
+  }
   const p = path.normalize(path.join(root, decodeURIComponent(req.url.split("?")[0]).replace(/^\/+/, "") || "index.html"));
   if (!p.startsWith(root) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
   res.writeHead(200, {
@@ -216,6 +269,14 @@ const server = http.createServer((req, res) => {
   await page.click('#libGrid [data-lib-real="berjer"]');
   await page.waitForSelector('[data-thumb="berjer"] img', { timeout: 600000 });
   await shot("12-urun-kutuphanesi.png");
+  // gerçekçi kütüphane: indir → glTF içe aktar → plana yerleştir
+  await page.waitForSelector('#phGrid [data-phget="test_sofa"]');
+  ok((await page.locator("#phGrid .uh-phcard").count()) === 1, "Poly Haven: oturma kategorisinde 1 model");
+  await page.click('#phGrid [data-phget="test_sofa"]');
+  await waitText("#objResult", /12/);
+  ok(/200 × 90 × 80/.test(await page.textContent("#objResult")), "glTF: ölçü doğru (200 × 90 × 80 cm)");
+  await page.locator("#phGrid").scrollIntoViewIfNeeded();
+  await shot("25-gercekci-kutuphane.png");
   await page.click('[data-view="kaplama"]');
   await page.waitForSelector("#matGrid .uh-matcard");
   await page.fill("#matName", "Doğal taş bazalt");
@@ -224,6 +285,12 @@ const server = http.createServer((req, res) => {
   await page.waitForTimeout(400);
   ok((await page.textContent("#matGrid")).includes("Doğal taş bazalt"), "Kaplama kütüphanesi: yeni kaplama eklendi");
   await shot("13-kaplama-kutuphanesi.png");
+  await page.waitForSelector('#phtGrid [data-phget="test_oak"]');
+  await page.click('#phtGrid [data-phget="test_oak"]');
+  await waitText("#toasts", /Test Oak Floor/);
+  ok(await page.evaluate(() => [...document.querySelectorAll("#matGrid .uh-matcard b")].some((b) => b.textContent.includes("Test Oak Floor"))), "Gerçek doku: kaplamalara eklendi");
+  await page.locator("#phtGrid").scrollIntoViewIfNeeded();
+  await shot("26-gercek-dokular.png");
   const palFile = path.join(out, "ornek-palet.gpl");
   fs.writeFileSync(palFile, "GIMP Palette\nName: Yaz evi\n232 220 200 Kum\n107 143 113 Adaçayı\n43 58 85 Gece mavisi\n201 122 86 Kiremit\n");
   await page.setInputFiles("#paletteInput", palFile);

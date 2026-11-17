@@ -265,6 +265,58 @@ def material_for(spec, clay, cache_dir):
 
     height = None
     kind = None
+    if keep and (spec.get("uv") or (tex and tex.get("data"))):
+        # glTF modeli: kendi UV'leri, renk / normal / pürüzlülük-metal haritaları, alfa kesme
+        uvn = nodes.new("ShaderNodeUVMap")
+
+        def image_node(t, color):
+            ext = ".png" if "png" in t.get("mime", "") else ".jpg"
+            path = os.path.join(cache_dir, f"{mid}-{len(os.listdir(cache_dir))}{ext}")
+            with open(path, "wb") as f:
+                f.write(base64.b64decode(t["data"]))
+            img = bpy.data.images.load(path)
+            img.colorspace_settings.name = "sRGB" if color else "Non-Color"
+            node = nodes.new("ShaderNodeTexImage")
+            node.image = img
+            node.interpolation = "Cubic" if color else "Linear"
+            links.new(uvn.outputs[0], node.inputs["Vector"])
+            return node
+
+        if tex and tex.get("data"):
+            node = image_node(tex, True)
+            mul = nodes.new("ShaderNodeMix")
+            mul.data_type = "RGBA"
+            mul.blend_type = "MULTIPLY"
+            mul.inputs["Factor"].default_value = 1.0
+            links.new(node.outputs["Color"], mul.inputs[6])
+            mul.inputs[7].default_value = (*color, 1)
+            links.new(mul.outputs[2], bsdf.inputs["Base Color"])
+            cut = float(spec.get("alpha_cutoff", 0) or 0)
+            if cut > 0:
+                gt = nodes.new("ShaderNodeMath")
+                gt.operation = "GREATER_THAN"
+                gt.inputs[1].default_value = cut
+                links.new(node.outputs["Alpha"], gt.inputs[0])
+                links.new(gt.outputs[0], bsdf.inputs["Alpha"])
+        if spec.get("orm_map"):
+            orm = image_node(spec["orm_map"], False)
+            sep = nodes.new("ShaderNodeSeparateColor")
+            links.new(orm.outputs["Color"], sep.inputs[0])
+            for out_name, sock, factor in (("Green", "Roughness", rough), ("Blue", "Metallic", metal)):
+                m2 = nodes.new("ShaderNodeMath")
+                m2.operation = "MULTIPLY"
+                m2.inputs[1].default_value = factor
+                links.new(sep.outputs[out_name], m2.inputs[0])
+                links.new(m2.outputs[0], bsdf.inputs[sock])
+        if spec.get("normal_map"):
+            nm = image_node(spec["normal_map"], False)
+            nmap = nodes.new("ShaderNodeNormalMap")
+            nmap.uv_map = "UVMap"
+            links.new(nm.outputs["Color"], nmap.inputs["Color"])
+            links.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
+        if cat == "tekstil" or "fabric" in mid.lower():
+            set_input(bsdf, "Sheen Weight", 0.5)
+        return m
     if tex and tex.get("png"):
         kind = tex.get("kind", "image")
         path = os.path.join(cache_dir, f"{mid or 'doku'}.png")
@@ -353,14 +405,20 @@ def build_mesh(batch, mat, scale_mm):
         tri = p.reshape(-1, 3, 3)
         gn = np.cross(tri[:, 1] - tri[:, 0], tri[:, 2] - tri[:, 0])
         ax = np.abs(gn)
-        uv = np.empty((tris, 3, 2))
-        top = (ax[:, 1] >= ax[:, 0]) & (ax[:, 1] >= ax[:, 2])
-        front = ~top & (ax[:, 2] >= ax[:, 0])
-        side = ~top & ~front
-        uv[top] = tri[top][:, :, [0, 2]]
-        uv[front] = tri[front][:, :, [0, 1]]
-        uv[side] = tri[side][:, :, [2, 1]]
-        uv /= max(1.0, scale_mm)
+        own = batch.get("uvs") or []
+        if len(own) == n * 2:
+            # modelin kendi UV'leri; glTF'de v aşağı, Blender'da yukarı
+            uv = np.asarray(own, dtype=np.float64).reshape(tris, 3, 2)
+            uv[:, :, 1] = 1.0 - uv[:, :, 1]
+        else:
+            uv = np.empty((tris, 3, 2))
+            top = (ax[:, 1] >= ax[:, 0]) & (ax[:, 1] >= ax[:, 2])
+            front = ~top & (ax[:, 2] >= ax[:, 0])
+            side = ~top & ~front
+            uv[top] = tri[top][:, :, [0, 2]]
+            uv[front] = tri[front][:, :, [0, 1]]
+            uv[side] = tri[side][:, :, [2, 1]]
+            uv /= max(1.0, scale_mm)
         me.update(calc_edges=True)
         layer = me.uv_layers.new(name="UVMap")
         layer.data.foreach_set("uv", uv.astype(np.float32).ravel())

@@ -308,7 +308,8 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                     let mat = s.material(&b.material).cloned().unwrap_or_default();
                     let p: Vec<f32> = b.positions.iter().flat_map(|p| p.iter().map(|x| (x * 10.0).round() / 10.0)).collect();
                     let n: Vec<f32> = b.normals.iter().flat_map(|p| p.iter().map(|x| (x * 1000.0).round() / 1000.0)).collect();
-                    json!({"material": b.material, "color": mat.color, "roughness": mat.roughness, "metallic": mat.metallic, "emission": mat.emission, "opacity": mat.opacity, "textured": !mat.texture.is_empty(), "scale": mat.texture_scale, "positions": p, "normals": n})
+                    let uv: Vec<f32> = b.uvs.iter().flat_map(|q| q.iter().map(|x| (x * 10000.0).round() / 10000.0)).collect();
+                    json!({"material": b.material, "color": mat.color, "roughness": mat.roughness, "metallic": mat.metallic, "emission": mat.emission, "opacity": mat.opacity, "textured": !mat.texture.is_empty(), "scale": mat.texture_scale, "positions": p, "normals": n, "uvs": uv, "alphaCutoff": mat.alpha_cutoff})
                 })
                 .collect();
             Ok(json!({"groups": groups, "triangles": m.triangle_count(), "bounds": m.bounds()}))
@@ -366,6 +367,112 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
                 s.objects.push(crate::model::Object { id: format!("N{n}x"), name: imp.mesh.name.clone(), mesh: id.clone(), level, position: [at[0], at[1], 0.0], ..Default::default() });
             }
             Ok(json!({"scene": s, "id": id, "triangles": imp.triangles, "size": imp.size_mm, "warnings": imp.warnings}))
+        }
+        "import_gltf" => {
+            // files: { "ad": base64 }, main: .glb / .gltf dosyasının adı
+            let mut s = scene_of(&v)?;
+            let files_b64: std::collections::HashMap<String, String> = arg(&v, "files")?;
+            let main: String = arg(&v, "main")?;
+            let name: String = opt(&v, "name").unwrap_or_else(|| "Model".into());
+            let mut files = std::collections::HashMap::new();
+            for (k, b) in files_b64 {
+                let bytes = base64::engine::general_purpose::STANDARD.decode(b).map_err(|_| "@gltf_invalid".to_string())?;
+                files.insert(k, bytes);
+            }
+            let mut k = s.meshes.len() + 1;
+            let id = loop {
+                let c = format!("gl{k}");
+                if !s.meshes.iter().any(|m| m.id == c) {
+                    break c;
+                }
+                k += 1;
+            };
+            let mut imp = crate::gltf::import(&id, &name, &files, &main)?;
+            if let Some(l) = opt::<String>(&v, "license") {
+                imp.mesh.license = l.chars().take(200).collect();
+            }
+            for m in imp.materials {
+                if !s.materials.iter().any(|x| x.id == m.id) {
+                    s.materials.push(m);
+                }
+            }
+            s.textures.extend(imp.textures);
+            s.meshes.push(imp.mesh.clone());
+            let mut object = Value::Null;
+            if opt::<bool>(&v, "place").unwrap_or(true) {
+                let at: [f64; 2] = opt(&v, "at").unwrap_or([1000.0, 1000.0]);
+                let level: String = opt(&v, "level").unwrap_or_else(|| "L0".into());
+                let z: f64 = opt(&v, "z").unwrap_or(0.0);
+                let mut n = s.objects.len() + 1;
+                let oid = loop {
+                    let c = format!("N{n}g");
+                    if !s.objects.iter().any(|o| o.id == c) {
+                        break c;
+                    }
+                    n += 1;
+                };
+                s.objects.push(crate::model::Object { id: oid.clone(), name: imp.mesh.name.clone(), mesh: id.clone(), level, position: [at[0], at[1], z], price: opt(&v, "price").unwrap_or(0.0), ..Default::default() });
+                object = json!(oid);
+            }
+            Ok(json!({"scene": s, "id": id, "object": object, "triangles": imp.triangles, "size": imp.size_mm, "warnings": imp.warnings}))
+        }
+        "add_pbr_material" => {
+            // gerçek doku seti (renk + normal + ARM/pürüz) → düzlemsel eşlenen kaplama
+            let mut s = scene_of(&v)?;
+            let maps: std::collections::HashMap<String, String> = arg(&v, "maps")?;
+            let name: String = opt(&v, "name").unwrap_or_else(|| "Doku".into());
+            let category: String = opt(&v, "category").unwrap_or_else(|| "zemin".into());
+            let scale: f32 = opt::<f32>(&v, "scale").unwrap_or(2000.0).clamp(50.0, 50_000.0);
+            let price: f64 = opt(&v, "price_m2").unwrap_or(0.0);
+            let e = base64::engine::general_purpose::STANDARD;
+            let mut k = s.materials.len() + 1;
+            let id = loop {
+                let c = format!("pbr{k}");
+                if !s.materials.iter().any(|m| m.id == c) {
+                    break c;
+                }
+                k += 1;
+            };
+            let tex = |key: &str, s: &mut crate::model::Scene| -> Result<Option<String>, String> {
+                let Some(b64) = maps.get(key) else { return Ok(None) };
+                let bytes = e.decode(b64).map_err(|_| "@texture_unreadable".to_string())?;
+                let img = crate::store::decode_bytes(&bytes).ok_or("@texture_unreadable")?;
+                let mime = if bytes.starts_with(&[0x89, b'P']) { "image/png" } else { "image/jpeg" };
+                let store = crate::store::put_file(mime, bytes);
+                let tid = format!("{id}-{key}");
+                s.textures.push(crate::model::TextureAsset { id: tid.clone(), name: format!("{name} · {key}"), width: img.w as u32, height: img.h as u32, store, mime: mime.into(), ..Default::default() });
+                Ok(Some(tid))
+            };
+            let diff = tex("diff", &mut s)?.ok_or("@texture_unreadable")?;
+            let nor = tex("nor", &mut s)?;
+            let arm = match tex("arm", &mut s)? {
+                Some(a) => Some(a),
+                None => tex("rough", &mut s)?,
+            };
+            let rough_only = !maps.contains_key("arm") && maps.contains_key("rough");
+            s.materials.push(crate::model::Material {
+                id: id.clone(),
+                name: name.chars().take(60).collect(),
+                color: [1.0, 1.0, 1.0],
+                roughness: if rough_only { 1.0 } else { 1.0 },
+                metallic: if rough_only { 0.0 } else { 1.0 },
+                category,
+                texture: format!("img:{diff}"),
+                texture_scale: scale,
+                normal_map: nor.unwrap_or_default(),
+                // yalnız pürüz haritası varsa gri tonu G kanalında okunur, metal 0
+                orm_map: arm.unwrap_or_default(),
+                price_m2: price,
+                ..Default::default()
+            });
+            Ok(json!({"scene": s, "id": id}))
+        }
+        "store_missing" => {
+            // depoda bulunmayan ağır veriler (ör. motor yeniden başladıysa)
+            let s = scene_of(&v)?;
+            let mut missing: Vec<String> = s.meshes.iter().filter(|m| !m.store.is_empty() && !crate::store::has(&m.store)).map(|m| m.id.clone()).collect();
+            missing.extend(s.textures.iter().filter(|t| !t.store.is_empty() && !crate::store::has(&t.store)).map(|t| t.id.clone()));
+            Ok(json!({"missing": missing}))
         }
         "export_obj" => {
             let s = scene_of(&v)?;
@@ -434,6 +541,12 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             for m in s.materials.iter().filter(|m| !m.texture.is_empty()) {
                 let e = base64::engine::general_purpose::STANDARD;
                 if let Some(id) = m.texture.strip_prefix("img:") {
+                    let stored = s.textures.iter().find(|t| t.id == id && !t.store.is_empty()).and_then(|t| crate::store::file(&t.store));
+                    if let Some(b) = stored {
+                        // glTF dokusu: dosya olduğu gibi (JPEG/PNG), modelin UV'leriyle
+                        out.insert(m.id.clone(), json!({"data": e.encode(&b.bytes), "mime": b.mime, "uv": true}));
+                        continue;
+                    }
                     if let Some(t) = s.textures.iter().find(|t| t.id == id) {
                         out.insert(m.id.clone(), json!({"width": t.width, "height": t.height, "rgb": t.rgb, "scale": m.texture_scale}));
                     }

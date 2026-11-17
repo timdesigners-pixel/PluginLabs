@@ -15,7 +15,8 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 rfd = "0.15"
 base64 = "0.22"
-ureq = { version = "2", default-features = false, features = ["json"] }
+ureq = { version = "2", default-features = false, features = ["json", "tls"] }
+md-5 = "0.10"
 uhd-engine = { path = "../engine" }
 
 [target.'cfg(windows)'.dependencies]

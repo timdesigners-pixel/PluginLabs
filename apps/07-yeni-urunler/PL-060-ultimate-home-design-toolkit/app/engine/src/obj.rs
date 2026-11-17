@@ -225,7 +225,7 @@ pub fn import(id: &str, name: &str, obj: &str, mtl: Option<&str>, unit: Unit, z_
     }
     let tris = indices.len() / 3;
     Ok(Imported {
-        mesh: MeshAsset { id: id.into(), name: name.chars().take(80).collect(), positions: out_p, normals: out_n, indices, groups, source: "obj".into() },
+        mesh: MeshAsset { id: id.into(), name: name.chars().take(80).collect(), positions: out_p, normals: out_n, indices, groups, source: "obj".into(), ..Default::default() },
         materials,
         size_mm: size,
         triangles: tris,

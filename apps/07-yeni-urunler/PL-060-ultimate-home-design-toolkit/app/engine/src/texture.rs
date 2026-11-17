@@ -198,7 +198,7 @@ pub fn add_texture(scene: &mut Scene, name: &str, width: usize, height: usize, r
         }
         k += 1;
     };
-    scene.textures.push(TextureAsset { id: id.clone(), name: name.chars().take(60).collect(), width: width as u32, height: height as u32, rgb: rgb_b64.to_string() });
+    scene.textures.push(TextureAsset { id: id.clone(), name: name.chars().take(60).collect(), width: width as u32, height: height as u32, rgb: rgb_b64.to_string(), ..Default::default() });
     Ok(id)
 }
 

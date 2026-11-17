@@ -122,6 +122,14 @@ pub struct TextureAsset {
     pub width: u32,
     pub height: u32,
     pub rgb: String,
+    /// Varlık deposu anahtarı (sıkıştırılmış JPEG/PNG dosyası); doluysa `rgb` boştur.
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub store: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub mime: String,
+    /// Yalnız proje dosyasında: dosya baytları (base64). Açılırken depoya alınır.
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub data: String,
 }
 
 /// Ölçü aracıyla bırakılan çizgi (mm).
@@ -270,10 +278,25 @@ pub struct Material {
     pub texture: String,
     /// Desenin bir tekrarının dünya ölçüsü (mm).
     pub texture_scale: f32,
+    /// Doku modelin kendi UV koordinatlarıyla kaplanır (glTF); değilse düzlemsel izdüşüm.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub uv: bool,
+    /// Normal haritası (doku kimliği, teğet uzayı, OpenGL düzeni).
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub normal_map: String,
+    /// Doku kimliği: G = pürüzlülük, B = metaliklik (glTF / ARM düzeni).
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub orm_map: String,
+    /// Alfa kesme eşiği (yaprak, dantel); 0 = kapalı.
+    #[serde(skip_serializing_if = "is_zero")]
+    pub alpha_cutoff: f32,
+}
+fn is_zero(v: &f32) -> bool {
+    *v == 0.0
 }
 impl Default for Material {
     fn default() -> Self {
-        Material { id: String::new(), name: String::new(), color: [0.8, 0.8, 0.8], roughness: 0.8, metallic: 0.0, emission: 0.0, opacity: 1.0, price_m2: 0.0, category: "genel".into(), texture: String::new(), texture_scale: 1000.0 }
+        Material { id: String::new(), name: String::new(), color: [0.8, 0.8, 0.8], roughness: 0.8, metallic: 0.0, emission: 0.0, opacity: 1.0, price_m2: 0.0, category: "genel".into(), texture: String::new(), texture_scale: 1000.0, uv: false, normal_map: String::new(), orm_map: String::new(), alpha_cutoff: 0.0 }
     }
 }
 
@@ -296,6 +319,22 @@ pub struct MeshAsset {
     pub indices: Vec<u32>,
     pub groups: Vec<MeshGroup>,
     pub source: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub uvs: Vec<[f32; 2]>,
+    /// Varlık deposu anahtarı; doluysa geometri depodadır, diziler boştur.
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub store: String,
+    #[serde(skip_serializing_if = "is_zero_u")]
+    pub triangles: u32,
+    /// Ölçü (mm): genişlik, yükseklik, derinlik.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub size: Option<[f32; 3]>,
+    /// Kaynak ve lisans (ör. "Poly Haven · CC0 · yazar").
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub license: String,
+}
+fn is_zero_u(v: &u32) -> bool {
+    *v == 0
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

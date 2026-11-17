@@ -84,6 +84,51 @@ export async function openFiles(kind) {
   });
 }
 
+/* ---------- Poly Haven (CC0) ----------
+ * Masaüstünde indirme Rust tarafında (yalnız Poly Haven alanları, MD5 doğrulama, önbellek).
+ * Tarayıcı önizlemesinde aynı kaynağın "polyhaven/" yolu kullanılır (geliştirme/test sunucusu sağlar). */
+async function getJson(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("@ph_network");
+  return r.json();
+}
+export async function phList(kind) { return T ? T.invoke("ph_list", { kind }) : getJson(`polyhaven/list/${kind}`); }
+export async function phThumb(id) {
+  if (T) return `data:image/png;base64,${await T.invoke("ph_thumb", { id })}`;
+  return `polyhaven/thumb/${encodeURIComponent(id)}`;
+}
+export async function phModel(id, res) { return T ? T.invoke("ph_model", { id, res }) : getJson(`polyhaven/model/${encodeURIComponent(id)}/${res}`); }
+export async function phTexture(id, res) { return T ? T.invoke("ph_texture", { id, res }) : getJson(`polyhaven/texture/${encodeURIComponent(id)}/${res}`); }
+
+function b64(buf) {
+  const bytes = new Uint8Array(buf);
+  let s = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+/** Dosya listesini glTF paketine çevirir: { main, files: {ad: base64}, name } */
+export async function filesToModel(list) {
+  const main = list.find((f) => /\.(glb|gltf)$/i.test(f.name));
+  if (!main) return null;
+  const files = {};
+  let total = 0;
+  for (const f of list) {
+    total += f.size;
+    if (total > 256 * 1024 * 1024) throw new Error("@gltf_too_large");
+    files[f.webkitRelativePath && f.webkitRelativePath.includes("/") ? f.webkitRelativePath.split("/").slice(1).join("/") : f.name] = b64(await f.arrayBuffer());
+  }
+  return { main: main.name, files, name: main.name.replace(/\.(glb|gltf)$/i, "") };
+}
+export async function openModel() {
+  if (T) return T.invoke("open_model");
+  const input = document.getElementById("modelInput");
+  input.value = "";
+  return new Promise((res) => {
+    input.onchange = async () => res(await filesToModel([...input.files]));
+    input.click();
+  });
+}
+
 export async function hubStatus() {
   if (!T) return { available: false, reason: L("bridge.mymind_yalniz_masaustu_uygulamasinda") };
   return T.invoke("hub_status");

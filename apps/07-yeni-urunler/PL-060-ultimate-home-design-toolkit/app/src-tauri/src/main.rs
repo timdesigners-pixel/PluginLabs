@@ -4,6 +4,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod cycles;
+mod polyhaven;
 mod vault;
 
 use base64::Engine as _;
@@ -179,6 +180,65 @@ async fn mymind(prompt: String, approved: bool) -> R<serde_json::Value> {
     .map_err(|e| e.to_string())?
 }
 
+/// Model dosyası seçer: .glb ya da .gltf (+ başvurduğu .bin ve dokular, yalnız aynı klasörün içinden) ya da .obj.
+#[tauri::command]
+async fn open_model() -> R<Option<serde_json::Value>> {
+    tauri::async_runtime::spawn_blocking(|| {
+        let Some(p) = rfd::FileDialog::new().add_filter("3B model", &["glb", "gltf"]).pick_file() else { return Ok(None) };
+        let enc = base64::engine::general_purpose::STANDARD;
+        let dir = p.parent().ok_or("@gltf_invalid")?.canonicalize().map_err(|e| e.to_string())?;
+        let main = p.file_name().and_then(|n| n.to_str()).unwrap_or("model.gltf").to_string();
+        let bytes = std::fs::read(&p).map_err(|e| e.to_string())?;
+        if bytes.len() as u64 > 256 * 1024 * 1024 {
+            return Err("@gltf_too_large".into());
+        }
+        let mut files = serde_json::Map::new();
+        if main.to_lowercase().ends_with(".gltf") {
+            let j: serde_json::Value = serde_json::from_slice(&bytes).map_err(|_| "@gltf_invalid".to_string())?;
+            let mut total = bytes.len() as u64;
+            let uris = j["buffers"].as_array().into_iter().flatten().chain(j["images"].as_array().into_iter().flatten()).filter_map(|b| b["uri"].as_str()).filter(|u| !u.starts_with("data:"));
+            for u in uris {
+                let rel = u.replace("%20", " ");
+                let f = dir.join(&rel).canonicalize().map_err(|_| format!("@gltf_missing_file|name={}", rel.replace('|', "/")))?;
+                if !f.starts_with(&dir) {
+                    return Err("@gltf_invalid".into());
+                }
+                let b = std::fs::read(&f).map_err(|e| e.to_string())?;
+                total += b.len() as u64;
+                if total > 256 * 1024 * 1024 {
+                    return Err("@gltf_too_large".into());
+                }
+                files.insert(rel, serde_json::json!(enc.encode(b)));
+            }
+        }
+        files.insert(main.clone(), serde_json::json!(enc.encode(bytes)));
+        let name = p.file_stem().and_then(|n| n.to_str()).unwrap_or("Model").to_string();
+        Ok(Some(serde_json::json!({"main": main, "files": files, "name": name})))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn ph_list(app: tauri::AppHandle, kind: String) -> R<serde_json::Value> {
+    tauri::async_runtime::spawn_blocking(move || polyhaven::list(&app, &kind)).await.map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn ph_thumb(app: tauri::AppHandle, id: String) -> R<String> {
+    tauri::async_runtime::spawn_blocking(move || polyhaven::thumb(&app, &id)).await.map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn ph_model(app: tauri::AppHandle, id: String, res: String) -> R<serde_json::Value> {
+    tauri::async_runtime::spawn_blocking(move || polyhaven::model(&app, &id, &res)).await.map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn ph_texture(app: tauri::AppHandle, id: String, res: String) -> R<serde_json::Value> {
+    tauri::async_runtime::spawn_blocking(move || polyhaven::texture(&app, &id, &res)).await.map_err(|e| e.to_string())?
+}
+
 #[tauri::command]
 fn cycles_status(app: tauri::AppHandle) -> serde_json::Value {
     match cycles::find(&app) {
@@ -221,7 +281,7 @@ fn cycles_cancel() {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key, mymind, cycles_status, cycles_pick, cycles_render, cycles_cancel])
+        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key, mymind, cycles_status, cycles_pick, cycles_render, cycles_cancel, open_model, ph_list, ph_thumb, ph_model, ph_texture])
         .run(tauri::generate_context!())
         .expect("Ultimate Home başlatılamadı");
 }

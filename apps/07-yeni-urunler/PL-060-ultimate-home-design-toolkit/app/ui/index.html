@@ -398,12 +398,23 @@
         <p class="uh-lead" data-i18n="kutuphane.hazir_parametrik_modeller_ve_ice"></p>
         <div class="uh-chips" id="libGroups" role="tablist" data-i18n-attr="aria-label=kutuphane.urun_gruplari"></div>
         <div class="uh-libgrid" id="libGrid"></div>
+        <h2 class="uh-h3" data-i18n="ph.baslik_modeller"></h2>
+        <p class="uh-small" data-i18n="ph.aciklama_modeller"></p>
+        <div class="uh-row uh-wrap uh-mt">
+          <div class="uh-chips" id="phCats" role="tablist" data-i18n-attr="aria-label=ph.kategoriler"></div>
+          <span class="uh-grow"></span>
+          <div class="pl-inputwrap uh-search"><input class="pl-input" id="phSearch" type="search" data-i18n-attr="aria-label=ph.ara;placeholder=ph.ara_2"></div>
+          <select class="pl-select uh-res" id="phRes" data-i18n-attr="aria-label=ph.cozunurluk"><option value="1k">1K</option><option value="2k" selected>2K</option><option value="4k">4K</option></select>
+        </div>
+        <p class="uh-small" id="phState" role="status"></p>
+        <div class="uh-libgrid" id="phGrid"></div>
         <h2 class="uh-h3" data-i18n="kutuphane.kendi_modelleriniz_obj"></h2>
         <div class="uh-card uh-card--flat">
           <div class="uh-row uh-wrap">
             <label class="pl-field"><span class="pl-field__label" data-i18n="kutuphane.model_birimi"></span><select class="pl-select" id="objUnit"><option value="m" data-i18n="kutuphane.metre"></option><option value="cm" data-i18n="kutuphane.santimetre"></option><option value="mm" data-i18n="kutuphane.milimetre"></option><option value="in" data-i18n="kutuphane.inc"></option><option value="ft" data-i18n="kutuphane.feet"></option></select></label>
             <label class="pl-switch uh-switch"><input type="checkbox" id="objZup" data-i18n="kutuphane.z_ekseni_yukari_cad_disa_aktarimi"></label>
             <span class="uh-grow"></span>
+            <button class="pl-btn pl-btn--secondary" type="button" id="btnGltfImport" data-i18n="ph.gltf_ice_aktar"></button>
             <button class="pl-btn pl-btn--primary" type="button" id="btnObjImport" data-i18n="kutuphane.obj_ice_aktar"></button>
           </div>
           <div id="objResult" class="uh-small" role="status"></div>
@@ -508,6 +519,16 @@
         <p class="uh-lead" data-i18n="kaplama.zemin_duvar_cephe_ve_mobilya_kaplamalari"></p>
         <div class="uh-chips" id="matCats" role="tablist" data-i18n-attr="aria-label=kaplama.kaplama_turleri"></div>
         <div class="uh-matgrid" id="matGrid"></div>
+        <h2 class="uh-h3" data-i18n="ph.baslik_dokular"></h2>
+        <p class="uh-small" data-i18n="ph.aciklama_dokular"></p>
+        <div class="uh-row uh-wrap uh-mt">
+          <div class="uh-chips" id="phtCats" role="tablist" data-i18n-attr="aria-label=ph.kategoriler"></div>
+          <span class="uh-grow"></span>
+          <div class="pl-inputwrap uh-search"><input class="pl-input" id="phtSearch" type="search" data-i18n-attr="aria-label=ph.ara;placeholder=ph.ara_2"></div>
+          <select class="pl-select uh-res" id="phtTarget" data-i18n-attr="aria-label=ph.kullanim"><option value="zemin" data-i18n="kaplama.zemin"></option><option value="duvar" data-i18n="app.ic_duvar"></option><option value="kaplama" data-i18n="kaplama.cephe_kaplamasi"></option><option value="mobilya" data-i18n="kaplama.mobilya"></option></select>
+        </div>
+        <p class="uh-small" id="phtState" role="status"></p>
+        <div class="uh-libgrid" id="phtGrid"></div>
         <h2 class="uh-h3" data-i18n="kaplama.yeni_kaplama"></h2>
         <div class="uh-card uh-card--flat">
           <div class="uh-matform">
@@ -568,6 +589,7 @@
   </dialog>
 
   <input type="file" id="fileInput" hidden>
+  <input type="file" id="modelInput" accept=".glb,.gltf,.bin,.jpg,.jpeg,.png" multiple hidden>
 </div>
 <script type="module" src="boot.js"></script>
 </body>

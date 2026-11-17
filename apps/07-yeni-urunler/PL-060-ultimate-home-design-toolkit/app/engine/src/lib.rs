@@ -25,6 +25,8 @@ pub mod photo;
 pub mod render;
 pub mod scene_file;
 pub mod spaces;
+pub mod store;
+pub mod gltf;
 pub mod templates;
 pub mod texture;
 pub mod units;

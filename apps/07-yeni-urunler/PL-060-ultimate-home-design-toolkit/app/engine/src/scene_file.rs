@@ -29,8 +29,44 @@ fn hex(d: &[u8]) -> String {
     d.iter().map(|b| format!("{b:02x}")).collect()
 }
 
+/// Depodaki ağır verileri (ağ, doku dosyası) taşınabilir dosya için sahneye gömer.
+pub fn embed(scene: &Scene) -> Scene {
+    let mut s = scene.clone();
+    for m in s.meshes.iter_mut().filter(|m| !m.store.is_empty()) {
+        if let Some(d) = crate::store::mesh(&m.store) {
+            m.positions = d.positions.clone();
+            m.normals = d.normals.clone();
+            m.uvs = d.uvs.clone();
+            m.indices = d.indices.clone();
+        }
+    }
+    use base64::Engine;
+    for t in s.textures.iter_mut().filter(|t| !t.store.is_empty()) {
+        if let Some(b) = crate::store::file(&t.store) {
+            t.data = base64::engine::general_purpose::STANDARD.encode(&b.bytes);
+        }
+    }
+    s
+}
+
+/// Dosyadan gelen gömülü verileri depoya alır; sahnede yalnız anahtar kalır.
+pub fn absorb(scene: &mut Scene) {
+    for m in scene.meshes.iter_mut().filter(|m| !m.store.is_empty() && !m.positions.is_empty()) {
+        let d = crate::store::MeshData { positions: std::mem::take(&mut m.positions), normals: std::mem::take(&mut m.normals), uvs: std::mem::take(&mut m.uvs), indices: std::mem::take(&mut m.indices) };
+        m.store = crate::store::put_mesh(d);
+    }
+    use base64::Engine;
+    for t in scene.textures.iter_mut().filter(|t| !t.data.is_empty()) {
+        if let Ok(bytes) = base64::engine::general_purpose::STANDARD.decode(&t.data) {
+            let mime = if t.mime.is_empty() { "image/jpeg".to_string() } else { t.mime.clone() };
+            t.store = crate::store::put_file(&mime, bytes);
+        }
+        t.data.clear();
+    }
+}
+
 pub fn save(scene: &Scene) -> Result<String, String> {
-    let body = serde_json::to_string(scene).map_err(|e| e.to_string())?;
+    let body = serde_json::to_string(&embed(scene)).map_err(|e| e.to_string())?;
     if body.len() > MAX_BYTES {
         return Err("@scene_too_large".into());
     }
@@ -73,7 +109,8 @@ pub fn load(text: &str) -> Result<(Scene, FileInfo), String> {
     }
     let value: serde_json::Value = serde_json::from_str(body).map_err(|e| format!("@scene_unreadable|error={}", e.to_string().replace('|', "/")))?;
     let (value, migrated) = migrate(value, ver);
-    let scene: Scene = serde_json::from_value(value).map_err(|e| format!("@scene_invalid|error={}", e.to_string().replace('|', "/")))?;
+    let mut scene: Scene = serde_json::from_value(value).map_err(|e| format!("@scene_invalid|error={}", e.to_string().replace('|', "/")))?;
+    absorb(&mut scene);
     let info = FileInfo { version: ver, bytes: body.len(), sha256: actual, migrated, modules: scene.modules.len(), levels: scene.levels.len(), objects: scene.objects.len(), meshes: scene.meshes.len() };
     Ok((scene, info))
 }
