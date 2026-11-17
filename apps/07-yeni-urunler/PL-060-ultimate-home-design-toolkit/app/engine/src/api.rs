@@ -476,6 +476,36 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let id = crate::paints::add(&mut s, &system, &code, &target)?;
             Ok(json!({"scene": s, "id": id}))
         }
+        // ---- Genişleme paketleri (lisans Hub'dan gelir, burada doğrulanır)
+        "packs" => {
+            let tokens: Vec<String> = opt(&v, "licenses").unwrap_or_default();
+            let owned = crate::packs::owned(&tokens);
+            Ok(json!({"packs": crate::packs::PACKS.iter().map(|id| json!({
+                "id": id,
+                "owned": owned.iter().any(|o| o == id),
+                "presets": crate::packs::presets().into_iter().filter(|p| p.pack == *id).collect::<Vec<_>>(),
+                "items": catalog::items().into_iter().filter(|i| i.pack == *id).map(|i| i.id).collect::<Vec<_>>(),
+            })).collect::<Vec<_>>()}))
+        }
+        "pack_license" => {
+            let token: String = arg(&v, "license")?;
+            Ok(json!(crate::packs::verify(&token)?))
+        }
+        "pack_preset" => {
+            let tokens: Vec<String> = opt(&v, "licenses").unwrap_or_default();
+            let preset: String = arg(&v, "preset")?;
+            let no: String = opt(&v, "projectNo").unwrap_or_default();
+            let name: String = opt(&v, "name").unwrap_or_else(|| "Tiny House".into());
+            let (s, notes) = crate::packs::preset_scene(&tokens, &preset, &no, &name)?;
+            finish(s, json!({"notes": notes, "preset": preset}))
+        }
+        "pack_check" => {
+            let s = scene_of(&v)?;
+            let tokens: Vec<String> = opt(&v, "licenses").unwrap_or_default();
+            let pack: String = arg(&v, "pack")?;
+            let preset: Option<String> = opt(&v, "preset");
+            crate::packs::check(&s, &tokens, &pack, preset.as_deref())
+        }
         "import_paint_system" => {
             let mut s = scene_of(&v)?;
             let name: String = arg(&v, "name")?;

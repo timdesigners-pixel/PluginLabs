@@ -40,6 +40,7 @@
       <button class="pl-navitem uh-navbtn" type="button" data-view="foto"><span data-i18n="common.fotograftan_mekan"></span><span class="pl-badge" id="spaceCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="referans" data-i18n="common.gorselden_referans"></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kaplama"><span data-i18n="common.kaplama_kutuphanesi"></span><span class="pl-badge" id="matCount">0</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="paket"><span data-i18n="paket.baslik"></span><span class="pl-badge" id="packCount">0/2</span></button>
     </div>
     <div class="uh-mini" id="sideInfo"></div>
     <div class="uh-side__foot">
@@ -509,6 +510,18 @@
         <label class="uh-check"><input type="checkbox" id="spLock"><span data-i18n="foto.orani_koru_bir_olcu_degisince_digerleri"></span></label>
         <div class="uh-tablewrap uh-mt"><table class="pl-table" id="spaceTable"><thead><tr><th data-i18n="foto.oda"></th><th class="is-num" data-i18n="foto.genislik_cm"></th><th class="is-num" data-i18n="foto.derinlik_cm"></th><th class="is-num" data-i18n="foto.yukseklik_cm"></th><th class="is-num" data-i18n="foto.alan"></th><th data-i18n="foto.kaynak"></th><th></th></tr></thead><tbody id="spaceRows"></tbody></table></div>
         <input type="file" id="photoInput" accept="image/png,image/jpeg,image/webp" hidden>
+      </div>
+    </section>
+
+    <!-- Genişleme paketleri -->
+    <section class="uh-view" id="view-paket" data-i18n-attr="data-title=paket.baslik">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1" data-i18n="paket.baslik"></h1><span class="uh-grow"></span><button class="pl-btn pl-btn--secondary" type="button" id="btnPackRefresh" data-i18n="paket.lisanslari_yenile"></button></div>
+        <p class="uh-lead" data-i18n="paket.aciklama"></p>
+        <p class="uh-small" id="packHubState" role="status"></p>
+        <div class="uh-packgrid" id="packGrid"></div>
+        <h2 class="uh-h3" data-i18n="paket.denetim"></h2>
+        <div class="uh-card uh-card--flat" id="packCheck"></div>
       </div>
     </section>
 

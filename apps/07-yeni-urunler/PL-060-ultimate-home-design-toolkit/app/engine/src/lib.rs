@@ -20,6 +20,7 @@ pub mod msg;
 pub mod plan;
 pub mod reference;
 pub mod obj;
+pub mod packs;
 pub mod paints;
 pub mod palette;
 pub mod photo;

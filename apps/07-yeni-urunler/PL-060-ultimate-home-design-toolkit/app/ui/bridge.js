@@ -155,6 +155,16 @@ export async function cyclesRender(payload, onProgress) {
     if (stop) stop();
   }
 }
+/** Hub'daki paket lisansları. Tarayıcı önizlemesinde yalnız test düzeneği (packkey/packlic) verir. */
+export async function hubLicenses() {
+  if (T) return T.invoke("hub_licenses");
+  const q = new URLSearchParams(location.search);
+  if (q.get("packkey") && q.get("packlic")) {
+    getWorker().postMessage({ trustKey: q.get("packkey") });
+    return { available: true, licenses: q.get("packlic").split(",") };
+  }
+  return { available: false, licenses: [], reason: "@pack_desktop_only" };
+}
 export async function hubSetKey(key) { return T.invoke("hub_set_key", { key }); }
 export async function mymind(prompt, approved) {
   if (!T) throw new Error(L("bridge.mymind_yalniz_masaustu_uygulamasinda_2"));

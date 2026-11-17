@@ -12,3 +12,5 @@ sha2 = "0.10"
 png = "0.17"
 base64 = "0.22"
 jpeg-decoder = { version = "0.3", default-features = false }
+ed25519-dalek = { version = "2", default-features = false, features = ["std"] }
+

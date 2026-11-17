@@ -15,7 +15,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", paint: { sys: "ral-classic", group: "*", q: "", target: "duvar", ral: null }, libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, ph: { models: null, textures: null, cat: "seating", q: "", tcat: "floor", tq: "", busy: new Set(), thumbs: {}, loading: {}, error: {} }, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", packs: null, licenses: [], hubLic: null, paint: { sys: "ral-classic", group: "*", q: "", target: "duvar", ral: null }, libGroup: "*", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, engine: "internal", cycles: null, ph: { models: null, textures: null, cat: "seating", q: "", tcat: "floor", tq: "", busy: new Set(), thumbs: {}, loading: {}, error: {} }, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -121,6 +121,7 @@ function refresh() {
   if (v === "foto") renderPhoto();
   if (v === "karsilama") renderWelcome();
   if (v === "mymind") renderMyMind();
+  if (v === "paket") renderPacks();
 }
 
 function netArea(level) {
@@ -471,7 +472,7 @@ function onPlanAction(kind, d) {
     const it = S.catalog.furniture.find((f) => f.id === d.cat);
     if (it.id === "merdiven" && S.level !== "L0") { toast(L("app.merdiven_yalniz_zemin_kata_yerlestirilir"), { kind: "warn" }); return; }
     const s = clone();
-    const z = it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
+    const z = it.mount === -3 ? s.standard.net_height + 200 : it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
     s.objects.push({ id: nextId("N", s.objects), name: it.name, mesh: `cat:${it.id}`, level: S.level, position: [d.point[0], d.point[1], z], rotation: 0, scale: [1, 1, 1], material: null, price: it.price, quantity: 1 });
     commit(s);
     return;
@@ -734,7 +735,8 @@ function isoThumb(parts) {
   return `<svg viewBox="${x0 - pad} ${y0 - pad} ${x1 - x0 + pad * 2} ${y1 - y0 + pad * 2}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${faces.map((f) => `<polygon points="${f.pts.map((q) => q.map((v) => v.toFixed(0)).join(",")).join(" ")}" fill="${rgb(f.col, f.k)}"/>`).join("")}</svg>`;
 }
 function renderLibrary() {
-  const f = S.catalog.furniture;
+  // paket ürünleri yalnız lisanslı paketlerde listelenir
+  const f = S.catalog.furniture.filter((x) => !x.pack || packOwned(x.pack));
   const groups = ["*", ...new Set(f.map((x) => x.group))];
   $("#libGroups").innerHTML = groups.map((g) => `<button type="button" role="tab" class="uh-tool ${S.libGroup === g ? "is-active" : ""}" data-lib-group="${esc(g)}">${esc(g === "*" ? L("app.tumu") : g)}</button>`).join("");
   const q = S.libQ.toLocaleLowerCase(locale());
@@ -878,7 +880,7 @@ function placeItem(cat, x, z, level) {
   const it = S.catalog.furniture.find((f) => f.id === cat);
   if (!it) return null;
   const s = clone();
-  const zz = it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
+  const zz = it.mount === -3 ? s.standard.net_height + 200 : it.mount === -2 ? s.standard.net_height - it.size[2] - 2 : it.mount < 0 ? s.standard.net_height - 900 : it.mount;
   const id = nextId("N", s.objects);
   s.objects.push({ id, name: it.name, mesh: `cat:${it.id}`, level, position: [Math.round(x / 50) * 50, Math.round(z / 50) * 50, zz], rotation: 0, scale: [1, 1, 1], material: null, price: it.price, quantity: 1, motor: null });
   commit(s);
@@ -1277,6 +1279,56 @@ function renderMaterials() {
       <div class="uh-matcard__row">${priced ? `<input class="pl-input uh-cell-input" type="number" min="0" step="10" value="${m.price_m2}" data-mat-price="${m.id}" aria-label="${L("app.m2_fiyati", { p: esc(N.matName(m)) })}"><span class="uh-small">₺/m²</span>` : ""}<span class="uh-grow"></span><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-mat-apply="${m.id}">${L("app.uygula")}</button></div>
     </div></div>`).join("") || `<p class="uh-small">${L("app.bu_turde_kaplama_yok")}</p>`;
 }
+/* ---------- Genişleme paketleri (Hub'dan lisanslı) ---------- */
+const packOwned = (id) => !!(S.packs || []).find((p) => p.id === id && p.owned);
+async function loadPacks() {
+  const h = await B.hubLicenses().catch(() => ({ available: false, licenses: [], reason: "@pack_hub_offline" }));
+  S.hubLic = h;
+  S.licenses = h.licenses || [];
+  S.packs = (await B.engine("packs", { licenses: S.licenses })).packs;
+  $("#packCount").textContent = `${S.packs.filter((p) => p.owned).length}/${S.packs.length}`;
+  if (S.view === "paket") renderPacks();
+  if (S.view === "kutuphane") renderLibrary();
+}
+function renderPacks() {
+  if (!S.packs) { $("#packGrid").innerHTML = `<p class="uh-small">${L("paket.yukleniyor")}</p>`; return; }
+  const h = S.hubLic || {};
+  $("#packHubState").textContent = h.available ? L("paket.hub_bagli", { n: S.licenses.length }) : LM(h.reason || "@pack_hub_offline");
+  $("#packGrid").innerHTML = S.packs.map((p) => {
+    const k = p.id === "uhd-tiny-house" ? "tiny" : "van";
+    const feats = [1, 2, 3].map((i) => `<li>${L(`paket.${k}.ozellik${i}`)}</li>`).join("");
+    const presets = p.presets.map((x) => `<div class="uh-packpreset"><div><b>${L(`paket.sablon.${x.id.replace(/-/g, "_")}`)}</b><span class="uh-small pl-num">${L("paket.ic_olcu", { w: fmt(x.width / 10, 0), d: fmt(x.depth / 10, 0), h: fmt(x.height / 10, 0) })}</span></div><button class="pl-btn pl-btn--${p.owned ? "primary" : "secondary"} pl-btn--sm" type="button" data-pack-preset="${x.id}" ${p.owned ? "" : "disabled"}>${L("paket.bu_govdeyle_basla")}</button></div>`).join("");
+    return `<article class="uh-card uh-card--flat uh-packcard ${p.owned ? "is-owned" : ""}" data-pack="${p.id}">
+      <div class="uh-row"><span class="pl-applogo pl-applogo--sm" aria-hidden="true">${k === "tiny" ? "TH" : "VB"}</span><div class="uh-grow"><h3 class="uh-h3">${L(`paket.${k}.ad`)}</h3><span class="uh-small">${L("paket.urun_sayisi", { n: p.items.length })}</span></div><span class="pl-badge ${p.owned ? "pl-badge--success" : ""}">${p.owned ? L("paket.lisansli") : L("paket.kilitli")}</span></div>
+      <p class="uh-small">${L(`paket.${k}.aciklama`)}</p><ul class="uh-packfeat">${feats}</ul>
+      <div class="uh-packpresets">${presets}</div>
+      ${p.owned ? "" : `<p class="uh-small uh-packbuy">${L("paket.satin_alma_yolu")}</p>`}
+    </article>`;
+  }).join("");
+  renderPackCheck();
+}
+async function renderPackCheck() {
+  const box = $("#packCheck");
+  const preset = S.scene && S.scene.pack_preset;
+  const pack = preset ? (preset.startsWith("th-") ? "uhd-tiny-house" : "uhd-van-builder") : null;
+  if (!pack) { box.innerHTML = `<p class="uh-small">${L("paket.denetim_bos")}</p>`; return; }
+  if (!packOwned(pack)) { box.innerHTML = `<p class="uh-small">${L("paket.denetim_kilitli")}</p>`; return; }
+  try {
+    const r = await B.engine("pack_check", { scene: S.scene, licenses: S.licenses, pack });
+    const unit = (u) => (u === "days" ? L("paket.gun") : u);
+    const val = (x) => `${fmt(x.value, x.unit === "days" ? 1 : 0)} ${unit(x.unit)}`;
+    box.innerHTML = `<table class="pl-table"><thead><tr><th>${L("paket.olcut")}</th><th class="is-num">${L("paket.deger")}</th><th class="is-num">${L("paket.sinir")}</th><th>${L("paket.durum")}</th></tr></thead><tbody>${r.rows.map((x) => `<tr><td>${L(`paket.satir.${x.id}`)}</td><td class="is-num pl-num">${val(x)}</td><td class="is-num pl-num">${x.limit ? `${x.id === "autonomy_days" ? "≥ " : "≤ "}${fmt(x.limit, 0)} ${unit(x.unit)}` : "—"}</td><td><span class="pl-badge ${x.ok ? "pl-badge--success" : "pl-badge--danger"}">${x.ok ? L("paket.uygun") : L("paket.asiyor")}</span></td></tr>`).join("")}</tbody></table><p class="uh-small uh-mt">${L(pack === "uhd-tiny-house" ? "paket.tiny.not" : "paket.van.not")}</p>`;
+  } catch (e) { box.innerHTML = `<p class="uh-small">${esc(e.message)}</p>`; }
+}
+async function packPreset(id) {
+  const name = L(`paket.sablon.${id.replace(/-/g, "_")}`);
+  const r = await B.engine("pack_preset", { licenses: S.licenses, preset: id, projectNo: projectNo(), name });
+  S.camSet = false; K.fitted = false; P.fitted = false;
+  commit(r.scene);
+  toast(L("paket.proje_kuruldu", { name }), { action: L("top.geri_al"), onAction: undo });
+  renderPacks();
+}
+
 /* ---------- Renk kartelaları (duvar ve cephe boyası) ---------- */
 const RAL_GROUPS = ["yellow and beige", "orange", "red", "violet", "blue", "green", "grey", "brown", "white and black"];
 const PAINT_MAX = 400;
@@ -1604,6 +1656,7 @@ async function init() {
     for (const k of S.catalog.roomKinds) { k.label_src = k.label; k.label = N.roomKindName(k); }
     S.motorParams = await B.engine("motor_defaults");
     S.texKinds = await B.engine("texture_kinds");
+    await loadPacks();
   } catch (e) {
     $("#engineInfo").textContent = L("app.motor_yuklenemedi");
     toast(e.message, { kind: "error" });
@@ -1894,6 +1947,8 @@ $("#paintTarget").addEventListener("change", (e) => { S.paint.target = e.target.
 $("#paintSearch").addEventListener("input", (e) => { S.paint.q = e.target.value.trim(); renderPaints(); });
 $("#paintGroups").addEventListener("click", (e) => { const b = e.target.closest("[data-paint-group]"); if (b) { S.paint.group = b.dataset.paintGroup; renderPaints(); } });
 $("#paintGrid").addEventListener("click", (e) => { const b = e.target.closest("[data-paint-code]"); if (b) run(() => pickPaint(b.dataset.paintCode)); });
+$("#btnPackRefresh").onclick = () => run(loadPacks);
+$("#packGrid").addEventListener("click", (e) => { const b = e.target.closest("[data-pack-preset]"); if (b && !b.disabled) run(() => packPreset(b.dataset.packPreset)); });
 $("#btnPaintImport").onclick = () => run(async () => importPaintSystem(await B.openFiles("palette")));
 for (const g of ["#phGrid", "#phtGrid"]) $(g).addEventListener("click", (e) => { const b = e.target.closest("[data-phget]"); if (b) run(() => phGet(b.dataset.phget, b.dataset.phkind)); });
 $("#btnRefPick").onclick = () => $("#refInput").click();

@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "note": "Uygulama genişleme paketleri. Satın alma Hub'dan başlar; ödeme sağlayıcısı satın alma sonrası yayıncının Ed25519 anahtarıyla imzalı lisans (UHPK1.<yük>.<imza>) verir. Hub lisansı publicKeys ile doğrular, saklar ve /v1/apps/entitlements ile uygulamaya verir; uygulama da aynı imzayı kendi gömülü anahtarıyla doğrular. publicKeys boşken hiçbir lisans geçmez. checkoutUrl boşken satın alma düğmesi kapalıdır.",
+  "publicKeys": [],
+  "packs": [
+    {
+      "id": "uhd-tiny-house",
+      "app": "PL-060",
+      "appName": "Ultimate Home Design Toolkit",
+      "name": "Tiny House",
+      "description": "Römork üstü küçük ev tasarımı: 6, 7,2 ve 8,5 m hazır gövdeler, asma kat yatak, depolu merdiven ve kompakt donatılar; yol genişliği/yüksekliği ve römork ağırlık denetimi.",
+      "features": ["3 hazır gövde (2,55 m dış genişlik)", "10 Tiny House ürünü", "Yol ölçüsü ve 3,5 t ağırlık denetimi"],
+      "price": { "amount": null, "currency": "TRY" },
+      "checkoutUrl": ""
+    },
+    {
+      "id": "uhd-van-builder",
+      "app": "PL-060",
+      "appName": "Ultimate Home Design Toolkit",
+      "name": "Van Builder",
+      "description": "Panelvan karavan dönüşümü: 4 hazır kasa (L2H2–L4H3), sürgü ve arka kapılar, teker kemerleri; garajlı yatak, mutfak bloğu, su tankları, lityum akü ve güneş paneli; faydalı yük ve günlük enerji bütçesi.",
+      "features": ["4 hazır araç kasası", "13 karavan ürünü", "Faydalı yük, enerji bütçesi ve özerklik hesabı"],
+      "price": { "amount": null, "currency": "TRY" },
+      "checkoutUrl": ""
+    }
+  ]
+}

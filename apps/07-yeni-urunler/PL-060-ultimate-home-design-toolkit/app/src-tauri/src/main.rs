@@ -162,6 +162,26 @@ async fn hub_status() -> serde_json::Value {
     .unwrap_or_else(|_| serde_json::json!({"available": false, "reason": "Durum okunamadı"}))
 }
 
+/// Hub'da saklanan genişleme paketi lisansları. İmzayı motor ayrıca doğrular.
+#[tauri::command]
+async fn hub_licenses() -> serde_json::Value {
+    tauri::async_runtime::spawn_blocking(|| {
+        let Some(key) = vault::read().filter(|k| !k.is_empty()) else {
+            return serde_json::json!({"available": false, "licenses": [], "reason": "@pack_hub_no_key"});
+        };
+        let r = agent(5).get(&format!("{HUB}/v1/apps/entitlements?app=PL-060")).set("Authorization", &format!("Bearer {key}")).call();
+        match r.ok().and_then(|r| r.into_json::<serde_json::Value>().ok()) {
+            Some(v) => {
+                let list: Vec<String> = v["licenses"].as_array().map(|a| a.iter().filter_map(|x| x.as_str()).take(16).map(|s| s.chars().take(2048).collect()).collect()).unwrap_or_default();
+                serde_json::json!({"available": true, "licenses": list})
+            }
+            None => serde_json::json!({"available": false, "licenses": [], "reason": "@pack_hub_offline"}),
+        }
+    })
+    .await
+    .unwrap_or_else(|_| serde_json::json!({"available": false, "licenses": [], "reason": "@pack_hub_offline"}))
+}
+
 #[tauri::command]
 fn hub_set_key(key: String) -> R<()> {
     let k = key.trim();
@@ -296,7 +316,8 @@ fn cycles_cancel() {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key, mymind, cycles_status, cycles_pick, cycles_render, cycles_cancel, open_model, ph_list, ph_thumb, ph_model, ph_texture])
+        .invoke_handler(tauri::generate_handler![engine, autosave_write, autosave_read, open_files, save_file, hub_status, hub_set_key,
+            hub_licenses, mymind, cycles_status, cycles_pick, cycles_render, cycles_cancel, open_model, ph_list, ph_thumb, ph_model, ph_texture])
         .run(tauri::generate_context!())
         .expect("Ultimate Home başlatılamadı");
 }

@@ -14,6 +14,9 @@ pub struct CatalogItem {
     pub rooms: &'static [&'static str],
     /// Varsayılan zemin yüksekliği (mm). Sarkıt lambalar tavana göre konumlanır.
     pub mount: f64,
+    /// Genişleme paketi kimliği (boşsa temel katalog).
+    #[serde(skip_serializing_if = "str::is_empty")]
+    pub pack: &'static str,
 }
 
 /// Nesnenin yerel koordinatında bir kutu: x genişlik, y yukarı, z derinlik.
@@ -40,7 +43,7 @@ pub struct Part {
 }
 
 const fn it(id: &'static str, name: &'static str, group: &'static str, size: [f64; 3], price: f64, rooms: &'static [&'static str]) -> CatalogItem {
-    CatalogItem { id, name, group, size, price, rooms, mount: 0.0 }
+    CatalogItem { id, name, group, size, price, rooms, mount: 0.0, pack: "" }
 }
 
 pub fn items() -> Vec<CatalogItem> {
@@ -82,7 +85,7 @@ pub fn items() -> Vec<CatalogItem> {
         it("ayakkabilik", "Ayakkabılık", "Depolama", [1000.0, 380.0, 1000.0], 5_400.0, &["antre"]),
     ];
     // konumlu ürünler: mount ≥ 0 zeminden yükseklik, -1 sarkıt (tavandan 90 cm), -2 tavana gömme
-    let m = |id, name, group, size, price, rooms, mount| CatalogItem { id, name, group, size, price, rooms, mount };
+    let m = |id, name, group, size, price, rooms, mount| CatalogItem { id, name, group, size, price, rooms, mount, pack: "" };
     v.extend([
         m("avize", "Avize", "Aydınlatma", [800.0, 800.0, 520.0], 9_800.0, &["salon", "yatak"] as &[&str], -1.0),
         m("lambader", "Lambader", "Aydınlatma", [420.0, 420.0, 1650.0], 4_200.0, &["salon", "yatak", "calisma"], 0.0),
@@ -108,8 +111,41 @@ pub fn items() -> Vec<CatalogItem> {
         m("sezlong", "Şezlong", "Dış mekân", [700.0, 1900.0, 380.0], 7_400.0, &["dis"], 0.0),
         m("saksi-buyuk", "Büyük saksı", "Dış mekân", [600.0, 600.0, 1100.0], 2_100.0, &["dis"], 0.0),
     ]);
-    v.push(CatalogItem { id: "sarkit-lamba", name: "Sarkıt lamba", group: "Aydınlatma", size: [500.0, 500.0, 320.0], price: 3_500.0, rooms: &["salon", "mutfak", "yatak", "calisma", "antre"], mount: -1.0 });
+    v.push(CatalogItem { id: "sarkit-lamba", name: "Sarkıt lamba", group: "Aydınlatma", size: [500.0, 500.0, 320.0], price: 3_500.0, rooms: &["salon", "mutfak", "yatak", "calisma", "antre"], mount: -1.0, pack: "" });
+    v.extend(pack_items());
     v
+}
+
+/// Genişleme paketlerinin ürünleri. Ağırlık ve enerji değerleri `crate::packs::spec` içindedir.
+fn pack_items() -> Vec<CatalogItem> {
+    let p = |pack, id, name, group, size, price, mount| CatalogItem { id, name, group, size, price, rooms: &["salon", "yatak", "mutfak", "banyo"] as &[&str], mount, pack };
+    const TH: &str = "uhd-tiny-house";
+    const VB: &str = "uhd-van-builder";
+    vec![
+        p(TH, "th-loft-yatak", "Asma kat yatak platformu", "Tiny House", [2200.0, 2000.0, 380.0], 18_000.0, 2000.0),
+        p(TH, "th-depolu-merdiven", "Depolu merdiven", "Tiny House", [600.0, 1800.0, 2000.0], 24_000.0, 0.0),
+        p(TH, "th-katlanir-masa", "Duvara katlanır masa", "Tiny House", [900.0, 600.0, 750.0], 4_500.0, 0.0),
+        p(TH, "th-kompakt-mutfak", "Kompakt mutfak 1,6 m", "Tiny House", [1600.0, 600.0, 900.0], 28_000.0, 0.0),
+        p(TH, "th-dar-buzdolabi", "Dar buzdolabı 45 cm", "Tiny House", [450.0, 550.0, 1400.0], 16_000.0, 0.0),
+        p(TH, "th-kompost-tuvalet", "Kompost tuvalet", "Tiny House", [420.0, 560.0, 520.0], 21_000.0, 0.0),
+        p(TH, "th-mini-dus", "Mini duş 70 × 70", "Tiny House", [700.0, 700.0, 2000.0], 9_500.0, 0.0),
+        p(TH, "th-sandikli-bank", "Sandıklı oturma bankı", "Tiny House", [1400.0, 500.0, 450.0], 7_500.0, 0.0),
+        p(TH, "th-panel-isitici", "Panel ısıtıcı 1 kW", "Tiny House", [800.0, 90.0, 450.0], 3_200.0, 150.0),
+        p(TH, "th-dar-camasir", "Dar çamaşır makinesi", "Tiny House", [600.0, 450.0, 850.0], 19_000.0, 0.0),
+        p(VB, "van-teker-kemeri", "Teker kemeri kaplaması", "Van", [950.0, 230.0, 330.0], 1_500.0, 0.0),
+        p(VB, "van-yatak-platform", "Garajlı sabit yatak", "Van", [1750.0, 1400.0, 950.0], 22_000.0, 0.0),
+        p(VB, "van-mutfak-blogu", "Mutfak bloğu (evye + ocak)", "Van", [1200.0, 450.0, 900.0], 26_000.0, 0.0),
+        p(VB, "van-buzdolabi-12v", "12 V kompresörlü buzdolabı 50 L", "Van", [420.0, 560.0, 560.0], 18_000.0, 0.0),
+        p(VB, "van-temiz-su", "Temiz su tankı 70 L", "Van", [700.0, 260.0, 420.0], 3_200.0, 0.0),
+        p(VB, "van-gri-su", "Gri su tankı 40 L", "Van", [600.0, 220.0, 340.0], 2_600.0, 0.0),
+        p(VB, "van-aku", "Lityum akü 200 Ah · 12,8 V", "Van", [520.0, 240.0, 220.0], 34_000.0, 0.0),
+        p(VB, "van-invertor", "İnvertör 2000 W", "Van", [400.0, 200.0, 120.0], 9_500.0, 0.0),
+        p(VB, "van-gunes-paneli", "Güneş paneli 2 × 200 W (tavan)", "Van", [1700.0, 1000.0, 40.0], 16_000.0, -3.0),
+        p(VB, "van-dizel-isitici", "Dizel ısıtıcı 2 kW", "Van", [380.0, 130.0, 160.0], 7_800.0, 0.0),
+        p(VB, "van-portatif-tuvalet", "Portatif tuvalet", "Van", [380.0, 430.0, 410.0], 3_900.0, 0.0),
+        p(VB, "van-tavan-dolabi", "Tavan dolabı 1 m", "Van", [1000.0, 350.0, 350.0], 6_500.0, -2.0),
+        p(VB, "van-tavan-fani", "Tavan fanı", "Van", [400.0, 400.0, 90.0], 5_500.0, -2.0),
+    ]
 }
 
 pub fn item(id: &str) -> Option<CatalogItem> {
@@ -165,6 +201,43 @@ fn raw_parts(id: &str) -> Vec<Part> {
     let [w, d, h] = item.size;
     let (hw, hd) = (w / 2.0, d / 2.0);
     match id {
+        "th-loft-yatak" => vec![
+            bx(-hw, 0.0, -hd, hw, 60.0, hd, "ahsap-mese"),
+            bx(-hw + 100.0, 60.0, -hd + 100.0, hw - 100.0, 260.0, hd - 100.0, "kumas-beyaz"),
+            bx(-hw, 60.0, hd - 40.0, hw, h, hd, "ahsap-mese"),
+        ],
+        "th-depolu-merdiven" => {
+            let steps = 8;
+            let (rise, run) = (h / steps as f64, d / steps as f64);
+            (0..steps).map(|k| bx(-hw, 0.0, -hd + k as f64 * run, hw, (steps - k) as f64 * rise, -hd + (k + 1) as f64 * run, if k % 2 == 0 { "ahsap-mese" } else { "lake-beyaz" })).collect()
+        }
+        "th-katlanir-masa" => vec![bx(-hw, h - 30.0, -hd, hw, h, hd, "ahsap-mese"), bx(-20.0, 0.0, -20.0, 20.0, h - 30.0, 20.0, "metal-krom"), bx(-hw, h - 120.0, -hd, hw, h - 30.0, -hd + 20.0, "metal-krom")],
+        "th-kompakt-mutfak" | "van-mutfak-blogu" => vec![
+            bx(-hw, 0.0, -hd, hw, h - 40.0, hd, "lake-beyaz"),
+            bx(-hw, h - 40.0, -hd, hw, h, hd, "ahsap-mese"),
+            bx(-hw + 80.0, h - 30.0, -hd + 80.0, -hw + 480.0, h, hd - 80.0, "metal-krom"),
+            bx(hw - 520.0, h, -hd + 70.0, hw - 80.0, h + 8.0, hd - 70.0, "siyah-mat"),
+            bx(-hw + 260.0, h, -hd + 40.0, -hw + 290.0, h + 260.0, -hd + 70.0, "metal-krom"),
+        ],
+        "th-dar-buzdolabi" | "van-buzdolabi-12v" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "metal-krom"), bx(-hw + 20.0, h * 0.35, hd, -hw + 45.0, h * 0.8, hd + 30.0, "siyah-mat")],
+        "th-kompost-tuvalet" | "van-portatif-tuvalet" => vec![bx(-hw, 0.0, -hd, hw, h - 40.0, hd, "lake-beyaz"), bx(-hw + 20.0, h - 40.0, -hd + 20.0, hw - 20.0, h, hd - 20.0, "ahsap-mese")],
+        "th-mini-dus" => vec![bx(-hw, 0.0, -hd, hw, 60.0, hd, "seramik-beyaz"), bx(-hw, 60.0, hd - 8.0, hw, h, hd, "cam"), bx(hw - 8.0, 60.0, -hd, hw, h, hd, "cam"), bx(-hw + 80.0, 1900.0, -hd + 30.0, -hw + 260.0, 1920.0, -hd + 210.0, "metal-krom")],
+        "th-sandikli-bank" => vec![bx(-hw, 0.0, -hd, hw, h - 80.0, hd, "ahsap-mese"), bx(-hw + 20.0, h - 80.0, -hd + 20.0, hw - 20.0, h, hd - 20.0, "kumas-lacivert")],
+        "th-panel-isitici" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-beyaz")],
+        "th-dar-camasir" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-beyaz"), bx(-160.0, h * 0.25, hd, 160.0, h * 0.25 + 320.0, hd + 20.0, "cam")],
+        "van-teker-kemeri" => vec![bx(-hw, 0.0, -hd, hw, h * 0.6, hd, "siyah-mat"), bx(-hw + 120.0, h * 0.6, -hd, hw - 120.0, h, hd, "siyah-mat")],
+        "van-yatak-platform" => vec![
+            bx(-hw, h - 120.0, -hd, hw, h - 80.0, hd, "ahsap-mese"),
+            bx(-hw + 30.0, h - 80.0, -hd + 30.0, hw - 30.0, h + 100.0, hd - 30.0, "kumas-beyaz"),
+            bx(-hw, 0.0, -hd, -hw + 40.0, h - 120.0, hd, "ahsap-mese"),
+            bx(hw - 40.0, 0.0, -hd, hw, h - 120.0, hd, "ahsap-mese"),
+        ],
+        "van-temiz-su" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-beyaz")],
+        "van-gri-su" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-antrasit")],
+        "van-aku" | "van-invertor" | "van-dizel-isitici" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-antrasit"), bx(-hw + 30.0, h, -hd + 30.0, -hw + 90.0, h + 20.0, -hd + 90.0, "metal-krom")],
+        "van-gunes-paneli" => vec![bx(-hw, 0.0, -hd, 0.0 - 10.0, h, hd, "ekran"), bx(10.0, 0.0, -hd, hw, h, hd, "ekran")],
+        "van-tavan-dolabi" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-beyaz"), bx(-hw + 30.0, h * 0.4, hd, hw - 30.0, h * 0.4 + 20.0, hd + 15.0, "metal-krom")],
+        "van-tavan-fani" => vec![bx(-hw, 0.0, -hd, hw, h, hd, "lake-beyaz"), bx(-hw + 60.0, -10.0, -hd + 60.0, hw - 60.0, 0.0, hd - 60.0, "siyah-mat")],
         "kanepe-3" | "kanepe-2" => vec![
             bx(-hw + 60.0, 0.0, -hd + 60.0, -hw + 120.0, 120.0, -hd + 120.0, "siyah-mat"),
             bx(hw - 120.0, 0.0, -hd + 60.0, hw - 60.0, 120.0, -hd + 120.0, "siyah-mat"),

@@ -46,3 +46,10 @@ pub unsafe extern "C" fn uhd_free_result(ptr: *mut u8) {
     std::ptr::copy_nonoverlapping(ptr, len.as_mut_ptr(), 4);
     uhd_free(ptr, u32::from_le_bytes(len) as usize + 4);
 }
+
+/// Yalnız tarayıcı önizlemesinin test düzeneği için: paket lisansı doğrulama anahtarı ekler.
+/// Masaüstü uygulaması bu köprüyü kullanmaz; orada yalnız gömülü yayıncı anahtarları geçerlidir.
+#[no_mangle]
+pub unsafe extern "C" fn uhd_trust_preview_key(ptr: *const u8, len: usize) -> u32 {
+    uhd_engine::packs::trust_preview_key(&read(ptr, len)) as u32
+}

@@ -1741,3 +1741,8 @@ header.pl-greet.hub-greet {
 .hub-greet .pl-greet__title {
   line-height: 1.2;
 }
+
+/* Genişleme paketleri */
+.pack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.pack-card { gap: 10px; }
+.pack-features { margin: 0; padding-inline-start: 18px; color: var(--pl-fg-2); font-size: var(--pl-text-sm); }

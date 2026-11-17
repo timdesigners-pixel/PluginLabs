@@ -551,7 +551,8 @@ function render() {
         "filter",
         false,
       ) +
-      grid(sortItems(list.filter((i) => filter === "all" || i.kind === filter)));
+      grid(sortItems(list.filter((i) => filter === "all" || i.kind === filter))) +
+      (page === "discover" ? packsSection() : "");
   }
   if (page === "ideas") html = ideasPage();
   if (page === "product") html = productPage();
@@ -765,6 +766,25 @@ function manage(id) {
     `<div class="modal-title"><h2>${esc(item.name)}</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>${esc(item.description)}</p><div class="code">Sürüm: ${esc(record.version)}<br>Tür: ${kindLabels[item.kind]}<br>Durum: ${record.enabled ? "Etkin" : "Devre dışı"}${item.sha256 ? "<br>SHA-256: " + esc(item.sha256) : ""}</div><div class="button-row">${button(record.enabled ? "Devre dışı bırak" : "Etkinleştir", "toggle", id)}${item.repo || item.source ? button("Kaynağı gör ↗", "openSource", id) : ""}${record.previous ? button("Önceki sürüme dön", "rollback", id) : ""}${item.bundled ? button("JSON dışa aktar", "exportResource", id) : ""}${state.appFeatures?.[id] ? button("Özellikler", "features", id) : ""}</div>${fields ? `<form id="resource-form" data-id="${id}" style="margin-top:24px"><h3>Paket ayarları</h3>${fields}<button class="pl-btn pl-btn--primary">Ayarları kaydet</button></form>` : ""}<div class="modal-actions">${button("Paketi kaldır", "confirmRemove", id, "danger")}</div>`,
   );
 }
+function packsSection() {
+  const packs = state.expansionPacks || [];
+  if (!packs.length) return "";
+  const price = (p) => (p.price && p.price.amount != null ? `${Number(p.price.amount).toLocaleString("tr-TR")} ${esc(p.price.currency)}` : "Fiyat yakında");
+  const cards = packs
+    .map(
+      (p) =>
+        `<article class="pl-card pl-stack pack-card" data-pack="${esc(p.id)}"><div class="pl-row" style="flex-wrap:nowrap"><span class="pl-applogo pl-applogo--sm" data-pl-product="hub">${esc(p.name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase())}</span><div style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="pl-muted">${esc(p.appName)} · genişleme paketi</div></div><span class="pl-badge ${p.owned ? "pl-badge--success" : "pl-badge--accent"}">${p.owned ? "Lisanslı" : price(p)}</span></div><p class="pl-muted" style="margin:0">${esc(p.description)}</p><ul class="pack-features">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>${p.owned ? `<div class="pl-muted">Lisans ${esc(p.license.lic)} · ${esc(p.license.iat)}</div>` : ""}<div class="button-row">${p.owned ? button("Lisansı kaldır", "packArchive", p.id, "ghost") : `${p.purchasable ? button("Satın al ↗", "packBuy", p.id, "primary") : `<button class="pl-btn pl-btn--secondary" disabled title="Ödeme altyapısı henüz bağlanmadı">Satın alma yakında</button>`}${button("Lisans anahtarı gir", "packLicense", p.id)}`}</div></article>`,
+    )
+    .join("");
+  return `<section class="packs"><h2 class="pl-h3" style="margin:28px 0 6px">Genişleme paketleri</h2><p class="pl-muted" style="margin:0 0 14px">Uygulamalara yeni özellik ekleyen ücretli paketler. Satın aldıktan sonra lisans Hub'da saklanır; uygulama paketi Hub üzerinden açar.</p><div class="pack-grid">${cards}</div></section>`;
+}
+function packLicense(id) {
+  const p = (state.expansionPacks || []).find((x) => x.id === id);
+  if (!p) return;
+  showModal(
+    `<div class="modal-title"><h2>${esc(p.name)} · Lisans</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Satın alma sonrası size verilen lisans anahtarını yapıştırın. Anahtar imzası bu cihazda doğrulanır.</p><form id="pack-license-form" data-id="${esc(id)}"><label class="field"><span>Lisans anahtarı</span><textarea class="text" name="token" rows="4" maxlength="2048" required spellcheck="false" placeholder="UHPK1.…"></textarea></label><div class="modal-actions">${button("Vazgeç", "closeModal", "", "ghost")}<button class="pl-btn pl-btn--primary">Doğrula ve kaydet</button></div></form>`,
+  );
+}
 function features(id) {
   const item = state.catalog.find((i) => i.id === id),
     f = state.appFeatures?.[id];
@@ -885,6 +905,13 @@ document.addEventListener("click", async (e) => {
     );
   if (action === "manage") return manage(id);
   if (action === "features") return features(id);
+  if (action === "packLicense") return packLicense(id);
+  if (action === "packBuy") return run("packBuy", id, () => call("openPackCheckout", id));
+  if (action === "packArchive")
+    return run("packArchive", id, async () => {
+      await call("archivePackLicense", id);
+      toast("Lisans arşive taşındı");
+    });
   if (action === "openProduct") return openProduct(id);
   if (action === "pairBrowser") return pairBrowser();
   if (action === "idea") return showIdea(id);
@@ -1025,6 +1052,15 @@ document.addEventListener("submit", async (e) => {
       tokenOnce = created.token;
       $("#modal-content").innerHTML =
         `<div class="modal-title"><h2>Uygulama anahtarı hazır</h2><button data-action="closeModal" aria-label="Kapat">×</button></div><p>Bu anahtar yalnızca şimdi gösterilir. Güvenli biçimde kaydedin ve uygulamanızın ortam değişkenine veya anahtar kasasına ekleyin.</p><div class="code">${esc(tokenOnce)}</div><div class="button-row">${button("Anahtarı kopyala", "copyToken")}${button("Tamam", "closeModal", "", "primary")}</div>`;
+    });
+  }
+  if (form.id === "pack-license-form") {
+    const id = form.dataset.id,
+      token = form.elements.namedItem("token").value.trim();
+    await run("packLicense", id, async () => {
+      await call("addPackLicense", token);
+      closeModal();
+      toast("Lisans doğrulandı ve kaydedildi");
     });
   }
   if (form.id === "features-form") {

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 pub const MIN_SIDE: f64 = 1000.0;
 pub const MAX_SIDE: f64 = 30_000.0;
-pub const MIN_HEIGHT: f64 = 2000.0;
+pub const MIN_HEIGHT: f64 = 1200.0;
 pub const MAX_HEIGHT: f64 = 6000.0;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

@@ -34,7 +34,7 @@ for (const k of Object.keys(tr)) if (k in en && ph(tr[k]) !== ph(en[k])) errors.
 const SAME_OK = (v) => {
   const letters = v.replace(/\{\w+\}/g, "").replace(/[^A-Za-z]/g, "");
   if (letters.length <= 3) return true; // birim, sayı, kısaltma (cm, m², f/8, 4K…)
-  return /^(PluginLabs Apps|Premium|Model|Metal|Poly Haven · CC0 · \{author\}|\d · Model|NET \{p\} m²|Net m²|Oval|Parapet|Net|Soundbar|Cycles|Ultra · 512|Final · 128|ceil\(.*\)|.*\(HD\)|.*\(Full HD\)|.*\(4K\)|.*\(8K\)|PluginLabs Hub.*|\{name\}: \{reason\}|\{name\} \{w\}×\{d\} cm)$/.test(v);
+  return /^(PluginLabs Apps|Premium|Model|Metal|Poly Haven · CC0 · \{author\}|\d · Model|NET \{p\} m²|Net m²|Oval|Parapet|Net|Soundbar|Cycles|Ultra · 512|Final · 128|ceil\(.*\)|.*\(HD\)|.*\(Full HD\)|.*\(4K\)|.*\(8K\)|PluginLabs Hub.*|Tiny House.*|Van Builder|\{name\}: \{reason\}|\{name\} \{w\}×\{d\} cm)$/.test(v);
 };
 let same = 0;
 for (const [k, v] of Object.entries(en)) {
@@ -62,8 +62,9 @@ for (const d of rsDirs) {
   }
 }
 used.add("engine.worker_file");
+for (const f of fs.readdirSync(ui).filter((x) => x.endsWith(".js"))) for (const m of read(path.join(ui, f)).matchAll(/"@([a-z0-9_]+)"/g)) used.add(`engine.${m[1]}`);
 for (const k of used) if (!(k in tr) || !(k in en)) errors.push(`kodda kullanılan anahtar dil dosyasında yok: ${k}`);
-const unused = Object.keys(tr).filter((k) => !used.has(k) && !/^(catalog|catgroup|opening|roomkind|material|materialprefix|rate|rategroup|unit|texkind|tier|names|roomname|scenename|motor|mm|ral|ralgroup|ph\.cat|ph\.tcat)\./.test(k));
+const unused = Object.keys(tr).filter((k) => !used.has(k) && !/^(catalog|catgroup|opening|roomkind|material|materialprefix|rate|rategroup|unit|texkind|tier|names|roomname|scenename|motor|mm|ral|ralgroup|paket\.(?:tiny|van|sablon|satir)|ph\.cat|ph\.tcat)\./.test(k));
 if (unused.length) notes.push(`kullanılmayan ${unused.length} anahtar: ${unused.slice(0, 12).join(", ")}${unused.length > 12 ? " …" : ""}`);
 // 5
 const acorn = (() => {

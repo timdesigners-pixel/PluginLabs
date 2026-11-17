@@ -16,6 +16,14 @@ function put(str) {
 }
 
 self.onmessage = async (e) => {
+  if (e.data.trustKey) {
+    // yalnız tarayıcı önizlemesinin test düzeneği (adres satırındaki packkey)
+    await ready;
+    const [p, l] = put(e.data.trustKey);
+    ex.uhd_trust_preview_key(p, l);
+    ex.uhd_free(p, l);
+    return;
+  }
   const { id, cmd, payload } = e.data;
   try {
     await ready;

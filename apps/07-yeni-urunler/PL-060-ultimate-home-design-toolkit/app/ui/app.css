@@ -276,3 +276,17 @@ html, body { margin: 0; height: 100%; }
 .uh-details { margin: var(--pl-space-2) 0; padding: var(--pl-space-2) var(--pl-space-3); border: 1px solid var(--pl-line); border-radius: var(--pl-radius-md); }
 .uh-details > summary { cursor: pointer; font-weight: 600; font-size: var(--pl-text-sm); }
 .uh-details .pl-swatch { width: 12px; height: 12px; }
+
+/* Genişleme paketleri */
+.uh-packgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: var(--pl-space-4); margin: var(--pl-space-3) 0 var(--pl-space-5); }
+.uh-packcard { display: flex; flex-direction: column; gap: var(--pl-space-2); border: 1px solid var(--pl-line); background: var(--pl-bg-2); }
+.uh-packcard.is-owned { border-color: var(--pl-accent-line); }
+.uh-packcard .uh-h3 { margin: 0; }
+.uh-packfeat { margin: 0; padding-inline-start: var(--pl-space-4); color: var(--pl-fg-2); font-size: var(--pl-text-sm); }
+.uh-packpresets { display: grid; gap: var(--pl-space-2); margin-top: var(--pl-space-2); }
+.uh-packpreset { display: flex; align-items: center; justify-content: space-between; gap: var(--pl-space-3); padding: var(--pl-space-2) var(--pl-space-3); border: 1px solid var(--pl-line); border-radius: var(--pl-radius-md); background: var(--pl-bg-1); }
+.uh-packpreset > div { display: grid; gap: 2px; }
+.uh-packbuy { color: var(--pl-fg-2); }
+.uh-packcard > .uh-row { flex-wrap: nowrap; align-items: center; }
+.uh-packcard .pl-applogo, .uh-packcard .pl-badge, .uh-packpreset .pl-btn { flex: none; }
+.uh-packpreset .pl-btn { white-space: nowrap; }

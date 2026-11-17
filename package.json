@@ -38,6 +38,7 @@
       "ui/**",
       "resources/**",
       "registry/app-features.json",
+      "registry/expansion-packs.json",
       "sdk/**",
       "README.md",
       "package.json",

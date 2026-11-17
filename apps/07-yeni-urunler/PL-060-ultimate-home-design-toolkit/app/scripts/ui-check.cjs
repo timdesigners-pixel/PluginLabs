@@ -369,6 +369,43 @@ const server = http.createServer((req, res) => {
   await shot("11-komut-paleti.png");
   await page.keyboard.press("Escape");
 
+  // Genişleme paketleri: lisanssız kilitli, imzalı test lisansıyla açılır
+  await page.goto(base + "?demo=1&view=paket");
+  await page.waitForSelector('#packGrid [data-pack="uhd-tiny-house"]');
+  ok((await page.locator("#packGrid [data-pack-preset]:disabled").count()) === 7, "Paketler: lisanssız 7 gövde kilitli");
+  ok((await page.textContent("#packCount")) === "0/2", "Paketler: 0/2 lisans");
+  await shot("29-genisleme-paketleri.png");
+  const ed = require("crypto").generateKeyPairSync("ed25519");
+  const packKey = ed.publicKey.export({ format: "der", type: "spki" }).subarray(12).toString("base64");
+  const lic = (pack) => {
+    const body = Buffer.from(JSON.stringify({ pack, app: "PL-060", lic: "TEST", iat: "2026-11-17" })).toString("base64url");
+    return `UHPK1.${body}.${require("crypto").sign(null, Buffer.from(`UHPK1.${body}`), ed.privateKey).toString("base64url")}`;
+  };
+  const licUrl = `&packkey=${encodeURIComponent(packKey)}&packlic=${lic("uhd-tiny-house")},${lic("uhd-van-builder")}`;
+  await page.goto(base + "?demo=1&view=paket" + licUrl);
+  await waitText("#packCount", /2\/2/);
+  await page.click('[data-pack-preset="th-72"]');
+  await page.waitForSelector("#packCheck .pl-table");
+  ok((await page.locator("#packCheck .pl-badge--success").count()) === 6, "Tiny House 7,2 m: yol ölçüsü ve ağırlık uygun");
+  ok((await page.textContent("#packCheck")).includes("2.550 mm") || (await page.textContent("#packCheck")).includes("2550 mm"), "Tiny House: dış genişlik 2550 mm");
+  await page.locator("#packCheck").scrollIntoViewIfNeeded();
+  await shot("30-tiny-house-denetim.png");
+  await page.click('[data-view="uc"]');
+  await page.waitForTimeout(2500);
+  await shot("31-tiny-house-3b.png");
+  await page.click('[data-view="paket"]');
+  await page.click('[data-pack-preset="van-l3h2"]');
+  await waitText("#packCheck", /2560 Wh|2\.560 Wh/);
+  ok((await page.locator("#packCheck .pl-badge--danger").count()) === 0, "Van L3H2: faydalı yük ve enerji uygun");
+  await page.locator("#packCheck").scrollIntoViewIfNeeded();
+  await shot("32-van-builder-denetim.png");
+  await page.click('[data-view="plan"]');
+  await page.waitForTimeout(900);
+  await shot("33-van-plan.png");
+  await page.click('[data-view="kutuphane"]');
+  await page.waitForSelector('#libGroups [data-lib-group="Van"]');
+  ok(true, "Paket ürünleri lisansla ürün kütüphanesinde");
+
   // İngilizce arayüz: tüm metinler dil dosyasından gelir, eksik anahtar uyarısı olmamalı
   const missing = [];
   page.on("console", (m) => { if (m.text().includes("i18n:")) missing.push(m.text()); });

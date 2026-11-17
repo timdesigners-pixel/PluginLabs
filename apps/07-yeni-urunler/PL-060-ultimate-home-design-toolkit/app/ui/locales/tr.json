@@ -989,7 +989,15 @@
     "paint_unknown_code": "Bu renk kodu kartelada yok.",
     "palette_unreadable": "Kartela dosyası okunamadı. ASE, GPL ya da CSV (kod;ad;#RRGGBB) biçiminde olmalı.",
     "palette_empty": "Kartela dosyasında renk bulunamadı.",
-    "palette_too_big": "Kartela çok büyük (en çok 5000 renk)."
+    "palette_too_big": "Kartela çok büyük (en çok 5000 renk).",
+    "pack_license_invalid": "Lisans doğrulanamadı.",
+    "pack_license_other": "Bu lisans başka bir uygulamaya ya da pakete ait.",
+    "pack_locked": "Bu paket için lisans yok. PluginLabs Hub → Keşfet → Genişleme paketleri.",
+    "pack_unknown_preset": "Paket gövdesi bulunamadı.",
+    "pack_no_space": "Projede paket gövdesi yok.",
+    "pack_hub_no_key": "Hub istemci anahtarı kayıtlı değil. Hub'da bu uygulamaya “catalog.read” izni verip anahtarı MyMind ekranından kaydedin.",
+    "pack_hub_offline": "PluginLabs Hub'a ulaşılamadı. Hub'ı açıp “Lisansları yenile”ye basın.",
+    "pack_desktop_only": "Paket lisansları masaüstü uygulamasında PluginLabs Hub'dan okunur; tarayıcı önizlemesinde paketler kilitlidir."
   },
   "catalog": {
     "kanepe-3": "Üçlü kanepe",
@@ -1050,7 +1058,30 @@
     "bahce-lambasi": "Bahçe lambası",
     "sezlong": "Şezlong",
     "saksi-buyuk": "Büyük saksı",
-    "sarkit-lamba": "Sarkıt lamba"
+    "sarkit-lamba": "Sarkıt lamba",
+    "th-loft-yatak": "Asma kat yatak platformu",
+    "th-depolu-merdiven": "Depolu merdiven",
+    "th-katlanir-masa": "Duvara katlanır masa",
+    "th-kompakt-mutfak": "Kompakt mutfak 1,6 m",
+    "th-dar-buzdolabi": "Dar buzdolabı 45 cm",
+    "th-kompost-tuvalet": "Kompost tuvalet",
+    "th-mini-dus": "Mini duş 70 × 70",
+    "th-sandikli-bank": "Sandıklı oturma bankı",
+    "th-panel-isitici": "Panel ısıtıcı 1 kW",
+    "th-dar-camasir": "Dar çamaşır makinesi",
+    "van-teker-kemeri": "Teker kemeri kaplaması",
+    "van-yatak-platform": "Garajlı sabit yatak",
+    "van-mutfak-blogu": "Mutfak bloğu (evye + ocak)",
+    "van-buzdolabi-12v": "12 V kompresörlü buzdolabı 50 L",
+    "van-temiz-su": "Temiz su tankı 70 L",
+    "van-gri-su": "Gri su tankı 40 L",
+    "van-aku": "Lityum akü 200 Ah · 12,8 V",
+    "van-invertor": "İnvertör 2000 W",
+    "van-gunes-paneli": "Güneş paneli 2 × 200 W (tavan)",
+    "van-dizel-isitici": "Dizel ısıtıcı 2 kW",
+    "van-portatif-tuvalet": "Portatif tuvalet",
+    "van-tavan-dolabi": "Tavan dolabı 1 m",
+    "van-tavan-fani": "Tavan fanı"
   },
   "catgroup": {
     "oturma": "Oturma",
@@ -1065,7 +1096,9 @@
     "aydinlatma": "Aydınlatma",
     "elektronik": "Elektronik",
     "tablo": "Tablo",
-    "dis_mekan": "Dış mekân"
+    "dis_mekan": "Dış mekân",
+    "tiny_house": "Tiny House",
+    "van": "Van"
   },
   "opening": {
     "ic-kapi": "İç kapı 90×235",
@@ -1563,5 +1596,68 @@
     "grey": "Gri",
     "brown": "Kahverengi",
     "white_and_black": "Beyaz ve siyah"
+  },
+  "paket": {
+    "baslik": "Genişleme paketleri",
+    "lisanslari_yenile": "Lisansları yenile",
+    "aciklama": "Tiny House ve Van Builder, uygulamaya hazır gövdeler, özel ürünler ve mühendislik denetimleri ekleyen ücretli paketlerdir. Paketler PluginLabs Hub'dan satın alınır; lisans Hub'da saklanır ve bu uygulama onu Hub üzerinden okur.",
+    "denetim": "Paket denetimi (geçerli proje)",
+    "yukleniyor": "Paketler yükleniyor…",
+    "hub_bagli": "PluginLabs Hub bağlı · {n} lisans",
+    "tiny": {
+      "ad": "Tiny House",
+      "aciklama": "Römork üstü küçük ev: 2,55 m dış genişlikte 6, 7,2 ve 8,5 m hazır gövdeler; asma kat yatak, depolu merdiven, kompakt mutfak, kompost tuvalet ve mini duş.",
+      "ozellik1": "3 hazır gövde: kapı, pencereler ve yerleşik donatıyla",
+      "ozellik2": "10 Tiny House ürünü (ürün kütüphanesine eklenir)",
+      "ozellik3": "Yol genişliği/yüksekliği ve 3,5 t römork ağırlık denetimi",
+      "not": "Ağırlık, hafif ahşap karkas ve ince kaplama varsayımıyla yaklaşık hesaplanır. Yola çıkmadan önce tartı ve yerel karayolu kurallarıyla doğrulayın."
+    },
+    "van": {
+      "ad": "Van Builder",
+      "aciklama": "Panelvan karavan dönüşümü: 4 hazır kasa (L2H2–L4H3), sürgü ve arka kapılar, teker kemerleri; garajlı yatak, mutfak bloğu, su tankları, lityum akü, invertör ve güneş paneli.",
+      "ozellik1": "4 hazır araç kasası, iç ölçüleri düzenlenebilir",
+      "ozellik2": "13 karavan ürünü (ürün kütüphanesine eklenir)",
+      "ozellik3": "Faydalı yük, günlük enerji bütçesi ve akü özerkliği",
+      "not": "Faydalı yük 2 yolcu (150 kg) ve dolu temiz su tankını içerir. Güneş üretimi günde 4 tepe güneş saati ve %75 sistem verimiyle hesaplanır."
+    },
+    "sablon": {
+      "th_6": "Tiny House 6 m",
+      "th_72": "Tiny House 7,2 m",
+      "th_85": "Tiny House 8,5 m",
+      "van_l2h2": "Panelvan orta · L2H2",
+      "van_l3h2": "Panelvan uzun · L3H2",
+      "van_l3h3": "Panelvan uzun yüksek · L3H3",
+      "van_l4h3": "Panelvan ekstra uzun · L4H3"
+    },
+    "ic_olcu": "İç {w} × {d} × {h} cm",
+    "bu_govdeyle_basla": "Bu gövdeyle yeni proje",
+    "urun_sayisi": "{n} ürün",
+    "lisansli": "Lisanslı",
+    "kilitli": "Kilitli",
+    "satin_alma_yolu": "Satın almak için PluginLabs Hub → Keşfet → Genişleme paketleri bölümünü açın. Satın aldıktan sonra burada “Lisansları yenile”ye basın.",
+    "denetim_bos": "Geçerli proje bir paket gövdesinden kurulmadı. Bir gövdeyle yeni proje başlatınca yol, ağırlık ve enerji denetimi burada görünür.",
+    "denetim_kilitli": "Bu proje bir paket gövdesinden kuruldu ama paketin lisansı bu cihazda bulunamadı.",
+    "gun": "gün",
+    "olcut": "Ölçüt",
+    "deger": "Değer",
+    "sinir": "Sınır",
+    "durum": "Durum",
+    "uygun": "Uygun",
+    "asiyor": "Aşıyor",
+    "proje_kuruldu": "{name} projesi kuruldu",
+    "satir": {
+      "outer_width": "Dış genişlik",
+      "road_height": "Yoldan toplam yükseklik",
+      "outer_length": "Dış uzunluk",
+      "shell_kg": "Römork + gövde ağırlığı",
+      "items_kg": "Donatı ağırlığı",
+      "total_kg": "Toplam ağırlık",
+      "lining_kg": "Yalıtım ve kaplama",
+      "payload_kg": "Kullanılan faydalı yük",
+      "daily_wh": "Günlük tüketim",
+      "solar_wh": "Günlük güneş üretimi",
+      "battery_wh": "Akü kapasitesi",
+      "autonomy_days": "Güneşsiz özerklik"
+    }
   }
 }

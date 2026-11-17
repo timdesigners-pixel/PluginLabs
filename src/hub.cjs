@@ -33,6 +33,7 @@ const scopes = [
 ];
 const { Channels } = require("./channels.cjs");
 const mymindTasks = require("./mymind-tasks.cjs");
+const expansionPacks = require("./expansion-packs.cjs");
 function slugNamespace(name) {
   const s = String(name)
     .toLocaleLowerCase("tr")
@@ -330,6 +331,7 @@ class Hub extends EventEmitter {
       version: require("../package.json").version,
       settings: publicSettings,
       mobileBridge: this.bridge.snapshot(),
+      expansionPacks: expansionPacks.list(this.state.licenses),
       appFeatures: Object.fromEntries(
         Object.keys(appFeatures.definitions.apps).map((id) => [
           id,
@@ -340,6 +342,25 @@ class Hub extends EventEmitter {
         ]),
       ),
     };
+  }
+  /** Genişleme paketi lisansı ekler (yalnız Hub penceresinden). */
+  async addPackLicense(token) {
+    const lic = expansionPacks.verify(token, this.options.packTestKeys || []);
+    this.state.licenses = (this.state.licenses || []).filter((l) => l.pack !== lic.pack);
+    this.state.licenses.push({ ...lic, token: String(token).trim(), addedAt: new Date().toISOString() });
+    await this.save();
+    this.log(`${lic.pack}: lisans eklendi (${lic.lic})`);
+    return expansionPacks.list(this.state.licenses);
+  }
+  /** Lisansı kaldırır; kayıt silinmez, arşive taşınır. */
+  async archivePackLicense(pack) {
+    const own = (this.state.licenses || []).find((l) => l.pack === pack);
+    if (!own) fail("Bu paket için lisans yok", 404);
+    this.state.licenses = this.state.licenses.filter((l) => l !== own);
+    this.state.archivedLicenses = [...(this.state.archivedLicenses || []), { ...own, archivedAt: new Date().toISOString() }].slice(-50);
+    await this.save();
+    this.log(`${pack}: lisans arşivlendi`);
+    return expansionPacks.list(this.state.licenses);
   }
   async setAppFeatures(id, values) {
     appFeatures.validate(id, values);
@@ -1331,6 +1352,24 @@ class Hub extends EventEmitter {
       const id = url.searchParams.get("app") || "";
       appFeatures.validate(id, {});
       out = { app: id, features: appFeatures.resolve(id, this.state.features?.[id]) };
+    } else if (req.method === "GET" && url.pathname === "/v1/apps/entitlements") {
+      this.authenticate(req, "catalog.read");
+      const app = url.searchParams.get("app") || "";
+      if (!/^PL-\d{3}$/.test(app)) fail("Geçersiz uygulama", 400);
+      // lisanslar yeniden doğrulanır; uygulama da imzayı kendisi denetler
+      out = {
+        app,
+        licenses: (this.state.licenses || [])
+          .filter((l) => l.app === app)
+          .filter((l) => {
+            try {
+              return !!expansionPacks.verify(l.token, this.options.packTestKeys || []);
+            } catch {
+              return false;
+            }
+          })
+          .map((l) => l.token),
+      };
     } else if (req.method === "GET" && url.pathname === "/v1/installed") {
       this.authenticate(req, "catalog.read");
       out = this.state.installed;

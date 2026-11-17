@@ -38,6 +38,9 @@ pub struct Scene {
     /// Kullanıcının içe aktardığı renk kartelaları (boya firması ASE/GPL/CSV dosyaları).
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub paint_systems: Vec<crate::paints::PaintSystem>,
+    /// Genişleme paketi şablonundan kurulduysa şablon kimliği (ör. "th-72").
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub pack_preset: String,
 }
 
 impl Default for Scene {
@@ -64,6 +67,7 @@ impl Default for Scene {
             textures: vec![],
             spaces: vec![],
             paint_systems: vec![],
+            pack_preset: String::new(),
         }
     }
 }

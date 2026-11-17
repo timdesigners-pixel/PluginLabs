@@ -989,7 +989,15 @@
     "paint_unknown_code": "This colour code is not in the palette.",
     "palette_unreadable": "The palette file could not be read. It must be ASE, GPL or CSV (code;name;#RRGGBB).",
     "palette_empty": "No colours were found in the palette file.",
-    "palette_too_big": "The palette is too large (5000 colours at most)."
+    "palette_too_big": "The palette is too large (5000 colours at most).",
+    "pack_license_invalid": "The licence could not be verified.",
+    "pack_license_other": "This licence belongs to another app or pack.",
+    "pack_locked": "No licence for this pack. PluginLabs Hub → Discover → Expansion packs.",
+    "pack_unknown_preset": "Pack shell not found.",
+    "pack_no_space": "The project has no pack shell.",
+    "pack_hub_no_key": "No Hub client key is saved. Grant this app the “catalog.read” permission in Hub and save the key on the MyMind screen.",
+    "pack_hub_offline": "PluginLabs Hub could not be reached. Open Hub and press “Refresh licences”.",
+    "pack_desktop_only": "Pack licences are read from PluginLabs Hub in the desktop app; packs are locked in the browser preview."
   },
   "catalog": {
     "kanepe-3": "Three-seater sofa",
@@ -1050,7 +1058,30 @@
     "bahce-lambasi": "Garden lamp",
     "sezlong": "Sun lounger",
     "saksi-buyuk": "Large planter",
-    "sarkit-lamba": "Pendant lamp"
+    "sarkit-lamba": "Pendant lamp",
+    "th-loft-yatak": "Loft bed platform",
+    "th-depolu-merdiven": "Storage stairs",
+    "th-katlanir-masa": "Wall-mounted folding table",
+    "th-kompakt-mutfak": "Compact kitchen 1.6 m",
+    "th-dar-buzdolabi": "Slim fridge 45 cm",
+    "th-kompost-tuvalet": "Composting toilet",
+    "th-mini-dus": "Mini shower 70 × 70",
+    "th-sandikli-bank": "Storage bench seat",
+    "th-panel-isitici": "Panel heater 1 kW",
+    "th-dar-camasir": "Slim washing machine",
+    "van-teker-kemeri": "Wheel arch cover",
+    "van-yatak-platform": "Fixed bed with garage",
+    "van-mutfak-blogu": "Kitchen block (sink + hob)",
+    "van-buzdolabi-12v": "12 V compressor fridge 50 L",
+    "van-temiz-su": "Fresh water tank 70 L",
+    "van-gri-su": "Grey water tank 40 L",
+    "van-aku": "Lithium battery 200 Ah · 12.8 V",
+    "van-invertor": "Inverter 2000 W",
+    "van-gunes-paneli": "Solar panels 2 × 200 W (roof)",
+    "van-dizel-isitici": "Diesel heater 2 kW",
+    "van-portatif-tuvalet": "Portable toilet",
+    "van-tavan-dolabi": "Overhead locker 1 m",
+    "van-tavan-fani": "Roof fan"
   },
   "catgroup": {
     "oturma": "Seating",
@@ -1065,7 +1096,9 @@
     "aydinlatma": "Lighting",
     "elektronik": "Electronics",
     "tablo": "Paintings",
-    "dis_mekan": "Outdoor"
+    "dis_mekan": "Outdoor",
+    "tiny_house": "Tiny House",
+    "van": "Van"
   },
   "opening": {
     "ic-kapi": "Interior door 90×235",
@@ -1563,5 +1596,68 @@
     "grey": "Grey",
     "brown": "Brown",
     "white_and_black": "White and black"
+  },
+  "paket": {
+    "baslik": "Expansion packs",
+    "lisanslari_yenile": "Refresh licences",
+    "aciklama": "Tiny House and Van Builder are paid packs that add ready-made shells, dedicated products and engineering checks to the app. Packs are bought in PluginLabs Hub; the licence is stored in Hub and this app reads it through Hub.",
+    "denetim": "Pack check (current project)",
+    "yukleniyor": "Loading packs…",
+    "hub_bagli": "PluginLabs Hub connected · {n} licences",
+    "tiny": {
+      "ad": "Tiny House",
+      "aciklama": "Small house on a trailer: ready shells 6, 7.2 and 8.5 m long at 2.55 m outer width; loft bed, storage stairs, compact kitchen, composting toilet and mini shower.",
+      "ozellik1": "3 ready shells with door, windows and fitted interior",
+      "ozellik2": "10 Tiny House products (added to the product library)",
+      "ozellik3": "Road width/height and 3.5 t trailer weight check",
+      "not": "Weight is an estimate assuming a light timber frame and thin cladding. Confirm with a weighbridge and local road rules before towing."
+    },
+    "van": {
+      "ad": "Van Builder",
+      "aciklama": "Panel van camper conversion: 4 ready cargo shells (L2H2–L4H3), sliding and rear doors, wheel arches; garage bed, kitchen block, water tanks, lithium battery, inverter and solar panel.",
+      "ozellik1": "4 ready vehicle shells with editable inner dimensions",
+      "ozellik2": "13 camper products (added to the product library)",
+      "ozellik3": "Payload, daily energy budget and battery autonomy",
+      "not": "Payload includes 2 occupants (150 kg) and a full fresh water tank. Solar yield assumes 4 peak sun hours a day and 75% system efficiency."
+    },
+    "sablon": {
+      "th_6": "Tiny House 6 m",
+      "th_72": "Tiny House 7.2 m",
+      "th_85": "Tiny House 8.5 m",
+      "van_l2h2": "Panel van medium · L2H2",
+      "van_l3h2": "Panel van long · L3H2",
+      "van_l3h3": "Panel van long high roof · L3H3",
+      "van_l4h3": "Panel van extra long · L4H3"
+    },
+    "ic_olcu": "Inside {w} × {d} × {h} cm",
+    "bu_govdeyle_basla": "New project from this shell",
+    "urun_sayisi": "{n} products",
+    "lisansli": "Licensed",
+    "kilitli": "Locked",
+    "satin_alma_yolu": "To buy, open PluginLabs Hub → Discover → Expansion packs. After buying, press “Refresh licences” here.",
+    "denetim_bos": "The current project was not created from a pack shell. Start a new project from a shell to see road, weight and energy checks here.",
+    "denetim_kilitli": "This project was created from a pack shell, but the pack licence was not found on this device.",
+    "gun": "days",
+    "olcut": "Criterion",
+    "deger": "Value",
+    "sinir": "Limit",
+    "durum": "Status",
+    "uygun": "OK",
+    "asiyor": "Exceeds",
+    "proje_kuruldu": "{name} project created",
+    "satir": {
+      "outer_width": "Outer width",
+      "road_height": "Total height above road",
+      "outer_length": "Outer length",
+      "shell_kg": "Trailer + shell weight",
+      "items_kg": "Fit-out weight",
+      "total_kg": "Total weight",
+      "lining_kg": "Insulation and lining",
+      "payload_kg": "Payload used",
+      "daily_wh": "Daily consumption",
+      "solar_wh": "Daily solar yield",
+      "battery_wh": "Battery capacity",
+      "autonomy_days": "Autonomy without sun"
+    }
   }
 }
