@@ -141,7 +141,7 @@ const server = http.createServer((req, res) => {
   // tasarım motorları
   await page.click('[data-view="motor"]');
   await waitText("#motorInfo", /cm/);
-  ok((await page.textContent("#motorInfo")).includes("perde"), "Motor: perde önizlemesi üretildi");
+  ok(/perde/i.test(await page.textContent("#motorInfo")), "Motor: perde önizlemesi üretildi");
   await page.selectOption('#motorForm [data-mk="header"]', "kemer-kavisli");
   await page.waitForTimeout(500);
   // görünüm yükleme: bir görseli perde kumaşı olarak kullan, gerçekçi önizleme al
