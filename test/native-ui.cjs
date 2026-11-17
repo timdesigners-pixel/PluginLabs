@@ -46,7 +46,10 @@ const fs = require("node:fs/promises");
   await page.locator('#pack-license-form .pl-btn--primary').click();
   await page.locator('#pack-license-form').waitFor();
   await page.locator('[data-action="closeModal"]').first().click();
-  await page.locator('.packs').scrollIntoViewIfNeeded();
+  await page.locator('#pack-license-form').waitFor({ state: 'detached' });
+  // yenilenen sayfada bölüm yeniden çizilebilir: kaydırma doğrudan belgede yapılır
+  await page.locator('.packs').waitFor();
+  await page.evaluate(() => document.querySelector('.packs')?.scrollIntoView({ block: 'center' }));
   await page.screenshot({ path: require('node:path').resolve(__dirname, '../preview-packs.png') });
   await page.locator('nav [data-page="resources"]').click();
   await page
