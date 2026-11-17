@@ -1,6 +1,7 @@
 /* Motor ve işletim sistemi köprüsü.
  * Masaüstü (Tauri): Rust komutları; dosya diyalogları, otomatik kayıt ve MyMind ana süreçte.
  * Tarayıcı önizlemesi: aynı Rust motoru WebAssembly işçisinde; dosyalar tarayıcı indirme/yükleme ile. */
+import { t as L, tr as LM } from "./i18n.js";
 const T = window.__TAURI__ && window.__TAURI__.core;
 export const isDesktop = !!T;
 
@@ -24,7 +25,7 @@ export async function engine(cmd, payload = {}) {
   if (T) text = await T.invoke("engine", { cmd, payload: body });
   else text = await new Promise((res) => { const id = ++seq; waiting.set(id, res); getWorker().postMessage({ id, cmd, payload: body }); });
   const r = JSON.parse(text);
-  if (!r.ok) throw new Error(r.error || "Motor hatası");
+  if (!r.ok) throw new Error(r.error ? LM(r.error) : L("bridge.motor_hatasi"));
   return r.data;
 }
 
@@ -84,11 +85,11 @@ export async function openFiles(kind) {
 }
 
 export async function hubStatus() {
-  if (!T) return { available: false, reason: "MyMind yalnız masaüstü uygulamasında, PluginLabs Hub üzerinden çalışır." };
+  if (!T) return { available: false, reason: L("bridge.mymind_yalniz_masaustu_uygulamasinda") };
   return T.invoke("hub_status");
 }
 export async function hubSetKey(key) { return T.invoke("hub_set_key", { key }); }
 export async function mymind(prompt, approved) {
-  if (!T) throw new Error("MyMind yalnız masaüstü uygulamasında kullanılabilir.");
+  if (!T) throw new Error(L("bridge.mymind_yalniz_masaustu_uygulamasinda_2"));
   return T.invoke("mymind", { prompt, approved });
 }

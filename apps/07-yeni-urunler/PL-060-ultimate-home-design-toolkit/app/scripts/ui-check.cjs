@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const root = path.join(__dirname, "..", "ui");
 const out = process.argv[2] || path.join(__dirname, "..", "docs", "screenshots");
-const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".wasm": "application/wasm", ".woff2": "font/woff2", ".png": "image/png" };
+const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".wasm": "application/wasm", ".woff2": "font/woff2", ".png": "image/png", ".json": "application/json" };
 const server = http.createServer((req, res) => {
   const p = path.normalize(path.join(root, decodeURIComponent(req.url.split("?")[0]).replace(/^\/+/, "") || "index.html"));
   if (!p.startsWith(root) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }

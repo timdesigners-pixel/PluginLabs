@@ -1,5 +1,6 @@
 /* 2B plan tuvali: Katlar (modül yerleşimi) ve İç plan (bölme, mahal, açıklık, nesne) modları.
  * Dünya birimi mm; ekran = dünya × ölçek + kaydırma. Renkler PluginLabs tokenlarından okunur. */
+import { t as L, locale } from "./i18n.js";
 
 const WIDTH = 4000;
 
@@ -15,7 +16,7 @@ export function moduleRect(m, scene) {
 function pierMm(len) { return len <= 4 ? 1000 : len <= 6 ? 1500 : 2000; }
 
 export function fmt(v, d = 2) {
-  return Number(v).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  return Number(v).toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d });
 }
 
 function pointInPoly(p, poly) {
@@ -582,8 +583,8 @@ export class PlanCanvas {
     for (const r of level.rooms) {
       const c = centroid(r.polygon);
       const area = polyArea(r.polygon) / 1e6;
-      this.label(r.name.toLocaleUpperCase("tr-TR"), this.sx(c[0]), this.sy(c[1]) - 8, { size: 11, weight: 700, color: C.fg1 });
-      this.label(`NET ${fmt(area)} m²`, this.sx(c[0]), this.sy(c[1]) + 8, { size: 10, mono: true, color: C.accent });
+      this.label(r.name.toLocaleUpperCase(locale()), this.sx(c[0]), this.sy(c[1]) - 8, { size: 11, weight: 700, color: C.fg1 });
+      this.label(`${L("plan.net_m2", { p: fmt(area) })}`, this.sx(c[0]), this.sy(c[1]) + 8, { size: 10, mono: true, color: C.accent });
     }
     // duvar ölçüleri
     if (this.view.s > 0.03) {
@@ -591,7 +592,7 @@ export class PlanCanvas {
         const len = Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]);
         if (len * this.view.s < 60) continue;
         const m = [(w.a[0] + w.b[0]) / 2, (w.a[1] + w.b[1]) / 2];
-        const txt = w.structural ? `PERDE ${fmt(len / 1000, 1)} m` : `${fmt(len / 1000, 2)} m`;
+        const txt = w.structural ? `${L("plan.perde_m", { p: fmt(len / 1000, 1) })}` : `${fmt(len / 1000, 2)} m`;
         if (w.generated && !w.structural && !w.exterior) continue;
         this.label(txt, this.sx(m[0]), this.sy(m[1]), { size: 9, mono: true, color: w.structural ? C.bg0 : C.fg3, bg: w.structural ? null : C.bg0 });
       }
@@ -730,7 +731,7 @@ export class PlanCanvas {
       const len = base.length;
       const open = (len * 1000 - 2 * pierMm(len)) / 1000;
       this.label(`${m.id} · 4 × ${len}`, cx, cy - 9, { size: 13, weight: 700, color: C.fg1 });
-      this.label(`${len * 4} m² · orta açıklık ${fmt(open, 1)} m`, cx, cy + 9, { size: 10, mono: true, color: C.fg3 });
+      this.label(`${L("plan.m2_orta_aciklik_m", { p: len * 4, p2: fmt(open, 1) })}`, cx, cy + 9, { size: 10, mono: true, color: C.fg3 });
     }
     if (level && !(this.drag && this.drag.kind === "module")) this.drawWalls(level, false);
   }

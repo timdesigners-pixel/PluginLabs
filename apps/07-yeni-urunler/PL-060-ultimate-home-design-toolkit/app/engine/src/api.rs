@@ -328,6 +328,14 @@ fn dispatch(cmd: &str, payload: &str) -> Result<Value, String> {
             let b64 = base64::engine::general_purpose::STANDARD.encode(&r.png);
             Ok(json!({"png": b64, "width": r.width, "height": r.height, "triangles": r.triangles, "samples": r.samples, "threads": r.threads, "rays": r.rays, "ms": now_ms() - t0}))
         }
+        "export_cycles" => {
+            let s = scene_of(&v)?;
+            let mut set: RenderSettings = opt(&v, "settings").unwrap_or_default();
+            if let Some(a) = opt::<Atmosphere>(&v, "atmosphere") {
+                set.atmosphere = a;
+            }
+            crate::cycles::export(&s, &set, opt::<usize>(&v, "tile").unwrap_or(1024))
+        }
         "import_obj" => {
             let mut s = scene_of(&v)?;
             let text: String = arg(&v, "obj")?;

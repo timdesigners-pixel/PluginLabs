@@ -909,6 +909,32 @@ pub fn prepare(scene: &Scene, s: &RenderSettings) -> SceneMesh {
     mesh::build(scene, &s.mesh)
 }
 
+/// Gökyüzü ve güneş durumu (dış render motorlarına aktarım için). Yönler dünya koordinatında, Y yukarı.
+pub fn sky_state(scene: &Scene, s: &RenderSettings) -> serde_json::Value {
+    let (o, st) = apply_style(s);
+    let env = Env::new(scene, o.atmosphere, o.sky.as_ref());
+    let k = o.sky.clone().unwrap_or_default();
+    let elevation = env.sun_dir.1.clamp(-1.0, 1.0).asin().to_degrees();
+    let night = env.sun_col.max_c() < 0.2 && matches!(o.atmosphere, Atmosphere::Aksam) || o.sky.as_ref().is_some_and(|k| sun_position(k).0 < -2.0);
+    let c = |v: V| [v.0, v.1, v.2];
+    serde_json::json!({
+        "sun_direction": c(env.sun_dir),
+        "sun_color": c(env.sun_col),
+        "sun_angle": (env.sun_cos.clamp(-1.0, 1.0).acos().to_degrees() * 2.0),
+        "elevation": elevation,
+        "zenith": c(env.zenith),
+        "horizon": c(env.horizon),
+        "ground": c(env.ground),
+        "cloud": if o.sky.is_some() { k.cloud } else { 0.0 },
+        "haze": if o.sky.is_some() { k.haze } else { 0.1 },
+        "night": night,
+        "studio": st.studio,
+        "clay": match st.clay { Clay::None => "none", Clay::Shell => "shell", Clay::All => "all" },
+        "lamp_gain": env.lamp_gain,
+        "auto_exposure_target": st.ae_target,
+    })
+}
+
 pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String> {
     // 8K'ya kadar (7680 × 4320); bellek ~40 bayt/piksel
     let (w, h) = (s.width.clamp(16, 7680), s.height.clamp(16, 4320));

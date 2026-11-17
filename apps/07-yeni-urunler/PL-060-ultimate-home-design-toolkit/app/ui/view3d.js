@@ -1,4 +1,5 @@
 /* 3B önizleme (three.js, WebGL). Geometri Rust motorundan gelir; birim mm → sahnede metre. */
+import { t as L, locale } from "./i18n.js";
 import * as THREE from "./vendor/three.module.min.js";
 
 const MM = 0.001;
@@ -12,7 +13,7 @@ export class View3D {
       this.r = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
     } catch (e) {
       this.ok = false;
-      info.textContent = "WebGL kullanılamıyor";
+      info.textContent = L("view3d.webgl_kullanilamiyor");
       return;
     }
     this.r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
@@ -193,7 +194,7 @@ export class View3D {
       this.sun.target.position.set(cx, 0, cz);
       this.placeSun();
     }
-    this.info.textContent = `${data.triangles.toLocaleString("tr-TR")} üçgen`;
+    this.info.textContent = `${L("app.ucgen", { p: data.triangles.toLocaleString(locale()) })}`;
     this.update();
   }
 

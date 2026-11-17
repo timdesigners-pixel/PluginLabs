@@ -3,7 +3,7 @@ let ex = null;
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 const ready = fetch("engine/uhd_engine.wasm")
-  .then((r) => { if (!r.ok) throw new Error("Motor dosyası yüklenemedi"); return r.arrayBuffer(); })
+  .then((r) => { if (!r.ok) throw new Error("@worker_file"); return r.arrayBuffer(); })
   .then((b) => WebAssembly.instantiate(b, {}))
   .then((m) => { ex = m.instance.exports; });
 

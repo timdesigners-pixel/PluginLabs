@@ -7,6 +7,7 @@
 pub mod api;
 pub mod catalog;
 pub mod cost;
+pub mod cycles;
 pub mod elevation;
 pub mod formula;
 pub mod geom;
