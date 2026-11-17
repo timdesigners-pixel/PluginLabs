@@ -60,6 +60,12 @@ ipcMain.handle("hub:call", async (event, method, args = []) => {
     snapshot: () => hub.snapshot(),
     readProduct: (id) => hub.readProduct(id),
     setAppFeatures: (id, values) => hub.setAppFeatures(id, values),
+    addPackLicense: (token) => hub.addPackLicense(token),
+    archivePackLicense: (id) => hub.archivePackLicense(id),
+    openPackCheckout: async (id) => {
+      const url = require("./expansion-packs.cjs").checkoutUrl(id);
+      await shell.openExternal(url);
+    },
     saveProduct: (id, data) => hub.saveProduct(id, data),
     idea: (id) => {
       const item = require("../resources/notion-catalog.json").items.find(

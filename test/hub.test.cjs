@@ -529,3 +529,46 @@ test("app feature switches: validated, persisted and readable by apps", async (t
   });
   assert.equal(missing.status, 404);
 });
+
+test("expansion packs: signed licenses, archive instead of delete, app entitlements", async (t) => {
+  const crypto = require("node:crypto");
+  const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");
+  const raw = publicKey.export({ format: "der", type: "spki" }).subarray(12).toString("base64");
+  const sign = (payload, key = privateKey) => {
+    const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
+    return `UHPK1.${body}.${crypto.sign(null, Buffer.from(`UHPK1.${body}`), key).toString("base64url")}`;
+  };
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "plhub-test-"));
+  const hub = await new Hub(root, { allowTestHTTP: true, packTestKeys: [raw] }).init();
+  await hub.startAPI(0);
+  t.after(async () => {
+    await hub.close();
+    await fs.rm(root, { recursive: true, force: true });
+  });
+  assert.equal(hub.snapshot().expansionPacks.length, 2);
+  assert.ok(hub.snapshot().expansionPacks.every((p) => !p.owned && !p.purchasable));
+  const good = sign({ pack: "uhd-van-builder", app: "PL-060", lic: "L-42", iat: "2026-11-17" });
+  // başka anahtar, değiştirilmiş yük ve bilinmeyen paket reddedilir
+  const other = crypto.generateKeyPairSync("ed25519").privateKey;
+  await assert.rejects(hub.addPackLicense(sign({ pack: "uhd-van-builder", app: "PL-060", lic: "X" }, other)));
+  await assert.rejects(hub.addPackLicense(good.replace(/^UHPK1\.[^.]+/, "UHPK1." + Buffer.from(JSON.stringify({ pack: "uhd-tiny-house", app: "PL-060" })).toString("base64url"))));
+  await assert.rejects(hub.addPackLicense(sign({ pack: "baska-paket", app: "PL-060" })));
+  await assert.rejects(hub.addPackLicense("çöp"));
+  const list = await hub.addPackLicense(good);
+  assert.equal(list.find((p) => p.id === "uhd-van-builder").owned, true);
+  assert.equal(list.find((p) => p.id === "uhd-van-builder").license.lic, "L-42");
+  const base = `http://127.0.0.1:${hub.port}`;
+  assert.equal((await fetch(base + "/v1/apps/entitlements?app=PL-060")).status, 401);
+  const { token } = await hub.createClient("Ultimate Home", ["catalog.read"]);
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+  const body = await (await fetch(base + "/v1/apps/entitlements?app=PL-060", auth)).json();
+  assert.deepEqual(body.licenses, [good]);
+  assert.equal((await fetch(base + "/v1/apps/entitlements?app=leo", auth)).status, 400);
+  assert.deepEqual((await (await fetch(base + "/v1/apps/entitlements?app=PL-061", auth)).json()).licenses, []);
+  // kaldırılan lisans arşive taşınır
+  await hub.archivePackLicense("uhd-van-builder");
+  const saved = JSON.parse(await fs.readFile(path.join(root, "state.json"), "utf8"));
+  assert.equal(saved.licenses.length, 0);
+  assert.equal(saved.archivedLicenses[0].lic, "L-42");
+  assert.deepEqual((await (await fetch(base + "/v1/apps/entitlements?app=PL-060", auth)).json()).licenses, []);
+});

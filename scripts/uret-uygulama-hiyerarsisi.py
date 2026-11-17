@@ -56,6 +56,7 @@ REPOLAR = {
     'PL-053': ('mutfak-atolyesi', True, 'Codex proje adı: “PL -053· Mutfak Atölyesi”'),
     'PL-054': ('mywishlist', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
     'PL-059': ('mymind-ai', True, 'Claude Code tarafından private oluşturuldu 01.11.2026 (Rust/Tauri Windows uygulaması + Chrome eklentisi)'),
+    'PL-060': ('ultimate-home-design-toolkit', True, 'Kullanıcı tarafından private oluşturuldu 17.11.2026; kod PluginLabs apps/…/app klasöründen geçmişiyle taşındı'),
 }
 
 EK = [

@@ -97,7 +97,7 @@ Makine tarafından okunabilir kayıt: [`registry/projects.json`](../registry/pro
 | PL-057 | [Tork](07-yeni-urunler/PL-057-tork/README.md) | W | v0.1.0 geliştirmede · Windows masaüstü + tork-cli | P2 · M | [tork](https://github.com/timdesigners-pixel/tork) (açılacak) |
 | PL-058 | [Kurgu Atölyesi](07-yeni-urunler/PL-058-kurgu-atolyesi/README.md) | W · L · M | Arayüz prototipi | P1 · L | — |
 | PL-059 | [MyMind AI](07-yeni-urunler/PL-059-mymind-ai/README.md) | W · Chrome | v0.1.0 | — | [mymind-ai](https://github.com/timdesigners-pixel/mymind-ai) |
-| PL-060 | [Ultimate Home Design Toolkit](07-yeni-urunler/PL-060-ultimate-home-design-toolkit/README.md) | W | v0.1.0 geliştirme | — | [PluginLabs](../apps/07-yeni-urunler/PL-060-ultimate-home-design-toolkit/app) |
+| PL-060 | [Ultimate Home Design Toolkit](07-yeni-urunler/PL-060-ultimate-home-design-toolkit/README.md) | W | v0.1.0 geliştirme | — | [ultimate-home-design-toolkit](https://github.com/timdesigners-pixel/ultimate-home-design-toolkit) |
 
 ---
 Oluşturma: 29.10.2026

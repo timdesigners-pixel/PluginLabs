@@ -37,6 +37,20 @@ const fs = require("node:fs/promises");
   await flowCard.getByText('Uygulama · v0.2.0 · Ön sürüm', { exact: true }).waitFor();
   await page.screenshot({ path: require('node:path').resolve(__dirname, '../preview-flowdock.png'), fullPage: true });
   await page.locator('#search').fill('');
+  // genişleme paketleri: ödeme bağlanmadan satın alma kapalı, lisans girişi açık
+  await page.locator('.pack-card[data-pack="uhd-tiny-house"]').waitFor();
+  require("node:assert/strict").equal(await page.locator(".pack-card").count(), 2);
+  require("node:assert/strict").equal(await page.locator('.pack-card button:disabled', { hasText: 'Satın alma yakında' }).count(), 2);
+  await page.locator('.pack-card[data-pack="uhd-van-builder"] [data-action="packLicense"]').click();
+  await page.locator('#pack-license-form textarea').fill('UHPK1.gecersiz.lisans');
+  await page.locator('#pack-license-form .pl-btn--primary').click();
+  await page.locator('#pack-license-form').waitFor();
+  await page.locator('[data-action="closeModal"]').first().click();
+  await page.locator('#pack-license-form').waitFor({ state: 'detached' });
+  // yenilenen sayfada bölüm yeniden çizilebilir: kaydırma doğrudan belgede yapılır
+  await page.locator('.packs').waitFor();
+  await page.evaluate(() => document.querySelector('.packs')?.scrollIntoView({ block: 'center' }));
+  await page.screenshot({ path: require('node:path').resolve(__dirname, '../preview-packs.png') });
   await page.locator('nav [data-page="resources"]').click();
   await page
     .locator(".card")
