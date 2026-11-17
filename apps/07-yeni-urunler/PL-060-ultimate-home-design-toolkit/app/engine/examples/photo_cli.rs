@@ -1,5 +1,5 @@
 //! Fotoğraf ölçüleriyle kurulan döşeli bir odayı fotoğraf kalitesi ayarlarıyla render eder:
-//! `cargo run --release --example photo_cli -- <çıktı.png> [genişlik] [yükseklik] [örnek] [saat] [diyafram]`
+//! `cargo run --release --example photo_cli -- <çıktı.png> [genişlik] [yükseklik] [örnek] [saat] [diyafram] [stil] [duvar rengi r,g,b]`
 use serde_json::{json, Value};
 use uhd_engine::api::call;
 
@@ -17,6 +17,8 @@ fn main() {
     let spp: u32 = a.get(4).and_then(|x| x.parse().ok()).unwrap_or(128);
     let hour: f32 = a.get(5).and_then(|x| x.parse().ok()).unwrap_or(15.5);
     let aperture: f32 = a.get(6).and_then(|x| x.parse().ok()).unwrap_or(5.6);
+    let style = a.get(7).cloned().unwrap_or_default();
+    let wall: Option<Vec<f32>> = a.get(8).map(|x| x.split(',').filter_map(|v| v.parse().ok()).collect());
 
     let scene = json!({"name": "Fotoğraftan oda", "levels": [{"id": "L0"}]});
     let openings = json!([
@@ -26,6 +28,10 @@ fn main() {
     let d = data("add_space", json!({"scene": scene, "space": {"name": "Salon", "width": 4500.0, "depth": 5200.0, "height": 2700.0, "source": "foto"}, "openings": openings}));
     let mut scene = d["scene"].clone();
     scene["interior"] = json!("boya-beyaz");
+    if let Some(c) = wall.filter(|c| c.len() == 3) {
+        scene["materials"].as_array_mut().unwrap().push(json!({"id": "boya-ozel", "name": "Duvar boyası", "category": "duvar", "color": c, "roughness": 0.85}));
+        scene["interior"] = json!("boya-ozel");
+    }
     // güneş öğleden sonra arka duvardaki pencereden içeri düşsün
     scene["sun"]["azimuth"] = json!(130.0);
     let mut n = 0;
@@ -50,7 +56,7 @@ fn main() {
         "width": w, "height": h, "samples": spp, "bounces": 8,
         "eye": [900.0, 1500.0, 5050.0], "target": [2900.0, 1050.0, 600.0], "fov": 62.0,
         "sky": {"hour": hour, "month": 9, "haze": 0.25},
-        "aperture": aperture, "bloom": 0.15, "vignette": 0.3, "grain": 0.1, "sharpen": 0.3, "white_balance": 6900.0
+        "aperture": aperture, "style": style
     });
     let r = data("render", json!({"scene": scene, "settings": settings}));
     use base64::Engine;

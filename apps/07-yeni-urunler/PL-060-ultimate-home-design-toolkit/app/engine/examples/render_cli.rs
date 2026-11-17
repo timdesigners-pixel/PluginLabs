@@ -1,4 +1,4 @@
-//! Komut satırından render: `cargo run --release --example render_cli -- <çıktı.png> [kamera] [atmosfer] [genişlik] [yükseklik] [örnek] [saat] [kesit]`
+//! Komut satırından render: `cargo run --release --example render_cli -- <çıktı.png> [kamera] [atmosfer] [genişlik] [yükseklik] [örnek] [saat] [kesit] [stil]`
 //! Kamera: on, arka, sag, sol, kusbakisi, perspektif, izometrik, ic. Atmosfer: gunduz, gun-batimi, aksam.
 use serde_json::{json, Value};
 use uhd_engine::api::call;
@@ -18,7 +18,7 @@ fn main() {
     let roof = cam != "kusbakisi" && a.get(8).map(|x| x != "kesit").unwrap_or(true);
     // 7. bağımsız değişken: saat (ör. 17.5) → gökyüzü motoru
     let sky = a.get(7).and_then(|x| x.parse::<f32>().ok()).map(|h| json!({"hour": h})).unwrap_or(Value::Null);
-    let r: Value = serde_json::from_str(&call("render", &json!({"scene": scene, "atmosphere": atm, "settings": {"width": w, "height": h, "samples": spp, "eye": c["eye"], "target": c["target"], "fov": c["fov"], "projection": c.get("projection").cloned().unwrap_or(json!("perspective")), "ortho_height": c.get("orthoHeight").cloned().unwrap_or(Value::Null), "sky": sky, "mesh": {"roof": roof}}}).to_string())).unwrap();
+    let r: Value = serde_json::from_str(&call("render", &json!({"scene": scene, "atmosphere": atm, "settings": {"width": w, "height": h, "samples": spp, "eye": c["eye"], "target": c["target"], "fov": c["fov"], "projection": c.get("projection").cloned().unwrap_or(json!("perspective")), "ortho_height": c.get("orthoHeight").cloned().unwrap_or(Value::Null), "sky": sky, "style": a.get(9).cloned().unwrap_or_default(), "mesh": {"roof": roof}}}).to_string())).unwrap();
     let d = &r["data"];
     use base64::Engine;
     let png = base64::engine::general_purpose::STANDARD.decode(d["png"].as_str().expect("render hatası")).unwrap();

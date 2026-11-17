@@ -372,6 +372,81 @@ pub struct RenderSettings {
     pub white_balance: f32,
     /// Yüzey kabartısı çarpanı (0 = kapalı, 1 = doğal).
     pub bump: f32,
+    /// Render stili: default, editorial, archviz, clay, clay-white. Boş ya da tanınmayan değer = default.
+    pub style: String,
+}
+
+/// Render stilleri. İlk öğe varsayılandır.
+pub const STYLES: [&str; 5] = ["default", "editorial", "archviz", "clay", "clay-white"];
+
+/// Stilin ayarlara etkisi: yalnız kullanıcının boş bıraktığı (0) görüntü ayarlarını doldurur.
+#[derive(Clone, Copy, PartialEq)]
+enum Clay {
+    None,
+    /// Duvar, tavan, kabuk ve dış zemin beyaz kil; zemin kaplaması, mobilya ve tekstil kendi renginde.
+    Shell,
+    /// Cam ve ışık dışındaki her yüzey beyaz kil.
+    All,
+}
+struct Style {
+    clay: Clay,
+    studio: bool,
+    ae_target: f32,
+}
+pub fn style_id(s: &str) -> &'static str {
+    STYLES.iter().find(|k| **k == s).copied().unwrap_or("default")
+}
+fn apply_style(s: &RenderSettings) -> (RenderSettings, Style) {
+    let mut o = s.clone();
+    let fill = |v: &mut f32, x: f32| {
+        if *v == 0.0 {
+            *v = x;
+        }
+    };
+    let id = style_id(&s.style);
+    o.style = id.into();
+    let st = match id {
+        "editorial" => {
+            // dergi çekimi: net, yüksek kontrastlı güneş, belirgin pencere gölgesi, hafif gren
+            fill(&mut o.bloom, 0.12);
+            fill(&mut o.vignette, 0.22);
+            fill(&mut o.grain, 0.05);
+            fill(&mut o.sharpen, 0.35);
+            fill(&mut o.white_balance, 6300.0);
+            fill(&mut o.aperture, 8.0);
+            o.bounces = o.bounces.max(8);
+            if let Some(k) = o.sky.as_mut() {
+                k.cloud = k.cloud.min(0.1);
+                k.haze = k.haze.min(0.15);
+            }
+            Style { clay: Clay::None, studio: false, ae_target: 0.22 }
+        }
+        "archviz" => {
+            // mimari görselleştirme: aydınlık, yumuşak gölge, nötr renk, her yer net
+            fill(&mut o.sharpen, 0.2);
+            fill(&mut o.white_balance, 6500.0);
+            fill(&mut o.bloom, 0.06);
+            o.bounces = o.bounces.max(8);
+            let mut k = o.sky.clone().unwrap_or_default();
+            k.cloud = k.cloud.max(0.35);
+            k.haze = k.haze.max(0.2);
+            o.sky = Some(k);
+            Style { clay: Clay::None, studio: false, ae_target: 0.32 }
+        }
+        "clay" => {
+            fill(&mut o.sharpen, 0.15);
+            o.bounces = o.bounces.max(6);
+            Style { clay: Clay::Shell, studio: true, ae_target: 0.36 }
+        }
+        "clay-white" => {
+            fill(&mut o.sharpen, 0.15);
+            fill(&mut o.bloom, 0.25);
+            o.bounces = o.bounces.max(6);
+            Style { clay: Clay::All, studio: true, ae_target: 0.4 }
+        }
+        _ => Style { clay: Clay::None, studio: false, ae_target: 0.2 },
+    };
+    (o, st)
 }
 
 /// Gökyüzü ve atmosfer motoru parametreleri.
@@ -407,7 +482,7 @@ pub fn sun_position(sky: &SkySettings) -> (f32, f32) {
 }
 impl Default for RenderSettings {
     fn default() -> Self {
-        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None, auto_exposure: true, aperture: 0.0, focus: None, bloom: 0.0, vignette: 0.0, grain: 0.0, sharpen: 0.0, white_balance: 0.0, bump: 1.0 }
+        RenderSettings { width: 960, height: 540, samples: 32, bounces: 4, atmosphere: Atmosphere::Gunduz, exposure: 0.62, denoise: true, eye: None, target: None, fov: None, mesh: MeshOptions::default(), threads: 0, seed: 7, projection: "perspective".into(), ortho_height: None, sky: None, auto_exposure: true, aperture: 0.0, focus: None, bloom: 0.0, vignette: 0.0, grain: 0.0, sharpen: 0.0, white_balance: 0.0, bump: 1.0, style: String::new() }
     }
 }
 
@@ -542,7 +617,7 @@ impl Tracer<'_> {
     /// Gölge ışını: camdan geçerken renk süzer.
     fn transmit(&self, mut o: V, d: V, mut dist: f32) -> V {
         let mut t = V(1.0, 1.0, 1.0);
-        for _ in 0..4 {
+        for _ in 0..16 {
             match self.bvh.intersect(o, d, dist) {
                 None => return t,
                 Some((h, i)) => {
@@ -837,6 +912,8 @@ pub fn prepare(scene: &Scene, s: &RenderSettings) -> SceneMesh {
 pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String> {
     // 8K'ya kadar (7680 × 4320); bellek ~40 bayt/piksel
     let (w, h) = (s.width.clamp(16, 7680), s.height.clamp(16, 4320));
+    let (styled, style) = apply_style(s);
+    let s = &styled;
     let spp = s.samples.clamp(1, 2048);
     let sm = prepare(scene, s);
     let images: Vec<crate::texture::Image> = scene.textures.iter().filter_map(crate::texture::Image::decode).collect();
@@ -858,6 +935,17 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             _ if m.category == "tekstil" => 0.6,
             _ => 0.0,
         };
+        let glass = m.opacity < 0.5;
+        let lit = m.emission > 0.0;
+        let keep = match style.clay {
+            Clay::None => true,
+            Clay::Shell => matches!(m.category.as_str(), "zemin" | "mobilya" | "tekstil" | "dekor" | "metal" | "genel" | "dograma" | "palet"),
+            Clay::All => glass || lit,
+        };
+        let (albedo, tex, relief) = if keep { (albedo, tex, relief) } else { (V(0.86, 0.86, 0.85), 0u8, 0.0) };
+        let m = if keep { m } else { crate::model::Material { roughness: 0.9, metallic: 0.0, ..m } };
+        // beyaz makette ışıklar sıcak turuncu parlar
+        let m = if style.clay == Clay::All && lit { crate::model::Material { color: [1.0, 0.55, 0.18], emission: m.emission * 1.6, ..m } } else { m };
         mats.push(Mat { albedo, rough: m.roughness.clamp(0.0, 1.0), metal: m.metallic.clamp(0.0, 1.0), emit: V(m.color[0], m.color[1], m.color[2]) * m.emission.max(0.0), glass: m.opacity < 0.5, tex, kind, tscale: m.texture_scale.max(1.0), relief });
         for (ti, t) in b.positions.chunks(3).enumerate() {
             if t.len() < 3 {
@@ -889,7 +977,18 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
             lamps.push(Lamp { tri: i, area: a, cdf: acc });
         }
     }
-    let env = Env::new(scene, s.atmosphere, s.sky.as_ref());
+    let mut env = Env::new(scene, s.atmosphere, s.sky.as_ref());
+    if style.studio {
+        // stüdyo: beyaz sonsuz fon, yukarıdan yumuşak ışık
+        let w = V(1.0, 1.0, 1.0) * 1.25;
+        env.zenith = w;
+        env.horizon = w;
+        env.ground = w * 0.9;
+        env.sun_dir = V(-0.35, 0.86, 0.37).norm();
+        env.sun_col = V(1.0, 0.98, 0.95) * 1.6;
+        env.sun_cos = 9.0f32.to_radians().cos();
+        env.lamp_gain = env.lamp_gain.max(1.0);
+    }
     let tracer = Tracer { images: &images, bvh: &bvh, mats: &mats, env: &env, lamps: &lamps, lamp_total: acc, bounces: s.bounces.clamp(1, 12), bump: s.bump.clamp(0.0, 4.0) };
     let eye = s.eye.unwrap_or(scene.camera.eye);
     let tgt = s.target.unwrap_or(scene.camera.target);
@@ -1002,7 +1101,7 @@ pub fn render(scene: &Scene, s: &RenderSettings) -> Result<RenderResult, String>
         }
         let avg = (sum / n_px.max(1) as f64).exp() as f32;
         let night = matches!(s.atmosphere, Atmosphere::Aksam) || s.sky.as_ref().is_some_and(|k| sun_position(k).0 < -2.0);
-        let target = if night { 0.09 } else { 0.2 };
+        let target = if night && !style.studio { 0.09 } else { style.ae_target };
         exp *= (target / avg.max(1e-4)).clamp(0.25, 6.0) / 0.62;
     }
     let rgba = develop(&color, w as usize, h as usize, exp, s);
@@ -1220,6 +1319,31 @@ mod tests {
         assert_eq!((r.width, r.height), (64, 36));
         // sınır: 8K üstü istek 7680 × 4320'ye kırpılır (burada yalnız kırpma mantığı sınanır)
         assert_eq!(9000u32.clamp(16, 7680), 7680);
+    }
+
+    #[test]
+    fn styles_default_and_change_the_image() {
+        assert_eq!(style_id(""), "default");
+        assert_eq!(style_id("bilinmeyen"), "default");
+        let s = crate::templates::demo_scene();
+        let base = RenderSettings { width: 64, height: 40, samples: 2, ..Default::default() };
+        let a = render(&s, &base).unwrap();
+        let d = render(&s, &RenderSettings { style: "default".into(), ..base.clone() }).unwrap();
+        assert_eq!(a.png, d.png, "stil seçilmezse varsayılan stil kullanılır");
+        let mean = |png: &[u8]| {
+            let dec = png::Decoder::new(std::io::Cursor::new(png.to_vec()));
+            let mut r = dec.read_info().unwrap();
+            let mut buf = vec![0; r.output_buffer_size()];
+            let info = r.next_frame(&mut buf).unwrap();
+            let px = &buf[..info.buffer_size()];
+            px.iter().map(|&v| v as f64).sum::<f64>() / px.len() as f64
+        };
+        let c = render(&s, &RenderSettings { style: "clay-white".into(), ..base.clone() }).unwrap();
+        assert_ne!(c.png, a.png);
+        assert!(mean(&c.png) > mean(&a.png), "beyaz maket stüdyo fonu daha aydınlık");
+        for st in STYLES {
+            assert!(render(&s, &RenderSettings { style: st.into(), ..base.clone() }).is_ok(), "{st}");
+        }
     }
 
     #[test]
