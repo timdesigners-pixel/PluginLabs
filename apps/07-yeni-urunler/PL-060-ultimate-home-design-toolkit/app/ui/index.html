@@ -37,6 +37,7 @@
       <button class="pl-navitem uh-navbtn" type="button" data-view="fonksiyon">Fonksiyonlar<span class="pl-badge" id="fnCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kutuphane">Ürün kütüphanesi<span class="pl-badge" id="objCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="motor">Tasarım motorları<span class="pl-badge">5</span></button>
+      <button class="pl-navitem uh-navbtn" type="button" data-view="foto">Fotoğraftan mekân<span class="pl-badge" id="spaceCount">0</span></button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="referans">Görselden referans</button>
       <button class="pl-navitem uh-navbtn" type="button" data-view="kaplama">Kaplama kütüphanesi<span class="pl-badge" id="matCount">0</span></button>
     </div>
@@ -256,6 +257,12 @@
             <select class="pl-select" id="selRes" aria-label="Çözünürlük"><option value="960x540">960 × 540</option><option value="1280x720" selected>1280 × 720 (HD)</option><option value="1920x1080">1920 × 1080 (Full HD)</option><option value="3840x2160">3840 × 2160 (4K)</option><option value="7680x4320">7680 × 4320 (8K)</option></select>
             <select class="pl-select" id="selSpp" aria-label="Örnek sayısı"><option value="16">Taslak · 16</option><option value="48" selected>İyi · 48</option><option value="128">Final · 128</option><option value="512">Ultra · 512</option></select>
           </div>
+          <h3 class="uh-h3">Fotoğraf makinesi</h3>
+          <div class="uh-row">
+            <select class="pl-select" id="selLook" aria-label="Görüntü işleme"><option value="standart">Standart</option><option value="dslr" selected>Fotoğraf · DSLR</option><option value="dergi">Dergi çekimi</option></select>
+            <select class="pl-select" id="selAperture" aria-label="Diyafram"><option value="0">Her yer net</option><option value="2.8">f/2,8 · arka plan yumuşak</option><option value="5.6" selected>f/5,6</option><option value="8">f/8</option><option value="11">f/11</option></select>
+          </div>
+          <p class="uh-small">Fotoğraf ve dergi ayarları mercek alan derinliği, ışık parlaması, köşe kararması ve film grenini ekler. Netlik görüntünün ortasındaki yüzeye ayarlanır.</p>
           <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnRender">HD render al (PNG)</button>
           <figure class="uh-renderfig" id="renderFig" hidden>
             <img id="renderImg" alt="Son render önizlemesi">
@@ -442,6 +449,49 @@
         </div>
         <div class="uh-card uh-card--flat" id="refEmpty"><p class="uh-small">Henüz görsel seçilmedi. JPG, PNG ya da WebP kullanabilirsiniz.</p></div>
         <input type="file" id="refInput" accept="image/png,image/jpeg,image/webp" hidden>
+      </div>
+    </section>
+
+    <!-- Fotoğraftan mekân -->
+    <section class="uh-view" id="view-foto" data-title="Fotoğraftan mekân">
+      <div class="uh-page">
+        <div class="uh-head"><h1 class="uh-h1">Fotoğraftan mekân</h1><span class="uh-grow"></span><button class="pl-btn pl-btn--secondary" type="button" id="btnSpaceManual">Ölçüyle oda ekle</button><button class="pl-btn pl-btn--primary" type="button" id="btnPhotoPick">Fotoğraf seç…</button></div>
+        <p class="uh-lead">Odanın fotoğrafında arka duvarın dört köşesini ve yan duvarların zemin çizgisini işaretleyin; bildiğiniz tek bir ölçüyü girin. Genişlik, derinlik ve yükseklik oranları perspektiften hesaplanır, oda 3B olarak kurulur. Ölçüleri sonradan değiştirebilir, odaları yan yana ekleyerek daire oluşturabilirsiniz. Fotoğraf bu bilgisayardan çıkmaz.</p>
+        <div class="uh-phgrid" id="phBody" hidden>
+          <div class="uh-card uh-card--flat">
+            <div class="uh-ph-stage" id="phStage"><img id="phImg" alt="Seçilen mekân fotoğrafı"><svg id="phSvg" role="group" aria-label="Köşe işaretleri"></svg></div>
+            <p class="uh-small" id="phHint">Numaralı noktaları sürükleyin (ok tuşlarıyla ince ayar, Shift ile 10 piksel). Kesikli çizgi, hesaplanan odanın fotoğraf üzerindeki izdüşümüdür: duvar köşeleriyle üst üste gelmelidir.</p>
+          </div>
+          <div class="uh-card uh-card--flat">
+            <h2 class="uh-h3">1 · Bilinen ölçü</h2>
+            <div class="uh-row">
+              <select class="pl-select" id="phRefKind" aria-label="Referans türü"><option value="yukseklik">Tavan yüksekliği</option><option value="genislik">Arka duvar genişliği</option><option value="kamera">Kameranın yerden yüksekliği</option><option value="derinlik">Görünen yan duvar boyu</option></select>
+              <label class="uh-inline"><input class="pl-input uh-num" type="number" id="phRefVal" min="30" max="3000" step="1" value="265" aria-label="Referans ölçü"><span>cm</span></label>
+            </div>
+            <label class="uh-check uh-mt"><input type="checkbox" id="phFovAuto" checked><span>Görüş açısını fotoğraftan hesapla</span></label>
+            <label class="uh-inline" id="phFovBox" hidden><span>Yatay görüş açısı</span><input class="pl-input uh-num" type="number" id="phFov" min="20" max="140" step="1" value="69"><span>°</span></label>
+            <h2 class="uh-h3">2 · Kapı ve pencereler</h2>
+            <div class="uh-row">
+              <select class="pl-select" id="phWall" aria-label="Duvar"><option value="arka">Arka duvar</option><option value="sol">Sol duvar</option><option value="sag">Sağ duvar</option></select>
+              <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-phtool="window">Pencere işaretle</button>
+              <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-phtool="door">Kapı işaretle</button>
+            </div>
+            <div class="uh-chips uh-mt" id="phOpenings"></div>
+            <h2 class="uh-h3">3 · Hesaplanan oda</h2>
+            <div id="phResult"></div>
+            <label class="pl-field uh-mt"><span class="pl-field__label">Oda adı</span><input class="pl-input" id="phName" maxlength="40" value="Salon"></label>
+            <div class="uh-row uh-mt" id="phBesideBox" hidden>
+              <select class="pl-select" id="phBeside" aria-label="Yanına eklenecek oda"></select>
+              <select class="pl-select" id="phSide" aria-label="Yön"><option value="sag">sağına</option><option value="sol">soluna</option><option value="on">önüne</option><option value="arka">arkasına</option></select>
+            </div>
+            <button class="pl-btn pl-btn--primary pl-btn--block uh-mt" type="button" id="btnPhotoBuild" disabled>Odayı 3B olarak oluştur</button>
+          </div>
+        </div>
+        <div class="uh-card uh-card--flat" id="phEmpty"><p class="uh-small">Henüz fotoğraf seçilmedi. En iyi sonuç için odayı köşeden, biraz çaprazdan ve telefonu dik tutarak çekin; arka duvarın zemin ve tavan köşeleri görünsün. JPG, PNG ya da WebP kullanabilirsiniz.</p></div>
+        <h2 class="uh-h3">Mekânlar</h2>
+        <label class="uh-check"><input type="checkbox" id="spLock"><span>Oranı koru: bir ölçü değişince diğerleri, kapı ve pencereler aynı oranda büyüsün</span></label>
+        <div class="uh-tablewrap uh-mt"><table class="pl-table" id="spaceTable"><thead><tr><th>Oda</th><th class="is-num">Genişlik (cm)</th><th class="is-num">Derinlik (cm)</th><th class="is-num">Yükseklik (cm)</th><th class="is-num">Alan</th><th>Kaynak</th><th></th></tr></thead><tbody id="spaceRows"></tbody></table></div>
+        <input type="file" id="photoInput" accept="image/png,image/jpeg,image/webp" hidden>
       </div>
     </section>
 

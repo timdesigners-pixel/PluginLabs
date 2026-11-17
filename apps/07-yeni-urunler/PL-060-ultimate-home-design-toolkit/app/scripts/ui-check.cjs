@@ -181,6 +181,24 @@ const server = http.createServer((req, res) => {
   await page.waitForSelector("#view-uc.is-active");
   await page.waitForTimeout(1200);
   ok(await page.isChecked("#chkSky"), "Referans: gökyüzü ayarı sahneye uygulandı");
+  // fotoğraftan mekân: köşe işaretleri → ölçü → 3B oda → ölçü düzenleme
+  await page.click('[data-view="foto"]');
+  await page.setInputFiles("#photoInput", path.join(__dirname, "..", "docs", "screenshots", "render-ic-mekan.png"));
+  await waitText("#phResult", /Genişlik/);
+  ok((await page.locator("#phSvg [data-pt]").count()) === 6, "Fotoğraf: 6 köşe işareti");
+  ok((await page.locator("#phSvg line.uh-ph-out").count()) >= 4, "Fotoğraf: hesaplanan oda fotoğrafa geri izdüşüldü");
+  await page.focus('#phSvg [data-pt="tr"]');
+  for (let i = 0; i < 6; i++) await page.keyboard.press("Shift+ArrowRight");
+  await page.waitForTimeout(400);
+  await page.click("#btnPhotoBuild");
+  await page.waitForSelector("#spaceRows [data-sp]");
+  await shot("23-fotograftan-mekan.png");
+  await page.fill('#spaceRows [data-k="width"]', "500");
+  await page.dispatchEvent('#spaceRows [data-k="width"]', "change");
+  const areaBefore = await page.textContent("#spaceRows td.is-num:nth-child(5)");
+  await page.waitForTimeout(1500);
+  ok((await page.inputValue('#spaceRows [data-k="width"]')) === "500", "Mekân: genişlik düzenlendi");
+  void areaBefore;
   // ürün ve kaplama kütüphaneleri, boyutlandırma
   await page.click('[data-view="kutuphane"]');
   await page.waitForSelector("#libGrid .uh-libcard svg");

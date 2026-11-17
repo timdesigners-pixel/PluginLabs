@@ -13,7 +13,7 @@ const STEPS = ["model", "katlar", "plan", "uc", "ozet"];
 const S = {
   scene: null, json: "", catalog: null, view: "model", storey: 1, counts: {}, level: "L0",
   undo: [], q: Promise.resolve(), lastRender: null, atm: "gunduz", v3: { mode: "dis", levels: "all", cut: false },
-  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
+  camSet: false, dirty3d: true, unit: "m", wallT: 100, paintMat: "parke-ceviz", libGroup: "Tümü", libQ: "", matCat: "zemin", keepRatio: false, motor: "perde", motorParams: null, motorTimer: null, sky: null, proj: null, ref: null, photo: null, exposure: null, pendingCam: null, saved: null, savedScene: null, elevSide: "on", sel3: null, texSig: "", thumbs: {}, saveTimer: null, checkTimer: null,
 };
 
 /* ---------- yardımcılar ---------- */
@@ -116,6 +116,7 @@ function refresh() {
   if (v === "kaplama") renderMaterials();
   if (v === "motor") renderMotor();
   if (v === "referans") renderReference();
+  if (v === "foto") renderPhoto();
   if (v === "karsilama") renderWelcome();
   if (v === "mymind") renderMyMind();
 }
@@ -505,6 +506,7 @@ async function show3d() {
   });
 }
 async function camera(name) {
+  if (typeof name === "object") { S.proj = null; V.setCamera(name); return; }
   const cut = name === "izometrik-kesit";
   if (name.startsWith("izometrik")) {
     if (S.v3.cut !== cut) { S.v3.cut = cut; $("#chkCut").checked = cut; const m = await B.engine("mesh", { scene: S.scene, options: meshOptions() }); V.setMesh(m); S.dirty3d = false; }
@@ -532,6 +534,14 @@ function syncSky() {
 function renderInteriorSwatches() {
   $("#interiorSwatches").innerHTML = swatches("ic-", S.scene.interior, "interior").replace('<div class="pl-swatches uh-mt" role="radiogroup">', "").replace(/<\/div>$/, "");
 }
+function lookSettings() {
+  const look = $("#selLook").value;
+  if (look === "standart") return {};
+  const aperture = Number($("#selAperture").value);
+  return look === "dergi"
+    ? { aperture, bloom: 0.1, vignette: 0.15, grain: 0.03, sharpen: 0.4, white_balance: 6600, bounces: 10 }
+    : { aperture, bloom: 0.15, vignette: 0.3, grain: 0.1, sharpen: 0.3, white_balance: 6800, bounces: 8 };
+}
 async function doRender() {
   const [w, h] = $("#selRes").value.split("x").map(Number);
   const spp = Number($("#selSpp").value);
@@ -542,7 +552,7 @@ async function doRender() {
   $("#btnRender").classList.add("is-loading");
   try {
     const cam = V.getCamera();
-    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: spp >= 128 ? 6 : 4, eye: cam.eye, target: cam.target, fov: cam.fov, exposure: S.exposure || 0.62, projection: S.proj || "perspective", ortho_height: S.proj ? cam.orthoHeight : null, sky: skySettings(), mesh: meshOptions(), denoise: true } });
+    const r = await B.engine("render", { scene: S.scene, atmosphere: S.atm, settings: { width: w, height: h, samples: spp, bounces: spp >= 128 ? 6 : 4, eye: cam.eye, target: cam.target, fov: cam.fov, exposure: S.exposure || 0.62, projection: S.proj || "perspective", ortho_height: S.proj ? cam.orthoHeight : null, sky: skySettings(), mesh: meshOptions(), denoise: true, ...lookSettings() } });
     S.lastRender = r.png;
     $("#renderImg").src = `data:image/png;base64,${r.png}`;
     $("#renderCap").textContent = `${r.width}×${r.height} · ${r.samples} örnek · ${r.triangles.toLocaleString("tr-TR")} üçgen · ${r.threads} iş parçacığı${r.ms ? ` · ${fmt(r.ms / 1000, 1)} sn` : ""}`;
@@ -864,6 +874,117 @@ async function handleFiles(files) {
   const pal = list.find((f) => ["gpl", "txt", "json", "css", "hex", "pal"].includes(ext(f)));
   if (pal) { await loadPalette(pal.name.replace(/\.[^.]+$/, ""), await pal.text()); return; }
   toast("Bu dosya türü desteklenmiyor", { kind: "warn", sub: "Desteklenen: .uhds, .obj/.mtl, görsel, renk paleti" });
+}
+
+/* ---------- Fotoğraftan mekân ---------- */
+const PH_PTS = [["bl", "1", "Arka duvar · zemin sol köşe"], ["br", "2", "Arka duvar · zemin sağ köşe"], ["tr", "3", "Arka duvar · tavan sağ köşe"], ["tl", "4", "Arka duvar · tavan sol köşe"], ["left", "5", "Sol duvarın zemin çizgisinde yakın nokta"], ["right", "6", "Sağ duvarın zemin çizgisinde yakın nokta"]];
+const PH_WALL = { arka: "Arka", sol: "Sol", sag: "Sağ" };
+async function photoPick(file) {
+  if (!file || file.size > 40 * 1024 * 1024) { toast("Fotoğraf 40 MB'tan küçük olmalı", { kind: "warn" }); return; }
+  const bmp = await createImageBitmap(file);
+  const [w, h] = [bmp.width, bmp.height];
+  if (S.photo?.url) URL.revokeObjectURL(S.photo.url);
+  S.photo = {
+    url: URL.createObjectURL(file), w, h, fit: null, err: null, tool: null, drag: null, seq: 0,
+    pts: { bl: [w * 0.3, h * 0.66], br: [w * 0.7, h * 0.66], tr: [w * 0.7, h * 0.24], tl: [w * 0.3, h * 0.24], left: [w * 0.06, h * 0.92], right: [w * 0.94, h * 0.92] },
+    openings: [],
+  };
+  $("#phImg").src = S.photo.url;
+  renderPhoto();
+  await photoSolve();
+}
+function photoInput() {
+  const p = S.photo;
+  return { width: p.w, height: p.h, ...p.pts, fov: $("#phFovAuto").checked ? null : Number($("#phFov").value), reference: { kind: $("#phRefKind").value, mm: Number($("#phRefVal").value) * 10 }, openings: p.openings };
+}
+async function photoSolve() {
+  const p = S.photo;
+  if (!p) return;
+  const seq = ++p.seq;
+  let fit = null, err = null;
+  try { fit = await B.engine("photo_room", { photo: photoInput() }); } catch (e) { err = e.message || String(e); }
+  if (seq !== p.seq) return;
+  p.fit = fit; p.err = err;
+  drawPhoto();
+  photoResult();
+}
+function drawPhoto() {
+  const p = S.photo;
+  if (!p) return;
+  const svg = $("#phSvg");
+  svg.setAttribute("viewBox", `0 0 ${p.w} ${p.h}`);
+  const k = p.w / Math.max(1, svg.getBoundingClientRect().width || 800);
+  const q = p.pts;
+  const pt = (a) => `${a[0].toFixed(1)},${a[1].toFixed(1)}`;
+  let h = "";
+  if (p.fit) h += p.fit.outline.map((e) => `<line class="uh-ph-out" x1="${e[0][0].toFixed(1)}" y1="${e[0][1].toFixed(1)}" x2="${e[1][0].toFixed(1)}" y2="${e[1][1].toFixed(1)}"/>`).join("");
+  h += `<polygon class="uh-ph-quad" points="${pt(q.bl)} ${pt(q.br)} ${pt(q.tr)} ${pt(q.tl)}"/>`;
+  h += `<polyline class="uh-ph-side" points="${pt(q.left)} ${pt(q.bl)}"/><polyline class="uh-ph-side" points="${pt(q.right)} ${pt(q.br)}"/>`;
+  const rects = [...p.openings, ...(p.drag?.rect ? [p.drag.rect] : [])];
+  h += rects.map((o) => `<rect class="uh-ph-open" x="${Math.min(o.a[0], o.b[0]).toFixed(1)}" y="${Math.min(o.a[1], o.b[1]).toFixed(1)}" width="${Math.abs(o.b[0] - o.a[0]).toFixed(1)}" height="${Math.abs(o.b[1] - o.a[1]).toFixed(1)}"/>`).join("");
+  h += PH_PTS.map(([id, no, label]) => `<g class="uh-ph-h${p.drag?.pt === id ? " is-drag" : ""}" data-pt="${id}" tabindex="0" role="button" aria-label="${no}: ${label}" transform="translate(${pt(q[id])})"><title>${no} · ${label}</title><circle r="${(11 * k).toFixed(1)}"/><text font-size="${(12 * k).toFixed(1)}">${no}</text></g>`).join("");
+  svg.innerHTML = h;
+}
+function photoResult() {
+  const p = S.photo;
+  const f = p?.fit;
+  $("#btnPhotoBuild").disabled = !f;
+  const box = $("#phResult");
+  if (!f) { box.innerHTML = `<p class="uh-small">${esc(p?.err || "İşaretleri yerleştirin.")}</p>`; return; }
+  const cm = (v) => fmt(v / 10, 0);
+  const dim = (label, v, tol) => `<div class="uh-ph-dim"><span>${label}</span><b>${cm(v)} cm</b><small>± ${cm(tol)} cm</small></div>`;
+  const src = { "kacis-noktalari": "fotoğraftan hesaplandı", kullanici: "elle girildi", varsayilan: "varsayım" }[f.focal_source];
+  box.innerHTML = `<div class="uh-ph-dims">${dim("Genişlik", f.width, f.tolerance.width)}${dim("Derinlik", f.depth, f.tolerance.depth)}${dim("Yükseklik", f.height, f.tolerance.height)}</div>
+    <dl class="uh-stats"><dt>Genişlik : yükseklik</dt><dd>${fmt(f.ratio_width_height, 2)} : 1</dd><dt>Derinlik : genişlik</dt><dd>${fmt(f.ratio_depth_width, 2)} : 1</dd><dt>Taban alanı</dt><dd>${fmt((f.width * f.depth) / 1e6, 1)} m²</dd><dt>Görünen derinlik</dt><dd>${cm(f.depth_visible)} cm</dd><dt>Objektif</dt><dd>${fmt(f.focal_35, 0)} mm eşdeğeri · ${fmt(f.fov_h, 0)}° (${src})</dd><dt>Kamera</dt><dd>yerden ${cm(f.camera.height)} cm · arka duvara ${cm(f.camera.back)} cm</dd><dt>Tutarlılık</dt><dd>%${Math.round(f.consistency * 100)}</dd><dt>Açıklık</dt><dd>${f.openings.length}</dd></dl>
+    ${f.notes.length ? `<ul class="uh-ph-notes">${f.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}`;
+}
+function renderPhoto() {
+  const p = S.photo;
+  $("#phBody").hidden = !p;
+  $("#phEmpty").hidden = !!p;
+  const sp = S.scene.spaces || [];
+  $("#spaceCount").textContent = sp.length;
+  $("#phBesideBox").hidden = !sp.length;
+  $("#phBeside").innerHTML = sp.map((s) => `<option value="${esc(s.id)}">${esc(s.name)} yanına</option>`).join("");
+  if (sp.length) $("#phBeside").value = sp[sp.length - 1].id;
+  $("#spaceRows").innerHTML = sp.length
+    ? sp.map((s) => `<tr data-sp="${esc(s.id)}"><td><input class="pl-input uh-spname" data-k="name" value="${esc(s.name)}" maxlength="40" aria-label="Oda adı"></td>${["width", "depth", "height"].map((k) => `<td class="is-num"><input class="pl-input uh-num" type="number" data-k="${k}" min="100" max="3000" step="1" value="${Math.round(s[k] / 10)}" aria-label="${{ width: "Genişlik", depth: "Derinlik", height: "Yükseklik" }[k]}"></td>`).join("")}<td class="is-num">${fmt((s.width * s.depth) / 1e6, 1)} m²</td><td>${s.source === "foto" ? "Fotoğraf" : "Elle"}</td><td><button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-spact="view">3B'de aç</button> <button class="pl-btn pl-btn--secondary pl-btn--sm" type="button" data-spact="archive">Arşivle</button></td></tr>`).join("")
+    : `<tr><td colspan="7" class="uh-small">Henüz mekân yok. Bir fotoğraf seçin ya da “Ölçüyle oda ekle” ile başlayın.</td></tr>`;
+  if (p) {
+    $("#phOpenings").innerHTML = p.openings.map((o, i) => `<button class="pl-chip" type="button" data-phdel="${i}" title="Kaldır">${o.kind === "door" ? "Kapı" : "Pencere"} · ${PH_WALL[o.wall]} duvar ✕</button>`).join("") || `<span class="uh-small">İşaretli kapı ya da pencere yok.</span>`;
+    $("#phStage").classList.toggle("is-tool", !!p.tool);
+    $$("[data-phtool]").forEach((b) => b.classList.toggle("is-active", b.dataset.phtool === p.tool));
+    drawPhoto();
+    photoResult();
+  }
+}
+function phPoint(e) {
+  const p = S.photo;
+  const r = $("#phSvg").getBoundingClientRect();
+  return [Math.min(p.w, Math.max(0, ((e.clientX - r.left) / r.width) * p.w)), Math.min(p.h, Math.max(0, ((e.clientY - r.top) / r.height) * p.h))];
+}
+function openSpace(id) {
+  const s = (S.scene.spaces || []).find((x) => x.id === id);
+  if (!s) return;
+  const el = S.scene.levels[0]?.elevation || 150;
+  S.v3.mode = "ic"; S.camSet = true;
+  S.pendingCam = s.camera || { eye: [s.position[0] + s.width * 0.2, el + 1500, s.position[1] + s.depth - 300], target: [s.position[0] + s.width * 0.6, el + 1000, s.position[1]], fov: 62 };
+  go("uc");
+}
+async function buildFromPhoto() {
+  const f = S.photo?.fit;
+  if (!f) return;
+  const sp = S.scene.spaces || [];
+  const r = await B.engine("add_space", { scene: S.scene, space: { name: $("#phName").value.trim() || "Oda", width: f.width, depth: f.depth, height: f.height, source: "foto" }, openings: f.openings, camera: f.camera, beside: sp.length ? $("#phBeside").value : null, side: $("#phSide").value });
+  commit(r.scene);
+  const id = r.extra.id;
+  toast("Oda oluşturuldu", { sub: `${fmt(f.width / 1000)} × ${fmt(f.depth / 1000)} × ${fmt(f.height / 1000)} m${r.extra.notes.length ? ` · ${r.extra.notes[0]}` : ""}`, action: "3B'de aç", onAction: () => openSpace(id) });
+}
+async function addManualSpace() {
+  const sp = S.scene.spaces || [];
+  const r = await B.engine("add_space", { scene: S.scene, space: { name: `Oda ${sp.length + 1}`, width: 4000, depth: 4000, height: 2650, source: "elle" }, beside: sp.length ? sp[sp.length - 1].id : null, side: "sag" });
+  commit(r.scene);
+  toast("Oda eklendi", { sub: "Ölçüleri aşağıdaki tablodan değiştirebilirsiniz" });
 }
 
 /* ---------- Tasarım motorları ---------- */
@@ -1481,6 +1602,82 @@ mainEl.addEventListener("drop", (e) => {
   run(() => handleFiles(e.dataTransfer.files));
 });
 $("#btnRefPick").onclick = () => $("#refInput").click();
+$("#btnPhotoPick").onclick = () => $("#photoInput").click();
+$("#photoInput").addEventListener("change", (e) => run(() => photoPick(e.target.files[0])));
+$("#btnPhotoBuild").onclick = () => run(buildFromPhoto);
+$("#btnSpaceManual").onclick = () => run(addManualSpace);
+["phRefKind", "phRefVal", "phFov", "phFovAuto"].forEach((id) => $("#" + id).addEventListener("change", () => {
+  $("#phFovBox").hidden = $("#phFovAuto").checked;
+  if (id === "phRefKind") $("#phRefVal").value = { yukseklik: 265, genislik: 400, kamera: 150, derinlik: 300 }[$("#phRefKind").value];
+  photoSolve();
+}));
+$$("[data-phtool]").forEach((b) => (b.onclick = () => { if (!S.photo) return; S.photo.tool = S.photo.tool === b.dataset.phtool ? null : b.dataset.phtool; renderPhoto(); }));
+$("#phOpenings").addEventListener("click", (e) => { const b = e.target.closest("[data-phdel]"); if (!b) return; S.photo.openings.splice(Number(b.dataset.phdel), 1); renderPhoto(); photoSolve(); });
+{
+  const svg = $("#phSvg");
+  svg.addEventListener("pointerdown", (e) => {
+    const p = S.photo;
+    if (!p) return;
+    const g = e.target.closest("[data-pt]");
+    if (p.tool) { const a = phPoint(e); p.drag = { rect: { wall: $("#phWall").value, kind: p.tool, a, b: a } }; }
+    else if (g) p.drag = { pt: g.dataset.pt };
+    else return;
+    svg.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  svg.addEventListener("pointermove", (e) => {
+    const d = S.photo?.drag;
+    if (!d) return;
+    if (d.rect) { d.rect.b = phPoint(e); drawPhoto(); return; }
+    S.photo.pts[d.pt] = phPoint(e);
+    photoSolve();
+  });
+  const end = () => {
+    const p = S.photo;
+    const d = p?.drag;
+    if (!d) return;
+    p.drag = null;
+    if (d.rect) {
+      p.tool = null;
+      if (Math.abs(d.rect.b[0] - d.rect.a[0]) > p.w * 0.01 && Math.abs(d.rect.b[1] - d.rect.a[1]) > p.h * 0.01) p.openings.push(d.rect);
+      renderPhoto();
+    }
+    photoSolve();
+  };
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+  svg.addEventListener("keydown", (e) => {
+    const g = e.target.closest?.("[data-pt]");
+    const step = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!g || !step || !S.photo) return;
+    e.preventDefault();
+    const k = e.shiftKey ? 10 : 1;
+    const id = g.dataset.pt;
+    const q = S.photo.pts[id];
+    S.photo.pts[id] = [Math.min(S.photo.w, Math.max(0, q[0] + step[0] * k)), Math.min(S.photo.h, Math.max(0, q[1] + step[1] * k))];
+    photoSolve().then(() => $(`#phSvg [data-pt="${id}"]`)?.focus());
+  });
+}
+$("#spaceRows").addEventListener("change", (e) => {
+  const tr = e.target.closest("[data-sp]");
+  const k = e.target.dataset.k;
+  if (!tr || !k) return;
+  run(async () => {
+    const arg = { scene: S.scene, id: tr.dataset.sp, lock: $("#spLock").checked };
+    if (k === "name") arg.name = e.target.value.trim() || "Oda"; else arg[k] = Number(e.target.value) * 10;
+    const r = await B.engine("set_space", arg);
+    commit(r.scene);
+    if (r.extra.notes.length) toast(r.extra.notes[0], { kind: "warn" });
+  });
+});
+$("#spaceRows").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-spact]");
+  if (!b) return;
+  const id = b.closest("[data-sp]").dataset.sp;
+  if (b.dataset.spact === "view") { openSpace(id); return; }
+  run(async () => { const r = await B.engine("archive_space", { scene: S.scene, id }); commit(r.scene); toast("Oda arşivlendi", { action: "Geri al", onAction: undo }); });
+});
+window.addEventListener("resize", () => { if (S.view === "foto") drawPhoto(); });
 $("#refInput").addEventListener("change", (e) => run(() => refPick(e.target.files[0])));
 $("#btnRefApply").onclick = () => refApply();
 $("#motorForm").addEventListener("input", (e) => {
