@@ -81,6 +81,14 @@ const server = http.createServer((req, res) => {
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
   const shot = async (name) => { await page.waitForTimeout(500); await page.screenshot({ path: path.join(out, name) }); console.log("ekran:", name); };
   // CSP 'unsafe-eval' içermediği için waitForFunction yerine metin yoklaması
+  const waitUntil = async (fn, ms = 30000) => {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      if (await fn()) return;
+      await page.waitForTimeout(150);
+    }
+    throw new Error("zaman aşımı: koşul gerçekleşmedi");
+  };
   const waitText = async (sel, re, ms = 60000) => {
     const end = Date.now() + ms;
     while (Date.now() < end) {
@@ -337,13 +345,13 @@ const server = http.createServer((req, res) => {
   await page.waitForSelector("#inspector .uh-details summary");
   await page.click("#inspector .uh-details summary");
   await page.click('#inspector [data-act="two-tone"][data-up="9010"]');
-  await page.waitForFunction(() => document.querySelector('#inspector [data-f="lower"]')?.value === "ral7016-ic");
+  await waitUntil(async () => (await page.inputValue('#inspector [data-f="lower"]').catch(() => "")) === "ral7016-ic");
   ok((await page.inputValue('#inspector [data-f="wmat"]')) === "ral9010-ic", "Kombine boya: üst renk RAL 9010");
   await page.fill('#inspector [data-f="split"]', "110");
   await page.dispatchEvent('#inspector [data-f="split"]', "change");
-  await page.waitForFunction(() => !document.querySelector('#inspector [data-f="band"]')?.disabled);
+  await waitUntil(() => page.isEnabled('#inspector [data-f="band"]').catch(() => false));
   await page.selectOption('#inspector [data-f="band"]', "ral9010-ic");
-  await page.waitForFunction(() => !document.querySelector('#inspector [data-f="band_h"]')?.disabled);
+  await waitUntil(() => page.isEnabled('#inspector [data-f="band_h"]').catch(() => false));
   ok((await page.inputValue('#inspector [data-f="split"]')) === "110" && (await page.inputValue('#inspector [data-f="band_h"]')) === "6", "Kombine boya: ayırma 110 cm, şerit 6 cm");
   await shot("28-kombine-duvar-boyasi.png");
   await page.evaluate(() => {});
